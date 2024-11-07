@@ -1,0 +1,50 @@
+/* Button Styles */
+.btn-quote {
+    background-color: #882905;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-quote:hover {
+    background-color: #F6B453;
+    color: #882905;
+}
+
+.btn-wood-fence {
+    background-color: #F6B453;
+    color: #333;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-wood-fence:hover {
+    background-color: #f9cd82;
+    color: #333;
+}
+
+/* Welcome Message */
+.welcome-message {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.welcome-back-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+/* Link Colors */
+a {
+    color: blue; /* Default link color */
+    text-decoration: none;
+}
+
+a:hover {
+    color: darkblue; /* Hover link color */
+}
+
+a:visited {
+    color: purple; /* Read link color */
+}
