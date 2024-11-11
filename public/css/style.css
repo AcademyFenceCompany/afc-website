@@ -1,4 +1,54 @@
-/* Button Styles */
+/* General Header Styling */
+/* Basic Body Styling */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333;
+    background-color: #F8F7F2;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+/* Apply Inter font to all text elements */
+body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
+    font-family: 'Inter', sans-serif !important; /* Override Bootstrap's default font */
+}
+
+/* Set Inter font specifically for Bootstrap components */
+.navbar, .btn, .breadcrumb, .card, .modal, .dropdown-menu, .alert, .table, .form-control {
+    font-family: 'Inter', sans-serif !important;
+}
+
+.header {
+    background-color: #333333;
+}
+
+/* Custom Background for Main Container */
+.bg-light-custom {
+    background-color: #F8F7F2;
+}
+
+/* Search Input Styling */
+/* .search-input {
+    width: 40% !important;
+    border-radius: 0.25rem;
+} */
+
+/* Tagline Styling */
+.header .tagline {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+    margin-bottom: 0;
+}
+
+/* Quote Button Styling */
 .btn-quote {
     background-color: #882905;
     color: #fff;
@@ -11,6 +61,7 @@
     color: #882905;
 }
 
+/* Wood Fence Button Styling */
 .btn-wood-fence {
     background-color: #F6B453;
     color: #333;
@@ -21,30 +72,4 @@
 .btn-wood-fence:hover {
     background-color: #f9cd82;
     color: #333;
-}
-
-/* Welcome Message */
-.welcome-message {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.welcome-back-message {
-    font-size: 24px;
-    font-weight: bold;
-    color: #000;
-}
-
-/* Link Colors */
-a {
-    color: blue; /* Default link color */
-    text-decoration: none;
-}
-
-a:hover {
-    color: darkblue; /* Hover link color */
-}
-
-a:visited {
-    color: purple; /* Read link color */
 }

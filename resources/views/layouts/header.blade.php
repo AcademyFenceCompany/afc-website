@@ -1,42 +1,67 @@
 <!-- resources/views/layouts/header.blade.php -->
-<header class="header bg-dark text-light py-3">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <img src="{{ asset('path/to/logo.png') }}" alt="Academy Fence Logo" class="me-3">
-                <button class="btn btn-outline-light me-3">Request Installation Quote</button>
-            </div>
-            <div class="d-flex flex-grow-1 justify-content-center align-items-center">
-                <input type="text" class="form-control search-input me-2" placeholder="Search for...">
-                <button class="btn btn-dark">Search</button>
-                <div class="d-none d-md-flex align-items-center ms-4">
-                    <span class="me-2"><i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ</span>
-                    <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
-                </div>
-            </div>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-danger ms-3">GET A QUOTE</button>
-                <div class="ms-3">
-                    <a href="#" class="text-light">Log in</a>
-                    <a href="#" class="text-light ms-2"><i class="bi bi-cart"></i></a>
-                </div>
+<header>
+    <!-- Top Bar: Full Width, Black Background -->
+    <div class="container-fluid bg-black text-light py-2">
+        <div class="container d-flex justify-content-between align-items-center">
+            <button class="btn btn-outline-light">Request Installation Quote</button>
+            <div>
+                <a href="#" class="text-light">Log in</a>
+                <a href="#" class="text-light ms-3"><i class="bi bi-cart"></i> TEsting123</a>
             </div>
         </div>
-        <nav class="nav mt-3 justify-content-center">
-            <a href="#" class="nav-link btn btn-warning">WOOD FENCE</a>
-            <a href="#" class="nav-link btn btn-warning">VINYL FENCE</a>
-            <a href="#" class="nav-link btn btn-warning">CHAIN LINK</a>
-            <a href="#" class="nav-link btn btn-warning">ALUMINUM FENCE</a>
-            <a href="#" class="nav-link btn btn-warning">WELDED WIRE</a>
-            <div class="dropdown">
-                <a href="#" class="nav-link text-dark btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">Menu</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Option 1</a></li>
-                    <li><a class="dropdown-item" href="#">Option 2</a></li>
-                    <li><a class="dropdown-item" href="#">Option 3</a></li>
-                </ul>
+    </div>
+
+    <!-- Main Header Container: Full Width, Light Background -->
+    <div class="container-fluid bg-light-custom py-3">
+        <div class="container">
+            <!-- Second Bar: Logo, Search, Address, Phone, Get a Quote Button -->
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <img src="https://www.academyfence.com/images/logo.png" alt="Academy Fence company" class="me-3">
+                </div>
+                <div class="d-flex align-items-center justify-content-center flex-grow-1">
+                    <div class="search-section d-flex">
+                        <input type="text" class="form-control search-input me-2" placeholder="Search for...">
+                        <button class="btn btn-dark">Search</button>
+                    </div>
+                    <div class="d-none d-md-flex align-items-center ms-4">
+                        <span class="me-2"><i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ</span>
+                        <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
+                    </div>
+                </div>
+                <button class="btn btn-danger ms-3">GET A QUOTE</button>
             </div>
-            <a href="#" class="btn btn-danger ms-2">NJ Fence INSTALLATION Guide</a>
-        </nav>
+
+            <!-- Third Bar: Tagline and Navigation Menu -->
+            <div class="text-center my-2">
+                <h3 class="tagline">The Original Fence Superstore</h3>
+            </div>
+            <nav class="nav justify-content-center mb-3">
+                <a href="#" class="nav-link btn btn-warning">WOOD FENCE</a>
+                <a href="#" class="nav-link btn btn-warning">VINYL FENCE</a>
+                <a href="#" class="nav-link btn btn-warning">CHAIN LINK</a>
+                <a href="#" class="nav-link btn btn-warning">ALUMINUM FENCE</a>
+                <a href="#" class="nav-link btn btn-warning">WELDED WIRE</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link text-dark btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">Menu</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Option 1</a></li>
+                        <li><a class="dropdown-item" href="#">Option 2</a></li>
+                        <li><a class="dropdown-item" href="#">Option 3</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Fourth Bar: Breadcrumb and NJ Fence Installation Guide -->
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-light p-2 rounded">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Selected Page</li>
+                    </ol>
+                </nav>
+                <a href="#" class="btn btn-danger">NJ Fence INSTALLATION Guide</a>
+            </div>
+        </div>
     </div>
 </header>
