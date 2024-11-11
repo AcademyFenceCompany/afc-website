@@ -6,7 +6,7 @@
             <button class="btn btn-outline-light">Request Installation Quote</button>
             <div>
                 <a href="#" class="text-light">Log in</a>
-                <a href="#" class="text-light ms-3"><i class="bi bi-cart"></i> TEsting123</a>
+                <a href="#" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a>
             </div>
         </div>
     </div>
