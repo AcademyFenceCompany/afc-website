@@ -1,0 +1,12 @@
+[11-Nov-2024 20:28:02 UTC] PHP Warning:  require(/home/academyfence/public_html/academyfence/public/vendor/autoload.php): Failed to open stream: No such file or directory in /home/academyfence/public_html/academyfence/public/index.php on line 34
+[11-Nov-2024 20:28:02 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/academyfence/public_html/academyfence/public/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/academyfence/public_html/academyfence/public/index.php:34
+Stack trace:
+#0 /home/academyfence/public_html/academyfence/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once()
+#1 {main}
+  thrown in /home/academyfence/public_html/academyfence/public/index.php on line 34
+[11-Nov-2024 20:28:31 UTC] PHP Warning:  require(/home/academyfence/public_html/academyfence/public/vendor/autoload.php): Failed to open stream: No such file or directory in /home/academyfence/public_html/academyfence/public/index.php on line 34
+[11-Nov-2024 20:28:31 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/academyfence/public_html/academyfence/public/vendor/autoload.php' (include_path='.:/opt/cpanel/ea-php80/root/usr/share/pear') in /home/academyfence/public_html/academyfence/public/index.php:34
+Stack trace:
+#0 /home/academyfence/public_html/academyfence/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once()
+#1 {main}
+  thrown in /home/academyfence/public_html/academyfence/public/index.php on line 34

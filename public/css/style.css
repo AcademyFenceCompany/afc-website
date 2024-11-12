@@ -49,14 +49,14 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 }
 
 /* Quote Button Styling */
-.btn-quote {
+#btn-quote {
     background-color: #882905;
     color: #fff;
     font-weight: bold;
     border: none;
 }
 
-.btn-quote:hover {
+#btn-quote:hover {
     background-color: #F6B453;
     color: #882905;
 }
@@ -72,4 +72,44 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 .btn-wood-fence:hover {
     background-color: #f9cd82;
     color: #333;
+}
+/* Custom styles for navigation buttons */
+.nav-btn {
+    background-color: #f4a261; /* Light orange color */
+    color: #333; /* Dark text color */
+    font-weight: bold;
+    border-radius: 5px; /* Rounded corners */
+    margin: 0 5px; /* Spacing between buttons */
+    padding: 10px 20px; /* Add padding to buttons */
+    text-align: center;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    background-color: #e68a00; /* Darker shade on hover */
+    color: #fff; /* White text on hover */
+    text-decoration: none;
+}
+
+/* Dropdown button styling */
+.dropdown-toggle::after {
+    margin-left: 5px;
+}
+
+.dropdown-menu {
+    min-width: 150px; /* Width of dropdown menu */
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f4a261; /* Same color as buttons on hover */
+    color: #333;
+}
+
+/* Additional styling for button text alignment */
+.nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

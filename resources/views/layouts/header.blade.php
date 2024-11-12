@@ -3,9 +3,9 @@
     <!-- Top Bar: Full Width, Black Background -->
     <div class="container-fluid bg-black text-light py-2">
         <div class="container d-flex justify-content-between align-items-center">
-            <button class="btn btn-outline-light">Request Installation Quote</button>
+            <button class="inst-btn btn btn-outline-light"><i class="bi bi-pencil-square"></i>Request Installation Quote</button>
             <div>
-                <a href="#" class="text-light">Log in</a>
+                <a href="#" class="text-light"><i class="bi bi-person-circle"></i>Login</a>
                 <a href="#" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a>
             </div>
         </div>
@@ -17,7 +17,7 @@
             <!-- Second Bar: Logo, Search, Address, Phone, Get a Quote Button -->
             <div class="d-flex justify-content-center align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <img src="https://www.academyfence.com/images/logo.png" alt="Academy Fence company" class="me-3">
+                    <img src="https://www.academyfence.com/images/logo.png" alt="Academy Fence Company" class="me-3">
                 </div>
                 <div class="d-flex align-items-center justify-content-center flex-grow-1">
                     <div class="search-section d-flex">
@@ -29,21 +29,23 @@
                         <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
                     </div>
                 </div>
-                <button class="btn btn-danger ms-3">GET A QUOTE</button>
+                <button class="quote-btn btn btn-danger ms-3">GET A QUOTE</button>
             </div>
 
             <!-- Third Bar: Tagline and Navigation Menu -->
-            <div class="text-center my-2">
+            <div class="tagline-box text-center my-2">
                 <h3 class="tagline">The Original Fence Superstore</h3>
             </div>
             <nav class="nav justify-content-center mb-3">
-                <a href="#" class="nav-link btn btn-warning">WOOD FENCE</a>
-                <a href="#" class="nav-link btn btn-warning">VINYL FENCE</a>
-                <a href="#" class="nav-link btn btn-warning">CHAIN LINK</a>
-                <a href="#" class="nav-link btn btn-warning">ALUMINUM FENCE</a>
-                <a href="#" class="nav-link btn btn-warning">WELDED WIRE</a>
+                <a href="#" class="nav-link btn nav-btn">WOOD FENCE</a>
+                <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
+                <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
+                <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
+                <a href="#" class="nav-link btn nav-btn">WELDED WIRE</a>
                 <div class="dropdown">
-                    <a href="#" class="nav-link text-dark btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">Menu</a>
+                    <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="bi bi-list"></i> Menu
+                    </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Option 1</a></li>
                         <li><a class="dropdown-item" href="#">Option 2</a></li>
@@ -57,10 +59,10 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-light p-2 rounded">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Selected Page</li>
+                        <li class="breadcrumb-item " aria-current="page">Selected Page</li>
                     </ol>
                 </nav>
-                <a href="#" class="btn btn-danger">NJ Fence INSTALLATION Guide</a>
+                <a href="#" class="quote-btn btn btn-danger">NJ Fence INSTALLATION Guide</a>
             </div>
         </div>
     </div>
