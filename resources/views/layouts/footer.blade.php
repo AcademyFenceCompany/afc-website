@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <!-- Navigation Links -->
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-3">
                 <h5>Navigation Links:</h5>
                 <ul class="list-unstyled">
                     <li><a href="#" class="text-light">Site Map</a></li>
@@ -16,7 +16,7 @@
             </div>
 
             <!-- Office Hours and Logo -->
-            <div class="col-md-6 text-center mb-3">
+            <div class="col-md-4  mb-3">
                 <button class="btn btn-quote mb-3">GET A QUOTE</button>
                 <div class="office-hours">
                     <h5>Office hours:</h5>
@@ -27,7 +27,7 @@
             </div>
 
             <!-- Contact and Social Media Links -->
-            <div class="col-md-3 mb-3 text-md-end text-start">
+            <div class="col-md-4 mb-3 ">
                 <h5>Contact us:</h5>
                 <p><i class="bi bi-envelope"></i> info@academyfence.com</p>
                 <p><i class="bi bi-telephone"></i> (973) 674-0600</p>
