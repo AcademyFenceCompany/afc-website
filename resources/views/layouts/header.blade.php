@@ -17,7 +17,7 @@
             <!-- Second Bar: Logo, Search, Address, Phone, Get a Quote Button -->
             <div class="d-flex justify-content-center align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <img src="https://www.academyfence.com/images/logo.png" alt="Academy Fence Company" class="me-3">
+                    <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="me-3">
                 </div>
                 <div class="d-flex align-items-center justify-content-center flex-grow-1">
                     <div class="search-section d-flex">

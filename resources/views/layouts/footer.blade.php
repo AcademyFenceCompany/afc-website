@@ -1,5 +1,5 @@
 <!-- Footer -->
-<footer class="footer bg-dark text-light py-5">
+<footer class="footer mt-4 bg-dark text-light py-5">
     <div class="container">
         <div class="row">
             <!-- Navigation Links -->
@@ -23,15 +23,14 @@
                     <p>Monday - Friday (EST)<br>8am - 5pm</p>
                     <p>Saturday (EST, Seasonally)<br>8am - 1pm</p>
                 </div>
-                <img src="https://www.academyfence.com/images/logo.png" alt="Academy Fence Company Logo" class="footer-logo mt-3">
             </div>
 
             <!-- Contact and Social Media Links -->
             <div class="col-md-4 mb-3 ">
                 <h5>Contact us:</h5>
                 <p><i class="bi bi-envelope"></i> info@academyfence.com</p>
-                <p><i class="bi bi-telephone"></i> (973) 674-0600</p>
-                <p><i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ</p>
+                <p><i class="bi bi-telephone-fill"></i> (973) 674-0600</p>
+                <p><i class="bi bi-geo-alt-fill"></i> 119 N Day Street, Orange, NJ</p>
                 <h5>Follow us:</h5>
                 <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
                 <a href="#" class="text-light me-2"><i class="bi bi-instagram"></i></a>
@@ -40,8 +39,13 @@
         </div>
 
         <!-- Footer Bottom Text -->
-        <div class="text-center mt-4">
-            <p>&copy; 2024 Academy Fence Company Inc.</p>
+        <div class="d-flex align-items-center row">
+            <div class="col-md-4 mt-4">
+                <p>&copy; 2024 Academy Fence Company Inc.</p>
+            </div>
+            <div class="col-md-4 mt-4">
+                <img src="{{ url('/resources/images/logo.png') }}"  alt="Academy Fence Company Logo" class="footer-logo mt-3">
+            </div>
         </div>
     </div>
 </footer>
