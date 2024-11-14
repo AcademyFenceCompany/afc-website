@@ -17,11 +17,7 @@ Route::get('/resources/images/{filename}', function ($filename) {
     return Response::make($file, 200)->header("Content-Type", $type);
 });
 
-Route::get('/', function () {
-    return view('index');
-});
-
-Route::get('/contact', function () {
-    return view('pages/contact');
-});
+Route::view('/', 'index');
+Route::view('/contact', 'pages/contact')->name('contact');
+Route::view('/404', 'pages/404')->name('error');
 

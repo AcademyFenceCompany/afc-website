@@ -1,121 +1,158 @@
-/* General Header Styling */
-/* Basic Body Styling */
+:root {
+    /* Colors */
+    --primary-color: #005580;
+    --secondary-color: #882905;
+    --light-color: #fff;
+    --dark-color: #333333;
+    --bg-color: #f8f7f2;
+    --hover-color: #F6B453;
+    --footer-bg-color: #000;
+    --footer-text-color: #ffffff;
+    --input-border-color: #ddd;
+
+    /* Font Sizes */
+    --font-size-base: 16px;
+    --font-size-small: 12px;
+    --font-size-large: 20px;
+    --font-size-xlarge: 35px;
+
+    /* Font Families */
+    --font-family-primary: 'Inter', sans-serif;
+
+    /* Spacing */
+    --padding-base: 1rem;
+    --padding-small: 0.5rem;
+    --padding-large: 2rem;
+
+    /* Border Radius */
+    --border-radius-small: 0.25rem;
+    --border-radius-large: 16px;
+
+    /* Font Weights */
+    --font-weight-bold: bold;
+    --font-weight-normal: normal;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
 body {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 16px;
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
     line-height: 1.6;
-    color: #333333;
-    background-color: #fff;
+    color: var(--dark-color);
+    background-color: var(--light-color);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
 }
-/* Apply Inter font to all text elements */
+
 body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
-    font-family: 'Inter', sans-serif !important; /* Override Bootstrap's default font */
+    font-family: var(--font-family-primary);
 }
 
-/* Set Inter font specifically for Bootstrap components */
 .navbar, .btn, .breadcrumb, .card, .modal, .dropdown-menu, .alert, .table, .form-control {
-    font-family: 'Inter', sans-serif !important;
+    font-family: var(--font-family-primary);
 }
 
+/* General Header Styling */
 .header {
-    background-color: #333333;
+    background-color: var(--dark-color);
 }
 
-/* Custom Background for Main Container */
 .bg-light-custom {
-    background-color: #fff;
+    background-color: var(--light-color);
 }
 
-/* Search Input Styling */
-/* .search-input {
-    width: 40% !important;
-    border-radius: 0.25rem;
-} */
 .btn-outline-light {
-    background: #fff;
-    color: #000;
-    font-size: 16px;
-    font-weight: bold;
+    background: var(--light-color);
+    color: var(--dark-color);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+}
+.bi{
+    margin-right: 10px; 
 }
 .bi-pencil-square::before {
     content: "\f4ca";
-    font-size: 20px;
+    font-size: var(--font-size-large);
     margin-right: 10px;
 }
+
 /* Tagline Styling */
 .tagline {
-    font-weight: bold;
-    color: #333;
-    font-size: 35px !important;
+    font-weight: var(--font-weight-bold);
+    color: var(--dark-color);
+    font-size: var(--font-size-xlarge);
     padding: 25px 0px;
 }
 
 /* Breadcrumb Styling */
 .breadcrumb {
     margin-bottom: 0;
-    font-size: 12px;
+    font-size: var(--font-size-small);
+}
+
+.breadcrumb-item a {
+    color: var(--dark-color);
+    text-decoration: none;
 }
 
 /* Quote Button Styling */
 #btn-quote {
-    background-color: #882905;
-    color: #fff;
-    font-weight: bold;
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+    font-weight: var(--font-weight-bold);
     border: none;
 }
 
 #btn-quote:hover {
-    background-color: #F6B453;
-    color: #882905;
+    background-color: var(--hover-color);
+    color: var(--secondary-color);
 }
 
 /* Wood Fence Button Styling */
 .btn-wood-fence {
-    background-color: #F6B453;
-    color: #333;
-    font-weight: bold;
+    background-color: var(--hover-color);
+    color: var(--dark-color);
+    font-weight: var(--font-weight-bold);
     border: none;
 }
 
 .btn-wood-fence:hover {
     background-color: #f9cd82;
-    color: #333;
+    color: var(--dark-color);
 }
-.quote-btn{
-    background: #882905;
-    border:none;
+
+.quote-btn {
+    background: var(--secondary-color);
+    border: none;
     font-size: 14px;
     padding: 10px 20px;
     text-transform: uppercase;
-
 }
+
 .quote-btn:hover {
-    background: #F6B453;
+    background: var(--hover-color);
     opacity: 80%;
     color: red;
-    font-size: 14px;
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
 }
+
 /* Custom styles for navigation buttons */
 .nav-btn {
-    background-color: #F6B453; /* Light orange color */
-    color: #333; /* Dark text color */
-    font-weight: bold;
-    border-radius: 5px; /* Rounded corners */
-    margin: 0 5px; /* Spacing between buttons */
+    background-color: var(--hover-color);
+    color: var(--dark-color);
+    font-weight: var(--font-weight-bold);
+    border-radius: 5px;
+    margin: 0 5px;
     padding: 15px 35px;
     text-align: center;
     display: inline-block;
 }
 
 .nav-btn:hover {
-    background-color: #e68a00; /* Darker shade on hover */
-    color: #fff; /* White text on hover */
+    background-color: #e68a00;
+    color: var(--light-color);
     text-decoration: none;
 }
 
@@ -125,12 +162,12 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 }
 
 .dropdown-menu {
-    min-width: 150px; /* Width of dropdown menu */
+    min-width: 150px;
 }
 
 .dropdown-menu .dropdown-item:hover {
-    background-color: #f4a261; /* Same color as buttons on hover */
-    color: #333;
+    background-color: #f4a261;
+    color: var(--dark-color);
 }
 
 /* Additional styling for button text alignment */
@@ -140,80 +177,61 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: var(--font-size-large);
 }
+
 .nav-btn i {
     margin-right: 5px;
-    color: black;
-    font-size: 24px;
+    color: var(--dark-color);
+    font-size: var(--font-size-large);
 }
-.text-light{
+
+.text-light {
     text-decoration: none;
 }
 
-.text-light i{
-    font-size: 20px;
-    margin-left:5px;
+.text-light i {
+    font-size: var(--font-size-large);
+    margin-left: 5px;
 }
-.bi-person-circle::before{
-    margin-right: 10px !important; 
+
+.bi-person-circle::before, .bi-cart::before {
+    margin-right: 10px !important;
 }
-.bi-cart::before{
-    margin-right: 10px !important; 
-}
-.bi-geo-alt::before {
-    content: "\f3e8";
-    background: #000;
-    color: #fff;
-    padding: 5px;
-    border-radius: 16px;
-    font-size: 22px;
-}
-.bi-telephone::before{
-    background: #000;
-    color: #fff;
+
+.bi-geo-alt::before, .bi-telephone::before {
+    background: var(--footer-bg-color);
+    color: var(--light-color);
     padding: 6px;
-    border-radius: 16px;
-    font-size: 22px;
+    border-radius: var(--border-radius-large);
+    font-size: var(--font-size-large);
 }
+
 /* Footer Styling */
 .footer {
-    background-color: #000;
-    color: #ffffff;
+    background-color: var(--footer-bg-color);
+    color: var(--footer-text-color);
 }
 
 .footer h5 {
-    font-weight: bold;
+    font-weight: var(--font-weight-bold);
 }
 
 .footer-logo {
     width: 180px;
 }
 
-.btn-quote {
-    background-color: #882905;
-    color: #fff;
-    font-weight: bold;
-    border: none;
-    padding: 0.5em 1.5em;
-}
-
-.btn-quote:hover {
-    background-color: #F6B453;
-    color: #882905;
-}
-
 .footer ul {
     padding-left: 0;
 }
 
-.footer ul li a {
+.footer ul li a, .footer a {
     text-decoration: none;
-    color: #ffffff;
+    color: var(--footer-text-color);
 }
 
-.footer ul li a:hover {
-    text-decoration: underline;
+.footer ul li a:hover, .footer a:hover {
+    color: var(--hover-color);
 }
 
 .office-hours p {
@@ -224,28 +242,22 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
     margin: 0;
 }
 
-.footer a {
-    color: #ffffff;
-}
-
-.footer a:hover {
-    color: #F6B453;
-}
-.btn-direction a{
+.btn-direction a {
     text-decoration: none;
     margin-left: 2px;
 }
 
+/* Scrolling Info Styling */
 .scrolling-info {
-    background-color: #882905;
-    color: #fff;
+    background-color: var(--secondary-color);
+    color: var(--light-color);
     padding: 10px 0;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     position: relative;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: var(--font-weight-bold);
 }
 
 .scrolling-info p {
@@ -263,4 +275,58 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
     to {
         transform: translateX(100%);
     }
+}
+
+/* Contact Page Styling */
+.card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--dark-color) !important;
+    color: var(--light-color);
+    padding: var(--padding-base);
+}
+
+.card-body {
+    padding: var(--padding-large);
+}
+
+.form-label {
+    font-weight: var(--font-weight-bold);
+}
+.form-control{
+    background-color: #F7F7F7;
+    padding: 0.8rem .75rem;
+}
+.form-control::placeholder {
+    color: #999;
+}
+
+.btn-danger {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-danger:hover {
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
+    color: var(--secondary-color);
+}
+
+input[type="file"] {
+    border: 1px solid var(--input-border-color);
+    padding: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+.card-body .bi-envelope::before{
+    background: var(--footer-bg-color);
+    color: var(--light-color);
+    padding: 6px;
+    border-radius: var(--border-radius-large);
+    font-size: var(--font-size-large);
 }

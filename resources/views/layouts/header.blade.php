@@ -1,18 +1,3 @@
-<!-- resources/views/layouts/header.blade.php -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    {{-- <link rel="stylesheet" href="localhost/resources/css/style.css" > --}}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <title>Academy Fence Company</title>
-    @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js'])
-
-</head>
-<body style = "font-family: 'Inter', sans-serif">
 <header>
     @include('layouts.ticker') 
     <!-- Top Bar: Full Width, Black Background -->
@@ -32,7 +17,7 @@
             <!-- Second Bar: Logo, Search, Address, Phone, Get a Quote Button -->
             <div class="d-flex justify-content-center align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="me-3">
+                    <a href={{url('/')}}> <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="me-3"> </a> 
                 </div>
                 <div class="d-flex align-items-center justify-content-center flex-grow-1">
                     <div class="search-section d-flex">
@@ -70,6 +55,7 @@
             </nav>
             <!-- Fourth Bar: Breadcrumb and NJ Fence Installation Guide -->
             <div class="d-flex justify-content-between align-items-center mt-2">
+                <!-- breadcrumbs component -->
                 <x-breadcrumbs />
                 <div class="dropdown">
                     <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
