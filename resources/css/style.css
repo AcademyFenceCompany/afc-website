@@ -152,7 +152,7 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 }
 
 .text-light i{
-    font-size: 25px;
+    font-size: 20px;
     margin-left:5px;
 }
 .bi-person-circle::before{
@@ -230,4 +230,37 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 
 .footer a:hover {
     color: #F6B453;
+}
+.btn-direction a{
+    text-decoration: none;
+    margin-left: 2px;
+}
+
+.scrolling-info {
+    background-color: #882905;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.scrolling-info p {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-left 15s linear infinite;
+    margin: 0;
+}
+
+/* Keyframes for left-to-right scrolling text */
+@keyframes scroll-left {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(100%);
+    }
 }

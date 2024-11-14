@@ -20,3 +20,8 @@ Route::get('/resources/images/{filename}', function ($filename) {
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/contact', function () {
+    return view('pages/contact');
+});
+

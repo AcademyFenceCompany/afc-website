@@ -31,6 +31,7 @@
                 <p><i class="bi bi-envelope"></i> info@academyfence.com</p>
                 <p><i class="bi bi-telephone-fill"></i> (973) 674-0600</p>
                 <p><i class="bi bi-geo-alt-fill"></i> 119 N Day Street, Orange, NJ</p>
+                <p class="btn-direction"> <a href="#"><i class="bi bi-arrow-return-right"></i>Get Directions</a></p>
                 <h5>Follow us:</h5>
                 <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
                 <a href="#" class="text-light me-2"><i class="bi bi-instagram"></i></a>
@@ -49,3 +50,15 @@
         </div>
     </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            document.getElementById("scrolling-info").style.display = "none";
+        }, 60000); // 60 seconds
+    });
+</script>
+
+</body>
+</html>
