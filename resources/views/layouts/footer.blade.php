@@ -32,7 +32,7 @@
                 <p><i class="bi bi-envelope"></i> info@academyfence.com</p>
                 <p><i class="bi bi-telephone-fill"></i> (973) 674-0600</p>
                 <p><i class="bi bi-geo-alt-fill"></i> 119 N Day Street, Orange, NJ</p>
-                <p class="btn-direction"> <a href="#"><i class="bi bi-arrow-return-right"></i>Get Directions</a></p>
+                <p class="btn-direction"> <a href="https://www.google.com/maps/dir//Academy+Fence+Company+Inc/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x89c3ab30c593349f:0x8f5a4fd1e023b46c?sa=X&ved=1t:3061&ictx=111" target="_blank"><i class="bi bi-arrow-return-right"></i>Get Directions</a></p>
                 <div class="social mt-3">
                     <h5>Follow Us</h5>
                     <a href="#" class="text-light me-2"><i class="bi bi-facebook"></i></a>
