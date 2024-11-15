@@ -329,3 +329,11 @@ input[type="checkbox"] {
     border-radius: var(--border-radius-large);
     font-size: var(--font-size-large);
 }
+.shadow-image {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shadow-image:hover {
+    transform: scale(1.05); /* Slightly scales up the image on hover */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Adds a stronger shadow on hover */
+}

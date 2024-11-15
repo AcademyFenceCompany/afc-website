@@ -13,8 +13,8 @@
             <div class="row g-3">
                 @for ($i = 0; $i < 12; $i++)
                     <div class="col-6 col-md-3 col-lg-2 text-center">
-                        <div class="product-item">
-                            <img src="/resources/images/woodpost.png" alt="Copper 5'' Ball" class="img-fluid mb-2">
+                        <div class="product-item shadow-sm p-2 bg-white rounded">
+                            <img src="/resources/images/woodpost.png" alt="Copper 5'' Ball" class="img-fluid mb-2 shadow-image">
                             <p class="card-text">Copper 5" Ball</p>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4">
-                    <img src="/resources/images/woodpostcaps.png" alt="Wood Post Cap" class="img-fluid rounded">
+                    <img src="/resources/images/woodpostcaps.png" alt="Wood Post Cap" class="img-fluid rounded shadow-image">
                 </div>
                 <div class="col-md-8">
                     <h4>Wood Post Caps</h4>
@@ -51,15 +51,15 @@
 
     <!-- See All Types of Fence Post Caps Section -->
     <div class="card mb-4">
-        <div class="card-header text-center bg-light text-white">
+        <div class="card-header text-center bg-light">
             <h4>See all types of fence post caps</h4>
         </div>
         <div class="card-body">
             <div class="row g-3">
                 @foreach(['Solar Post Caps', 'Vinyl Post Caps', 'Glass Post Caps', 'Chain Link Post Caps', 'Copper 5" Ball', 'Copper 5" Ball'] as $postCapType)
                     <div class="col-6 col-md-3 col-lg-2 text-center">
-                        <div class="product-item">
-                            <img src="/resources/images/woodpost.png" alt="{{ $postCapType }}" class="img-fluid mb-2">
+                        <div class="product-item shadow-sm p-2 bg-white rounded">
+                            <img src="/resources/images/woodpost.png" alt="{{ $postCapType }}" class="img-fluid mb-2 shadow-image">
                             <p class="card-text">{{ $postCapType }}</p>
                         </div>
                     </div>
