@@ -23,8 +23,10 @@
             ['title' => 'Vinyl Post Caps', 'description' => 'Vinyl PVC Ball Cap, External Flat Cap, New England Cap, Gothic Cap, and Internal Flat Caps. Accessories for 4" x 4", and 5" x 5" Vinyl Fence Posts.', 'image' => '/resources/images/post-caps.png'],
             ['title' => 'Wood Post Caps', 'description' => 'Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat top and Ball Top.', 'image' => '/resources/images/post-caps.png'],
             ['title' => 'Chain Link Post Caps', 'description' => 'Aluminum chain link acorn caps are the perfect way to finish a fence project. Come in sizes ranging from 1-3/8" all the way up to 8-5/8".', 'image' => '/resources/images/post-caps.png'],
-            ['title' => 'Wood Post Caps', 'description' => 'Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat top and Ball Top.', 'image' => '/resources/images/post-caps.png']
-        ] as $postCap)
+            ['title' => 'Wood Post Caps', 'description' => 'Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat top and Ball Top.', 'image' => '/resources/images/post-caps.png'],
+            ['title' => 'Wood Post Caps', 'description' => 'Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat top and Ball Top.', 'image' => '/resources/images/post-caps.png'],
+            ['title' => 'Wood Post Caps', 'description' => 'Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat top and Ball Top.', 'image' => '/resources/images/post-caps.png'],
+] as $postCap)
         <div class="col-12 col-md-6 col-lg-4 d-flex">
             <div class="card product-card shadow-sm p-3 d-flex flex-row align-items-center w-100">
                 <!-- Image Section -->
