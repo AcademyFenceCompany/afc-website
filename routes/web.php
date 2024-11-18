@@ -20,4 +20,5 @@ Route::get('/resources/images/{filename}', function ($filename) {
 Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
+Route::view('/product-cats', 'categories/products-cats');
 

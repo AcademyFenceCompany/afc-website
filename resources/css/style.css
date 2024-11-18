@@ -283,9 +283,10 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 }
 
 .card-header {
-    background-color: var(--dark-color) !important;
+    background-color: var(--secondary-color) !important;
     color: var(--light-color);
     padding: var(--padding-base);
+    text-transform: uppercase;
 }
 
 .card-body {
@@ -337,3 +338,42 @@ input[type="checkbox"] {
     transform: scale(1.05); /* Slightly scales up the image on hover */
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Adds a stronger shadow on hover */
 }
+.product-card {
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Slight upward movement on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow on hover */
+}
+
+.product-image img {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Image shadow */
+    border-radius: 8px; /* Match card rounding */
+    max-width: 100%; /* Ensure responsive image */
+}
+
+.product-details h5 {
+    font-size: 1.1rem; /* Slightly larger title */
+    color: var(--secondary-color);
+}
+
+.product-details p {
+    font-size: 0.9rem; /* Slightly smaller text for description */
+    color: #6c757d; /* Muted text color */
+}
+
+.product-details .btn-danger {
+    background-color: #882905; /* Custom button color */
+    border: none;
+}
+
+.product-details .btn-danger:hover {
+    background-color: #F6B453; /* Hover color */
+    color: #882905; /* Text color on hover */
+}
+
+
