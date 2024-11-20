@@ -21,4 +21,5 @@ Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
+Route::view('/about','pages/about')->name('about');
 

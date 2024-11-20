@@ -7,7 +7,7 @@
                 <h5>Navigation Links</h5>
                 <ul class="list-unstyled">
                     <li><a href="" class="text-light">Site Map</a></li>
-                    <li><a href="#" class="text-light">About us</a></li>
+                    <li><a href="{{route('about')}}" class="text-light">About us</a></li>
                     <li><a href="{{route('contact') }}" class="text-light">Contact Us</a></li>
                     <li><a href="#" class="text-light">Privacy Policy</a></li>
                     <li><a href="#" class="text-light">FAQs</a></li>

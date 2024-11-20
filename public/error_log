@@ -10,3 +10,6 @@ Stack trace:
 #0 /home/academyfence/public_html/academyfence/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once()
 #1 {main}
   thrown in /home/academyfence/public_html/academyfence/public/index.php on line 34
+[20-Nov-2024 19:44:11 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 32768 bytes) in /home/academyfence/public_html/academyfence/storage/framework/views/2f54a4c05c9a0fc6b4b7e4e2d9adb183a9e433d0.php on line 1
+[20-Nov-2024 19:44:11 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 94208 bytes) in /home/academyfence/public_html/academyfence/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 246
+[20-Nov-2024 19:44:11 UTC] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 49152 bytes) in Unknown on line 0
