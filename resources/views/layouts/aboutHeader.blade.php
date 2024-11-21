@@ -19,9 +19,11 @@
     <!-- Navigation Tabs -->
     <div class="text-center mt-4 mb-4">
         <button class="btn btn-outline-dark mx-1">GET A QUOTE</button>
-        <button class="btn btn-outline-dark mx-1">BROCHURES</button>
-        <button class="btn btn-outline-dark mx-1">POLICIES</button>
+        <button onclick="window.location.href='{{ route('brochures') }}'"  class="btn {{ Route::is('brochures') ? 'btn-warning' : 'btn-outline-dark' }} mx-1">BROCHURES</button>
+        <button onclick="window.location.href='{{ route('policy') }}'" 
+        class="btn {{ Route::is('policy') ? 'btn-warning' : 'btn-outline-dark' }} mx-1">POLICIES </button>
         <button class="btn btn-outline-dark mx-1">CONTACT US</button>
-        <button class="btn btn-warning mx-1">ABOUT US</button>
+        <button onclick="window.location.href='{{ route('about') }}'" 
+        class="btn {{ Route::is('about') ? 'btn-warning' : 'btn-outline-dark' }} mx-1">ABOUT US</button> 
         <button class="btn btn-outline-dark mx-1">FENCE INSTALL</button>
     </div>

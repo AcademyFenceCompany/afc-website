@@ -35,6 +35,11 @@ Route::get('/policy', function () {
         'header' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms'
     ]);
 })->name('policy');
+Route::get('/brochures', function () {
+    return view('pages.brochures', [
+        'title' => 'Brochures', 'header' => 'Brochures'
+    ]);
+})->name('brochures');
 
 
 

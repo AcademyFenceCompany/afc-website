@@ -50,7 +50,8 @@
                     <p>
                         In some rare cases, freight prices are subject to change. We will contact you if a price adjustment is needed.
                     </p>
-
+                </div>
+                <div class="col-md-6">
                     <h4 class="fw-bold">Product Specific Information</h4>
                     <p>
                         <strong>Classy Cap Solar Lights</strong><br>
@@ -59,6 +60,7 @@
                         Call 866-460-4604
                     </p>
                 </div>
+
             </div>
         </div>
     </div>
