@@ -444,3 +444,7 @@ input[type="checkbox"] {
 .text-danger{
     color:var(--secondary-color) !important;
 }
+.policy-box{
+    padding:20px;
+    font-size: 14px;
+}

@@ -21,5 +21,20 @@ Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
-Route::view('/about','pages/about')->name('about');
+
+Route::get('/about', function () {
+    return view('pages.about', [
+        'title' => 'About Us',
+        'header' => 'About Us'
+    ]);
+})->name('about');
+
+Route::get('/policy', function () {
+    return view('pages.policy', [
+        'title' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms',
+        'header' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms'
+    ]);
+})->name('policy');
+
+
 

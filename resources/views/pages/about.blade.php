@@ -1,34 +1,6 @@
 @extends('layouts.main')
-
-@section('title', 'About Us')
-
-@section('content')
-<main class="container">
-    <!-- Page Header -->
-    <div class="card">
-        <div class="card-header text-center bg-dark text-white py-4">
-            <h2>About Us</h2>
-        </div>
-        <!-- Contact Information Section -->
-    {{-- <div class="text-center mb-4">
-        <p>
-            <i class="bi bi-envelope"></i> info@academyfence.com &nbsp; | &nbsp; 
-            <i class="bi bi-telephone"></i> (973) 674-0600 &nbsp; | &nbsp; 
-            <i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ
-        </p>
-    </div> --}}
-
-    <!-- Navigation Tabs -->
-    <div class="text-center mt-4 mb-4">
-        <button class="btn btn-outline-dark mx-1">GET A QUOTE</button>
-        <button class="btn btn-outline-dark mx-1">BROCHURES</button>
-        <button class="btn btn-outline-dark mx-1">POLICIES</button>
-        <button class="btn btn-outline-dark mx-1">CONTACT US</button>
-        <button class="btn btn-warning mx-1">ABOUT US</button>
-        <button class="btn btn-outline-dark mx-1">FENCE INSTALL</button>
-    </div>
-
-    <!-- About Section -->
+@include('layouts.aboutHeader')
+<!-- About Section -->
     <div class="card mb-4 shadow-sm">
         <div class="row align-items-center p-4 about-sec">
             <div class="col-md-6">
@@ -69,24 +41,6 @@
         </div>
         @endforeach
     </div>
-
-    <!-- Product Section -->
-    <div class="mt-2 p-4">
-        <h4 class="text-dark mb-4">SHOP FOR PRODUCT</h4>
-        <div class="row g-4">
-            @foreach(range(1, 4) as $product)
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="card product-card shadow-sm text-center p-3">
-                    <img src="/resources/images/woodpost.png" alt="Wood Post Caps" class="img-fluid mb-3">
-                    <h5 class="text-danger fw-bold">Wood Post Caps</h5>
-                    <a href="#" class="btn btn-danger text-white">View Product</a>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-    </div>
-
-    
+    @include('layouts.footerproducts')
 </main>
 @endsection
