@@ -52,6 +52,9 @@ Route::get('/brochures', function () {
         'title' => 'Brochures', 'header' => 'Brochures'
     ]);
 })->name('brochures');
+Route::view('/empty-cart','cart/empty')->name('empty-cart');
+Route::view('/cart', 'cart.index')->name('cart.index');
+
 
 
 
