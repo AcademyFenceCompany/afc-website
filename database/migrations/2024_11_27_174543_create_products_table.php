@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id('product_id');
-            $table->string('product_name', 100);
-            $table->string('item_no', 45);
-            $table->decimal('price_per_unit', 7, 2);
+            $table->string('product_name', length: 100);
+            $table->string('item_no', length: 50);
+            $table->decimal('price_per_unit', total: 8, places: 2);
             $table->boolean('shippable');
-            $table->unsignedSmallInteger('family_category_id');
+            $table->unsignedSmallInteger('family_category_id')->unsigned();
+            $table->foreign('family_category_id')->references('family_category_id')->on('family_categories');
             $table->text('description')->nullable();
-            $table->foreign('family_category_id')->references('family_category_id')->on('family_category');
         });
     }
 
