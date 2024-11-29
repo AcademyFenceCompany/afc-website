@@ -5,7 +5,7 @@
 @section('content')
 <main class="container py-5">
     <!-- Header Section -->
-    <h1 class="text-center mb-3">Academy Fenc</h1>
+    <h1 class="text-center mb-3">Academy Fence Installation</h1>
     <div class="text-center mb-4">
         <p><i class="bi bi-envelope"></i> info@academyfence.com</p>
         <p><i class="bi bi-telephone-fill"></i> (973) 674-0600</p>
