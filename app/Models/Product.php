@@ -35,5 +35,9 @@ class Product extends Model
     {
         return $this->hasOne(ShippingDetail::class);
     }
+    public function productMedia()
+    {
+        return $this->hasOne(FamilyCategory::class);
+    }
 }
 
