@@ -47,6 +47,14 @@ Route::get('/policy', function () {
         'header' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms'
     ]);
 })->name('policy');
+
+Route::get('/privacy-policy', function () {
+    return view('pages.privacypolicy', [
+        'title' => 'Privacy Policy', 'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy', 'header' => 'Privacy Policy'
+    ]);
+})->name('privacypolicy');
+
 Route::get('/brochures', function () {
     return view('pages.brochures', [
         'title' => 'Brochures', 'header' => 'Brochures'
@@ -54,6 +62,10 @@ Route::get('/brochures', function () {
 })->name('brochures');
 Route::view('/empty-cart','cart/empty')->name('empty-cart');
 Route::view('/cart', 'cart.index')->name('cart.index');
+Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
+Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
+
+
 
 
 
