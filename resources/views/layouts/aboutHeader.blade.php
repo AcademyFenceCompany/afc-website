@@ -25,5 +25,8 @@
         <button class="btn btn-outline-dark mx-1">CONTACT US</button>
         <button onclick="window.location.href='{{ route('about') }}'" 
         class="btn {{ Route::is('about') ? 'btn-warning' : 'btn-outline-dark' }} mx-1">ABOUT US</button> 
-        <button class="btn btn-outline-dark mx-1">FENCE INSTALL</button>
+        <button onclick="window.location.href='{{ route('fenceinstallation') }}'" 
+        class="btn {{ Route::is('fenceinstallation') ? 'btn-warning' : 'btn-outline-dark' }} mx-1">FENCE INSTALL</button>
+        <button onclick="window.location.href='{{ route('privacypolicy') }}'" 
+        class="btn {{ Route::is('privacypolicy') ? 'btn-warning' : 'btn-outline-dark' }} mx-1">PRIVACY POLICY</button>
     </div>

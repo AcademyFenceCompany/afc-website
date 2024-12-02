@@ -5,6 +5,9 @@
         <div class="container d-flex justify-content-between align-items-center">
             <button class="inst-btn btn btn-outline-light"><i class="bi bi-pencil-square"></i>Request Installation Quote</button>
             <div>
+                <a href="#" class="text-light"><i class="bi bi-headset"></i>Customer Service</a>
+            </div>
+            <div>
                 <a href="#" class="text-light"><i class="bi bi-person-circle"></i>Login</a>
                 <a href="#" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a>
             </div>
