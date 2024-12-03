@@ -1,11 +1,12 @@
 <header>
-    @include('layouts.ticker') 
+    @include('layouts.ticker')
     <!-- Top Bar: Full Width, Black Background -->
     <div class="container-fluid bg-black text-light py-2">
         <div class="container d-flex justify-content-between align-items-center">
-            <button class="inst-btn btn btn-outline-light"><i class="bi bi-pencil-square"></i>Request Installation Quote</button>
+            <button class="inst-btn btn btn-outline-light"><i class="bi bi-pencil-square"></i>Request Installation
+                Quote</button>
             <div>
-                <a href="#" class="text-light"><i class="bi bi-headset"></i>Customer Service</a>
+                <a href={{ url('/customerservice') }} class="text-light"><i class="bi bi-headset"></i>Customer Service</a>
             </div>
             <div>
                 <a href="#" class="text-light"><i class="bi bi-person-circle"></i>Login</a>
@@ -20,7 +21,8 @@
             <!-- Second Bar: Logo, Search, Address, Phone, Get a Quote Button -->
             <div class="d-flex justify-content-center align-items-center mb-3">
                 <div class="d-flex align-items-center">
-                    <a href={{url('/')}}> <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="me-3"> </a> 
+                    <a href={{ url('/') }}> <img src="{{ url('/resources/images/logo.png') }}"
+                            alt="Academy Fence Company" class="me-3"> </a>
                 </div>
                 <div class="d-flex align-items-center justify-content-center flex-grow-1">
                     <div class="search-section d-flex">
@@ -62,7 +64,7 @@
                 <x-breadcrumbs />
                 <div class="dropdown">
                     <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
-                         NJ Fence INSTALLATION Guide
+                        NJ Fence INSTALLATION Guide
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Option 1</a></li>
