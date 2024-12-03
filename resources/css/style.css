@@ -283,7 +283,7 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
 }
 
 .card-header {
-    background-color: #000000 !important;
+    background-color: var(--secondary-color) !important;
     color: var(--light-color);
     padding: var(--padding-base);
     text-transform: uppercase;

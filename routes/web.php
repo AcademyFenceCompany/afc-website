@@ -33,6 +33,14 @@ Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
+Route::view('/woodfence', 'categories/woodfence');
+
+Route::get('/customerservice', function () {
+    return view('pages.customerservice', [
+        'title' => 'Customer Service',
+        'header' => 'Customer Service'
+    ]);
+})->name('customerservice');
 
 Route::get('/about', function () {
     return view('pages.about', [
