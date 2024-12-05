@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
+
+
 
 Route::get('/resources/images/{filename}', function ($filename) {
     $path = resource_path('images/' . $filename);
@@ -34,6 +37,8 @@ Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
 Route::view('/woodfence', 'categories/woodfence');
+Route::view('/weldedwire', 'categories/weldedwire');
+
 
 Route::get('/customerservice', function () {
     return view('pages.customerservice', [
@@ -73,8 +78,14 @@ Route::view('/cart', 'cart.index')->name('cart.index');
 Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-
-
-
+require __DIR__.'/auth.php';
