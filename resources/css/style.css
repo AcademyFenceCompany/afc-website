@@ -454,9 +454,12 @@ input[type="checkbox"] {
     font-size: 14px;
 }
 .bg-warning {
-    background-color: #f19e23 !important;
+    background-color:rgb(229 176 16) !important;
 }
 .prd-sm-text{
     font-size: 12px;
     font-weight: 500;;
+}
+.bg-danger{
+    background-color: var(--secondary-color) !important;
 }
