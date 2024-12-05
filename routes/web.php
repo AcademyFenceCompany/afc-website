@@ -38,6 +38,8 @@ Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
 Route::view('/woodfence', 'categories/woodfence');
 Route::view('/weldedwire', 'categories/weldedwire');
+Route::view('/wwf-product', 'categories/wwf-product');
+
 
 
 Route::get('/customerservice', function () {
