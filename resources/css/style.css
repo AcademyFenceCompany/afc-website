@@ -33,7 +33,10 @@
     --font-weight-normal: normal;
 }
 
-
+.custom-container{
+    max-width: 1450px; /* Adjust as needed */
+    margin: 0 auto; /* Center the container */
+}
 body {
     font-family: var(--font-family-primary);
     font-size: var(--font-size-base);
@@ -128,6 +131,8 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
     font-size: 14px;
     padding: 10px 20px;
     text-transform: uppercase;
+    margin-right: 30px;
+
 }
 
 .quote-btn:hover {
@@ -176,7 +181,7 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-large);
+    font-size: 18px;
 }
 
 .nav-btn i {
@@ -447,4 +452,11 @@ input[type="checkbox"] {
 .policy-box{
     padding:20px;
     font-size: 14px;
+}
+.bg-warning {
+    background-color: #f19e23 !important;
+}
+.prd-sm-text{
+    font-size: 12px;
+    font-weight: 500;;
 }
