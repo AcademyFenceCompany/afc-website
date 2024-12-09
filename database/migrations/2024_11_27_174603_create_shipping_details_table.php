@@ -20,11 +20,12 @@ return new class extends Migration
             $table->decimal('shipping_length', 7, 2)->nullable();
             $table->decimal('shipping_width', 7, 2)->nullable();
             $table->decimal('shipping_height', 7, 2)->nullable();
+            $table->string('shipping_class')->nullable();
             $table->text('description')->nullable();
             $table->foreign('product_id')->references('product_id')->on('products');
         });
     }
-    
+
 
     /**
      * Reverse the migrations.
