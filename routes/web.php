@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\ProductController;
+
 
 
 
@@ -37,7 +39,7 @@ Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
 Route::view('/woodfence', 'categories/woodfence');
-Route::view('/weldedwire', 'categories/weldedwire');
+Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
 Route::view('/wwf-product', 'categories/wwf-product');
 
 

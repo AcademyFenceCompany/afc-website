@@ -102,13 +102,13 @@
                 <table class="table table-bordered">
                     <thead class="bg-dark text-white">
                         <tr>
-                            <th>Item Number</th>
-                            <th>Size</th>
-                            <th>Mesh Size</th>
-                            <th>Weight</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
+                            <th class="bg-dark text-white">Item Number</th>
+                            <th class="bg-dark text-white">Size</th>
+                            <th class="bg-dark text-white">Mesh Size</th>
+                            <th class="bg-dark text-white">Weight</th>
+                            <th class="bg-dark text-white">Color</th>
+                            <th class="bg-dark text-white">Quantity</th>
+                            <th class="bg-dark text-white">Price</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -184,12 +184,12 @@
                 <table class="table table-bordered">
                     <thead class="bg-dark text-white">
                         <tr>
-                            <th>Item Number</th>
-                            <th>Size</th>
-                            <th>Weight</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
+                            <th class="bg-dark text-white">Item Number</th>
+                            <th class="bg-dark text-white">Size</th>
+                            <th class="bg-dark text-white">Weight</th>
+                            <th class="bg-dark text-white">Color</th>
+                            <th class="bg-dark text-white">Quantity</th>
+                            <th class="bg-dark text-white">Price</th>
                         </tr>
                     </thead>
                     <tbody>
