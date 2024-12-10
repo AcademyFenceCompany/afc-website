@@ -24,12 +24,20 @@ class ProductController extends Controller
         //     ->with(['productDetail', 'productMedia'])
         //     ->get();
 
-        $products_ww = DB::table('products')
+        $general_products_ww = DB::table('products')
             ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-            ->join('product_media', 'products.product_id', '=', 'product_media.product_id')
+            ->join('product_media', 'products.product_id', '=', 'product_media.product_id');
+
+        $products_ww = DB::table('products')
             ->select($columns = ['*'])
             ->get();
 
-        return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww'));
+        $general_ww_mesh_size_imgs = $general_products_ww
+            ->join('general_media', 'product_details.size2', '=', 'general_media.size_portrayed')
+            ->select($columns = ['general_media.image', 'general_media.size_portrayed', 'product_details.size2'])
+            ->groupBy('general_media.size_portrayed', 'general_media.image')
+            ->get();
+
+        return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww', 'general_ww_mesh_size_imgs'));
     }
 }
