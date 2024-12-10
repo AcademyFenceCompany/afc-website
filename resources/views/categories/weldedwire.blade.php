@@ -1,4 +1,4 @@
-<!-- <pre>{{ dd($products_ww->toArray()) }}</pre> -->
+<pre>{{ dd($general_ww_mesh_size_imgs->toArray()) }}</pre>
 
 @extends('layouts.main')
 
@@ -71,7 +71,7 @@
             <h1 class="mb-0">Welded Wire Mesh Sizes</h1>
         </div>
         <div class="row justify-content-center g-4 mt-3">
-            @foreach ($products_ww as $product)
+            @foreach ($general_ww_mesh_size_imgs as $product)
             <div class="col-6 col-md-4 col-lg-2 d-flex justify-content-center">
                 <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
                     <div class="card-header bg-danger text-white fw-bold py-2">

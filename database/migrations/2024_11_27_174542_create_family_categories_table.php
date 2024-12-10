@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('family_category', function (Blueprint $table) {
-            $table->unsignedBigInteger('family_category_id')->autoIncrement();
+        Schema::create('family_categories', function (Blueprint $table) {
+            $table->unsignedSmallInteger('family_category_id')->autoIncrement();
             $table->string('family_category_name');
-            $table->unsignedBigInteger('parent_category_id')->nullable();
-            $table->foreign('parent_category_id')->references('family_category_id')->on('family_category');
+            $table->unsignedSmallInteger('parent_category_id')->nullable()->unsigned();
+        });
+
+        Schema::table('family_categories', function (Blueprint $table) {
+            $table->foreign('parent_category_id')->references('family_category_id')->on('family_categories');
         });
     }
     
