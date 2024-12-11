@@ -82,10 +82,18 @@
                                 <img src="{{ $mesh_size->image ?? '/resources/images/4x4.jpg' }}" alt="Wire Image"
                                     style="height:140px; " class="img-fluid mb-3 rounded">
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                        Coated</button>
-                                    <button class="btn btn-outline-secondary btn-sm fw-bold"
-                                        style="font-size: 12px;">Galvanized</button>
+
+
+                                    <!-- Galvanized Button -->
+                                    <a class="btn btn-outline-dark btn-sm fw-bold"
+                                        href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Galvanized']) }}">
+                                        Galvanized
+                                    </a>
+
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Vinyl PVC']) }}"
+                                        class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Vinyl PVC</a>
+
                                 </div>
                             </div>
                         </div>

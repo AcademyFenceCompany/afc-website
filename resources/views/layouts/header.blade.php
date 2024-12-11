@@ -12,32 +12,47 @@
                     <i class="bi bi-headset"></i>Customer Service
                 </a>
             </div>
-            <div>
-                @auth
-                    <a href="#" class="text-light dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
+            <div class="d-flex">
+                <div>
+                    @auth
+                        <a href="#" class="text-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button class="dropdown-item">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    @else
+                        <a href={{ url('/login') }} class="text-light">
+                            <i class="bi bi-person-circle"></i>Login
+                        </a>
+                    @endauth
+                </div>
+                <div>
+                    <a href="{{ url('/cart') }}"
+                        class="d-flex align-items-center text-decoration-none text-light ms-3">
+                        <i class="bi bi-cart fs-5"></i>
+                        <span id="cart-count" class="badge rounded-pill bg-danger ms-2">
+                            {{ session('cart') ? count(session('cart')) : 0 }}
+                        </span>
                     </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                Profile
-                            </a>
-                        </li>
-                        <li>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button class="dropdown-item">
-                                    Logout
-                                </button>
-                            </form>
-                        </li>
-                    </ul>
-                @else
-                    <a href={{ url('/login') }} class="text-light">
-                        <i class="bi bi-person-circle"></i>Login
-                    </a>
-                @endauth
-                <a href="#" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a>
+                </div>
+                {{-- <a href="{{ url('/cart') }}" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a> --}}
+                {{-- <a href="{{ url('/cart') }}" class="text-light ms-3">{{ session('cart') ? count(session('cart')) : 0 }}
+                    <i class="bi bi-cart"></i></a> <span id="cart-count" class="badge bg-danger"></span> --}}
+
+
             </div>
         </div>
     </div>

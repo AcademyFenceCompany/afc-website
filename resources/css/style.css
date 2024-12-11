@@ -463,3 +463,57 @@ input[type="checkbox"] {
 .bg-danger{
     background-color: var(--secondary-color) !important;
 }
+.galvanized{
+    background-color: #C0C0C0 !important;
+    color: #000 !important;
+}
+.black{
+    background-color: #000 !important;
+    color: #fff !important;
+
+}
+.brown{
+    background-color: #964B00 !important;
+    color: #fff !important;
+
+}
+.green{
+    background-color: green !important;
+    color: #fff !important;
+}
+.white{
+    background-color: #fff !important;
+    color: #000 !important;
+}
+.quantity-input {
+    width: 60px; /* Fixed width */
+    text-align: center; /* Center align text */
+    padding: 2px; /* Add some padding for better appearance */
+    font-size: 14px; /* Match font size */
+}
+/* Table Header */
+table th {
+    font-size: 16px; /* Font size for headers */
+    text-align: center; /* Center align headers */
+    padding: 8px; /* Add padding for better spacing */
+}
+
+/* Table Body */
+table td {
+    font-size: 14px; /* Font size for table values */
+    text-align: center; /* Center align values */
+    padding: 6px; /* Adjust padding for compactness */
+}
+
+/* Quantity Input */
+.quantity-input {
+    width: 50px; /* Adjust width for compact look */
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Adjust Buttons */
+button {
+    font-size: 14px;
+    padding: 4px 6px; /* Add padding for consistency */
+}
