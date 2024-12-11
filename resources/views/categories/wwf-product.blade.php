@@ -1,3 +1,6 @@
+{{-- <pre>
+    {{ dd($meshSize_products) }}
+</pre> --}}
 @extends('layouts.main')
 
 @section('title', 'Welded Wire')
@@ -77,23 +80,28 @@
         </div>
     </div>
     <!-- Welded Wire Section -->
+    <!-- Welded Wire Section -->
     <div class="mt-5">
         <!-- Section Title -->
         <div class="bg-danger text-white text-center py-2 rounded">
-            <h4>4" x 4", 11 Gauge (steel core) wire is Hot-Dip galvanized - then PVC coated</h4>
+            <h4>{{ $meshSize_products->first()->size2 ?? 'Mesh Size Details' }} Products</h4>
         </div>
         <!-- Content -->
-        <div class="row align-items-center mt-3">
+        <div class="row mt-3">
             <!-- Left Image -->
             <div class="col-md-3 text-center">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-danger text-white fw-bold py-2">
-                        4" x 4", 11 Gauge
+                @if ($meshSize_products->first())
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-danger text-white fw-bold py-2">
+                            {{ $meshSize_products->first()->size2 ?? 'Size' }},
+                            {{ $meshSize_products->first()->size3 ?? 'Gauge' }}
+                        </div>
+                        <div class="card-body">
+                            <img src="{{ $meshSize_products->first()->large_image ?? '/resources/images/default.png' }}"
+                                alt="{{ $meshSize_products->first()->product_name }}" class="img-fluid rounded">
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <img src="/resources/images/4x4-11g.png" alt="4x4 Welded Wire" class="img-fluid rounded">
-                    </div>
-                </div>
+                @endif
             </div>
 
             <!-- Right Table -->
@@ -112,51 +120,44 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>WW441110048BK</td>
-                            <td>48in x 100ft</td>
-                            <td>4in x 4in 11 Gauge</td>
-                            <td>105.00 lbs</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option selected>Black</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-dark">-</button>
-                                <span class="mx-2">1</span>
-                                <button class="btn btn-sm btn-outline-dark">+</button>
-                            </td>
-                            <td class="d-flex align-items-center justify-content-between">
-                                <span>$240.00</span>
-                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>WW4415072BK</td>
-                            <td>72in x 50ft</td>
-                            <td>4in x 4in 11 Gauge</td>
-                            <td>80.00 lbs</td>
-                            <td>
-                                <select class="form-select form-select-sm">
-                                    <option selected>Black</option>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-dark">-</button>
-                                <span class="mx-2">1</span>
-                                <button class="btn btn-sm btn-outline-dark">+</button>
-                            </td>
-                            <td class="d-flex align-items-center justify-content-between">
-                                <span>$190.00</span>
-                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
-                            </td>
-                        </tr>
+                        @forelse ($meshSize_products as $product)
+                            <tr>
+                                <td>{{ $product->item_no }}</td>
+                                <td>{{ $product->size1 }}</td>
+                                <td>{{ $product->size2 }} {{ $product->size3 }}</td>
+                                <td>{{ $product->weight ?? 'N/A' }} lbs</td>
+                                <td class="{{ strtolower($product->color) }}">
+                                    {{ $product->color }}
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-dark decrease-qty">-</button>
+                                    <input type="number" class="quantity-input text-center" value="1" min="1"
+                                        data-price="{{ $product->price_per_unit }}" />
+                                    <button class="btn btn-sm btn-outline-dark increase-qty">+</button>
+                                </td>
+                                <td class="d-flex align-items-center justify-content-between">
+                                    <span>${{ number_format($product->price_per_unit, 2) }}</span>
+                                    <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                        data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
+                                        data-price="{{ $product->price_per_unit }}" data-color="{{ $product->color }}"
+                                        data-size="{{ $product->size1 }}"
+                                        data-mesh="{{ $product->size2 }} {{ $product->size3 }}">
+                                        Add to Cart
+                                    </button>
+
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No products available for this mesh size.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
 
     <!-- Knock-In Posts Section -->
     <div class="mt-5">
@@ -221,3 +222,101 @@
     </div>
 
 @endsection
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Handle quantity and price updates
+        document.querySelectorAll("tbody").forEach((tbody) => {
+            tbody.addEventListener("click", function(e) {
+                const target = e.target;
+
+                if (target.classList.contains("increase-qty") || target.classList.contains(
+                        "decrease-qty")) {
+                    const quantityInput = target.closest("td").querySelector(".quantity-input");
+
+                    // Get current quantity and price per unit
+                    let quantity = parseInt(quantityInput.value);
+                    const pricePerUnit = parseFloat(quantityInput.dataset.price);
+
+                    // Increment or decrement quantity
+                    if (target.classList.contains("increase-qty")) {
+                        quantity++;
+                    } else if (target.classList.contains("decrease-qty") && quantity > 1) {
+                        quantity--;
+                    }
+
+                    // Update input value and total price
+                    quantityInput.value = quantity;
+
+                    // Update the total price cell in the same row
+                    const totalPriceCell = target.closest("tr").querySelector(".d-flex span");
+                    if (totalPriceCell) {
+                        totalPriceCell.innerText = `$${(quantity * pricePerUnit).toFixed(2)}`;
+                    }
+                }
+            });
+
+            // Handle manual input change
+            tbody.addEventListener("input", function(e) {
+                const target = e.target;
+
+                if (target.classList.contains("quantity-input")) {
+                    let quantity = parseInt(target.value) ||
+                        1; // Default to 1 if input is invalid
+                    const pricePerUnit = parseFloat(target.dataset.price);
+
+                    // Update the total price cell in the same row
+                    const totalPriceCell = target.closest("tr").querySelector(".d-flex span");
+                    if (totalPriceCell) {
+                        totalPriceCell.innerText = `$${(quantity * pricePerUnit).toFixed(2)}`;
+                    }
+                }
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+            button.addEventListener("click", function() {
+                const itemNo = this.getAttribute("data-item");
+                const productName = this.getAttribute("data-name");
+                const price = this.getAttribute("data-price");
+                const color = this.getAttribute("data-color");
+                const size = this.getAttribute("data-size");
+                const mesh = this.getAttribute("data-mesh");
+                const quantityInput = this.closest("tr").querySelector(".quantity-input");
+                const quantity = quantityInput.value;
+
+                // Send AJAX request to add to cart
+                fetch("{{ route('cart.add') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                        },
+                        body: JSON.stringify({
+                            item_no: itemNo,
+                            product_name: productName,
+                            price: price,
+                            color: color,
+                            size: size,
+                            mesh: mesh,
+                            quantity: quantity,
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Item added to cart successfully!");
+                            // Optionally update the cart count or UI
+                        } else {
+                            alert("Failed to add item to cart.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+        });
+    });
+</script>
