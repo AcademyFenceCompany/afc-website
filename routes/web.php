@@ -1,9 +1,18 @@
 <?php
 
+use App\Http\Controllers\ProductByMeshSizeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SingleProductController;
+
+
+
+
 
 
 
@@ -37,7 +46,10 @@ Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
 Route::view('/woodfence', 'categories/woodfence');
-Route::view('/weldedwire', 'categories/weldedwire');
+Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
+Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+
+Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('product.show');
 
 
 Route::get('/customerservice', function () {
@@ -74,7 +86,6 @@ Route::get('/brochures', function () {
     ]);
 })->name('brochures');
 Route::view('/empty-cart','cart/empty')->name('empty-cart');
-Route::view('/cart', 'cart.index')->name('cart.index');
 Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
@@ -87,5 +98,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+// Ecommerce API: Cart/checkout/...
+
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::post('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
+Route::post('/cart/remove-selected', [CartController::class, 'removeSelectedItems'])->name('cart.removeSelected');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+
+
+
+
+
 
 require __DIR__.'/auth.php';

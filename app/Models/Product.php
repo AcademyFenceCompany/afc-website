@@ -18,7 +18,12 @@ class Product extends Model
 
     public function productDetail()
     {
-        return $this->hasOne(ProductDetail::class);
+        return $this->hasOne(ProductDetail::class, 'product_id', 'id');
+    }
+    
+    public function productMedia()
+    {
+        return $this->hasMany(ProductMedia::class, 'product_id', 'id');
     }
 
     public function inventoryDetail()

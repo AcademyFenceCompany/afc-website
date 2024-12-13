@@ -9,10 +9,20 @@ class ProductMedia extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['product_id', 'general_image', 'small_image', 'large_image'];
-    
+    protected $fillable = [
+        'product_id',
+        'general_image',
+        'small_image',
+        'large_image',
+        'original_product_id',
+        'family_category_id',
+    ];
+
+    /**
+     * Define the relationship to the Product.
+     */
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 }
