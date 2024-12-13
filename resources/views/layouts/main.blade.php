@@ -31,6 +31,7 @@
         {{ $slot ?? '' }}
         @yield('content')
     </main>
+    @yield('scripts')
 
     <!-- Footer Section -->
     @include('layouts.footer')

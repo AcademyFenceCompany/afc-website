@@ -460,6 +460,10 @@ input[type="checkbox"] {
     font-size: 12px;
     font-weight: 500;;
 }
+.prd-details{
+    font-size: 14px;
+    font-weight: 500;;
+}
 .bg-danger{
     background-color: var(--secondary-color) !important;
 }

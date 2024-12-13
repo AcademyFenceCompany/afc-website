@@ -122,7 +122,9 @@
                     <tbody>
                         @forelse ($meshSize_products as $product)
                             <tr>
-                                <td>{{ $product->item_no }}</td>
+                                <td><a
+                                        href="{{ route('product.show', ['id' => $product->product_id]) }}">{{ $product->item_no }}</a>
+                                </td>
                                 <td>{{ $product->size1 }}</td>
                                 <td>{{ $product->size2 }} {{ $product->size3 }}</td>
                                 <td>{{ $product->weight ?? 'N/A' }} lbs</td>
