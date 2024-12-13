@@ -53,6 +53,7 @@
         <div class="d-flex justify-content-between mt-3">
             <h4>Subtotal: <span class="fw-bold text-danger" id="subtotal">$0.00</span></h4>
             <button id="checkout-button" class="btn btn-danger"
+                onclick="window.location.href='{{ route('checkout.index') }}'"
                 {{ session('cart') && count(session('cart')) > 0 ? '' : 'disabled' }}>
                 Proceed to Checkout
             </button>
@@ -103,7 +104,25 @@
             const toast = new bootstrap.Toast(toastElement);
             toast.show();
         }
+        // Handle quantity increment
+        document.querySelectorAll('.quantity-increase').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantityInput = this.previousElementSibling; // Get input element
+                quantityInput.value = parseInt(quantityInput.value) + 1; // Increment value
+                updateCartTotal();
+            });
+        });
 
+        // Handle quantity decrement
+        document.querySelectorAll('.quantity-decrease').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantityInput = this.nextElementSibling; // Get input element
+                if (parseInt(quantityInput.value) > 1) {
+                    quantityInput.value = parseInt(quantityInput.value) - 1; // Decrement value
+                    updateCartTotal();
+                }
+            });
+        });
         // Delete Item Functionality
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
