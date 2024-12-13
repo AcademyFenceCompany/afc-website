@@ -52,9 +52,12 @@
 
         <div class="d-flex justify-content-between mt-3">
             <h4>Subtotal: <span class="fw-bold text-danger" id="subtotal">$0.00</span></h4>
-            <button onclick="window.location.href='{{ route('checkout.index') }}'" class="btn btn-danger">
+            <button id="checkout-button" class="btn btn-danger"
+                {{ session('cart') && count(session('cart')) > 0 ? '' : 'disabled' }}>
                 Proceed to Checkout
             </button>
+
+
 
 
         </div>
@@ -63,9 +66,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const subtotalElement = document.getElementById('subtotal');
+        const checkoutButton = document.getElementById('checkout-button');
 
         const updateCartTotal = () => {
             let subtotal = 0;
+            let cartHasItems = false;
 
             document.querySelectorAll('tbody tr').forEach(row => {
                 const pricePerItemText = row.querySelector('.price-per-item').textContent.trim();
@@ -77,36 +82,33 @@
                     const totalPrice = price * quantity;
                     row.querySelector('.total-price').textContent = `$${totalPrice.toFixed(2)}`;
                     subtotal += totalPrice;
+                    cartHasItems = true;
                 }
             });
 
             subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            checkoutButton.disabled = !cartHasItems;
         };
 
-        // Handle Quantity Increase
-        document.querySelectorAll('.quantity-increase').forEach(button => {
-            button.addEventListener('click', function() {
-                const quantityInput = this.previousElementSibling;
-                quantityInput.value = parseInt(quantityInput.value) + 1;
-                updateCartTotal();
-            });
-        });
+        // Bootstrap Toast Trigger Function
+        function showToast(message, className = 'bg-success') {
+            const toastElement = document.getElementById('cart-toast');
+            const toastMessage = document.getElementById('cart-toast-message');
 
-        // Handle Quantity Decrease
-        document.querySelectorAll('.quantity-decrease').forEach(button => {
-            button.addEventListener('click', function() {
-                const quantityInput = this.nextElementSibling;
-                if (parseInt(quantityInput.value) > 1) {
-                    quantityInput.value = parseInt(quantityInput.value) - 1;
-                    updateCartTotal();
-                }
-            });
-        });
+            // Update message and background
+            toastMessage.textContent = message;
+            toastElement.className = `toast align-items-center text-white ${className} border-0`;
+
+            // Show the toast
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+        }
 
         // Delete Item Functionality
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const itemNo = this.getAttribute('data-item');
+
                 fetch("{{ route('cart.removeItem') }}", {
                         method: 'POST',
                         headers: {
@@ -122,12 +124,21 @@
                         if (data.success) {
                             this.closest('tr').remove(); // Remove the row
                             updateCartTotal(); // Update total
-                            alert('Item removed successfully!');
+
+                            const cartCountElement = document.getElementById('cart-count');
+                            cartCountElement.textContent = data
+                                .cartCount; // Update cart count
+
+                            // Show success toast
+                            showToast("Item removed from cart", "bg-danger");
                         } else {
-                            alert('Failed to remove item.');
+                            showToast("Failed to remove item", "bg-danger");
                         }
                     })
-                    .catch(error => console.error('Error:', error));
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showToast("An error occurred", "bg-danger");
+                    });
             });
         });
 
@@ -135,3 +146,16 @@
         updateCartTotal();
     });
 </script>
+<!-- Bootstrap Toast Notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+    <div id="cart-toast" class="toast align-items-center text-white bg-success border-0" role="alert"
+        aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div id="cart-toast-message" class="toast-body">
+                Item removed from cart
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+    </div>
+</div>
