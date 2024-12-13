@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SingleProductController;
 
 
 
@@ -48,6 +49,7 @@ Route::view('/woodfence', 'categories/woodfence');
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
 
+Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('product.show');
 
 
 Route::get('/customerservice', function () {

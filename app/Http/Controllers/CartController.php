@@ -26,7 +26,7 @@ class CartController extends Controller
             // Increase the quantity and update the total
             $cart[$validatedData['item_no']]['quantity'] += $validatedData['quantity'];
             $cart[$validatedData['item_no']]['total'] = 
-                $cart[$validatedData['item_no']]['quantity'] * $validatedData['price'];
+            $cart[$validatedData['item_no']]['quantity'] * $validatedData['price'];
         } else {
             // Add new item to the cart
             $cart[$validatedData['item_no']] = [
