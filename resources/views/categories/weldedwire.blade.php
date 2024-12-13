@@ -65,26 +65,35 @@
         </div>
     </div>
 
-    <!-- Grid Section -->
+    <!-- Product Grid Section -->
     <div class="bg-light mt-5 py-4">
         <div class="custom-container">
             <div class="bg-black text-white text-center py-3 rounded">
                 <h1 class="mb-0">Welded Wire Mesh Sizes</h1>
             </div>
             <div class="row justify-content-center g-4 mt-3">
-                @foreach (["4\" x 4\"", "3\" x 3\"", "2\" x 4\"", "2\" x 2\"", "1 1/2\" x 4\"", "1 1/2\" x 1 1/2\"", "3\" x 2\"", "1\" x 3\"", "1\" x 2\"", "1\" x 1\"", "1/2\" x 1\""] as $size)
+                @foreach ($general_ww_mesh_size_imgs as $mesh_size)
                     <div class="col-6 col-md-4 col-lg-2 d-flex justify-content-center">
-                        <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card text-center shadow-sm h-100" style="width: 150px;border: none;">
                             <div class="card-header bg-danger text-white fw-bold py-2">
-                                {{ $size }}
+                                <h6>{{ $mesh_size->size2 }}</h6>
                             </div>
                             <div class="card-body p-2">
-                                <img src='/resources/images/4x4.jpg' alt="Wire Image" class="img-fluid mb-3 rounded">
+                                <img src="{{ $mesh_size->image ?? '/resources/images/4x4.jpg' }}" alt="Wire Image"
+                                    style="height:140px; " class="img-fluid mb-3 rounded">
                                 <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                        Coated</button>
-                                    <button class="btn btn-outline-secondary btn-sm fw-bold"
-                                        style="font-size: 12px;">Galvanized</button>
+
+
+                                    <!-- Galvanized Button -->
+                                    <a class="btn btn-outline-dark btn-sm fw-bold"
+                                        href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Galvanized']) }}">
+                                        Galvanized
+                                    </a>
+
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Vinyl PVC']) }}"
+                                        class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Vinyl PVC</a>
+
                                 </div>
                             </div>
                         </div>
