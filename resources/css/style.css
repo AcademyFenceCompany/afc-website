@@ -517,3 +517,10 @@ button {
     font-size: 14px;
     padding: 4px 6px; /* Add padding for consistency */
 }
+.toast-container {
+    z-index: 1055;
+}
+
+.toast-header {
+    color: white;
+}

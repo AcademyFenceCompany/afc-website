@@ -307,8 +307,13 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert("Item added to cart successfully!");
-                            // Optionally update the cart count or UI
+                            // Show Bootstrap toast
+                            const toastEl = document.getElementById('cartToast');
+                            const toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                            // Update the cart count in the navbar
+                            const cartCountElement = document.getElementById('cart-count');
+                            cartCountElement.textContent = data.cartCount;
                         } else {
                             alert("Failed to add item to cart.");
                         }
@@ -320,3 +325,15 @@
         });
     });
 </script>
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success">
+            <strong class="me-auto">Cart Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Item added to the cart successfully!
+        </div>
+    </div>
+</div>

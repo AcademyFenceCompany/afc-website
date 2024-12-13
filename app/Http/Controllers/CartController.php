@@ -17,26 +17,41 @@ class CartController extends Controller
             'mesh' => 'nullable|string',
             'quantity' => 'required|integer|min:1',
         ]);
+    
         // Get cart from session or create a new one
         $cart = session()->get('cart', []);
-
-        // Add new item to cart
-        $cart[$validatedData['item_no']] = [
-            'item_no' => $validatedData['item_no'],
-            'product_name' => $validatedData['product_name'],
-            'price' => $validatedData['price'],
-            'color' => $validatedData['color'],
-            'size' => $validatedData['size'],
-            'mesh' => $validatedData['mesh'],
-            'quantity' => $validatedData['quantity'],
-            'total' => $validatedData['price'] * $validatedData['quantity'],
-        ];
-
+    
+        // Check if the item already exists in the cart
+        if (isset($cart[$validatedData['item_no']])) {
+            // Increase the quantity and update the total
+            $cart[$validatedData['item_no']]['quantity'] += $validatedData['quantity'];
+            $cart[$validatedData['item_no']]['total'] = 
+                $cart[$validatedData['item_no']]['quantity'] * $validatedData['price'];
+        } else {
+            // Add new item to the cart
+            $cart[$validatedData['item_no']] = [
+                'item_no' => $validatedData['item_no'],
+                'product_name' => $validatedData['product_name'],
+                'price' => $validatedData['price'],
+                'color' => $validatedData['color'],
+                'size' => $validatedData['size'],
+                'mesh' => $validatedData['mesh'],
+                'quantity' => $validatedData['quantity'],
+                'total' => $validatedData['price'] * $validatedData['quantity'],
+            ];
+        }
+    
         // Save updated cart in session
         session()->put('cart', $cart);
-
-        return response()->json(['success' => true, 'cart' => $cart,'cartCount' => count($cart)]);
+    
+        // Return the updated cart and cart count
+        return response()->json([
+            'success' => true,
+            'cart' => $cart, // Include full cart
+            'cartCount' => count($cart), // Include count for the badge
+        ]);
     }
+    
 
     public function viewCart()
     {
@@ -45,23 +60,25 @@ class CartController extends Controller
         return view('cart.index', compact('cart'));
     }
     public function removeItem(Request $request)
-    {
+{
+    $itemNo = $request->item_no;
 
-        $itemNo = $request->item_no;
-    
-        // Retrieve the current cart from the session
-        $cart = session()->get('cart', []);
-    
-        // Search and remove the item with the specified item number
-        $cart = array_filter($cart, function ($item) use ($itemNo) {
-            return $item['item_no'] !== $itemNo;
-        });
-    
-        // Update the session with the filtered cart
-        session()->put('cart', $cart);
-    
-        return response()->json(['success' => true, 'cart' => $cart]);
-    }
+    // Retrieve the current cart from the session
+    $cart = session()->get('cart', []);
+
+    // Remove the item from the cart
+    unset($cart[$itemNo]);
+
+    // Update the session with the updated cart
+    session()->put('cart', $cart);
+
+    // Return the updated cart and cart count
+    return response()->json([
+        'success' => true,
+        'cart' => $cart, // Include full cart
+        'cartCount' => count($cart), // Include count for the badge
+    ]);
+}
     
     public function removeSelectedItems(Request $request)
     {
