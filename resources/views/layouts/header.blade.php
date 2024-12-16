@@ -81,6 +81,8 @@
                     </div>
 
                 </div>
+
+
                 {{-- <a href="{{ url('/cart') }}" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a> --}}
                 {{-- <a href="{{ url('/cart') }}" class="text-light ms-3">{{ session('cart') ? count(session('cart')) : 0 }}
                     <i class="bi bi-cart"></i></a> <span id="cart-count" class="badge bg-danger"></span> --}}
@@ -157,67 +159,3 @@
         </div>
     </div>
 </header>
-<script>
-    // Function to Update Mini Cart
-    function updateMiniCart(cart) {
-        const miniCartItems = document.getElementById("mini-cart-items");
-        const emptyCartMessage = document.getElementById("empty-cart-message");
-
-        // Clear existing mini cart content
-        miniCartItems.innerHTML = "";
-
-        if (Object.keys(cart).length > 0) {
-            emptyCartMessage.classList.add("d-none");
-
-            // Populate the mini cart
-            for (const key in cart) {
-                const item = cart[key];
-                miniCartItems.innerHTML += `
-                <li class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                        <h6 class="mb-0">${item.product_name}</h6>
-                        <small class="text-muted">Qty: ${item.quantity}</small>
-                    </div>
-                    <span class="fw-bold">$${parseFloat(item.total).toFixed(2)}</span>
-                </li>`;
-            }
-        } else {
-            emptyCartMessage.classList.remove("d-none");
-        }
-    }
-
-
-    // Handle Add to Cart
-    document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
-        button.addEventListener("click", function() {
-            const itemData = {
-                item_no: this.getAttribute("data-item"),
-                product_name: this.getAttribute("data-name"),
-                price: this.getAttribute("data-price"),
-                color: this.getAttribute("data-color"),
-                size: this.getAttribute("data-size"),
-                mesh: this.getAttribute("data-mesh"),
-                quantity: this.closest("tr").querySelector(".quantity-input").value,
-            };
-
-            fetch("{{ route('cart.add') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    },
-                    body: JSON.stringify(itemData),
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        updateMiniCart(data.cart); // Update mini cart with new items
-                        const cartCountElement = document.getElementById("cart-count");
-                        cartCountElement.textContent = data.cartCount; // Update cart count
-                        showToast("Item added to cart", "bg-success");
-                    }
-                })
-                .catch((error) => console.error("Error adding item:", error));
-        });
-    });
-</script>

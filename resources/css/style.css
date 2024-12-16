@@ -528,3 +528,13 @@ button {
 .toast-header {
     color: white;
 }
+#mini-cart-sidebar {
+    right: -300px; /* Hidden initially */
+    transition: right 0.3s ease-in-out; /* Smooth slide-in effect */
+    z-index: 1050; /* Keep it on top of other elements */
+}
+
+#mini-cart-sidebar.show {
+    right: 0; /* Show when the 'show' class is added */
+}
+

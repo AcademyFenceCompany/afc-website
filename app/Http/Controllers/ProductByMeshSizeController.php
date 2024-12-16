@@ -12,9 +12,6 @@ class ProductByMeshSizeController extends Controller
         $meshSize = urldecode($request->input('meshSize')); // Decode URL parameter
         $coating = $request->input('coating');
     
-        // Debugging
-        // dd($meshSize, $coating);
-    
         // Fetch products filtered by mesh size and coating
         $meshSize_products = DB::table('products')
             ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
@@ -24,10 +21,13 @@ class ProductByMeshSizeController extends Controller
             ->where('product_details.coating', $coating) // Filter by coating
             ->select('*')
             ->get();
-    
-            return view('categories.wwf-product', [
-                'meshSize_products' => $meshSize_products
-            ]);
+        
+        // Group products by 'size3' (gauge)
+        $groupedByGauge = $meshSize_products->groupBy('size3');
+
+        return view('categories.wwf-product', [
+            'meshSize_products' => $meshSize_products,
+            'groupedByGauge' => $groupedByGauge, // Pass the grouped products
+        ]);
     }
-    
 }
