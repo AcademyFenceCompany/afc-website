@@ -50,6 +50,7 @@ Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('w
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
 
 Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('product.show');
+Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 
 Route::get('/customerservice', function () {
