@@ -528,13 +528,41 @@ button {
 .toast-header {
     color: white;
 }
+/* Sidebar Cart Hidden Initially */
 #mini-cart-sidebar {
-    right: -300px; /* Hidden initially */
-    transition: right 0.3s ease-in-out; /* Smooth slide-in effect */
-    z-index: 1050; /* Keep it on top of other elements */
+    right: -300px; /* Hidden */
+    transition: right 0.3s ease-in-out; /* Smooth slide transition */
+    z-index: 1050; /* Ensure it stays above other content */
 }
 
+/* Sidebar Cart Visible When 'show' Class is Added */
 #mini-cart-sidebar.show {
-    right: 0; /* Show when the 'show' class is added */
+    right: 0; /* Slide into view */
 }
 
+.product-options-container {
+    z-index: 1000; /* Ensure dropdown appears above other content */
+}
+
+.product-options-container select {
+    width: 100%;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem; /* Bootstrap-like padding */
+    font-size: 0.875rem; /* Slightly smaller font size */
+    line-height: 1.5;
+}
+
+/* Style the dropdown options */
+.product-options-container select option {
+    padding: 8px;
+    font-size: 0.875rem;
+}
+
+/* Ensure dropdown opens below */
+.product-options-container select:focus {
+    position: relative;
+}
+
+/* Optional: Style the selected option */
+.product-options-container select option:checked {
+    background-color: #f8f9fa;
+}
