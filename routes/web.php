@@ -50,6 +50,7 @@ Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('w
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
 
 Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('product.show');
+Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 
 Route::get('/customerservice', function () {
@@ -107,6 +108,7 @@ Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::post('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 Route::post('/cart/remove-selected', [CartController::class, 'removeSelectedItems'])->name('cart.removeSelected');
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
 
