@@ -1,3 +1,6 @@
+{{-- <pre>
+    {{ dd($colorVariations) }}
+</pre> --}}
 @extends('layouts.main')
 
 @section('title', $productDetails->product_name)
@@ -9,7 +12,7 @@
             <!-- Product Image Section -->
             <div class="col-md-4">
                 <div class="card shadow-sm text-center">
-                    <img src="{{ $productDetails->large_image }}" alt="{{ $productDetails->product_name }}"
+                    <img id="product-image" src="{{ $productDetails->large_image }}" alt="{{ $productDetails->product_name }}"
                         class="img-fluid p-3">
                 </div>
             </div>
@@ -18,19 +21,38 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 style="font-size: 2rem">{{ $productDetails->product_name }}</h1>
+                        <h1 id="product-name" style="font-size: 1.7rem">{{ $productDetails->product_name }}</br>
+                            {{ $productDetails->size1 }}</br>
+                            {{ $productDetails->size2 }}{{ $productDetails->size3 }}</h1>
                         <p class="text-success fw-bold">In Stock</p>
-                        <p><strong>Item Number:</strong> {{ $productDetails->item_no }}</p>
-                        <p><strong>Weight:</strong> {{ $productDetails->weight }} lbs</p>
+                        <p><strong>Item Number:</strong> <span id="item-number">{{ $productDetails->item_no }}</span></p>
+                        <p><strong>Weight:</strong> <span id="weight">{{ $productDetails->weight }} lbs</span></p>
+                        <div class="product-options-container" style="position: relative; width: 250px;">
+                            <!-- Constrain width -->
+                            <label for="product-option" class="form-label fw-bold">Size - Color:</label>
+                            <select id="product-option" class="form-select bg-white mb-2" style="max-height: 38px;">
+                                @foreach ($productOptions as $option)
+                                    <option value="{{ $option['value'] }}" {{ $option['selected'] ? 'selected' : '' }}>
+                                        {{ $option['text'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        {{-- <p><strong>Material:</strong> {{ $productDetails->material }}</p> --}}
                         <div class="row mb-3">
                             <div class="col-6">
-                                <label for="material" class="form-label fw-bold">Material:</label>
-                                <input type="text" id="material" value="{{ $productDetails->material }}"
-                                    class="form-control bg-white mb-2" readonly>
-                                <label for="height" class="form-label fw-bold">Height:</label>
+                                {{-- <label for="material" class="form-label fw-bold">Material:</label> --}}
+                                {{-- <input type="text" id="material" value="{{ $productDetails->material }}"
+                                    class="form-control bg-white mb-2" readonly> --}}
+                                {{-- <label for="height" class="form-label fw-bold">Height:</label>
                                 <select id="height" class="form-select bg-white mb-2">
-                                    <option selected>{{ $productDetails->size1 }}</option>
-                                </select>
+                                    @foreach ($heightVariations as $variation)
+                                        <option value="{{ $variation->product_id }}"
+                                            {{ $variation->product_id == $productDetails->product_id ? 'selected' : '' }}>
+                                            {{ $variation->size1 }}
+                                        </option>
+                                    @endforeach
+                                </select> --}}
                                 <div class="d-flex align-items-center mb-3">
                                     <label for="quantity" class="me-3 fw-bold">Quantity:</label>
                                     <button class="btn btn-outline-secondary btn-sm me-2 quantity-decrease">-</button>
@@ -38,9 +60,10 @@
                                         data-price="{{ $productDetails->price_per_unit }}" />
                                     <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                 </div>
-                                <p><strong>Price:</strong> <span
-                                        id="dynamic-price">${{ number_format($productDetails->price_per_unit, 2) }}</span>
+                                <p><strong>Price:</strong> <span id="product-price"
+                                        class="dynamic-price">${{ number_format($productDetails->price_per_unit, 2) }}</span>
                                 </p>
+
                                 <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                     data-item="{{ $productDetails->item_no }}"
                                     data-name="{{ $productDetails->product_name }}"
@@ -113,60 +136,20 @@
         </div>
     </div>
 @endsection
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Update price dynamically when quantity changes
-        document.querySelectorAll(".quantity-decrease, .quantity-increase").forEach(button => {
-            button.addEventListener("click", function() {
-                const input = this.closest(".d-flex").querySelector(".quantity-input");
-                const priceElement = document.getElementById("dynamic-price");
-                const basePrice = parseFloat(input.dataset.price);
-                let quantity = parseInt(input.value) || 1;
-
-                if (this.classList.contains("quantity-increase")) {
-                    quantity++;
-                } else if (this.classList.contains("quantity-decrease") && quantity > 1) {
-                    quantity--;
-                }
-
-                input.value = quantity;
-                priceElement.textContent = `$${(basePrice * quantity).toFixed(2)}`;
-            });
-        });
-
-        // Handle Add to Cart button click
-        document.querySelectorAll(".add-to-cart-btn").forEach(button => {
-            button.addEventListener("click", function() {
-                const itemNo = this.dataset.item;
-                const productName = this.dataset.name;
-                const price = this.dataset.price;
-                const quantityInput = this.closest(".col-md-6").querySelector(
-                ".quantity-input");
-                const quantity = parseInt(quantityInput.value);
-
-                fetch("{{ route('cart.add') }}", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            item_no: itemNo,
-                            product_name: productName,
-                            price,
-                            quantity
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert("Item added to cart successfully!");
-                        } else {
-                            alert("Failed to add item to cart.");
-                        }
-                    })
-                    .catch(error => console.error("Error:", error));
-            });
-        });
-    });
-</script>
+@section('scripts')
+    <script src="{{ asset('js/mini-cart.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/single-product.js') }}"></script>
+@endsection
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success">
+            <strong class="me-auto">Cart Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Item added to the cart successfully!
+        </div>
+    </div>
+</div>
