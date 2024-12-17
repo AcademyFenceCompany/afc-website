@@ -108,6 +108,7 @@ Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::post('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 Route::post('/cart/remove-selected', [CartController::class, 'removeSelectedItems'])->name('cart.removeSelected');
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
 

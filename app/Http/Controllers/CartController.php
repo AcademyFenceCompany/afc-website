@@ -47,8 +47,8 @@ class CartController extends Controller
         // Return the updated cart and cart count
         return response()->json([
             'success' => true,
-            'cart' => $cart, // Include full cart
-            'cartCount' => count($cart), // Include count for the badge
+            'cart' => session('cart'), // Include full cart
+            'cartCount' => count(session('cart')), // Include count for the badge
         ]);
     }
     
@@ -97,6 +97,13 @@ class CartController extends Controller
 
         return response()->json(['success' => true, 'cart' => $cart]);
     }
-
+    public function clear()
+    {
+        session()->forget('cart');
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart cleared successfully'
+        ]);
+    }
 
 }

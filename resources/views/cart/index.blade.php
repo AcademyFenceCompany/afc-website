@@ -51,120 +51,61 @@
         </table>
 
         <div class="d-flex justify-content-between mt-3">
+            <div class="d-flex align-items-center gap-3">
+                <button id="clear-cart" class="btn btn-outline-danger"
+                    {{ session('cart') && count(session('cart')) > 0 ? '' : 'disabled' }}>
+                    <i class="bi bi-trash"></i> Clear Cart
+                </button>
+            </div>
             <h4>Subtotal: <span class="fw-bold text-danger" id="subtotal">$0.00</span></h4>
             <button id="checkout-button" class="btn btn-danger"
                 onclick="window.location.href='{{ route('checkout.index') }}'"
                 {{ session('cart') && count(session('cart')) > 0 ? '' : 'disabled' }}>
                 Proceed to Checkout
             </button>
+        </div>
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to remove this item from your cart?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-
-
-
+        <!-- Clear Cart Confirmation Modal -->
+        <div class="modal fade" id="clearCartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Clear Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to remove all items from your cart?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmClearCart">Clear All</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 @endsection
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const subtotalElement = document.getElementById('subtotal');
-        const checkoutButton = document.getElementById('checkout-button');
-
-        const updateCartTotal = () => {
-            let subtotal = 0;
-            let cartHasItems = false;
-
-            document.querySelectorAll('tbody tr').forEach(row => {
-                const pricePerItemText = row.querySelector('.price-per-item').textContent.trim();
-                const price = parseFloat(pricePerItemText.replace('$', ''));
-                const quantityInput = row.querySelector('.quantity-input');
-                const quantity = parseInt(quantityInput.value);
-
-                if (!isNaN(price) && !isNaN(quantity)) {
-                    const totalPrice = price * quantity;
-                    row.querySelector('.total-price').textContent = `$${totalPrice.toFixed(2)}`;
-                    subtotal += totalPrice;
-                    cartHasItems = true;
-                }
-            });
-
-            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-            checkoutButton.disabled = !cartHasItems;
-        };
-
-        // Bootstrap Toast Trigger Function
-        function showToast(message, className = 'bg-success') {
-            const toastElement = document.getElementById('cart-toast');
-            const toastMessage = document.getElementById('cart-toast-message');
-
-            // Update message and background
-            toastMessage.textContent = message;
-            toastElement.className = `toast align-items-center text-white ${className} border-0`;
-
-            // Show the toast
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-        }
-        // Handle quantity increment
-        document.querySelectorAll('.quantity-increase').forEach(button => {
-            button.addEventListener('click', function() {
-                const quantityInput = this.previousElementSibling; // Get input element
-                quantityInput.value = parseInt(quantityInput.value) + 1; // Increment value
-                updateCartTotal();
-            });
-        });
-
-        // Handle quantity decrement
-        document.querySelectorAll('.quantity-decrease').forEach(button => {
-            button.addEventListener('click', function() {
-                const quantityInput = this.nextElementSibling; // Get input element
-                if (parseInt(quantityInput.value) > 1) {
-                    quantityInput.value = parseInt(quantityInput.value) - 1; // Decrement value
-                    updateCartTotal();
-                }
-            });
-        });
-        // Delete Item Functionality
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemNo = this.getAttribute('data-item');
-
-                fetch("{{ route('cart.removeItem') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                        },
-                        body: JSON.stringify({
-                            item_no: itemNo
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            this.closest('tr').remove(); // Remove the row
-                            updateCartTotal(); // Update total
-
-                            const cartCountElement = document.getElementById('cart-count');
-                            cartCountElement.textContent = data
-                                .cartCount; // Update cart count
-
-                            // Show success toast
-                            showToast("Item removed from cart", "bg-danger");
-                        } else {
-                            showToast("Failed to remove item", "bg-danger");
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showToast("An error occurred", "bg-danger");
-                    });
-            });
-        });
-
-        // Initial subtotal calculation
-        updateCartTotal();
-    });
-</script>
+@section('scripts')
+    <script src="{{ asset('js/cart-index.js') }}"></script>
+@endsection
 <!-- Bootstrap Toast Notification -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
     <div id="cart-toast" class="toast align-items-center text-white bg-success border-0" role="alert"

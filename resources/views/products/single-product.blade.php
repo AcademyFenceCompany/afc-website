@@ -27,22 +27,24 @@
                         <p class="text-success fw-bold">In Stock</p>
                         <p><strong>Item Number:</strong> <span id="item-number">{{ $productDetails->item_no }}</span></p>
                         <p><strong>Weight:</strong> <span id="weight">{{ $productDetails->weight }} lbs</span></p>
-                        <label for="color" class="form-label fw-bold">Color:</label>
-                        <select id="color" class="form-select bg-white mb-2">
-                            @foreach ($colorVariations as $variation)
-                                <option value="{{ $variation->product_id }}"
-                                    {{ $variation->color == $productDetails->color ? 'selected' : '' }}>
-                                    {{ ucfirst($variation->color) }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <div class="product-options-container" style="position: relative; width: 250px;">
+                            <!-- Constrain width -->
+                            <label for="product-option" class="form-label fw-bold">Size - Color:</label>
+                            <select id="product-option" class="form-select bg-white mb-2" style="max-height: 38px;">
+                                @foreach ($productOptions as $option)
+                                    <option value="{{ $option['value'] }}" {{ $option['selected'] ? 'selected' : '' }}>
+                                        {{ $option['text'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         {{-- <p><strong>Material:</strong> {{ $productDetails->material }}</p> --}}
                         <div class="row mb-3">
                             <div class="col-6">
                                 {{-- <label for="material" class="form-label fw-bold">Material:</label> --}}
                                 {{-- <input type="text" id="material" value="{{ $productDetails->material }}"
                                     class="form-control bg-white mb-2" readonly> --}}
-                                <label for="height" class="form-label fw-bold">Height:</label>
+                                {{-- <label for="height" class="form-label fw-bold">Height:</label>
                                 <select id="height" class="form-select bg-white mb-2">
                                     @foreach ($heightVariations as $variation)
                                         <option value="{{ $variation->product_id }}"
@@ -50,7 +52,7 @@
                                             {{ $variation->size1 }}
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> --}}
                                 <div class="d-flex align-items-center mb-3">
                                     <label for="quantity" class="me-3 fw-bold">Quantity:</label>
                                     <button class="btn btn-outline-secondary btn-sm me-2 quantity-decrease">-</button>
@@ -135,6 +137,7 @@
     </div>
 @endsection
 @section('scripts')
+    <script src="{{ asset('js/mini-cart.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
     <script src="{{ asset('js/single-product.js') }}"></script>
 @endsection

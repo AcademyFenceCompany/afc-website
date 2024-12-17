@@ -77,14 +77,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
+                        // Show toast notification
                         const toastEl = document.getElementById("cartToast");
                         if (toastEl) {
                             const toast = new bootstrap.Toast(toastEl);
                             toast.show();
                         }
-
+                
+                        // Update cart count
                         const cartCountElement = document.getElementById("cart-count");
                         if (cartCountElement) cartCountElement.textContent = data.cartCount;
+                
+                        // Update mini cart
+                        updateMiniCart(data.cart);
                     } else {
                         alert("Failed to add item to cart.");
                     }
