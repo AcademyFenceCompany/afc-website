@@ -1,6 +1,7 @@
-{{-- <pre>{{ dd($subcategories) }} --}}
-@extends('layouts.main')
+{{-- <pre>{{ dd($styleGroups) }}</pre> --}}
+{{-- <pre>{{ dd($spacing) }}</pre> --}}
 
+@extends('layouts.main')
 @section('title', 'Wood Fence Products')
 
 @section('content')
@@ -36,15 +37,9 @@
             <div class="col-md-2 text-center">
                 <h4 class="text-brown mb-3">Brochures</h4>
                 <div class="d-flex flex-column gap-2">
-                    <button class="btn btn-light border w-100 text-center">
-                        Wood Post Cap Brochure
-                    </button>
-                    <button class="btn btn-light border w-100 text-center">
-                        Wood Post Cap Order Sheet
-                    </button>
-                    <button class="btn w-100" style="background-color: #8B4513; color: white;">
-                        Get a Quote
-                    </button>
+                    <button class="btn btn-light border w-100 text-center">Wood Post Cap Brochure</button>
+                    <button class="btn btn-light border w-100 text-center">Wood Post Cap Order Sheet</button>
+                    <button class="btn w-100" style="background-color: #8B4513; color: white;">Get a Quote</button>
                 </div>
             </div>
 
@@ -72,53 +67,43 @@
         </div>
 
         <!-- Product List Section -->
-        <div class="row g-4">
-            @foreach ($subcategories as $category)
-                <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
-                    <div class="card product-card shadow-sm p-3 w-100">
-                        <div class="d-flex flex-column align-items-center">
-                            <!-- Image Section -->
-                            <div class="product-image me-3">
-                                @if ($category['image'])
-                                    <img src="{{ $category['image'] }}" alt="{{ $category['image'] }}"
-                                        class="img-fluid rounded" style="max-height: 300px; max-width: 300px;">
-                                @endif
-                            </div>
-                            <!-- Content Section -->
-                            <div
-                                class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                <div class="text-center">
-                                    <h5 class="fw-bold">{{ $category['name'] }}</h5>
-                                    <p class="text-muted">{{ $category['description'] }}</p>
+        @foreach ($styleGroups as $styleGroup)
+            <div class="row g-4">
+                <div class="rounded" style="background-color: #000;">
+                    <h1 class="text-white text-center py-3 mb-0">{{ $styleGroup['style'] }}</h1>
+                </div>
+                <div class="col-12 d-flex align-items-stretch">
+                    @foreach ($styleGroup['products'] as $product)
+                        <div class="col-md-4">
+                            <div class="card product-card shadow-sm p-3 w-100">
+                                <div class="d-flex flex-column align-items-center">
+                                    <!-- Image Section -->
+                                    <h5 class="fw-bold">{{ $product->speciality }}</h5>
+
+                                    <div class="product-image me-3">
+                                        <img src="{{ $product->general_image }}" alt="{{ $product->speciality }}"
+                                            class="img-fluid rounded" style="max-height: 300px; max-width: 300px;">
+                                    </div>
+                                    <!-- Content Section -->
+                                    <div
+                                        class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
+                                        <h3>{{ $product->product_name }}</h3>
+                                        <p>Section Top Style: {{ $product->style }}</p>
+                                        <p>Picket Style: {{ $product->speciality }}</p>
+                                        <p>Spacing: {{ $product->spacing }}</p>
+                                        <p>Material: {{ $product->material }}</p>
+                                        <p>Heights: {{ $product->size1 }}</p>
+                                        <p>Price: From ${{ number_format($product->price_per_unit, 2) }}</p>
+                                        <div class="mt-3">
+                                            <a href="" class="btn btn-danger text-white">View Product</a>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <!-- Spacing Options -->
-                                @if ($category['spacing_options']->isNotEmpty())
-                                    <div class="mt-3 ">
-                                        @foreach ($category['spacing_options'] as $spacing)
-                                            @php
-                                                $encodedSpacing = urlencode(str_replace(' ', '_', $spacing));
-                                            @endphp
-                                            <a href="{{ route('woodfence.specs', ['subcategoryId' => $category['id'], 'spacing' => $encodedSpacing]) }}"
-                                                class="btn btn-danger text-white me-2">
-                                                {{ $spacing }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="mt-3">
-                                        <a href="{{ route('woodfence.specs', ['subcategoryId' => $category['id']]) }}"
-                                            class="btn btn-danger text-white">
-                                            View Product
-                                        </a>
-
-                                    </div>
-                                @endif
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-            @endforeach
-        </div>
+            </div>
+        @endforeach
     </main>
 @endsection

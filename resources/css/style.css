@@ -566,3 +566,9 @@ button {
 .product-options-container select option:checked {
     background-color: #f8f9fa;
 }
+.text-brown {
+    color: #8B4513;
+}
+.btn-light{
+    font-size: 12px !important;
+}
