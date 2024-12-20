@@ -6,18 +6,59 @@ document.addEventListener("DOMContentLoaded", () => {
         const productId = this.value;
 
         fetch(`/product/details/${productId}`)
-            .then(response => response.json())
-            .then(data => updateProductDetails(data))
-            .catch(error => console.error("Error fetching product details:", error));
+            .then((response) => response.json())
+            .then((data) => updateProductDetails(data))
+            .catch((error) =>
+                console.error("Error fetching product details:", error),
+            );
     });
 
     function updateProductDetails(data) {
+        // Update common fields
         document.getElementById("product-name").innerHTML = `
-            ${data.product_name}<br>${data.size1}<br>${data.size2} ${data.size3}
+            ${data.product_name}<br>${data.size1 ?? ""}<br>${data.size2 ?? data.style} ${data.size3 ?? data.speciality} ${data.spacing ?? ""}
         `;
-        document.getElementById("item-number").textContent = data.item_no;
-        document.getElementById("weight").textContent = `${data.weight} lbs`;
-        document.getElementById("product-price").textContent = `$${parseFloat(data.price_per_unit).toFixed(2)}`;
-        document.getElementById("product-image").src = data.large_image;
+        document.getElementById("item-number").textContent =
+            data.item_no ?? "N/A";
+        document.getElementById("weight").textContent = data.weight
+            ? `${data.weight} lbs`
+            : "N/A";
+        document.getElementById("product-price").textContent =
+            data.price_per_unit
+                ? `$${parseFloat(data.price_per_unit).toFixed(2)}`
+                : "N/A";
+        document.getElementById("product-image").src =
+            data.large_image || "/path/to/default-image.jpg";
+
+        // Special handling for Wood Fence
+        if (data.family_category_id === 16) {
+            // Assuming 16 is the Wood Fence family_category_id
+            // Hide size2 and size3-related fields as they are null for Wood Fence
+            if (!data.size2 && !data.size3) {
+                document.getElementById("product-name").innerHTML = `
+                    ${data.product_name}<br>${data.size1 ?? ""}
+                `;
+            }
+
+            // Handle Wood Fence-specific attributes
+            if (data.style && data.speciality && data.spacing) {
+                const woodFenceAttributes = `
+                    <p><strong>Style:</strong> ${data.style}</p>
+                    <p><strong>Speciality:</strong> ${data.speciality}</p>
+                    <p><strong>Spacing:</strong> ${data.spacing}</p>
+                `;
+                document.getElementById("woodfence-attributes").innerHTML =
+                    woodFenceAttributes;
+                document.getElementById("woodfence-attributes").style.display =
+                    "block";
+            } else {
+                document.getElementById("woodfence-attributes").style.display =
+                    "none";
+            }
+        } else {
+            // Hide Wood Fence attributes if not relevant
+            document.getElementById("woodfence-attributes").style.display =
+                "none";
+        }
     }
 });
