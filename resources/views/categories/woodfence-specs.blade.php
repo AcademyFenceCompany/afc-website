@@ -68,35 +68,43 @@
 
         <!-- Product List Section -->
         @foreach ($styleGroups as $styleGroup)
-            <div class="row g-4">
+            <div class="row g-4 m-2">
                 <div class="rounded" style="background-color: #000;">
-                    <h1 class="text-white text-center py-3 mb-0">{{ $styleGroup['style'] }}</h1>
+                    <h2 class="text-white text-center py-2 my-0 text-uppercase fs-2">{{ $styleGroup['style'] }}</h2>
                 </div>
                 <div class="col-12 d-flex align-items-stretch">
                     @foreach ($styleGroup['products'] as $product)
-                        <div class="col-md-4">
+                        <div class="col-md-4 m-2">
                             <div class="card product-card shadow-sm p-3 w-100">
                                 <div class="d-flex flex-column align-items-center">
                                     <!-- Image Section -->
                                     <h5 class="fw-bold">{{ $product->speciality }}</h5>
 
                                     <div class="product-image me-3">
-                                        <img src="{{ $product->general_image }}" alt="{{ $product->speciality }}"
-                                            class="img-fluid rounded" style="max-height: 300px; max-width: 300px;">
+                                        <a href="{{ route('product.show', ['id' => $product->product_id]) }}"><img
+                                                src="{{ $product->general_image }}" alt="{{ $product->speciality }}"
+                                                class="img-fluid rounded" style="max-height: 300px; max-width: 300px;"></a>
                                     </div>
                                     <!-- Content Section -->
                                     <div
                                         class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                        <h3>{{ $product->product_name }}</h3>
                                         <p>Section Top Style: {{ $product->style }}</p>
                                         <p>Picket Style: {{ $product->speciality }}</p>
                                         <p>Spacing: {{ $product->spacing }}</p>
                                         <p>Material: {{ $product->material }}</p>
-                                        <p>Heights: {{ $product->size1 }}</p>
+                                        @if (in_array($product->family_category_id, [17, 18, 19]))
+                                            <p>Heights: 3ft, 42in, 4ft, 5ft, 6ft, 7ft, 8ft</p>
+                                        @else
+                                            <p>Heights:5ft, 6ft, 7ft, 8ft</p>
+                                        @endif
                                         <p>Price: From ${{ number_format($product->price_per_unit, 2) }}</p>
-                                        <div class="mt-3">
-                                            <a href="" class="btn btn-danger text-white">View Product</a>
-                                        </div>
+                                        @if ($product)
+                                            {{-- Check if product exists --}}
+                                            <div class="mt-3">
+                                                <a href="{{ route('product.show', ['id' => $product->product_id]) }}"
+                                                    class="btn btn-danger text-white">View Product</a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

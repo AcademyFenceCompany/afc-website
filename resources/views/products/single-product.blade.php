@@ -1,5 +1,5 @@
 {{-- <pre>
-    {{ dd($colorVariations) }}
+    {{ dd($productDetails) }}
 </pre> --}}
 @extends('layouts.main')
 
@@ -12,8 +12,8 @@
             <!-- Product Image Section -->
             <div class="col-md-4">
                 <div class="card shadow-sm text-center">
-                    <img id="product-image" src="{{ $productDetails->large_image }}" alt="{{ $productDetails->product_name }}"
-                        class="img-fluid p-3">
+                    <img id="product-image" src="{{ $productDetails->large_image ?? $productDetails->general_image }} "
+                        alt="{{ $productDetails->product_name }}" class="img-fluid p-3">
                 </div>
             </div>
 
@@ -21,12 +21,32 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6">
-                        <h1 id="product-name" style="font-size: 1.7rem">{{ $productDetails->product_name }}</br>
-                            {{ $productDetails->size1 }}</br>
-                            {{ $productDetails->size2 }}{{ $productDetails->size3 }}</h1>
+                        <h1 id="product-name" style="font-size: 1.7rem">
+                            {{ $productDetails->product_name }}
+                            </br>
+                            {{ $productDetails->size1 }}
+                            </br>
+                            @if ($productDetails->family_category_id === 16)
+                                <!-- Check if it's Wood Fence -->
+                                @if ($productDetails->style)
+                                    {{ $productDetails->style }}
+                                @endif
+                                @if ($productDetails->speciality)
+                                    </br>{{ $productDetails->speciality }}
+                                @endif
+                                @if ($productDetails->spacing)
+                                    </br>{{ $productDetails->spacing }}
+                                @endif
+                            @else
+                                <!-- For non-Wood Fence categories -->
+                                {{ $productDetails->size2 }} {{ $productDetails->size3 }}
+                            @endif
+                        </h1>
                         <p class="text-success fw-bold">In Stock</p>
                         <p><strong>Item Number:</strong> <span id="item-number">{{ $productDetails->item_no }}</span></p>
-                        <p><strong>Weight:</strong> <span id="weight">{{ $productDetails->weight }} lbs</span></p>
+                        @if (!is_null($productDetails->weight))
+                            <p><strong>Weight:</strong> <span id="weight">{{ $productDetails->weight }} lbs</span></p>
+                        @endif
                         <div class="product-options-container" style="position: relative; width: 250px;">
                             <!-- Constrain width -->
                             <label for="product-option" class="form-label fw-bold">Size - Color:</label>

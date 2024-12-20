@@ -152,7 +152,6 @@ public function getProductsGroupedByStyle($subcategoryId, $spacing)
         ];
 
         foreach ($picketStyles as $picketStyle) {
-            // Fetch the first matching product for the style, picket style, and spacing
             $product = DB::table('products')
                 ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
                 ->join('product_media', 'products.product_id', '=', 'product_media.product_id')
@@ -161,10 +160,9 @@ public function getProductsGroupedByStyle($subcategoryId, $spacing)
                 ->where('product_details.speciality', $picketStyle)
                 ->where('product_details.spacing', $formattedSpacing)
                 ->whereIn('product_details.size1', $sizes)
-                ->select('products.*', 'product_details.*', 'product_media.*')
+                ->select('products.product_id', 'products.*', 'product_details.*', 'product_media.*',)
                 ->first();
 
-            // Debug for each style and picket style
     if (!$product) {
         \Log::info("No product found", [
             'style' => $style,
@@ -179,28 +177,17 @@ public function getProductsGroupedByStyle($subcategoryId, $spacing)
         $styleGroups[] = $styleData;
     }
 
-    // Debugging: Log the style groups
-    //  dd(['Style Groups' => $styleGroups, 'Spacing' => $formattedSpacing]);
-
-    // Check if no products were found
     if (empty(array_filter($styleGroups, fn($group) => !empty($group['products'])))) {
         return view('categories.woodfence-specs', [
             'styleGroups' => $styleGroups,
             'message' => 'No products found for the selected spacing.'
         ]);
     }
-
-    // Pass data to the view
     return view('categories.woodfence-specs', ['styleGroups' => $styleGroups]);
 }
 
 public function getProductsGroupWoSpacing($subcategoryId)
 {
-
-    // Debugging: Log the spacing value
-     //dd(['Provided spacing' => $formattedSpacing]);
-
-    // Define styles and picket styles
     $styles = ['Straight on Top', 'Concave', 'Convex'];
     $picketStyles = ['Slant Ear', 'Gothic Point', 'French Gothic'];
     $sizes = ['6 ft. H x 8 ft. W', '4 ft. H x 8 ft. W'];
@@ -239,10 +226,6 @@ public function getProductsGroupWoSpacing($subcategoryId)
 
         $styleGroups[] = $styleData;
     }
-
-    // Debugging: Log the style groups
-    //  dd(['Style Groups' => $styleGroups, 'Spacing' => $formattedSpacing]);
-
     // Check if no products were found
     if (empty(array_filter($styleGroups, fn($group) => !empty($group['products'])))) {
         return view('categories.woodfence-specs', [
