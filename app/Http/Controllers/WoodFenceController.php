@@ -25,10 +25,6 @@ class WoodFenceController extends Controller
                 ->where('purpose', 'LIKE', '%Wood Fence General page%')
                 ->value('image');
 
-            // $description = DB::table('products')
-            //     ->where('subcategory_id', $subcategory->family_category_id)
-            //     ->value('description');
-
             // Fetch child categories
             $childCategories = DB::table('family_categories')
                 ->where('parent_category_id', $subcategory->family_category_id)
@@ -66,81 +62,15 @@ class WoodFenceController extends Controller
         return view('categories.woodfence', ['subcategories' => $subcategoriesWithSpacing]);
     }
 
-    public function showBySpacing($id, $spacing)
-    {
-        // Fetch products based on subcategory and spacing
-        $products = DB::table('products')
-            ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-            ->where('products.family_category_id', $id)
-            ->where('product_details.spacing', $spacing)
-            ->select('products.*', 'product_details.*')
-            ->get();
-
-        return view('categories.woodfence-products', [
-            'products' => $products,
-            'spacing' => $spacing
-        ]);
-    }
-
-    public function getProductsBySpacing($subcategoryId, $spacing)
-    {
-    // Format the spacing to replace underscores with spaces
-    $formattedSpacing = str_replace('_', ' ', $spacing);
-
-    // Fetch products in the given subcategory with the selected spacing
-    $products = DB::table('products')
-        ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-        ->where('products.subcategory_id', $subcategoryId)
-        ->where('product_details.spacing', $formattedSpacing)
-        ->select(
-            'products.product_id',
-            'products.product_name',
-            'products.item_no',
-            'products.description',
-            'product_details.size1',
-            'product_details.size2',
-            'product_details.size3',
-            'product_details.spacing',
-            'product_details.style',
-            'product_details.material',
-            'product_details.color'
-        )
-        ->get();
-
-    // Fetch all available spacings for this subcategory
-    $availableSpacings = DB::table('product_details')
-        ->where('family_category_id', $subcategoryId)
-        ->whereNotNull('spacing')
-        ->distinct()
-        ->pluck('spacing');
-
-        // dd([
-        //     'subcategoryId' => $subcategoryId,
-        //     'formatted_spacing' => $formattedSpacing,
-        //     'available_spacings' => $availableSpacings,
-        //     'products' => $products
-        // ]);
-    // Return to a dedicated view or display the products
-    return view('categories.woodfence-specs', [
-        'products' => $products,
-        'selected_spacing' => $formattedSpacing,
-        'available_spacings' => $availableSpacings,
-        'subcategoryId' => $subcategoryId,
-    ]);
-}
 
 public function getProductsGroupedByStyle($subcategoryId, $spacing)
     {
     // Format the spacing value
     $formattedSpacing = str_replace('_', ' ', $spacing);
 
-    // Debugging: Log the spacing value
-     //dd(['Provided spacing' => $formattedSpacing]);
-
     // Define styles and picket styles
     $styles = ['Straight on Top', 'Concave', 'Convex'];
     $picketStyles = ['Slant Ear', 'Gothic Point', 'French Gothic'];
-    $sizes = ['6 ft. H x 8 ft. W', '4 ft. H x 8 ft. W'];
 
     // Initialize results array
     $styleGroups = [];
@@ -153,15 +83,15 @@ public function getProductsGroupedByStyle($subcategoryId, $spacing)
 
         foreach ($picketStyles as $picketStyle) {
             $product = DB::table('products')
+                ->join('family_categories', 'products.subcategory_id', '=', 'family_categories.family_category_id')
                 ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
                 ->join('product_media', 'products.product_id', '=', 'product_media.product_id')
                 ->where('products.subcategory_id', $subcategoryId)
                 ->where('product_details.style', $style)
                 ->where('product_details.speciality', $picketStyle)
                 ->where('product_details.spacing', $formattedSpacing)
-                ->whereIn('product_details.size1', $sizes)
-                ->select('products.product_id', 'products.*', 'product_details.*', 'product_media.*',)
-                ->first();
+                ->select('products.product_id', 'products.*', 'product_details.*', 'product_media.*')
+                ->get();
 
     if (!$product) {
         \Log::info("No product found", [
