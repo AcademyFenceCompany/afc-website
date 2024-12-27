@@ -66,49 +66,62 @@
             </div>
         </div>
 
-        <!-- Product List Section -->
+        @php
+            // Manual mapping of product IDs for each speciality
+            $manualProductIds = [
+                'Straight on Top' => [
+                    'French Gothic' => 1001, // Replace 1001 with the actual product ID
+                    'Slant Ear' => 1985, // Replace 1002 with the actual product ID
+                    'Gothic Point' => 1003, // Replace 1003 with the actual product ID
+                ],
+                'Concave' => [
+                    'French Gothic' => 2001,
+                    'Slant Ear' => 2002,
+                    'Gothic Point' => 2003,
+                ],
+                'Convex' => [
+                    'French Gothic' => 3001,
+                    'Slant Ear' => 3002,
+                    'Gothic Point' => 3003,
+                ],
+            ];
+        @endphp <!-- Product List Section -->
         @foreach ($styleGroups as $styleGroup)
             <div class="row g-4 m-2">
                 <div class="rounded" style="background-color: #000;">
                     <h2 class="text-white text-center py-2 my-0 text-uppercase fs-2">{{ $styleGroup['style'] }}</h2>
                 </div>
                 <div class="col-12 d-flex align-items-stretch">
-                    @foreach ($styleGroup['products'] as $product)
-                        <div class="col-md-4 m-2">
-                            <div class="card product-card shadow-sm p-3 w-100">
-                                <div class="d-flex flex-column align-items-center">
-                                    <!-- Image Section -->
-                                    <h5 class="fw-bold">{{ $product->speciality }}</h5>
+                    @foreach ($styleGroup['products'] as $speciality => $productCollection)
+                        @php
+                            // Get product ID manually from the mapping
+                            $productId = $manualProductIds[$styleGroup['style']][$speciality] ?? null;
+                        @endphp
+                        @if ($productId)
+                            <div class="col-md-4 m-2">
+                                <div class="card product-card shadow-sm p-3 w-100">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <h5 class="fw-bold">{{ $speciality }}</h5>
+                                        <div
+                                            class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
+                                            <p>Section Top Style: {{ $styleGroup['style'] }}</p>
+                                            <p>Picket Style: {{ $speciality }}</p>
+                                            {{-- <p>Spacing: {{ $formattedSpacing }}</p> --}}
+                                            <p>Material: 100% Cedar Wood</p>
+                                            <p>Price: From
+                                                ${{ number_format($productCollection->first()->price_per_unit ?? 0, 2) }}
+                                            </p>
 
-                                    <div class="product-image me-3">
-                                        <a href="{{ route('product.show', ['id' => $product->product_id]) }}"><img
-                                                src="{{ $product->general_image }}" alt="{{ $product->speciality }}"
-                                                class="img-fluid rounded" style="max-height: 300px; max-width: 300px;"></a>
-                                    </div>
-                                    <!-- Content Section -->
-                                    <div
-                                        class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                        <p>Section Top Style: {{ $product->style }}</p>
-                                        <p>Picket Style: {{ $product->speciality }}</p>
-                                        <p>Spacing: {{ $product->spacing }}</p>
-                                        <p>Material: {{ $product->material }}</p>
-                                        @if (in_array($product->family_category_id, [17, 18, 19]))
-                                            <p>Heights: 3ft, 42in, 4ft, 5ft, 6ft, 7ft, 8ft</p>
-                                        @else
-                                            <p>Heights:5ft, 6ft, 7ft, 8ft</p>
-                                        @endif
-                                        <p>Price: From ${{ number_format($product->price_per_unit, 2) }}</p>
-                                        @if ($product)
-                                            {{-- Check if product exists --}}
+                                            <!-- Button with manual product ID -->
                                             <div class="mt-3">
-                                                <a href="{{ route('product.show', ['id' => $product->product_id]) }}"
+                                                <a href="{{ route('product.show', ['id' => $productId]) }}"
                                                     class="btn btn-danger text-white">View Product</a>
                                             </div>
-                                        @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
