@@ -71,7 +71,7 @@
                     <h3 class="tagline">The Original Fence Superstore</h3>
                 </div>
                 <nav class="nav mb-3">
-                    <a href="#" class="nav-link btn nav-btn">WOOD FENCE</a>
+                    <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn">WOOD FENCE</a>
                     <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
                     <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
                     <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>

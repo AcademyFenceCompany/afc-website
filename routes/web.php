@@ -4,6 +4,16 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SingleProductController;
+use App\Http\Controllers\WoodFenceController;
+
+
+
+
+
 
 
 
@@ -37,7 +47,11 @@ Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
 Route::view('/woodfence', 'categories/woodfence');
-Route::view('/weldedwire', 'categories/weldedwire');
+Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
+Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+
+Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('product.show');
+Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 
 Route::get('/customerservice', function () {
@@ -56,24 +70,29 @@ Route::get('/about', function () {
 
 Route::get('/policy', function () {
     return view('pages.policy', [
-        'title' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms',
-        'header' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms'
+        'title' => 'Policies, Terms & Conditions',
+        'header' => 'Policies & Terms',
+        'header' => 'Policies, Terms & Conditions',
+        'header' => 'Policies & Terms'
     ]);
 })->name('policy');
 
 Route::get('/privacy-policy', function () {
     return view('pages.privacypolicy', [
-        'title' => 'Privacy Policy', 'header' => 'Privacy Policy',
-        'header' => 'Privacy Policy', 'header' => 'Privacy Policy'
+        'title' => 'Privacy Policy',
+        'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy'
     ]);
 })->name('privacypolicy');
 
 Route::get('/brochures', function () {
     return view('pages.brochures', [
-        'title' => 'Brochures', 'header' => 'Brochures'
+        'title' => 'Brochures',
+        'header' => 'Brochures'
     ]);
 })->name('brochures');
-Route::view('/empty-cart','cart/empty')->name('empty-cart');
+Route::view('/empty-cart', 'cart/empty')->name('empty-cart');
 Route::view('/cart', 'cart.index')->name('cart.index');
 Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
@@ -88,4 +107,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
