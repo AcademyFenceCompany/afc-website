@@ -59,9 +59,11 @@ Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfenc
 Route::get('wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
     ->where('spacing', '.*')  // Allow any character in spacing
     ->name('woodfence.specs');
-
-Route::get('wood-fence/specs/{subcategoryId}', [WoodFenceController::class, 'getProductsGroupWoSpacing'])
-    ->name('woodfence.specs');
+Route::get('wood-fence/specs/{subcategoryId}/{spacing}/{style}/all', 
+    [WoodFenceController::class, 'getAllStyleProducts'])
+    ->name('woodfence.specs.all');
+// Route::get('wood-fence/specs/{subcategoryId}', [WoodFenceController::class, 'getProductsGroupWoSpacing'])
+//     ->name('woodfence.specs');
 
 
 Route::get('/customerservice', function () {
