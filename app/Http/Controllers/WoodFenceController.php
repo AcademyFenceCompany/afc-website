@@ -37,8 +37,8 @@ class WoodFenceController extends Controller
     // Fetch all child categories of the selected subcategory
     $childCategories = DB::table('family_categories')
         ->where('parent_category_id', $subcategoryId)
-        ->pluck('family_category_id'); // Get child IDs
-        // dd($childCategories, \DB::getQueryLog()); 
+        ->pluck('family_category_id');
+
     // Fetch products that belong to the child categories and match the spacing
     $styles = ['Straight on Top', 'Concave', 'Convex'];
     $specialities = ['Slant Ear', 'Gothic Point', 'French Gothic'];
@@ -70,6 +70,6 @@ class WoodFenceController extends Controller
         ];
     }
     // Log the final styleGroups array
-    return view('categories.woodfence-specs', ['styleGroups' => $styleGroups]);
+    return view('categories.woodfence-specs', ['styleGroups' => $styleGroups], ['spacing' => $formattedSpacing]);
 }
 }

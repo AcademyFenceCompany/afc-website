@@ -1,4 +1,4 @@
-{{-- <pre>{{ dd($styleGroups) }}</pre> --}}
+<pre>{{ dd($styleGroups) }}</pre>
 {{-- <pre>{{ dd($spacing) }}</pre> --}}
 
 @extends('layouts.main')
