@@ -82,65 +82,24 @@ class WoodFenceController extends Controller
         return view('categories.woodfence', ['subcategories' => $subcategoriesWithSpacing, 'wood_categories' => $wood_categories]);
     }
 
-
-    // public function getProductsGroupedByStyle($subcategoryId, $spacing, $showAll = false)
-    // {
-    //     $formattedSpacing = str_replace('_', ' ', $spacing);
-    //     $defaultPicketStyles = ['Slant Ear', 'Gothic Point', 'French Gothic'];
-
-    //     $validCombos = DB::table('products')
-    //         ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-    //         ->select('style', 'speciality')
-    //         ->where([
-    //             ['subcategory_id', $subcategoryId],
-    //             ['spacing', $formattedSpacing]
-    //         ]);
-
-    //     if (!$showAll) {
-    //         $validCombos->whereIn('speciality', $defaultPicketStyles);
-    //     }
-
-    //     $validCombos = $validCombos->distinct()->get();
-
-    //     $styleGroups = [];
-    //     foreach ($validCombos->groupBy('style') as $style => $combos) {
-    //         $styleProducts = [];
-    //         foreach ($combos as $combo) {
-    //             $product = DB::table('products')
-    //                 ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-    //                 ->join('product_media', 'products.product_id', '=', 'product_media.product_id')
-    //                 ->where([
-    //                     ['products.subcategory_id', $subcategoryId],
-    //                     ['product_details.spacing', $formattedSpacing],
-    //                     ['product_details.style', $combo->style],
-    //                     ['product_details.speciality', $combo->speciality]
-    //                 ])
-    //                 ->first();
-
-    //             if ($product) {
-    //                 $styleProducts[] = $product;
-    //             }
-    //         }
-
-    //         if (!empty($styleProducts)) {
-    //             $styleGroups[] = [
-    //                 'style' => $style,
-    //                 'products' => $styleProducts,
-    //                 'showAll' => $showAll
-    //             ];
-    //         }
-    //     }
-
-    //     return view('categories.woodfence-specs', ['styleGroups' => $styleGroups]);
-    // }
-
-    public function getPriceBySubCatID($subcatid)
+    public function getMinPriceBySubcatID($subcatid)
     {
         $price = DB::table('products')
             ->where('products.subcategory_id', $subcatid)
             ->min('products.price_per_unit');
 
         return $price;
+    }
+
+    public function productBySubcatID($subcatid)
+    {
+        $product_id_distinct = DB::table('products')
+            ->where('products.subcategory_id', $subcatid)
+            ->where('products.price_per_unit', $this->getMinPriceBySubcatID($subcatid))
+            ->value('products.product_id');
+
+
+        return $product_id_distinct;
     }
 
     public function getProductsGroupedByStyle($subcategoryId, $spacing, $showAll = false)
@@ -182,12 +141,13 @@ class WoodFenceController extends Controller
 
         $grouped = $details->reduce(function ($carry, $group) {
             $hold = collect((array) [
+                'product_id' => $this->productBySubcatID($group->subcategory_id),
                 'subcategory_id' => $group->subcategory_id,
                 'speciality' => $group->speciality,
                 'spacing' => $group->spacing,
                 'material' => $group->material,
                 'general_image' => $group->general_image,
-                'price' => $this->getPriceBySubCatID($group->subcategory_id)
+                'price' => $this->getMinPriceBySubcatID($group->subcategory_id)
             ]);
 
             $styleGroup = $carry->get($group->style);
