@@ -30,7 +30,7 @@ class WoodFenceController extends Controller
         return view('categories.woodfence', ['subcategories' => $subcategories]);
     }
 
-    public function getProductsBySpacing($subcategoryId, $spacing)
+    public function getProductsBySpacing($categoryName,$subcategoryId,$spacing)
 {
     $formattedSpacing = urldecode($spacing); // Decode spacing value
 
@@ -67,6 +67,7 @@ class WoodFenceController extends Controller
         $styleGroups[] = [
             'style' => $style,
             'products' => $products,
+            'categoryName' => $categoryName,
         ];
     }
     // Log the final styleGroups array
