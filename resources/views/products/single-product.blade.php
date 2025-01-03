@@ -54,7 +54,11 @@
                                 style="max-height: 38px; max-width:fit-content;">
                                 @foreach ($productVariations as $option)
                                     <option value="{{ $option->product_id }}">
-                                        {{ $option->size1 }} ---- {{ $option->color }}
+                                        @if ($option->size3)
+                                            {{ $option->size1 }} ---- {{ $option->color }} --- {{ $option->size3 }}
+                                        @else
+                                            {{ $option->size1 }} ---- {{ $option->color }}
+                                        @endif
                                     </option>
                                 @endforeach
                             </select>
