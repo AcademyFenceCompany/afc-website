@@ -50,10 +50,11 @@
                         <div class="product-options-container" style="position: relative; width: 250px;">
                             <!-- Constrain width -->
                             <label for="product-option" class="form-label fw-bold">Size - Color:</label>
-                            <select id="product-option" class="form-select bg-white mb-2" style="max-height: 38px;">
-                                @foreach ($productOptions as $option)
-                                    <option value="{{ $option['value'] }}" {{ $option['selected'] ? 'selected' : '' }}>
-                                        {{ $option['text'] }}
+                            <select id="product-option" class="form-select bg-white mb-2"
+                                style="max-height: 38px; max-width:fit-content;">
+                                @foreach ($productVariations as $option)
+                                    <option value="{{ $option->product_id }}">
+                                        {{ $option->size1 }} ---- {{ $option->color }}
                                     </option>
                                 @endforeach
                             </select>
@@ -80,9 +81,11 @@
                                         data-price="{{ $productDetails->price_per_unit }}" />
                                     <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                 </div>
-                                <p><strong>Price:</strong> <span id="product-price"
-                                        class="dynamic-price">${{ number_format($productDetails->price_per_unit, 2) }}</span>
-                                </p>
+                                {{-- <p><strong>Price:</strong> <span id="product-price" class="dynamic-price">
+                                        ${{ number_format($productDetails->price_per_unit, 2) }}</span>
+                                </p> --}}
+                                <h5>Price:</h5>
+                                <p id="product-price">${{ number_format($productDetails->price_per_unit, 2) }}</p>
 
                                 <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                     data-item="{{ $productDetails->item_no }}"
