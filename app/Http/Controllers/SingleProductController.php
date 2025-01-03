@@ -36,6 +36,8 @@ class SingleProductController extends Controller
             ->where('products.subcategory_id', $productDetails->subcategory_id)
             ->select(
                 'product_details.size1',
+                'product_details.size2',
+                'product_details.size3',
                 'product_details.color',
                 'products.product_id',
             )
