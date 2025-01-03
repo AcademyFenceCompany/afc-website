@@ -15,9 +15,10 @@
 </head>
 
 <body style="font-family: 'Inter', sans-serif;">
-    <!-- Header Section -->
-    @include('layouts.header')
-
+    @if (!in_array(Route::currentRouteName(), ['login', 'register']))
+        <!-- Header Section -->
+        @include('layouts.header')
+    @endif
     {{-- <!-- Optional Page Header -->
     @isset($header)
         <header class="bg-white shadow-sm">
@@ -34,10 +35,10 @@
 
     </main>
     @yield('scripts')
-
-    <!-- Footer Section -->
-    @include('layouts.footer')
-
+    @if (!in_array(Route::currentRouteName(), ['login', 'register']))
+        <!-- Footer Section -->
+        @include('layouts.footer')
+    @endif
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script>

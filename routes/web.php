@@ -58,7 +58,7 @@ Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizePro
 
 Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
-Route::get('/wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsBySpacing'])
+Route::get('/wood-fence/specs/{categoryName}/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsBySpacing'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
 
@@ -131,7 +131,14 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.in
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
+// AMS Routes
+Route::get('/ams', function () {
+    return redirect()->route('ams.activity');
+})->name('ams.home');
 
+Route::get('/ams/activity', function () {
+    return view('ams.activity');
+})->name('ams.activity');
 
 
 

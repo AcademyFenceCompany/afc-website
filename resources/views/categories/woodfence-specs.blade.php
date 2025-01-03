@@ -1,4 +1,4 @@
-<pre>{{ dd($styleGroups) }}</pre>
+{{-- <pre>{{ dd($styleGroups) }}</pre> --}}
 {{-- <pre>{{ dd($spacing) }}</pre> --}}
 
 @extends('layouts.main')
@@ -8,7 +8,8 @@
     <main class="container">
         <!-- Header Section -->
         <div class="rounded" style="background-color: #8B4513;">
-            <h1 class="text-white text-center py-3 mb-0">WOOD FENCE</h1>
+            <h1 class="text-white text-center py-3 mb-0"> {{ $styleGroups[0]['categoryName'] }} -{{ $spacing }}
+            </h1>
         </div>
         <div class="text-center py-2 mb-4 border-bottom">
             <p class="mb-0">Academy Wood Fence - Cedar Fencing Leaders in Wood Fencing for Over 40 Years.</p>
