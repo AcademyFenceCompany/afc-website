@@ -59,11 +59,12 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+'providers' => [
+    'users' => [
+        'driver' => 'database',
+        'table' => 'ams-users', // Updated table name
+        'key' => 'user_id', // Define your primary key here
+    ],
 
         // 'users' => [
         //     'driver' => 'database',

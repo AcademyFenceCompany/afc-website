@@ -2,18 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FamilyCategory extends Model
 {
-    use HasFactory;
+    protected $table = 'family_categories';
+    protected $primaryKey = 'family_category_id';
+    public $timestamps = false; // If the table doesn’t have created_at/updated_at columns
 
-    protected $fillable = ['family_category_name', 'parent_category_id'];
+    protected $fillable = [
+        'family_category_name',
+        'parent_category_id',
+        'category_description',
+    ];
 
-    public function products()
+    // Define relationship with children categories
+    public function children()
     {
-        return $this->hasMany(Product::class, 'family_category_id');
+        return $this->hasMany(FamilyCategory::class, 'parent_category_id', 'family_category_id');
+    }
+
+    // Define relationship with the parent category
+    public function parent()
+    {
+        return $this->belongsTo(FamilyCategory::class, 'parent_category_id', 'family_category_id');
     }
 }
-

@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\ActivityController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -57,4 +58,25 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+});
+//AMS LOGIN ROUTE
+Route::middleware('auth')->group(function () {
+    Route::get('/ams-activity', [ActivityController::class, 'index'])->name('ams.activity');
+});
+
+Route::middleware(['auth', 'role:God'])->group(function () {
+    Route::get('/admin/god-panel', [AdminController::class, 'godPanel'])->name('god.panel');
+});
+
+Route::middleware(['auth', 'role:God,Admin'])->group(function () {
+    Route::get('/admin/admin-panel', [AdminController::class, 'adminPanel'])->name('admin.panel');
+});
+
+Route::middleware(['auth', 'role:God,Admin,Staff'])->group(function () {
+    Route::get('/admin/staff-panel', [AdminController::class, 'staffPanel'])->name('staff.panel');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/ams-activity', [ActivityController::class, 'index'])->name('ams.activity');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

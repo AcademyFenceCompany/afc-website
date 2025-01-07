@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
+use App\Http\Controllers\CategoriesController;
 
 
 
@@ -110,9 +111,9 @@ Route::view('/empty-cart','cart/empty')->name('empty-cart');
 Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -134,13 +135,16 @@ Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear')
 // AMS Routes
 Route::get('/ams', function () {
     return redirect()->route('ams.activity');
-})->name('ams.home');
+})->middleware('auth')->name('ams.home');
+
 
 Route::get('/ams/activity', function () {
     return view('ams.activity');
 })->name('ams.activity');
 
+Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
 
 
 require __DIR__.'/auth.php';
