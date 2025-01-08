@@ -55,13 +55,20 @@ Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProdu
 
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+
 Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
-Route::get('wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
-    ->where('spacing', '.*')  // Allow any character in spacing
+Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
+Route::get('/wood-fence/specs/{categoryName}/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsBySpacing'])
+    ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
-Route::get('wood-fence/specs/{subcategoryId}/{spacing}/{style}/all', 
-    [WoodFenceController::class, 'getAllStyleProducts'])
-    ->name('woodfence.specs.all');
+
+// Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
+// Route::get('wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
+//     ->where('spacing', '.*')  // Allow any character in spacing
+//     ->name('woodfence.specs');
+// Route::get('wood-fence/specs/{subcategoryId}/{spacing}/{style}/all', 
+//     [WoodFenceController::class, 'getAllStyleProducts'])
+//     ->name('woodfence.specs.all');
 // Route::get('wood-fence/specs/{subcategoryId}', [WoodFenceController::class, 'getProductsGroupWoSpacing'])
 //     ->name('woodfence.specs');
 
@@ -124,7 +131,14 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.in
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
+// AMS Routes
+Route::get('/ams', function () {
+    return redirect()->route('ams.activity');
+})->name('ams.home');
 
+Route::get('/ams/activity', function () {
+    return view('ams.activity');
+})->name('ams.activity');
 
 
 

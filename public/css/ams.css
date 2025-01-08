@@ -1,0 +1,150 @@
+/* General Styles */
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #c1bfd8;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #4e4c67;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.sidebar h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+}
+
+.menu-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #6c6b88;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.menu-item:hover {
+    background-color: #5a5975;
+}
+
+.content {
+    flex: 1;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    overflow-y: auto;
+}
+
+/* Header Section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #8e8ba8;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons .btn {
+    background-color: #4e4c67;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.header-buttons .btn:hover {
+    background-color: #3c3b55;
+}
+
+/* Filters Section */
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.search-btn {
+    padding: 10px 15px;
+    background-color: #4e4c67;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #3c3b55;
+}
+
+.filter-options {
+    display: flex;
+    gap: 20px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-input,
+.filter-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: white;
+}
+
+.table th,
+.table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.status-oms {
+    background-color: #6c6b88;
+    padding: 5px;
+    color: white;
+    border-radius: 3px;
+}
