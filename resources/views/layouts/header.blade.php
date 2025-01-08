@@ -14,7 +14,7 @@
             </div>
             <div class="d-flex">
                 <div>
-                    @auth
+                    {{-- @auth
                         <a href="#" class="text-light dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
                         </a>
@@ -37,7 +37,7 @@
                         <a href={{ url('/login') }} class="text-light">
                             <i class="bi bi-person-circle"></i>Login
                         </a>
-                    @endauth
+                    @endauth --}}
                 </div>
                 {{-- <div>
                     <a href="{{ url('/cart') }}"
