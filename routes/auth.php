@@ -65,7 +65,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:God'])->group(function () {
-    // Route::get('/admin/god-panel', [AdminController::class, 'godPanel'])->name('god.panel');
+    Route::get('/user/{id}/edit', [UserManagementController::class, 'edit'])->name('user.edit');
+    Route::put('/user/{id}', [UserManagementController::class, 'update'])->name('user.update');
 });
 
 Route::middleware(['auth', 'role:God,Admin'])->group(function () {
