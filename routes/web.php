@@ -58,7 +58,7 @@ Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizePro
 
 Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
-Route::get('/wood-fence/specs/{categoryName}/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsBySpacing'])
+Route::get('/wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
 
@@ -89,24 +89,29 @@ Route::get('/about', function () {
 
 Route::get('/policy', function () {
     return view('pages.policy', [
-        'title' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms',
-        'header' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms'
+        'title' => 'Policies, Terms & Conditions',
+        'header' => 'Policies & Terms',
+        'header' => 'Policies, Terms & Conditions',
+        'header' => 'Policies & Terms'
     ]);
 })->name('policy');
 
 Route::get('/privacy-policy', function () {
     return view('pages.privacypolicy', [
-        'title' => 'Privacy Policy', 'header' => 'Privacy Policy',
-        'header' => 'Privacy Policy', 'header' => 'Privacy Policy'
+        'title' => 'Privacy Policy',
+        'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy'
     ]);
 })->name('privacypolicy');
 
 Route::get('/brochures', function () {
     return view('pages.brochures', [
-        'title' => 'Brochures', 'header' => 'Brochures'
+        'title' => 'Brochures',
+        'header' => 'Brochures'
     ]);
 })->name('brochures');
-Route::view('/empty-cart','cart/empty')->name('empty-cart');
+Route::view('/empty-cart', 'cart/empty')->name('empty-cart');
 Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
@@ -143,4 +148,4 @@ Route::get('/ams/activity', function () {
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
