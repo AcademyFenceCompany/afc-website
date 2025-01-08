@@ -139,11 +139,16 @@ Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear')
 // AMS Routes
 Route::get('/ams', function () {
     return redirect()->route('ams.activity');
-})->name('ams.home');
+})->middleware('auth')->name('ams.home');
+
 
 Route::get('/ams/activity', function () {
     return view('ams.activity');
 })->name('ams.activity');
+
+Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
+
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
 
 
 

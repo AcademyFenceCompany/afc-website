@@ -40,4 +40,8 @@ class ProductController extends Controller
 
         return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww', 'general_ww_mesh_size_imgs'));
     }
+    public function create()
+    {
+        return view('ams.add-product');
+    }
 }

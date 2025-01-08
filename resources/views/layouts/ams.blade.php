@@ -32,9 +32,9 @@
             Products <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="productsMenu">
-            {{-- <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a> --}}
+            <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
             <a href="#" class="menu-item">View Products</a>
-            {{-- <a href="{{ route('categories.index') }}" class="menu-item">Category Management</a> --}}
+            <a href="" class="menu-item">Category Management</a>
             <a href="#" class="menu-item">Out of Stock</a>
         </div>
 
