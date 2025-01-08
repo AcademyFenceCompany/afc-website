@@ -76,7 +76,7 @@
         </div>
 
         <!-- Additional Menus -->
-        <a href="#" class="menu-item">User Management</a>
+        <a href="{{ route('user.index') }}" class="menu-item">User Management</a>
         <a href="#" class="menu-item">Inventory</a>
         <a href="#" class="menu-item">Office Sheets</a>
         <a href="#" class="menu-item">Sales Reports</a>
