@@ -1,4 +1,4 @@
-{{-- <pre>{{ dd($subcategories) }}</pre> --}}
+{{-- <pre>{{ dd($wood_categories) }}</pre> --}}
 @extends('layouts.main')
 
 @section('title', 'Wood Fence Products')
@@ -100,6 +100,7 @@
                                                 <a href="{{ route('woodfence.specs', [
                                                     'subcategoryId' => $category['family_category_id'],
                                                     'spacing' => $spacing,
+                                                    // 'categoryName' => $category['family_category_name'],
                                                 ]) }}"
                                                     class="btn btn-danger text-white me-2">
                                                     {{ $spacing }}
