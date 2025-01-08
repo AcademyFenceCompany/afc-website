@@ -3,71 +3,96 @@
 @section('title', 'Login')
 
 @section('content')
-    <main class="container">
-        <div class="card">
-            <div class="card-header text-center bg-primary text-white">
-                <h2>Login</h2>
-            </div>
-            <div class="card-body">
-                <!-- Session Status -->
-                @if (session('status'))
-                    <div class="alert alert-success mb-4" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
+    <style>
+        body {
+            background-color: #C1BFD8;
+        }
 
-                <form method="POST" action="{{ route('login') }}">
-                    @csrf
+        .login-header {
+            background-color: #4E4C67;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
 
-                    <!-- Email Address -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="email" class="form-label">Email*</label>
-                            <input type="email" id="email" name="email" class="form-control"
-                                placeholder="Enter your email..." value="{{ old('email') }}" required autofocus>
-                            @if ($errors->has('email'))
-                                <div class="text-danger mt-2">
-                                    {{ $errors->first('email') }}
-                                </div>
-                            @endif
-                        </div>
-                    </div>
+        .login-card {
+            background-color: #C1BFD8;
+            padding: 20px;
+            max-width: 400px;
+            margin: 30px auto;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
 
-                    <!-- Password -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="password" class="form-label">Password*</label>
-                            <input type="password" id="password" name="password" class="form-control"
-                                placeholder="Enter your password..." required>
-                            @if ($errors->has('password'))
-                                <div class="text-danger mt-2">
-                                    {{ $errors->first('password') }}
-                                </div>
-                            @endif
-                        </div>
-                    </div>
+        .form-control {
+            background-color: white;
+            border: 1px solid #4E4C67;
+            border-radius: 5px;
+        }
 
-                    <!-- Remember Me -->
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input id="remember_me" type="checkbox" class="form-check-input" name="remember">
-                            <label for="remember_me" class="form-check-label">Remember me</label>
-                        </div>
-                    </div>
+        .btn-login {
+            background-color: #4E4C67;
+            color: white;
+            font-weight: bold;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
 
-                    <div class="text-center">
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-sm text-primary">
-                                Forgot your password?
-                            </a>
-                        @endif
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-danger">Log in</button>
-                    </div>
-                </form>
-            </div>
+        .footer-gate {
+            background-image: url('/resources/images/gates.png');
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: contain;
+            height: 150px;
+        }
+    </style>
+    <div>
+        <div class="login-header">
+            ACADEMY FENCE COMPANY AMS
         </div>
-    </main>
+        <div class="card login-card">
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+
+                <!-- Username -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">USER NAME</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username"
+                        value="{{ old('username') }}" required autofocus>
+                    @if ($errors->has('username'))
+                        <div class="text-danger mt-2">
+                            {{ $errors->first('username') }}
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">PASSWORD</label>
+                    <input type="password" id="password" name="password" class="form-control"
+                        placeholder="Enter your password" required>
+                    @if ($errors->has('password'))
+                        <div class="text-danger mt-2">
+                            {{ $errors->first('password') }}
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-login">LOG IN</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="footer-gate"></div>
+    </div>
+
+
+
 @endsection

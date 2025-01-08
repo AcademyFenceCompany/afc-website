@@ -5,7 +5,8 @@
     <main class="container">
         <!-- Header Section -->
         <div class="rounded" style="background-color: #8B4513;">
-            <h1 class="text-white text-center py-3 mb-0">WOOD FENCE</h1>
+            <h1 class="text-white text-center py-3 mb-0"> {{ $styleGroups[0]['categoryName'] }} -{{ $spacing }}
+            </h1>
         </div>
         <div class="text-center py-2 mb-4 border-bottom">
             <p class="mb-0">Academy Wood Fence - Cedar Fencing Leaders in Wood Fencing for Over 40 Years.</p>
@@ -63,7 +64,26 @@
             </div>
         </div>
 
-        <!-- Product List Section -->
+        @php
+            // Manual mapping of product IDs for each speciality
+            $manualProductIds = [
+                'Straight on Top' => [
+                    'French Gothic' => 1001, // Replace 1001 with the actual product ID
+                    'Slant Ear' => 1985, // Replace 1002 with the actual product ID
+                    'Gothic Point' => 1003, // Replace 1003 with the actual product ID
+                ],
+                'Concave' => [
+                    'French Gothic' => 2001,
+                    'Slant Ear' => 2002,
+                    'Gothic Point' => 2003,
+                ],
+                'Convex' => [
+                    'French Gothic' => 3001,
+                    'Slant Ear' => 3002,
+                    'Gothic Point' => 3003,
+                ],
+            ];
+        @endphp <!-- Product List Section -->
         @foreach ($styleGroups as $styleGroup)
             <div class="row m-2">
                 <div class="rounded" style="background-color: #000;">
