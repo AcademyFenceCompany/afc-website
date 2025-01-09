@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AMS - @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -76,8 +77,13 @@
         </div>
 
         <!-- Additional Menus -->
-        <a href="{{ route('user.index') }}" class="menu-item">User Management</a>
-        <a href="#" class="menu-item">Inventory</a>
+        @if (auth()->user()->level === 'God')
+            <a href="{{ route('user.management') }}"
+                class="menu-item {{ request()->routeIs('user.management') ? 'active' : '' }}">
+                <i class="fas fa-users-cog"></i>
+                <span>User Management</span>
+            </a>
+        @endif <a href="#" class="menu-item">Inventory</a>
         <a href="#" class="menu-item">Office Sheets</a>
         <a href="#" class="menu-item">Sales Reports</a>
     </div>
@@ -88,6 +94,7 @@
         <div class="header">
             <h2>Academy Fence Management System</h2>
             <div class="header-buttons">
+                <p class="text-center">Welcome {{ auth()->user()->username }}</p>
                 <button class="btn btn-primary">New Order</button>
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
@@ -98,7 +105,9 @@
         @yield('content')
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('js/user-management.js') }}"></script>
+
 </body>
 
 </html>

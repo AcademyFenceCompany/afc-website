@@ -24,8 +24,8 @@ class User extends Authenticatable
         'lastname',
         'level',
         'enabled',
-        'ip_filter',
-        'New'
+        'password',
+        'remember_token'
     ];
 
     protected $hidden = [
@@ -33,20 +33,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $dates = [
-        'created',
-        'lastlog'
+    protected $casts = [
+        'created' => 'datetime',
+        'lastlog' => 'datetime',
+        'enabled' => 'boolean',
+        'level' => 'string'
+    ];
+
+    protected $attributes = [
+        'enabled' => 1 // Default value for new users
     ];
 
     public function getFullNameAttribute()
     {
         return "{$this->firstname} {$this->lastname}";
     }
+
     public function getLastLoginAttribute()
-{
-    if (!$this->lastlog) {
-        return 'Never logged in';
+    {
+        if (!$this->lastlog) {
+            return 'Never logged in';
+        }
+        return \Carbon\Carbon::parse($this->lastlog)->format('M d, Y h:i A');
     }
-    return \Carbon\Carbon::parse($this->lastlog)->format('M d, Y h:i A');
-}
 }
