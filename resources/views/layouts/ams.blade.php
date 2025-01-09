@@ -8,6 +8,8 @@
     <title>AMS - @yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
 </head>
@@ -34,7 +36,7 @@
         </a>
         <div class="collapse submenu" id="productsMenu">
             <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
-            <a href="#" class="menu-item">View Products</a>
+            <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
             <a href="" class="menu-item">Category Management</a>
             <a href="#" class="menu-item">Out of Stock</a>
         </div>
