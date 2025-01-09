@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -59,25 +60,22 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
-//AMS LOGIN ROUTE
-Route::middleware('auth')->group(function () {
-    Route::get('/ams-activity', [ActivityController::class, 'index'])->name('ams.activity');
-});
 
-Route::middleware(['auth', 'role:God'])->group(function () {
-    Route::get('/user/{id}/edit', [UserManagementController::class, 'edit'])->name('user.edit');
-    Route::put('/user/{id}', [UserManagementController::class, 'update'])->name('user.update');
-});
 
-Route::middleware(['auth', 'role:God,Admin'])->group(function () {
-    // Route::get('/admin/admin-panel', [AdminController::class, 'adminPanel'])->name('admin.panel');
-});
 
-Route::middleware(['auth', 'role:God,Admin,Staff'])->group(function () {
-    // Route::get('/admin/staff-panel', [AdminController::class, 'staffPanel'])->name('staff.panel');
-});
-
+//AMS ROUTES
 Route::middleware('auth')->group(function () {
     Route::get('/ams-activity', [ActivityController::class, 'index'])->name('ams.activity');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+
+    Route::middleware(['auth', 'role:God'])->group(function () {
+        Route::get('/user-management', [UserManagementController::class, 'index'])->name('user.management');
+        Route::post('/user', [UserManagementController::class, 'store'])->name('user.store');
+        Route::get('/user/{id}/edit', [UserManagementController::class, 'edit'])->name('user.edit');
+        Route::put('/user/{id}', [UserManagementController::class, 'update'])->name('user.update');
+        Route::delete('/user/{id}', [UserManagementController::class, 'destroy'])->name('user.destroy');
+        Route::post('/user/{id}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('user.toggle-status');
+    });
 });
+
