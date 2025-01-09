@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FamilyCategory;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\InventoryDetail;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -61,14 +61,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-            // Debug incoming data
-            \Log::info('Product store method called');
-            \Log::info('All request data:', $request->all());
     
             DB::beginTransaction();
-    
-            // Debug the product data specifically
-            \Log::info('Product data:', $request->input('product', []));
     
             // Create the main product
             $product = Product::create($request->input('product'));
@@ -76,28 +70,45 @@ class ProductController extends Controller
     
             // Debug each section
             if ($request->has('details')) {
-                \Log::info('Product details:', $request->input('details'));
-                $product->details()->create($request->input('details'));
+                $detailsData = $request->input('details');
+                $detailsData['product_id'] = $product->product_id; 
+                \Log::info('Creating product details with:', $detailsData);
+                
+                $product->details()->create($detailsData);
             }
     
             if ($request->has('shipping')) {
-                \Log::info('Shipping details:', $request->input('shipping'));
-                $product->shippingDetails()->create($request->input('shipping'));
+                $shippingData = $request->input('shipping');
+                $shippingData['product_id'] = $product->product_id; // Explicitly set product_id
+                \Log::info('Creating shipping details with:', $shippingData);
+                
+                $product->shippingDetails()->create($shippingData);
             }
     
             if ($request->hasFile('media')) {
-                \Log::info('Media files present');
                 $mediaData = [];
                 foreach ($request->file('media') as $type => $file) {
                     $path = $file->store('products', 'public');
                     $mediaData[$type] = $path;
                 }
+                $mediaData['product_id'] = $product->product_id; // Explicitly set product_id
+                
+                \Log::info('Creating media with:', $mediaData);
                 $product->media()->create($mediaData);
             }
     
             if ($request->has('inventory')) {
-                \Log::info('Inventory details:', $request->input('inventory'));
-                $product->inventory()->create($request->input('inventory'));
+                $inventoryData = $request->input('inventory');
+                
+                // Create inventory using the relationship
+                $inventory = $product->inventory()->create([
+                    'in_stock_hq' => $inventoryData['in_stock_hq'],
+                    'in_stock_warehouse' => $inventoryData['in_stock_warehouse'],
+                    'inventory_ordered' => $inventoryData['inventory_ordered'] ?? 0,
+                    'product_id' => $product->product_id  
+                ]);
+                
+                \Log::info('Created inventory:', ['inventory' => $inventory->toArray()]);
             }
     
             DB::commit();

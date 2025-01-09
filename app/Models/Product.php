@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 'products';
+    protected $primaryKey = 'product_id';
     public $timestamps = false;
 
     protected $fillable = [
@@ -25,17 +26,17 @@ class Product extends Model
     // Relationships
     public function media()
     {
-        return $this->hasOne(ProductMedia::class);
+        return $this->hasOne(ProductMedia::class, 'product_id', 'product_id');
     }
 
     public function details()
     {
-        return $this->hasOne(ProductDetail::class);
+        return $this->hasOne(ProductDetail::class, 'product_id', 'product_id');
     }
 
     public function shippingDetails()
     {
-        return $this->hasOne(ShippingDetail::class);
+        return $this->hasOne(ShippingDetail::class, 'product_id', 'product_id');
     }
 
     public function inventory()
