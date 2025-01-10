@@ -42,6 +42,7 @@ body {
 .menu-item.active {
     background-color: #8e8ba8;
 }
+
 .submenu {
     padding-left: 15px;
 }
@@ -49,6 +50,7 @@ body {
 .submenu .menu-item {
     font-size: 0.9rem;
 }
+
 /* Content Styles */
 .content {
     flex: 1;
@@ -191,4 +193,66 @@ body {
 
 input[type="file"] {
     margin-top: 10px;
+}
+
+/* Basic tree styling */
+ul.tree {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.category {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+/* Style for the toggle button */
+.toggle-btn {
+    font-weight: bold;
+    cursor: pointer;
+    color: #007bff;
+}
+
+/* Styling for children nodes */
+.children {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none;
+    /* Children are hidden by default */
+}
+
+/* Optionally, add some animation for smooth toggling */
+.children {
+    transition: all 0.3s ease;
+}
+
+/* Basic tree styling */
+ul.tree {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.category {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+/* Style for the toggle button */
+.toggle-btn {
+    font-weight: bold;
+    cursor: pointer;
+    color: #007bff;
+}
+
+/* Styling for children nodes */
+.children {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none;
+    /* Children are hidden by default */
+}
+
+/* Optionally, add some animation for smooth toggling */
+.children {
+    transition: all 0.3s ease;
 }
