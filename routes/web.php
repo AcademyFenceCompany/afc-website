@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
+use App\Http\Controllers\CategoriesController;
 
 
 
@@ -148,7 +149,8 @@ Route::get('/ams/activity', function () {
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
-Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
+// [ControllerName::name of function to use]
+Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
 
 
 
