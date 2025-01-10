@@ -48,14 +48,89 @@ class ProductController extends Controller
         \Log::info('Available categories:', $familyCategories->toArray());
         return view('ams.add-product', compact('familyCategories'));
     }
-    public function index()
+    public function index(Request $request)
     {
-        $perPage = request()->get('per_page', 10);
-        $products = Product::with(['media', 'details', 'shippingDetails', 'inventory', 'familyCategory'])
-        ->orderBy('product_id', 'desc')
-        ->paginate($perPage);
-            
-        return view('ams.product.view-product', compact('products'));
+        $perPage = $request->get('per_page', 10);
+        $query = Product::with(['media', 'details', 'shippingDetails', 'inventory', 'familyCategory']);
+    
+        // Search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('product_name', 'like', "%{$search}%")
+                  ->orWhere('item_no', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+    
+        // Category filter
+        if ($request->filled('category')) {
+            $query->where('family_category_id', $request->category);
+        }
+    
+        // Price range filter
+        if ($request->filled('price_min')) {
+            $query->where('price_per_unit', '>=', $request->price_min);
+        }
+        if ($request->filled('price_max')) {
+            $query->where('price_per_unit', '<=', $request->price_max);
+        }
+    
+        // Stock status filter
+        if ($request->filled('stock_status')) {
+            switch ($request->stock_status) {
+                case 'in_stock':
+                    $query->whereHas('inventory', function($q) {
+                        $q->where('in_stock_hq', '>', 0)
+                          ->orWhere('in_stock_warehouse', '>', 0);
+                    });
+                    break;
+                case 'out_of_stock':
+                    $query->whereHas('inventory', function($q) {
+                        $q->where('in_stock_hq', '<=', 0)
+                          ->where('in_stock_warehouse', '<=', 0);
+                    });
+                    break;
+                case 'low_stock':
+                    $query->whereHas('inventory', function($q) {
+                        $q->where(function($sq) {
+                            $sq->where('in_stock_hq', '>', 0)
+                               ->where('in_stock_hq', '<=', 10);
+                        })->orWhere(function($sq) {
+                            $sq->where('in_stock_warehouse', '>', 0)
+                               ->where('in_stock_warehouse', '<=', 10);
+                        });
+                    });
+                    break;
+            }
+        }
+    
+        // Sorting
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'price_asc':
+                    $query->orderBy('price_per_unit', 'asc');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price_per_unit', 'desc');
+                    break;
+                case 'name_asc':
+                    $query->orderBy('product_name', 'asc');
+                    break;
+                case 'name_desc':
+                    $query->orderBy('product_name', 'desc');
+                    break;
+                default:
+                    $query->orderBy('product_id', 'desc');
+            }
+        } else {
+            $query->orderBy('product_id', 'desc');
+        }
+    
+        $products = $query->paginate($perPage)->withQueryString();
+        $categories = FamilyCategory::all();
+    
+        return view('ams.product.view-product', compact('products', 'categories'));
     }
 
     public function store(Request $request)
