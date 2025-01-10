@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\FamilyCategory;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
@@ -55,7 +55,7 @@ class ProductController extends Controller
         ->orderBy('product_id', 'desc')
         ->paginate($perPage);
             
-        return view('ams.view', compact('products'));
+        return view('ams.product.view-product', compact('products'));
     }
 
     public function store(Request $request)
@@ -127,5 +127,107 @@ class ProductController extends Controller
                 ->with('error', 'Error creating product: ' . $e->getMessage());
         }
     }
+
+    public function edit($id)
+    {
+        $product = Product::with(['details', 'shippingDetails', 'inventory', 'media'])
+            ->findOrFail($id);
+        $familyCategories = FamilyCategory::all();
+        
+        return view('ams.product.edit-product', compact('product', 'familyCategories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $product = Product::findOrFail($id);
+            
+            // Update main product
+            $product->update($request->input('product'));
+            \Log::info('Updated product:', $product->toArray());
+
+            // Update details
+            if ($request->has('details')) {
+                $product->details()->update($request->input('details'));
+            }
+
+            // Update shipping
+            if ($request->has('shipping')) {
+                $product->shippingDetails()->update($request->input('shipping'));
+            }
+
+            // Update inventory
+            if ($request->has('inventory')) {
+                $product->inventory()->update($request->input('inventory'));
+            }
+
+            // Handle media updates
+            if ($request->hasFile('media')) {
+                $mediaData = [];
+                foreach ($request->file('media') as $type => $file) {
+                    $path = $file->store('products', 'public');
+                    $mediaData[$type] = $path;
+                }
+                
+                if ($product->media) {
+                    $product->media()->update($mediaData);
+                } else {
+                    $mediaData['product_id'] = $product->product_id;
+                    $product->media()->create($mediaData);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('products.index')->with('success', 'Product updated successfully');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Error updating product: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Error updating product: ' . $e->getMessage());
+        }
+    }
+    public function deleteImage($id, $type)
+{
+    try {
+        $product = Product::with('media')->findOrFail($id);
+        
+        if (!$product->media) {
+            return response()->json(['success' => false, 'message' => 'No media found']);
+        }
+
+        $imagePath = $product->media->{$type};
+        
+        if ($imagePath) {
+            // Delete the file if it exists
+            if (Storage::disk('public')->exists($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
+            }
+            
+            // Update the database record
+            $product->media()->update([
+                $type => null
+            ]);
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Image deleted successfully'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Image not found'
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Error deleting image: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 }
 
