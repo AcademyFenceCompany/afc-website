@@ -16,5 +16,14 @@ class FamilyCategory extends Model
     {
         return $this->hasMany(Product::class, 'family_category_id', 'family_category_id');
     }
+    public function children()
+    {
+        return $this->hasMany(FamilyCategory::class, 'parent_category_id', 'family_category_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(FamilyCategory::class, 'parent_category_id', 'family_category_id');
+    }
 }
 
