@@ -20,7 +20,7 @@ class Product extends Model
     {
         return $this->hasOne(ProductDetail::class, 'product_id', 'id');
     }
-    
+
     public function productMedia()
     {
         return $this->hasMany(ProductMedia::class, 'product_id', 'id');
@@ -40,9 +40,4 @@ class Product extends Model
     {
         return $this->hasOne(ShippingDetail::class);
     }
-    public function productMedia()
-    {
-        return $this->hasOne(FamilyCategory::class);
-    }
 }
-
