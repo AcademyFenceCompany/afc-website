@@ -149,10 +149,13 @@ Route::get('/ams/activity', function () {
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
-// [ControllerName::name of function to use]
+
+Route::get('/users', [UserManagementController::class, 'index'])->name('user.index');
+Route::put('/user/{id}', [UserManagementController::class, 'update']);
+
+// Family Category Tree - AMS
 Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
-
-
+Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
 
 
 

@@ -1,36 +1,32 @@
 @extends('layouts.ams')
 
-@section('title', 'Add Product')
+@section('title', 'Categories')
 
 @section('content')
     <ul class="tree">
         @foreach ($categories as $category)
             <li class="category">
-                <span class="toggle-btn" onclick="toggleChildren(event)">{{ $category->family_category_name }}</span>
-
-                @if (count($category->children) > 0)
-                    <ul class="children">
-                        @foreach ($category->children as $child)
-                            @include('ams.tree', ['category' => $child])
-                        @endforeach
-                    </ul>
-                @endif
+                <!-- Category with children, display the toggle button and recursive children -->
+                <h3 class="toggle-btn" onclick="toggleChildren(event)">
+                    {{ $category->family_category_name }}
+                </h3>
+                <ul class="children" style="display: none;"> <!-- Keep children hidden by default -->
+                    @foreach ($category->children as $child)
+                        @include('ams.tree', ['category' => $child])
+                    @endforeach
+                </ul>
             </li>
         @endforeach
     </ul>
-
-    <script>
-        // JavaScript function to toggle children visibility
-        function toggleChildren(event) {
-            const childrenList = event.target.nextElementSibling;
-            if (childrenList) {
-                childrenList.style.display = (childrenList.style.display === "none" || childrenList.style.display === "") ?
-                    "block" : "none";
-            }
-        }
-    </script>
-
-
-
-
 @endsection
+
+<script>
+    // JavaScript function to toggle children visibility
+    function toggleChildren(event) {
+        const childrenList = event.target.nextElementSibling;
+        if (childrenList) {
+            childrenList.style.display = (childrenList.style.display === "none" || childrenList.style.display === "") ?
+                "block" : "none";
+        }
+    }
+</script>
