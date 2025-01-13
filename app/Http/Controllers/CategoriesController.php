@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class CategoriesController extends Controller
 {
+    public $family_category_tree = [];
+
     public function showTree()
     {
         $familyCategories = DB::select("
@@ -72,6 +74,37 @@ class CategoriesController extends Controller
 
         $tree = collect((array) $tree);
 
+        $this->family_category_tree = $tree;
         return view('ams.categories', ['categories' => $tree]);
+    }
+
+    // public function showProducts($category_id)
+    // {
+    //     // Fetch the category and its products
+
+    //     $category = DB::table('family_categories')
+    //         ->where('family_category_id', $category_id)
+    //         ->value('family_category_name');
+
+    //     $products =  DB::table('products')
+    //         ->where('subcategory_id', $category_id)
+    //         ->select('*')
+    //         ->get();
+
+    //     // Return the view with category and products
+    //     return view('ams.display-products-tree', compact('category', 'products'));
+    // }
+
+    public function getProducts($category_id)
+    {
+        // Fetch products for the given category ID
+        $products =  DB::table('products')
+            ->join("product_details", "products.product_id", "=", "product_details.product_id")
+            ->where('subcategory_id', $category_id)
+            ->select('*')
+            ->get();
+
+        // Return product data as JSON
+        return response()->json(['products' => $products]);
     }
 }
