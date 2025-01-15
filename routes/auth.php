@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryToProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -82,7 +83,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     // Product routes
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products', [CategoryToProductController::class, 'showProductTree'])->name('products.index');
+    Route::get('/products/{category}/products', [CategoryToProductController::class, 'getProducts']);
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
