@@ -158,5 +158,4 @@ Route::get('/categories', [CategoriesController::class, 'showTree'])->name('cate
 Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
 
 
-
 require __DIR__ . '/auth.php';

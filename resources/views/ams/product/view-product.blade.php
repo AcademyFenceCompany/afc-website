@@ -1,17 +1,16 @@
 @extends('layouts.ams')
-
 @section('title', 'Products')
-
 @section('content')
     <div class="container-fluid mt-4">
         <div class="row">
             <!-- Category Tree Sidebar -->
             <div class="col-md-3 mb-4">
-                <div class="card">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">Categories</h5>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0 fw-semibold">Categories</h5>
                     </div>
                     <div class="card-body p-0">
+<<<<<<< Updated upstream
                         @if (isset($categories) && $categories->isNotEmpty())
                             <div id="category-container" data-categories="{{ $categories->toJson() }}" class="d-none"></div>
                             <ul class="category-tree">
@@ -43,6 +42,13 @@
                         @else
                             <p class="text-danger p-3">No categories available.</p>
                         @endif
+=======
+                        <ul class="category-tree list-unstyled mb-0">
+                            @foreach ($categories as $category)
+                                @include('ams.partials.category-tree-items', ['category' => $category])
+                            @endforeach
+                        </ul>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </div>
@@ -55,78 +61,6 @@
                         @if (auth()->user()->level === 'God' || auth()->user()->level === 'Admin')
                             <a href="{{ route('products.create') }}" class="btn btn-primary btn-sm">Add New Product</a>
                         @endif
-                    </div>
-
-                    <!-- Filters -->
-                    <div class="card-body border-bottom">
-                        <form action="{{ route('products.index') }}" method="GET" id="filterForm">
-                            @if (request('category'))
-                                <input type="hidden" name="category" value="{{ request('category') }}">
-                            @endif
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="form-label small">Search</label>
-                                    <input type="text" name="search" class="form-control form-control-sm"
-                                        placeholder="Search by name or item number" value="{{ request('search') }}">
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label small">Stock Status</label>
-                                    <select name="stock_status" class="form-select form-select-sm">
-                                        <option value="">All Status</option>
-                                        <option value="in_stock"
-                                            {{ request('stock_status') == 'in_stock' ? 'selected' : '' }}>In Stock</option>
-                                        <option value="low_stock"
-                                            {{ request('stock_status') == 'low_stock' ? 'selected' : '' }}>Low Stock
-                                        </option>
-                                        <option value="out_of_stock"
-                                            {{ request('stock_status') == 'out_of_stock' ? 'selected' : '' }}>Out of Stock
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="form-label small">Sort By</label>
-                                    <select name="sort" class="form-select form-select-sm">
-                                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest
-                                            First</option>
-                                        <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>
-                                            Price (Low to High)</option>
-                                        <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>
-                                            Price (High to Low)</option>
-                                        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Name
-                                            (A-Z)</option>
-                                        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>
-                                            Name (Z-A)</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-2">
-                                    <label class="form-label small">Per Page</label>
-                                    <select name="per_page" class="form-select form-select-sm">
-                                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10
-                                        </option>
-                                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25
-                                        </option>
-                                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50
-                                        </option>
-                                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <div class="d-flex gap-2">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-funnel"></i> Apply Filters
-                                        </button>
-                                        <a href="{{ route('products.index') }}" class="btn btn-secondary btn-sm">
-                                            <i class="bi bi-x-circle"></i> Reset
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     </div>
 
                     <!-- Products Table -->
@@ -144,7 +78,7 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="productsTableBody">
                                     @forelse($products as $product)
                                         <tr>
                                             <td>{{ $product->item_no }}</td>
@@ -167,19 +101,6 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div class="text-muted small">
-                                @if ($products->total() > 0)
-                                    Showing {{ $products->firstItem() }} to {{ $products->lastItem() }}
-                                    of {{ $products->total() }} results
-                                @endif
-                            </div>
-                            <div>
-                                {{ $products->links() }}
-                            </div>
                         </div>
                     </div>
                 </div>

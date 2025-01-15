@@ -91,7 +91,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::post('/products/{product}/delete-image/{type}', [ProductController::class, 'deleteImage'])
     ->name('products.deleteImage');
-    Route::get('/products/{category}/products', [ProductController::class, 'getProducts'])->name('products.getProducts');
-    
+    Route::get('/products/{category}/products', [ProductController::class, 'getProducts'])->name('categories.products');
+
+
 });
 

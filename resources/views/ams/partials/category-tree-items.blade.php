@@ -1,22 +1,20 @@
-@foreach ($categories as $category)
-    <li class="category-item">
-        <div class="d-flex align-items-center">
-            @if ($category->children->isNotEmpty())
-                <button class="btn btn-sm btn-link toggle-btn" type="button">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            @else
-                <span class="ps-3"></span>
-            @endif
-            <a href="{{ route('products.index', ['category' => $category->family_category_id]) }}"
-                class="category-link {{ request('category') == $category->family_category_id ? 'active' : '' }}">
-                {{ $category->family_category_name }}
-            </a>
+<li class="category-item">
+    @if (count($category->children) > 0)
+        <div class="category-header d-flex align-items-center" onclick="toggleChildren(event)">
+            <div class="category-toggle me-2">
+                <i class="bi bi-chevron-right"></i>
+            </div>
+            <span class="category-name">{{ $category->family_category_name }}</span>
         </div>
-        @if ($category->children->isNotEmpty())
-            <ul class="nested">
-                @include('ams.partials.category-tree-items', ['categories' => $category->children])
-            </ul>
-        @endif
-    </li>
-@endforeach
+        <ul class="category-children list-unstyled ms-3" style="display: none;">
+            @foreach ($category->children as $child)
+                @include('ams.partials.category-tree-items', ['category' => $child])
+            @endforeach
+        </ul>
+    @else
+        <div class="category-link d-flex align-items-center"
+            onclick="fetchProducts('{{ $category->family_category_id }}', this)">
+            <span class="ms-4 category-name">{{ $category->family_category_name }}</span>
+        </div>
+    @endif
+</li>

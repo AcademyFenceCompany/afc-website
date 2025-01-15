@@ -52,39 +52,98 @@ class ProductController extends Controller
 {
     $perPage = $request->get('per_page', 10);
 
+    // Start building the query with necessary relationships
     $query = Product::with([
         'familyCategory:family_category_id,family_category_name',
         'inventory:product_id,in_stock_hq,in_stock_warehouse'
     ]);
 
-    // Category filtering
+    // Enhanced category filtering
     if ($request->filled('category')) {
         $categoryId = $request->category;
+        
+        // First, get all subcategories using a recursive CTE
+        $subcategories = DB::select("
+            WITH RECURSIVE category_tree AS (
+                -- Base case: start with the selected category
+                SELECT family_category_id, parent_category_id
+                FROM family_categories
+                WHERE family_category_id = ?
+                
+                UNION ALL
+                
+                -- Recursive case: get all children
+                SELECT c.family_category_id, c.parent_category_id
+                FROM family_categories c
+                INNER JOIN category_tree ct ON ct.family_category_id = c.parent_category_id
+            )
+            SELECT family_category_id FROM category_tree
+        ", [$categoryId]);
+        
+        // Extract category IDs from the result
+        $categoryIds = collect($subcategories)->pluck('family_category_id')->push($categoryId)->unique();
+        
+        // Apply the category filter to include all subcategories
+        $query->whereIn('family_category_id', $categoryIds);
+    }
 
-        // Log the category ID
-        \Log::info('Category ID:', ['category' => $categoryId]);
+    // Your existing filters remain the same
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('product_name', 'like', "%{$search}%")
+              ->orWhere('item_no', 'like', "%{$search}%");
+        });
+    }
 
-        // Check if the selected category is a leaf category
-        $isLeafCategory = FamilyCategory::where('parent_category_id', $categoryId)->doesntExist();
-
-        if ($isLeafCategory) {
-            $query->where('family_category_id', $categoryId);
-        } else {
-            // Include products of all child categories
-            $childCategoryIds = FamilyCategory::where('parent_category_id', $categoryId)
-                ->pluck('family_category_id');
-            $query->whereIn('family_category_id', $childCategoryIds);
+    // Stock status filter
+    if ($request->filled('stock_status')) {
+        switch ($request->stock_status) {
+            case 'in_stock':
+                $query->whereHas('inventory', function($q) {
+                    $q->where('in_stock_hq', '>', 0)
+                      ->orWhere('in_stock_warehouse', '>', 0);
+                });
+                break;
+            case 'out_of_stock':
+                $query->whereHas('inventory', function($q) {
+                    $q->where('in_stock_hq', '<=', 0)
+                      ->where('in_stock_warehouse', '<=', 0);
+                });
+                break;
+            case 'low_stock':
+                $query->whereHas('inventory', function($q) {
+                    $q->where('in_stock_hq', '>', 0)
+                      ->where('in_stock_hq', '<=', 10);
+                });
+                break;
         }
     }
 
-    // Fetch categories with nested structure
+    // Sorting
+    $query->when($request->sort, function($q) use ($request) {
+        switch ($request->sort) {
+            case 'price_asc':
+                return $q->orderBy('price_per_unit', 'asc');
+            case 'price_desc':
+                return $q->orderBy('price_per_unit', 'desc');
+            case 'name_asc':
+                return $q->orderBy('product_name', 'asc');
+            case 'name_desc':
+                return $q->orderBy('product_name', 'desc');
+            default:
+                return $q->orderBy('product_id', 'desc');
+        }
+    });
+
+    // Get categories with their product counts
     $categories = FamilyCategory::select([
         'family_category_id',
         'parent_category_id',
         'family_category_name',
         DB::raw('(SELECT COUNT(*) FROM products WHERE products.family_category_id = family_categories.family_category_id) as products_count')
     ])
-    ->with(['children' => function ($query) {
+    ->with(['children' => function($query) {
         $query->select([
             'family_category_id',
             'parent_category_id',
@@ -94,7 +153,6 @@ class ProductController extends Controller
     ->whereNull('parent_category_id')
     ->get();
 
-    // Execute product query
     $products = $query->paginate($perPage)->withQueryString();
 
     // Log the executed query
@@ -278,5 +336,43 @@ class ProductController extends Controller
     }
 }
 
+public function getProducts($category_id)
+{
+    try {
+        $products = DB::table('products')
+            ->leftJoin('product_details', 'products.product_id', '=', 'product_details.product_id')
+            ->leftJoin('family_categories', 'products.family_category_id', '=', 'family_categories.family_category_id')
+            ->leftJoin('inventory_details', 'products.product_id', '=', 'inventory_details.product_id')
+            ->where(function($query) use ($category_id) {
+                $query->where('products.family_category_id', $category_id)
+                      ->orWhere('products.subcategory_id', $category_id);
+            })
+            ->select(
+                'products.product_id',
+                'products.item_no',
+                'products.product_name',
+                'products.price_per_unit',
+                'family_categories.family_category_name',
+                'inventory_details.in_stock_hq',
+                'inventory_details.in_stock_warehouse'
+            )
+            ->get();
+
+        \Log::info('Products data:', $products->toArray()); // Log the actual data
+
+        return response()->json([
+            'success' => true,
+            'products' => $products
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Error in getProducts: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Error fetching products',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+}
 }
 
