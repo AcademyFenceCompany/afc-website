@@ -12,12 +12,13 @@
                         <h5 class="mb-0">Categories</h5>
                     </div>
                     <div class="card-body p-0">
-                        <ul class="category-tree">
-                            @foreach ($categories as $category)
-                                @if ($category->parent_category_id === null)
+                        @if (isset($categories) && $categories->isNotEmpty())
+                            <div id="category-container" data-categories="{{ $categories->toJson() }}" class="d-none"></div>
+                            <ul class="category-tree">
+                                @foreach ($categories as $category)
                                     <li class="category-item">
                                         <div class="d-flex align-items-center">
-                                            @if (count($category->children) > 0)
+                                            @if ($category->children->count() > 0)
                                                 <button class="btn btn-sm btn-link toggle-btn" type="button">
                                                     <i class="bi bi-chevron-right"></i>
                                                 </button>
@@ -27,11 +28,9 @@
                                             <a href="{{ route('products.index', ['category' => $category->family_category_id]) }}"
                                                 class="category-link {{ request('category') == $category->family_category_id ? 'active' : '' }}">
                                                 {{ $category->family_category_name }}
-                                                <span
-                                                    class="badge bg-secondary float-end">{{ $category->products_count ?? 0 }}</span>
                                             </a>
                                         </div>
-                                        @if (count($category->children) > 0)
+                                        @if ($category->children->count() > 0)
                                             <ul class="nested">
                                                 @include('ams.partials.category-tree-items', [
                                                     'categories' => $category->children,
@@ -39,9 +38,11 @@
                                             </ul>
                                         @endif
                                     </li>
-                                @endif
-                            @endforeach
-                        </ul>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-danger p-3">No categories available.</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -185,85 +186,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .category-tree {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .category-item {
-            border-bottom: 1px solid #eee;
-        }
-
-        .category-link {
-            color: #333;
-            text-decoration: none;
-            padding: 8px 12px;
-            display: block;
-            flex-grow: 1;
-        }
-
-        .category-link:hover {
-            background-color: #f8f9fa;
-            text-decoration: none;
-        }
-
-        .category-link.active {
-            background-color: #e9ecef;
-            font-weight: 500;
-        }
-
-        .nested {
-            list-style: none;
-            padding-left: 20px;
-            display: none;
-        }
-
-        .show {
-            display: block;
-        }
-
-        .toggle-btn {
-            padding: 4px 8px;
-            color: #666;
-        }
-
-        .toggle-btn i {
-            transition: transform 0.2s;
-        }
-
-        .toggle-btn.active i {
-            transform: rotate(90deg);
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Toggle category children
-            document.querySelectorAll('.toggle-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const categoryItem = this.closest('.category-item');
-                    const nestedList = categoryItem.querySelector('.nested');
-                    if (nestedList) {
-                        nestedList.classList.toggle('show');
-                        this.classList.toggle('active');
-                    }
-                });
-            });
-
-            // Auto-expand active category
-            const activeLink = document.querySelector('.category-link.active');
-            if (activeLink) {
-                let parent = activeLink.closest('.nested');
-                while (parent) {
-                    parent.classList.add('show');
-                    const toggleBtn = parent.parentElement.querySelector('.toggle-btn');
-                    if (toggleBtn) toggleBtn.classList.add('active');
-                    parent = parent.parentElement.closest('.nested');
-                }
-            }
-        });
-    </script>
 @endsection
