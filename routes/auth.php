@@ -13,6 +13,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryToProductController;
+use App\Http\Controllers\getProductsByCategory;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -83,17 +84,14 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     // Product routes
-    Route::get('/products', [CategoryToProductController::class, 'showProductTree'])->name('products.index');
-    Route::get('/products/{category}/products', [CategoryToProductController::class, 'getProducts']);
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/api/products/{categoryId}', [ProductController::class, 'getProductsByCategory']);
     Route::post('/products/{product}/delete-image/{type}', [ProductController::class, 'deleteImage'])
     ->name('products.deleteImage');
-    Route::get('/products/{category}/products', [ProductController::class, 'getProducts'])->name('products.getProducts');
-    
 });
 

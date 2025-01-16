@@ -52,6 +52,7 @@ class ProductController extends Controller
 {
     $perPage = $request->get('per_page', 10);
 
+    // Eager load only necessary relationships
     $query = Product::with([
         'familyCategory:family_category_id,family_category_name',
         'inventory:product_id,in_stock_hq,in_stock_warehouse'
@@ -60,31 +61,17 @@ class ProductController extends Controller
     // Category filtering
     if ($request->filled('category')) {
         $categoryId = $request->category;
-
-        // Log the category ID
-        \Log::info('Category ID:', ['category' => $categoryId]);
-
-        // Check if the selected category is a leaf category
-        $isLeafCategory = FamilyCategory::where('parent_category_id', $categoryId)->doesntExist();
-
-        if ($isLeafCategory) {
-            $query->where('family_category_id', $categoryId);
-        } else {
-            // Include products of all child categories
-            $childCategoryIds = FamilyCategory::where('parent_category_id', $categoryId)
-                ->pluck('family_category_id');
-            $query->whereIn('family_category_id', $childCategoryIds);
-        }
+        $query->where('family_category_id', $categoryId);
     }
 
-    // Fetch categories with nested structure
+    // Load categories with nested structure
     $categories = FamilyCategory::select([
         'family_category_id',
         'parent_category_id',
         'family_category_name',
         DB::raw('(SELECT COUNT(*) FROM products WHERE products.family_category_id = family_categories.family_category_id) as products_count')
     ])
-    ->with(['children' => function ($query) {
+    ->with(['children' => function($query) {
         $query->select([
             'family_category_id',
             'parent_category_id',
@@ -94,17 +81,59 @@ class ProductController extends Controller
     ->whereNull('parent_category_id')
     ->get();
 
-    // Execute product query
+    // Rest of your filters...
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('product_name', 'like', "%{$search}%")
+              ->orWhere('item_no', 'like', "%{$search}%");
+        });
+    }
+
+    // Stock status filter
+    if ($request->filled('stock_status')) {
+        switch ($request->stock_status) {
+            case 'in_stock':
+                $query->whereHas('inventory', function($q) {
+                    $q->where('in_stock_hq', '>', 0)
+                      ->orWhere('in_stock_warehouse', '>', 0);
+                });
+                break;
+            case 'out_of_stock':
+                $query->whereHas('inventory', function($q) {
+                    $q->where('in_stock_hq', '<=', 0)
+                      ->where('in_stock_warehouse', '<=', 0);
+                });
+                break;
+            case 'low_stock':
+                $query->whereHas('inventory', function($q) {
+                    $q->where('in_stock_hq', '>', 0)
+                       ->where('in_stock_hq', '<=', 10);
+                });
+                break;
+        }
+    }
+
+    // Sorting
+    $query->when($request->sort, function($q) use ($request) {
+        switch ($request->sort) {
+            case 'price_asc':
+                return $q->orderBy('price_per_unit', 'asc');
+            case 'price_desc':
+                return $q->orderBy('price_per_unit', 'desc');
+            case 'name_asc':
+                return $q->orderBy('product_name', 'asc');
+            case 'name_desc':
+                return $q->orderBy('product_name', 'desc');
+            default:
+                return $q->orderBy('product_id', 'desc');
+        }
+    });
+
     $products = $query->paginate($perPage)->withQueryString();
 
-    // Log the executed query
-    \Log::info('Executed Query:', ['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
-
-    // Pass both products and categories to the view
     return view('ams.product.view-product', compact('products', 'categories'));
 }
-
-    
 
     public function store(Request $request)
     {
@@ -277,6 +306,52 @@ class ProductController extends Controller
         ], 500);
     }
 }
+public function getProductsByCategory($categoryId, Request $request)
+{
+    try {
+        $perPage = $request->get('per_page', 10);
 
+        // Query using model relationships and check both category fields
+        $products = Product::with([
+            'familyCategory:family_category_id,family_category_name',
+            'inventory:product_id,in_stock_hq,in_stock_warehouse',
+            'details:product_id,color,style,specialty,size1,size2,size3'
+        ])
+        ->where(function($query) use ($categoryId) {
+            $query->where('family_category_id', $categoryId)
+                  ->orWhere('subcategory_id', $categoryId);  // Add check for subcategory_id
+        })
+        ->select([
+            'products.product_id',
+            'products.item_no',
+            'products.product_name',
+            'products.price_per_unit',
+            'products.family_category_id',
+            'products.subcategory_id'
+        ])
+        ->get();
+
+        \Log::info('Products query for category:', [
+            'category_id' => $categoryId,
+            'count' => $products->count()
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'total' => $products->count(),
+            'data' => $products
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Error getting products:', [
+            'category_id' => $categoryId,
+            'error' => $e->getMessage()
+        ]);
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'Error loading products: ' . $e->getMessage()
+        ], 500);
+    }
 }
-
+}
