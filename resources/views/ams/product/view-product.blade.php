@@ -271,7 +271,7 @@
                                 const formattedPrice = !isNaN(price) ? `$${price.toFixed(2)}` : '$0.00';
 
                                 return `
-                            <tr>
+                           <tr>
                                 <td>${product.item_no || ''}</td>
                                 <td>${product.product_name || ''}</td>
                                 <td>${product.family_category?.family_category_name || 'N/A'}</td>
@@ -279,9 +279,15 @@
                                 <td>${product.inventory?.in_stock_hq || 0}</td>
                                 <td>${product.inventory?.in_stock_warehouse || 0}</td>
                                 <td>
-                                    
-                                            <a href="/products/${product.product_id}/edit"  class="btn btn-sm btn-primary">Edit</a>
-                                       
+                                    <div class="d-flex gap-2">
+                                        ${product.color ? `<small class="badge bg-light text-dark">Color: ${product.color}</small>` : ''}
+                                        ${product.style ? `<small class="badge bg-light text-dark">Style: ${product.style}</small>` : ''}
+                                        ${product.specialty ? `<small class="badge bg-light text-dark">Specialty: ${product.specialty}</small>` : ''}
+                                        ${product.size1 ? `<small class="badge bg-light text-dark">Size 1: ${product.size1}</small>` : ''}
+                                        ${product.size2 ? `<small class="badge bg-light text-dark">Size 2: ${product.size2}</small>` : ''}
+                                        ${product.size3 ? `<small class="badge bg-light text-dark">Size 3: ${product.size3}</small>` : ''}
+                                    </div>
+                                    <a href="/products/${product.product_id}/edit" class="btn btn-sm btn-primary mt-1">Edit</a>
                                 </td>
                             </tr>
                         `;

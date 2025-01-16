@@ -312,23 +312,10 @@ public function getProductsByCategory($categoryId, Request $request)
         $perPage = $request->get('per_page', 10);
 
         // Query using model relationships and check both category fields
-        $products = Product::with([
-            'familyCategory:family_category_id,family_category_name',
-            'inventory:product_id,in_stock_hq,in_stock_warehouse',
-            'details:product_id,color,style,specialty,size1,size2,size3'
-        ])
-        ->where(function($query) use ($categoryId) {
-            $query->where('family_category_id', $categoryId)
-                  ->orWhere('subcategory_id', $categoryId);  // Add check for subcategory_id
-        })
-        ->select([
-            'products.product_id',
-            'products.item_no',
-            'products.product_name',
-            'products.price_per_unit',
-            'products.family_category_id',
-            'products.subcategory_id'
-        ])
+        $products =  DB::table('products')
+        ->join("product_details", "products.product_id", "=", "product_details.product_id")
+        ->where('subcategory_id', $categoryId)
+        ->select('*')
         ->get();
 
         \Log::info('Products query for category:', [
@@ -341,7 +328,6 @@ public function getProductsByCategory($categoryId, Request $request)
             'total' => $products->count(),
             'data' => $products
         ]);
-
     } catch (\Exception $e) {
         \Log::error('Error getting products:', [
             'category_id' => $categoryId,
