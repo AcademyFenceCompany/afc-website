@@ -1,3 +1,4 @@
+{{-- @dd($customer) --}}
 @extends('layouts.ams')
 
 @section('title', 'Customer Details')
@@ -65,8 +66,8 @@
                             <tbody>
                                 @foreach ($customer->orders as $order)
                                     <tr>
-                                        <td>{{ $order->id }}</td>
-                                        <td>{{ $order->created_at->format('M d, Y H:i') }}</td>
+                                        <td>{{ $order->customer_order_id }}</td>
+                                        <td>{{ $order->created_at ? $order->created_at->format('M d, Y H:i') : 'N/A' }}</td>
                                         <td>${{ number_format($order->total, 2) }}</td>
                                         <td>{{ ucfirst($order->status) }}</td>
                                         <td>
