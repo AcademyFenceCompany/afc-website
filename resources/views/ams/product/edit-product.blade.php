@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container mt-4">
-        <h2 class="text-center mb-4">Edit Product</h2>
+        <h2 class="text-center mb-4">Edit {{ $product->product_name }}</h2>
 
         <form method="POST" action="{{ route('products.update', $product->product_id) }}" enctype="multipart/form-data">
             @csrf
@@ -165,14 +165,14 @@
                                     step="0.01" value="{{ $product->shippingDetails->weight ?? '' }}">
                             </div>
 
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <div class="form-check">
                                     <input type="checkbox" name="shipping[free_shipping]" id="free_shipping"
                                         class="form-check-input"
                                         {{ $product->shippingDetails->free_shipping ? 'checked' : '' }}>
                                     <label class="form-check-label" for="free_shipping">Free Shipping</label>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 

@@ -256,3 +256,53 @@ ul.tree {
 .children {
     transition: all 0.3s ease;
 }
+.category-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-item {
+    border-bottom: 1px solid #eee;
+}
+
+.category-link {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    flex-grow: 1;
+}
+
+.category-link:hover {
+    background-color: #f8f9fa;
+    text-decoration: none;
+}
+
+.category-link.active {
+    background-color: #e9ecef;
+    font-weight: 500;
+}
+
+.nested {
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.toggle-btn {
+    padding: 4px 8px;
+    color: #666;
+}
+
+.toggle-btn i {
+    transition: transform 0.2s;
+}
+
+.toggle-btn.active i {
+    transform: rotate(90deg);
+}

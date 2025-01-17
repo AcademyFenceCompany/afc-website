@@ -14,7 +14,11 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryToProductController;
 use App\Http\Controllers\getProductsByCategory;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
+
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -95,3 +99,24 @@ Route::middleware(['auth'])->group(function () {
     ->name('products.deleteImage');
 });
 
+
+
+// Customer Routes
+Route::prefix('customers')->group(function () {
+    Route::get('/', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/{customer}', [CustomerController::class, 'show'])->name('customers.show');
+    Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::post('/', [CustomerController::class, 'store'])->name('customers.store');
+});
+
+// API Routes
+Route::prefix('api')->group(function () {
+    // Customer Search
+    Route::get('/customers/search', [CustomerController::class, 'search'])->name('customers.search');
+    // Address Management
+    Route::get('/addresses/{address}', [AddressController::class, 'show']);
+    Route::post('/addresses', [AddressController::class, 'store']);
+    Route::put('/addresses/{address}', [AddressController::class, 'update']);
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy']);
+});
