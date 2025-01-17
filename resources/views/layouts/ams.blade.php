@@ -96,7 +96,7 @@
             <h2>Academy Fence Management System</h2>
             <div class="header-buttons">
                 <p class="text-center">Welcome {{ auth()->user()->username }}</p>
-                <button class="btn btn-primary">New Order</button>
+                <a href="{{ route('customers.index') }}" class="btn btn-primary">New Order</a>
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn btn-danger">Log Out</button>
