@@ -88,7 +88,7 @@
                             <td>${customer.orders_count || 0}</td>
                             <td>
                                 <a href="{{ route('customers.show', $customer->customer_id) }}" class="btn btn-sm btn-primary">View</a>
-                                <a href="/customers/${customer.customer_id}/edit" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{{ route('customers.edit', $customer->customer_id) }}" class="btn btn-sm btn-warning">Edit</a>
                             </td>
                         </tr>
                     `;

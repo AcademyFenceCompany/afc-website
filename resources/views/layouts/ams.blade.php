@@ -47,7 +47,7 @@
         </a>
         <div class="collapse submenu" id="customersMenu">
             <a href="#" class="menu-item">Add Customer</a>
-            <a href="#" class="menu-item">View Customers</a>
+            <a href="{{ route('customers.index') }}" class="menu-item">View Customers</a>
         </div>
 
         <!-- Shipping -->

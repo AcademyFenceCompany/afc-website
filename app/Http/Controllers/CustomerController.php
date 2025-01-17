@@ -125,7 +125,7 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         $customer->load('addresses');
-        return view('customers.edit', compact('customer'));
+        return view('ams.customers.edit', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
@@ -144,7 +144,7 @@ class CustomerController extends Controller
         $customer->update($request->all());
 
         return redirect()
-            ->route('customers.show', $customer)
+            ->route('ams.customers.index', $customer)
             ->with('success', 'Customer updated successfully!');
     }
 }
