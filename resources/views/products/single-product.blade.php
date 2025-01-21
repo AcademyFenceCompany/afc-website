@@ -1,6 +1,3 @@
-{{-- <pre>
-    {{ dd($productDetails) }}
-</pre> --}}
 @extends('layouts.main')
 
 @section('title', $productDetails->product_name)

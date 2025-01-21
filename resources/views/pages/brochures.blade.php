@@ -3,7 +3,7 @@
 
 <!-- Brochures Grid -->
 <div class="d-flex flex-wrap justify-content-center mb-5" style="gap: 20px;">
-    @foreach([
+    @foreach ([
         ['title' => 'General Products', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/general_print_catalogue.pdf'],
         ['title' => 'Wood Fence', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/wood_fencing_print_catalogue.pdf'],
         ['title' => 'Ornamental Fence', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/ornamental_fence_print_catalogue.pdf'],
@@ -27,15 +27,19 @@
         ['title' => 'Hex Netting', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/black_hex_netting.pdf'],
         ['title' => 'Vinyl Fence', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/Academy PVC.pdf'],
         ['title' => 'Wholesale', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/ACADEMY FLYER wholesale contractor.pdf'],
-        ['title' => 'Welded Wire General', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/WW_General.pdf']
+        ['title' => 'Welded Wire General', 'image' => '/resources/images/brochure.png', 'url' => 'resources/brochures/WW_General.pdf'],
     ] as $brochure)
-    <div class="flex-item" style="flex: 0 1 calc(20% - 20px); background-color: #f9f9f9; border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);">
-        <img src="{{ $brochure['image'] }}" alt="{{ $brochure['title'] }}" class="img-fluid mb-3" style="max-height: 100px;">
-        <h5 class="fw-bold" style="color: var(--secondary-color); font-size: 15px;">{{ $brochure['title'] }}</h5>
-        <a href="{{ $brochure['url'] }}" target="_blank" class="btn mt-3" style="background-color: var(--secondary-color); color: #fff; border-radius: 5px;">
-            View / Print
-        </a>
-    </div>
+        <div class="flex-item"
+            style="flex: 0 1 calc(20% - 20px); background-color: #f9f9f9; border-radius: 10px; padding: 15px; text-align: center; box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);">
+            <img src="{{ $brochure['image'] }}" alt="{{ $brochure['title'] }}" class="img-fluid mb-3"
+                style="max-height: 100px;">
+            <h5 class="fw-bold" style="color: var(--secondary-color); font-size: 15px;">{{ $brochure['title'] }}</h5>
+            <a href="{{ $brochure['url'] }}" target="_blank" class="btn mt-3"
+                style="background-color: var(--secondary-color); color: #fff; border-radius: 5px;">
+                View / Print
+            </a>
+
+        </div>
     @endforeach
 </div>
 

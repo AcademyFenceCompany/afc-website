@@ -75,7 +75,7 @@ class CategoriesController extends Controller
         $tree = collect((array) $tree);
 
         $this->family_category_tree = $tree;
-        return view('ams.categories', ['categories' => $tree]);
+        return view('ams.category-management.categories', ['categories' => $tree]);
     }
 
     // public function showProducts($category_id)
