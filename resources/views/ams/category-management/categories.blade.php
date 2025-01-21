@@ -12,7 +12,7 @@
                 </h3>
                 <ul class="children" style="display: none;"> <!-- Keep children hidden by default -->
                     @foreach ($category->children as $child)
-                        @include('ams.tree', ['category' => $child])
+                        @include('ams.category-management.tree', ['category' => $child])
                     @endforeach
                 </ul>
             </li>

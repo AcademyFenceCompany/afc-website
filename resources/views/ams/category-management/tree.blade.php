@@ -4,7 +4,7 @@
 
         <ul class="children" style="display: none;">
             @foreach ($category->children as $child)
-                @include('ams.tree', ['category' => $child])
+                @include('ams.category-management.tree', ['category' => $child])
             @endforeach
         </ul>
     @else

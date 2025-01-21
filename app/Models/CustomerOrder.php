@@ -11,7 +11,7 @@ class CustomerOrder extends Model
         'shipping_address_id',
         'order_origin',
         'original_customer_id',
-        'original_customer_or',
+        'original_customer_order_id',
         'payment_method',
         'discount_amount',
         'subtotal',
@@ -25,13 +25,18 @@ class CustomerOrder extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
-    public function billingAddress()
+    public function address()
     {
-        return $this->belongsTo(CustomerAddress::class, 'billing_address_id', 'id');
+        return $this->belongsTo(CustomerAddress::class, 'customer_id', 'customer_id');
+    }
+    
+    public function order()
+    {
+        return $this->hasMany(OrderItem::class, 'original_order_id', 'original_customer_order_id');
     }
 
-    public function shippingAddress()
+    public function products()
     {
-        return $this->belongsTo(CustomerAddress::class, 'shipping_address_id', 'id');
+        return $this->hasManyThrough(Product::class, OrderItem::class, 'original_order_id', 'product_id', 'original_customer_order_id', 'product_id');
     }
 }

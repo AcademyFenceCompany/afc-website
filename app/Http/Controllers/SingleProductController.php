@@ -43,7 +43,6 @@ class SingleProductController extends Controller
             )
             ->get();
 
-        $productVariations->dump();
 
         // Dynamically fetch options based on style, speciality, and category
         $productOptions = DB::table('products as p')
