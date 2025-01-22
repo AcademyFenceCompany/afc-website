@@ -14,17 +14,21 @@ class ActivityController extends Controller
             'customer',
             'billingAddress',
             'shippingAddress',
-            'order.product.details', // Include ProductDetail through Product
+            'order.product', // Include ProductDetail through Product
             'status',
         ]);
 
         // Search filter
-        if ($request->has('search')) {
+        if ($request->filled('search')) { // `filled` checks if input is not null/empty
             $search = $request->input('search');
-            $query->where('customer_order_id', 'like', "%$search%")
-                  ->orWhereHas('customer', function ($q) use ($search) {
-                      $q->where('name', 'like', "%$search%");
+    
+            // Search by customer_order_id or customer name
+            $query->where(function ($q) use ($search) {
+                $q->where('original_customer_order_id', 'like', "%$search%")
+                  ->orWhereHas('customer', function ($subQuery) use ($search) {
+                      $subQuery->where('name', 'like', "%$search%");
                   });
+            });
         }
 
         // Status filter
