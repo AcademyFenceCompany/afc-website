@@ -25,7 +25,12 @@ class CustomerOrder extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
-    public function address()
+    public function billingAddress()
+    {
+        return $this->belongsTo(CustomerAddress::class, 'customer_id', 'customer_id');
+    }
+
+    public function shippingAddress()
     {
         return $this->belongsTo(CustomerAddress::class, 'customer_id', 'customer_id');
     }
@@ -37,6 +42,18 @@ class CustomerOrder extends Model
 
     public function products()
     {
-        return $this->hasManyThrough(Product::class, OrderItem::class, 'original_order_id', 'product_id', 'original_customer_order_id', 'product_id');
+        return $this->hasManyThrough(
+            Product::class,
+            OrderItem::class,
+            'original_order_id',         // Foreign key on order_items table
+            'product_id',                // Foreign key on products table
+            'original_customer_order_id', // Local key on customer_orders table
+            'product_id'                 // Local key on order_items table
+        )->with('details'); // Eager load the ProductDetail relationship
+    }
+
+    public function status()
+    {
+        return $this->hasOne(OrderStatus::class, 'original_customer_order_id', 'original_customer_order_id');
     }
 }
