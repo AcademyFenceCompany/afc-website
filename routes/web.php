@@ -44,6 +44,20 @@ Route::get('/resources/brochures/{filename}', function ($filename) {
 
     return Response::make($file, 200)->header("Content-Type", $type);
 });
+
+Route::get('/resources/office_sheets/{filename}', function ($filename) {
+    $path = resource_path('office_sheets/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    return Response::make($file, 200)->header("Content-Type", $type);
+});
+
 Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');

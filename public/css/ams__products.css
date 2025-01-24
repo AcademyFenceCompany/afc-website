@@ -1,0 +1,53 @@
+.container {
+    background-color: #c1bfd8;
+    width: 1100px;
+    height: 1268px;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+
+.add_product__title {
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    background-color: #8482a0;
+    width: 1032px;
+    height: 42px;
+    padding-top: 11px;
+    margin: 20px 34px;
+}
+
+.card-header {
+    background-color: #4e4c67;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.card-body {
+    background-color: #e8e8f0;
+}
+
+.card__input {
+    margin-bottom: 12px;
+}
+
+.form-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.form-control::placeholder {
+    color: #4e4c67;
+    opacity: 0.3;
+    font-size: 12px;
+}
+
+
+
+

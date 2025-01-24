@@ -120,3 +120,6 @@ Route::prefix('api')->group(function () {
     Route::put('/addresses/{address}', [AddressController::class, 'update']);
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy']);
 });
+
+Route::view('/office-sheets', 'ams.office_sheets.index_office_sheets')->name('office-sheets');
+
