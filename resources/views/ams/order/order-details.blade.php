@@ -4,47 +4,51 @@
 
 @section('content')
     <div class="order-details">
-        <!-- Order Summary -->
-        <div class="section order-summary">
-            <h1 class="section-title">Order Details - #{{ $order->original_customer_order_id }}</h1>
-            <p><strong>Customer:</strong>
-                {{ $order->customer->name ?? 'N/A' }}
-                @if ($order->customer->company)
-                    ({{ $order->customer->company }})
-                @endif
-            </p>
-            <p><strong>Email:</strong> {{ $order->customer->email ?? 'N/A' }}</p>
-            <p><strong>Order Status:</strong>
-                @if ($order->status->sold_date)
-                    Sold on {{ \Carbon\Carbon::parse($order->status->sold_date)->format('F j, Y, g:i a') }}
-                @elseif ($order->status->quote_date)
-                    Quoted on {{ \Carbon\Carbon::parse($order->status->quote_date)->format('F j, Y, g:i a') }}
+        <!-- Order Summary and Shipping Info -->
+        <div class="grid-container">
+            <div class="section order-summary">
+                <h2 class="section-title"><i class="fas fa-receipt"></i> Order Summary</h2>
+                <p><strong>Customer:</strong>
+                    {{ $order->customer->name ?? 'N/A' }}
+                    @if ($order->customer->company)
+                        ({{ $order->customer->company }})
+                    @endif
+                </p>
+                <p><strong>Email:</strong> {{ $order->customer->email ?? 'N/A' }}</p>
+                <p><strong>Order Status:</strong>
+                    @if ($order->status->sold_date)
+                        <span class="status sold">Sold on
+                            {{ \Carbon\Carbon::parse($order->status->sold_date)->format('F j, Y, g:i a') }}</span>
+                    @elseif ($order->status->quote_date)
+                        <span class="status quote">Quoted on
+                            {{ \Carbon\Carbon::parse($order->status->quote_date)->format('F j, Y, g:i a') }}</span>
+                    @else
+                        <span class="status pending">Pending</span>
+                    @endif
+                </p>
+            </div>
+
+            <div class="section shipping-details">
+                <h2 class="section-title"><i class="fas fa-shipping-fast"></i> Shipping Information</h2>
+                @if ($order->shippingDetails)
+                    <p><strong>Carrier:</strong> {{ $order->shippingDetails->carrier ?? 'N/A' }}</p>
+                    <p><strong>Shipped By:</strong> {{ $order->shippingDetails->shipby ?? 'N/A' }}</p>
+                    <p><strong>Status:</strong> {{ $order->shippingDetails->status ?? 'N/A' }}</p>
+                    <p><strong>Tracking No:</strong> {{ $order->shippingDetails->tracking_no ?? 'N/A' }}</p>
+                    <p><strong>Actual Shipping Cost:</strong>
+                        ${{ number_format($order->shippingDetails->actual_shipping_cost, 2) }}</p>
+                    <p><strong>Shipping Cost Markup:</strong>
+                        ${{ number_format($order->shippingDetails->shipping_cost_markup, 2) }}</p>
                 @else
-                    Pending
+                    <p>No shipping details available for this order.</p>
                 @endif
-            </p>
+            </div>
         </div>
-        <!-- Shipping Details -->
-        <div class="section shipping-details">
-            <h2 class="section-title">Shipping Information</h2>
-            @if ($order->shippingDetails)
-                <p><strong>Carrier:</strong> {{ $order->shippingDetails->carrier ?? 'N/A' }}</p>
-                <p><strong>Shipped By:</strong> {{ $order->shippingDetails->shipby ?? 'N/A' }}</p>
-                <p><strong>Status:</strong> {{ $order->shippingDetails->status ?? 'N/A' }}</p>
-                <p><strong>Tracking No:</strong> {{ $order->shippingDetails->tracking_no ?? 'N/A' }}</p>
-                <p><strong>Actual Shipping Cost:</strong>
-                    ${{ number_format($order->shippingDetails->actual_shipping_cost, 2) }}</p>
-                <p><strong>Shipping Cost Markup:</strong>
-                    ${{ number_format($order->shippingDetails->shipping_cost_markup, 2) }}</p>
-            @else
-                <p>No shipping details available for this order.</p>
-            @endif
-        </div>
-        <!-- Shipping and Billing Info -->
-        <div class="section address-info">
-            <h2 class="section-title">Shipping & Billing Information</h2>
-            <div class="info-block">
-                <h3>Shipping Info</h3>
+
+        <!-- Shipping & Billing Info -->
+        <div class="grid-container">
+            <div class="section address-info">
+                <h2 class="section-title"><i class="fas fa-map-marker-alt"></i> Shipping Address</h2>
                 <p>
                     @if ($order->shippingAddress)
                         {{ $order->shippingAddress->address_1 }},
@@ -56,8 +60,9 @@
                     @endif
                 </p>
             </div>
-            <div class="info-block">
-                <h3>Billing Info</h3>
+
+            <div class="section address-info">
+                <h2 class="section-title"><i class="fas fa-bill"></i> Billing Address</h2>
                 <p>
                     @if ($order->billingAddress)
                         {{ $order->billingAddress->address_1 ?? 'N/A' }},
@@ -73,7 +78,7 @@
 
         <!-- Order Items -->
         <div class="section order-items">
-            <h2 class="section-title">Items</h2>
+            <h2 class="section-title"><i class="fas fa-box"></i> Order Items</h2>
             <table>
                 <thead>
                     <tr>
@@ -99,16 +104,16 @@
             </table>
         </div>
 
-        <!-- Payment Information -->
+        <!-- Payment Info -->
         <div class="section payment-info">
-            <h2 class="section-title">Payment Information</h2>
+            <h2 class="section-title"><i class="fas fa-credit-card"></i> Payment Information</h2>
             <p><strong>Payment Method:</strong> {{ $order->payment_method }}</p>
             <p><strong>Total:</strong> ${{ number_format($order->total, 2) }}</p>
         </div>
 
         <!-- Other Orders by Customer -->
         <div class="section other-orders">
-            <h2 class="section-title">Other Orders by {{ $order->customer->name ?? 'this Customer' }}</h2>
+            <h2 class="section-title"><i class="fas fa-history"></i> Other Orders</h2>
             @if ($customerOrders->isNotEmpty())
                 <table>
                     <thead>
@@ -162,47 +167,73 @@
 
 <style>
     .order-details {
-        padding: 30px;
+        padding: 20px;
         background: #f9f9f9;
         border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
     }
 
     .section {
-        margin-bottom: 30px;
-        padding: 20px;
+        padding: 15px;
         background: #fff;
-        border: 1px solid #ddd;
+        border: 1px solid #e0e0e0;
         border-radius: 8px;
     }
 
     .section-title {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
         color: #333;
+        margin-bottom: 15px;
         border-bottom: 2px solid #007bff;
         padding-bottom: 5px;
     }
 
-    .info-block {
-        margin-bottom: 15px;
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-weight: bold;
+        color: white;
+        font-size: 12px;
+    }
+
+    .status.sold {
+        background-color: #28a745;
+    }
+
+    .status.quote {
+        background-color: #ffc107;
+        color: black;
+    }
+
+    .status.pending {
+        background-color: #6c757d;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 10px;
     }
 
     table th,
     table td {
-        padding: 10px;
         text-align: left;
+        padding: 10px;
         border: 1px solid #ddd;
     }
 
     table th {
-        background-color: #f4f4f4;
+        background: #f4f4f4;
         font-weight: bold;
     }
 
@@ -214,10 +245,5 @@
 
     .view-details-btn:hover {
         text-decoration: underline;
-    }
-
-    p {
-        margin: 5px 0;
-        font-size: 14px;
     }
 </style>
