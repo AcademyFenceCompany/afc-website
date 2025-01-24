@@ -25,14 +25,16 @@ class CustomerOrder extends Model
         return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
     }
 
-    public function billingAddress()
-    {
-        return $this->belongsTo(CustomerAddress::class, 'customer_id', 'customer_id');
-    }
-
     public function shippingAddress()
     {
-        return $this->belongsTo(CustomerAddress::class, 'customer_id', 'customer_id');
+        return $this->hasOne(CustomerAddress::class, 'customer_id', 'customer_id')
+            ->where('shipping_flag', 1);
+    }
+    
+    public function billingAddress()
+    {
+        return $this->hasOne(CustomerAddress::class, 'customer_id', 'customer_id')
+            ->where('billing_flag', 1);
     }
     
     public function order()

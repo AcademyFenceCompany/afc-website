@@ -120,3 +120,5 @@ Route::prefix('api')->group(function () {
     Route::put('/addresses/{address}', [AddressController::class, 'update']);
     Route::delete('/addresses/{address}', [AddressController::class, 'destroy']);
 });
+
+Route::get('/orders/{orderId}', [ActivityController::class, 'show'])->name('orders.show');
