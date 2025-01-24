@@ -70,7 +70,9 @@ public function show($orderId)
         'billingAddress',
         'shippingAddress',
         'order.product',
-        'status'
+        'status',
+        'shippingDetails',
+        
     ])->where('original_customer_order_id', $orderId)->firstOrFail();
 
     // Fetch other orders for the same customer, excluding the current order
