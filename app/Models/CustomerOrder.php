@@ -58,4 +58,10 @@ class CustomerOrder extends Model
     {
         return $this->hasOne(OrderStatus::class, 'original_customer_order_id', 'original_customer_order_id');
     }
+
+    public function shippingDetails()
+    {
+        return $this->hasOne(OrderShippingDetail::class, 'original_order_id', 'original_customer_order_id');
+    }
+
 }

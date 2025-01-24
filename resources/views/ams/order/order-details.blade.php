@@ -5,72 +5,75 @@
 @section('content')
     <div class="order-details">
         <!-- Order Summary -->
-        <h1>Order Details - #{{ $order->original_customer_order_id }}</h1>
-        <div class="order-summary">
-            @if ($order->customer->name && $order->customer->company)
-                <p><strong>Customer:</strong> {{ $order->customer->name }}({{ $order->customer->company }})</p>
-            @elseif ($order->customer->name)
-                <p><strong>Customer:</strong> {{ $order->customer->name }}</p>
-            @elseif ($order->customer->company)
-                <p><strong>Company:</strong> {{ $order->customer->company }}</p>
-            @else
-                <p><strong>Customer:</strong> N/A</p>
-            @endif
-            <p><strong>Email:</strong> {{ $order->customer->email }}</p>
+        <div class="section order-summary">
+            <h1 class="section-title">Order Details - #{{ $order->original_customer_order_id }}</h1>
+            <p><strong>Customer:</strong>
+                {{ $order->customer->name ?? 'N/A' }}
+                @if ($order->customer->company)
+                    ({{ $order->customer->company }})
+                @endif
+            </p>
+            <p><strong>Email:</strong> {{ $order->customer->email ?? 'N/A' }}</p>
             <p><strong>Order Status:</strong>
                 @if ($order->status->sold_date)
                     Sold on {{ \Carbon\Carbon::parse($order->status->sold_date)->format('F j, Y, g:i a') }}
-                @elseif($order->status->quote_date)
+                @elseif ($order->status->quote_date)
                     Quoted on {{ \Carbon\Carbon::parse($order->status->quote_date)->format('F j, Y, g:i a') }}
-                @elseif($order->status->customer_confirmed_date)
-                    Customer Confirmed on
-                    {{ \Carbon\Carbon::parse($order->status->customer_confirmed_date)->format('F j, Y, g:i a') }}
-                @elseif($order->status->shipped_confirmed_date)
-                    Shipped on {{ \Carbon\Carbon::parse($order->status->shipped_confirmed_date)->format('F j, Y, g:i a') }}
                 @else
-                    Status Unknown
+                    Pending
                 @endif
             </p>
-            @if ($order->status->sold_date)
-                <p><strong>Sold Date:</strong> {{ $order->status->sold_date }}</p>
-            @endif
-            @if ($order->status->quote_date)
-                <p><strong>Quote Date:</strong> {{ $order->status->quote_date }}</p>
-            @endif
-            @if ($order->status->customer_confirmed_date)
-                <p><strong>Customer Confirmed Date:</strong> {{ $order->status->customer_confirmed_date }}</p>
-            @endif
-            @if ($order->status->shipped_confirmed_date)
-                <p><strong>Shipped Confirmed Date:</strong> {{ $order->status->shipped_confirmed_date }}</p>
+        </div>
+        <!-- Shipping Details -->
+        <div class="section shipping-details">
+            <h2 class="section-title">Shipping Information</h2>
+            @if ($order->shippingDetails)
+                <p><strong>Carrier:</strong> {{ $order->shippingDetails->carrier ?? 'N/A' }}</p>
+                <p><strong>Shipped By:</strong> {{ $order->shippingDetails->shipby ?? 'N/A' }}</p>
+                <p><strong>Status:</strong> {{ $order->shippingDetails->status ?? 'N/A' }}</p>
+                <p><strong>Tracking No:</strong> {{ $order->shippingDetails->tracking_no ?? 'N/A' }}</p>
+                <p><strong>Actual Shipping Cost:</strong>
+                    ${{ number_format($order->shippingDetails->actual_shipping_cost, 2) }}</p>
+                <p><strong>Shipping Cost Markup:</strong>
+                    ${{ number_format($order->shippingDetails->shipping_cost_markup, 2) }}</p>
+            @else
+                <p>No shipping details available for this order.</p>
             @endif
         </div>
-
         <!-- Shipping and Billing Info -->
-        <div class="address-info">
-            <h3>Shipping Info</h3>
-            @if ($order->shippingAddress)
-                <p>{{ $order->shippingAddress->name }}, {{ $order->shippingAddress->address_1 }},
-                    {{ $order->shippingAddress->city }}, {{ $order->shippingAddress->state }}
-                    {{ $order->shippingAddress->zipcode }}</p>
-            @else
-                <p>Shipping address not available</p>
-            @endif
-
-            <h3>Billing Info</h3>
-            @if ($order->billingAddress)
-                <p>{{ $order->billingAddress->name }}</p>
-                <p>{{ $order->billingAddress->address_1 ?? 'N/A' }}</p>
-                <p>{{ $order->billingAddress->city ?? 'N/A' }}, {{ $order->billingAddress->state ?? 'N/A' }}
-                    {{ $order->billingAddress->zipcode ?? 'N/A' }}
+        <div class="section address-info">
+            <h2 class="section-title">Shipping & Billing Information</h2>
+            <div class="info-block">
+                <h3>Shipping Info</h3>
+                <p>
+                    @if ($order->shippingAddress)
+                        {{ $order->shippingAddress->address_1 }},
+                        {{ $order->shippingAddress->city }},
+                        {{ $order->shippingAddress->state }}
+                        {{ $order->shippingAddress->zipcode }}
+                    @else
+                        Shipping address not available
+                    @endif
                 </p>
-            @else
-                <p>Billing address not available</p>
-            @endif
+            </div>
+            <div class="info-block">
+                <h3>Billing Info</h3>
+                <p>
+                    @if ($order->billingAddress)
+                        {{ $order->billingAddress->address_1 ?? 'N/A' }},
+                        {{ $order->billingAddress->city ?? 'N/A' }},
+                        {{ $order->billingAddress->state ?? 'N/A' }}
+                        {{ $order->billingAddress->zipcode ?? 'N/A' }}
+                    @else
+                        Billing address not available
+                    @endif
+                </p>
+            </div>
         </div>
 
         <!-- Order Items -->
-        <div class="order-items">
-            <h3>Items</h3>
+        <div class="section order-items">
+            <h2 class="section-title">Items</h2>
             <table>
                 <thead>
                     <tr>
@@ -97,15 +100,15 @@
         </div>
 
         <!-- Payment Information -->
-        <div class="payment-info">
-            <h3>Payment Info</h3>
+        <div class="section payment-info">
+            <h2 class="section-title">Payment Information</h2>
             <p><strong>Payment Method:</strong> {{ $order->payment_method }}</p>
             <p><strong>Total:</strong> ${{ number_format($order->total, 2) }}</p>
         </div>
 
         <!-- Other Orders by Customer -->
-        <div class="other-orders">
-            <h3>Other Orders by {{ $order->customer->name ?? 'this Customer' }}</h3>
+        <div class="section other-orders">
+            <h2 class="section-title">Other Orders by {{ $order->customer->name ?? 'this Customer' }}</h2>
             @if ($customerOrders->isNotEmpty())
                 <table>
                     <thead>
@@ -126,7 +129,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    {{ $customerOrder->created_at ? $customerOrder->created_at->format('F j, Y') : 'N/A' }}
+                                    {{ $customerOrder->status->sold_date ? \Carbon\Carbon::parse($customerOrder->status->sold_date)->format('F j, Y') : 'N/A' }}
                                 </td>
                                 <td>
                                     @if ($customerOrder->status)
@@ -156,26 +159,34 @@
         </div>
     </div>
 @endsection
+
 <style>
     .order-details {
-        padding: 20px;
+        padding: 30px;
         background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
-    .order-summary,
-    .address-info,
-    .order-items,
-    .payment-info,
-    .order-history {
-        margin-bottom: 20px;
-        padding: 15px;
+    .section {
+        margin-bottom: 30px;
+        padding: 20px;
         background: #fff;
         border: 1px solid #ddd;
-        border-radius: 5px;
+        border-radius: 8px;
     }
 
-    h3 {
-        margin-bottom: 10px;
+    .section-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+    }
+
+    .info-block {
+        margin-bottom: 15px;
     }
 
     table {
@@ -185,8 +196,28 @@
 
     table th,
     table td {
-        padding: 8px;
+        padding: 10px;
         text-align: left;
         border: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+    }
+
+    .view-details-btn {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .view-details-btn:hover {
+        text-decoration: underline;
+    }
+
+    p {
+        margin: 5px 0;
+        font-size: 14px;
     }
 </style>
