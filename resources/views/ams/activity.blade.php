@@ -15,28 +15,66 @@
                 <option value="all" {{ request('status') == 'all' ? 'selected' : '' }}>All Orders</option>
                 <option value="new" {{ request('status') == 'new' ? 'selected' : '' }}>New Orders</option>
                 <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                <option value="sold" {{ request('status') == 'sold' ? 'selected' : '' }}>Sold Only</option>
+                <option value="quote" {{ request('status') == 'quote' ? 'selected' : '' }}>Quote Only</option>
+                <option value="both" {{ request('status') == 'both' ? 'selected' : '' }}>Quoted and Sold</option>
             </select>
             <button class="filter-btn" type="submit">Apply Filters</button>
         </form>
     </div>
-
+    <div class="activity-navigation">
+        <a href="{{ route('ams.activity', ['activity_date' => \Carbon\Carbon::parse($activityDate)->subDay()->toDateString()]) }}"
+            class="nav-button">
+            << Previous Day </a>
+                <span class="current-date">
+                    Today's Activity For: {{ \Carbon\Carbon::parse($activityDate)->format('l m/d/Y') }}
+                </span>
+                <a href="{{ route('ams.activity', ['activity_date' => \Carbon\Carbon::parse($activityDate)->addDay()->toDateString()]) }}"
+                    class="nav-button">
+                    Next Day >>
+                </a>
+    </div>
     <!-- Orders List -->
     <div class="orders-list">
         @forelse ($orders as $order)
             <!-- Order Header -->
             <div class="order-header">
-                <span class="order-id">#{{ $order->original_customer_order_id }}</span>
-                <span
-                    class="customer-name">{{ $order->customer ? $order->customer->name ?? $order->customer->company : 'N/A' }}</span>
-                <span class="order-location">{{ $order->shippingAddress->city ?? 'N/A' }},
-                    {{ $order->shippingAddress->state ?? 'N/A' }}</span>
+                <a href="{{ route('orders.show', $order->original_customer_order_id) }}" class="order-id">
+                    #{{ $order->original_customer_order_id }}
+                </a>
+                <span class="customer-name">
+                    @if ($order->customer)
+                        @if ($order->customer->name && $order->customer->company)
+                            <p>{{ $order->customer->company }}</p>
+                        @elseif ($order->customer->name)
+                            <p>{{ $order->customer->name }}</p>
+                        @elseif ($order->customer->company)
+                            <p>{{ $order->customer->company }}</p>
+                        @else
+                            <p>N/A</p>
+                        @endif
+                    @else
+                        <p>N/A</p>
+                    @endif
+                </span>
+                <span class="order-location">
+                    @if ($order->shippingAddress)
+                        {{ $order->shippingAddress->city ?? 'N/A' }}, {{ $order->shippingAddress->state ?? 'N/A' }}
+                    @elseif ($order->billingAddress)
+                        {{ $order->billingAddress->city ?? 'N/A' }}, {{ $order->billingAddress->state ?? 'N/A' }}
+                    @else
+                        N/A
+                    @endif
+                </span>
 
                 <!-- Determine the Order Date -->
                 <span class="order-date">
                     @if ($order->status->sold_date)
-                        {{ \Carbon\Carbon::parse($order->status->sold_date)->format('Y-m-d H:i:s') }}
+                        Sold-{{ \Carbon\Carbon::parse($order->status->sold_date)->format('m-d-Y') }}
                     @elseif ($order->status->quote_date)
-                        {{ \Carbon\Carbon::parse($order->status->quote_date)->format('Y-m-d H:i:s') }}
+                        Quoted-{{ \Carbon\Carbon::parse($order->status->quote_date)->format('m-d-Y') }}
+                    @else
+                        N/A
                     @endif
                 </span>
 
@@ -106,6 +144,33 @@
     <div class="pagination">
         {{ $orders->links() }}
     </div>
+
+    <!-- Status Legend -->
+    <div class="status-legend">
+        <div class="legend-item">
+            <span class="status-box new"></span> New/Processing
+        </div>
+        <div class="legend-item">
+            <span class="status-box quote"></span> Quote
+        </div>
+        <div class="legend-item">
+            <span class="status-box customer-confirm"></span> Customer Confirm
+        </div>
+        <div class="legend-item">
+            <span class="status-box sold"></span> Sold
+        </div>
+        <div class="legend-item">
+            <span class="status-box completed"></span> Completed
+        </div>
+        <!-- Small Status Buttons -->
+        <div class="small-status">
+            <span class="small-box q">Q</span> Quote was sent
+            <span class="small-box cc">CC</span> Customer confirm
+            <span class="small-box s">S</span> Sold
+            <span class="small-box sc">SC</span> Shipping confirm
+        </div>
+    </div>
+
 @endsection
 
 <style>
@@ -349,6 +414,151 @@
 
     .toggle-items-btn:hover {
         background-color: #0056b3;
+    }
+
+    /* Navigation Section */
+    .activity-navigation {
+        display: flex;
+        /* Arrange navigation buttons and date in a row */
+        justify-content: space-between;
+        /* Space out the Previous, Date, and Next buttons */
+        align-items: center;
+        /* Center align items vertically */
+        margin-bottom: 20px;
+        /* Add spacing below the navigation */
+        background-color: #f4f4f4;
+        /* Light background for better visibility */
+        padding: 10px;
+        /* Add padding for a better appearance */
+        border-radius: 5px;
+        /* Slightly round the corners */
+    }
+
+    .nav-button {
+        text-decoration: none;
+        /* Remove underline from links */
+        font-weight: bold;
+        /* Make text bold for emphasis */
+        padding: 5px 10px;
+        /* Add padding to make buttons look clickable */
+        background-color: #007bff;
+        /* Set blue background for buttons */
+        color: white;
+        /* White text color */
+        border-radius: 5px;
+        /* Rounded corners for buttons */
+    }
+
+    .nav-button:hover {
+        background-color: #0056b3;
+        /* Darker blue on hover */
+    }
+
+    .current-date {
+        font-size: 16px;
+        /* Slightly larger font for emphasis */
+        font-weight: bold;
+        /* Bold text to highlight the date */
+    }
+
+    /* Status Legend Fixed at Bottom */
+    .status-legend {
+        position: fixed;
+        /* Fix to the bottom of the viewport */
+        bottom: 0;
+        /* Align to the bottom of the screen */
+        left: 0;
+        /* Stretch from the left */
+        right: 0;
+        /* Stretch to the right */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        background-color: #f4f4f4;
+        padding: 15px 20px;
+        /* Add padding for spacing */
+        border-top: 1px solid #ddd;
+        /* Optional: Add a border for separation */
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        color: #333;
+        z-index: 1000;
+        /* Ensure it appears above other elements */
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .status-box {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .status-box.new {
+        background-color: #c49b9b;
+        /* New/Processing */
+    }
+
+    .status-box.quote {
+        background-color: #d1b484;
+        /* Quote */
+    }
+
+    .status-box.customer-confirm {
+        background-color: #b3c9e2;
+        /* Customer Confirm */
+    }
+
+    .status-box.sold {
+        background-color: #7dc17d;
+        /* Sold */
+    }
+
+    .status-box.completed {
+        background-color: #a0a2c3;
+        /* Completed */
+    }
+
+    .small-status {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .small-box {
+        display: inline-block;
+        width: 25px;
+        height: 25px;
+        border-radius: 3px;
+        text-align: center;
+        line-height: 25px;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    .small-box.q {
+        border-color: #d1b484;
+    }
+
+    .small-box.cc {
+        border-color: #b3c9e2;
+    }
+
+    .small-box.s {
+        border-color: #7dc17d;
+    }
+
+    .small-box.sc {
+        border-color: #a0a2c3;
     }
 </style>
 <script>
