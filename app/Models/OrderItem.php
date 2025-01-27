@@ -23,7 +23,7 @@ class OrderItem extends Model
     // Relationships
     public function order()
     {
-        return $this->belongsTo(CustomerOrder::class, 'original_order_id', 'original_customer_order_id');
+        return $this->belongsTo(CustomerOrder::class, 'original_order_id', 'original_order_id');
     }
 
     public function product()

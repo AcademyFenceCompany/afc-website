@@ -1,3 +1,4 @@
+{{-- @dd($cart, $subtotal, $tax, $total); --}}
 @extends('layouts.main')
 
 @section('title', 'Checkout')

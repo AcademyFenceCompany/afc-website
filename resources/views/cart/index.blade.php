@@ -17,6 +17,7 @@
                     <th class="text-start">Price</th>
                 </tr>
             </thead>
+            @dump(session('cart'))
             <tbody>
                 @forelse (session('cart', []) as $item)
                     <tr>

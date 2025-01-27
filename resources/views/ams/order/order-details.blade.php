@@ -129,8 +129,8 @@
                         @foreach ($customerOrders as $customerOrder)
                             <tr>
                                 <td>
-                                    <a href="{{ route('orders.show', $customerOrder->original_customer_order_id) }}">
-                                        #{{ $customerOrder->original_customer_order_id }}
+                                    <a href="{{ route('orders.show', $customerOrder->original_order_id) }}">
+                                        #{{ $customerOrder->original_order_id }}
                                     </a>
                                 </td>
                                 <td>
@@ -151,7 +151,7 @@
                                 </td>
                                 <td>${{ number_format($customerOrder->total, 2) }}</td>
                                 <td>
-                                    <a href="{{ route('orders.show', $customerOrder->original_customer_order_id) }}"
+                                    <a href="{{ route('orders.show', $customerOrder->original_order_id) }}"
                                         class="view-details-btn">View</a>
                                 </td>
                             </tr>

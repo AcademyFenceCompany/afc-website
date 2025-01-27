@@ -39,8 +39,8 @@
         @forelse ($orders as $order)
             <!-- Order Header -->
             <div class="order-header">
-                <a href="{{ route('orders.show', $order->original_customer_order_id) }}" class="order-id">
-                    #{{ $order->original_customer_order_id }}
+                <a href="{{ route('orders.show', $order->original_order_id) }}" class="order-id">
+                    #{{ $order->original_order_id }}
                 </a>
                 <span class="customer-name">
                     @if ($order->customer)
@@ -96,12 +96,12 @@
                     @endif
                 </div>
                 <!-- Toggle Button -->
-                <button class="toggle-items-btn" type="button" data-id="{{ $order->original_customer_order_id }}">
+                <button class="toggle-items-btn" type="button" data-id="{{ $order->original_order_id }}">
                     Order Summary </button>
             </div>
 
             <!-- Order Items -->
-            <div class="order-items collapse" id="order-items-{{ $order->original_customer_order_id }}">
+            <div class="order-items collapse" id="order-items-{{ $order->original_order_id }}">
                 <table class="table table-sm">
                     <thead>
                         <tr>
