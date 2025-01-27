@@ -11,7 +11,7 @@ class CustomerOrder extends Model
         'shipping_address_id',
         'order_origin',
         'original_customer_id',
-        'original_customer_order_id',
+        'original_order_id',
         'payment_method',
         'discount_amount',
         'subtotal',
@@ -39,7 +39,7 @@ class CustomerOrder extends Model
     
     public function order()
     {
-        return $this->hasMany(OrderItem::class, 'original_order_id', 'original_customer_order_id');
+        return $this->hasMany(OrderItem::class, 'original_order_id', 'original_order_id');
     }
 
     public function products()
@@ -49,19 +49,19 @@ class CustomerOrder extends Model
             OrderItem::class,
             'original_order_id',         // Foreign key on order_items table
             'product_id',                // Foreign key on products table
-            'original_customer_order_id', // Local key on customer_orders table
+            'original_order_id', // Local key on customer_orders table
             'product_id'                 // Local key on order_items table
         )->with('details'); // Eager load the ProductDetail relationship
     }
 
     public function status()
     {
-        return $this->hasOne(OrderStatus::class, 'original_customer_order_id', 'original_customer_order_id');
+        return $this->hasOne(OrderStatus::class, 'original_customer_order_id', 'original_order_id');
     }
 
     public function shippingDetails()
     {
-        return $this->hasOne(OrderShippingDetail::class, 'original_order_id', 'original_customer_order_id');
+        return $this->hasOne(OrderShippingDetail::class, 'original_order_id', 'original_order_id');
     }
 
 }

@@ -25,7 +25,7 @@ class ActivityController extends Controller
     if ($request->filled('search')) {
         $search = $request->input('search');
         $query->where(function ($q) use ($search) {
-            $q->where('original_customer_order_id', 'like', "%$search%")
+            $q->where('original_order_id', 'like', "%$search%")
               ->orWhereHas('customer', function ($subQuery) use ($search) {
                   $subQuery->where('name', 'like', "%$search%");
               });
@@ -73,7 +73,7 @@ public function show($orderId)
         'status',
         'shippingDetails',
         
-    ])->where('original_customer_order_id', $orderId)->firstOrFail();
+    ])->where('original_order_id', $orderId)->firstOrFail();
 
     // Fetch other orders for the same customer, excluding the current order
     $customerOrders = CustomerOrder::where('customer_id', $order->customer_id)

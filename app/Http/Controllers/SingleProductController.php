@@ -24,10 +24,7 @@ class SingleProductController extends Controller
                 'product_media.general_image',
                 'product_media.large_image',
                 'product_media.small_image',
-                'shipping_details.weight', // Shipping details fields can now be null
-                'shipping_details.free_shipping',
-                'shipping_details.special_shipping',
-                'shipping_details.amount_per_box'
+                'shipping_details.*'
             )
             ->first();
 

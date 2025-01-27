@@ -1,3 +1,4 @@
+{{-- @dd($productDetails); --}}
 @extends('layouts.main')
 
 @section('title', $productDetails->product_name)
@@ -92,10 +93,29 @@
                                     data-item="{{ $productDetails->item_no }}"
                                     data-name="{{ $productDetails->product_name }}"
                                     data-price="{{ $productDetails->price_per_unit }}"
-                                    data-color="{{ $productDetails->color }}" data-size="{{ $productDetails->size1 }}"
-                                    data-mesh="{{ $productDetails->size2 }} {{ $productDetails->size3 }}">
+                                    data-color="{{ $productDetails->color }}" data-size1="{{ $productDetails->size1 }}"
+                                    data-size2="{{ $productDetails->size2 }}" data-size3="{{ $productDetails->size3 }}"
+                                    data-specialty="{{ $productDetails->specialty }}"
+                                    data-material="{{ $productDetails->material }}"
+                                    data-spacing="{{ $productDetails->spacing }}"
+                                    data-coating="{{ $productDetails->coating }}"
+                                    data-weight="{{ $productDetails->weight }}"
+                                    data-family_category="{{ $productDetails->family_category_id }}"
+                                    data-general_image="{{ $productDetails->general_image }}"
+                                    data-small_image="{{ $productDetails->small_image }}"
+                                    data-large_image="{{ $productDetails->large_image }}"
+                                    data-free_shipping="{{ $productDetails->free_shipping }}"
+                                    data-special_shipping="{{ $productDetails->special_shipping }}"
+                                    data-amount_per_box="{{ $productDetails->amount_per_box }}"
+                                    data-description="{{ $productDetails->description }}"
+                                    data-subcategory_id="{{ $productDetails->subcategory_id }}"
+                                    data-shipping_length="{{ $productDetails->shipping_length }}"
+                                    data-shipping_width="{{ $productDetails->shipping_width }}"
+                                    data-shipping_height="{{ $productDetails->shipping_height }}"
+                                    data-shipping_class="{{ $productDetails->shipping_class }}">
                                     Add to Cart
                                 </button>
+
                             </div>
                         </div>
                     </div>
