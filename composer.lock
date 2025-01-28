@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e1cbca5ce204b3b5f902c942ccbb14b",
+    "content-hash": "cd7a19d01c49df1e42d1d5b8d467f542",
     "packages": [
         {
             "name": "brick/math",
@@ -921,6 +921,89 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "gabrielbull/ups-api",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gabrielbull/php-ups-api.git",
+                "reference": "7feb044716171e1b19b198dc837769c4a3db0901"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gabrielbull/php-ups-api/zipball/7feb044716171e1b19b198dc837769c4a3db0901",
+                "reference": "7feb044716171e1b19b198dc837769c4a3db0901",
+                "shasum": ""
+            },
+            "require": {
+                "ext-dom": "*",
+                "ext-simplexml": "*",
+                "guzzlehttp/guzzle": "^6.0 || ^7.0",
+                "php": "^7.3 || ^8.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5.4"
+            },
+            "suggest": {
+                "ext-soap": "Required if you need the Tradeability API of UPS"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Ups\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriel Bull",
+                    "email": "me@gabrielbull.com"
+                },
+                {
+                    "name": "Sebastien Vergnes",
+                    "email": "sebastien@vergnes.eu"
+                },
+                {
+                    "name": "Michael Williams",
+                    "email": "michael.williams@limelyte.com"
+                },
+                {
+                    "name": "Stefan Doorn",
+                    "email": "stefan@efectos.nl"
+                },
+                {
+                    "name": "Eduard Sukharev",
+                    "email": "sukharev.eh@gmail.com"
+                }
+            ],
+            "description": "PHP UPS API",
+            "keywords": [
+                "Rate",
+                "Rating",
+                "api",
+                "quantum view",
+                "shipping",
+                "time in transit",
+                "tracking",
+                "tradeability",
+                "ups",
+                "wrapper"
+            ],
+            "support": {
+                "issues": "https://github.com/gabrielbull/php-ups-api/issues",
+                "source": "https://github.com/gabrielbull/php-ups-api/tree/2.1.0"
+            },
+            "time": "2022-06-22T12:42:11+00:00"
         },
         {
             "name": "graham-campbell/result-type",
