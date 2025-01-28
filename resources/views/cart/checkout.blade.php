@@ -68,6 +68,14 @@
                         </div>
                     </div>
 
+                    <!-- Shipping Options -->
+                    <div class="mt-4">
+                        <h5>Shipping Options</h5>
+                        <div id="shipping-options" class="border p-3 rounded">
+                            <p>Enter your ZIP Code to calculate shipping rates.</p>
+                        </div>
+                    </div>
+
                     <div class="form-check my-3">
                         <input type="checkbox" class="form-check-input" id="ship_different" name="ship_different">
                         <label for="ship_different" class="form-check-label">Ship to a different address?</label>
@@ -102,7 +110,9 @@
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Total</span>
-                        <span>${{ number_format($total, 2) }}</span>
+                        <span id="total" data-subtotal="{{ $subtotal }}" data-tax="{{ $tax }}">
+                            ${{ number_format($total, 2) }}
+                        </span>
                     </div>
                 </div>
 
@@ -142,4 +152,10 @@
             </div>
         </div>
     </main>
+    <!-- Hidden Cart Data -->
+    <div id="cart-data" data-cart="{{ htmlspecialchars(json_encode($cart), ENT_QUOTES, 'UTF-8') }}"></div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/checkout.js') }}"></script>
 @endsection

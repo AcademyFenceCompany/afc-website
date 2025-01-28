@@ -19,6 +19,7 @@ use App\Http\Controllers\UserManagementController;
 
 
 
+
 Route::get('/resources/images/{filename}', function ($filename) {
     $path = resource_path('images/' . $filename);
 
@@ -113,7 +114,7 @@ Route::get('/brochures', function () {
     ]);
 })->name('brochures');
 Route::view('/empty-cart', 'cart/empty')->name('empty-cart');
-Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
+// Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
 Route::get('/dashboard', function () {
@@ -156,6 +157,10 @@ Route::put('/user/{id}', [UserManagementController::class, 'update']);
 // Family Category Tree - AMS
 Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
 Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
+
+//Shipping API's 
+Route::post('/calculate-shipping-cost', [App\Http\Controllers\CheckoutController::class, 'calculateShippingCost'])->name('calculate-shipping-cost');
+Route::post('/ups/callback', [App\Http\Controllers\UPSController::class, 'handleCallback'])->name('ups.callback');
 
 
 
