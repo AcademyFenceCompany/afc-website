@@ -7,7 +7,7 @@
 <div class="container">
 
     <div class="row add_product__title">
-        <h2>Add Product</h2>
+        <h2>ADD PRODUCT</h2>
     </div>
 
     <!-- text-center mb-4  -->
@@ -373,9 +373,6 @@
                             <textarea name="product[l_description]" id="l_description" class="form-control" rows="3"
                                 placeholder="Type long description..."></textarea>
                         </div>
-
-
-
 
                         <div class="card__input">
                             <label for="large_image" class="form-label">Large Image</label>
