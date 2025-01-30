@@ -30,5 +30,22 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'ups' => [
+    'client_id' => env('UPS_CLIENT_ID'),
+    'client_secret' => env('UPS_CLIENT_SECRET'),
+    'production' => env('UPS_PRODUCTION', true),
+],
+'rl' => [
+    'api_url' => env('RL_API_URL'),
+    'api_key' => env('RL_API_KEY'),
+],
+'tforce' => [
+    'client_id' => env('TFORCE_CLIENT_ID'),
+    'client_secret' => env('TFORCE_CLIENT_SECRET'),
+    'token_endpoint' => env('TFORCE_TOKEN_ENDPOINT'),
+    'scope' => env('TFORCE_SCOPE'),
+    'access_token' => env('TFORCE_ACCESS_TOKEN'),
+
+],
 
 ];

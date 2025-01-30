@@ -1,17 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Checkout script loaded.");
-
-    const shippingOptionsDiv = document.getElementById("shipping-options");
-    const zipInput = document.getElementById("zip");
-
-    zipInput.addEventListener("change", async () => {
-        const zip = zipInput.value;
-        const city = document.getElementById("city").value;
-        const state = document.getElementById("state").value;
+document
+    .getElementById("calculate-shipping")
+    .addEventListener("click", async function () {
+        const originZip = document.getElementById("origin-zip").value;
+        const destinationZip = document.getElementById("destination-zip").value;
+        const weight = document.getElementById("weight").value;
+        const length = document.getElementById("length").value;
+        const width = document.getElementById("width").value;
+        const height = document.getElementById("height").value;
 
         try {
-            shippingOptionsDiv.innerHTML = "Fetching shipping rates...";
-            const response = await fetch("/calculate-shipping-cost", {
+            const response = await fetch("/shipping-rates", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -19,25 +17,28 @@ document.addEventListener("DOMContentLoaded", () => {
                         'meta[name="csrf-token"]',
                     ).content,
                 },
-                body: JSON.stringify({ zip, city, state }),
+                body: JSON.stringify({
+                    shipper_address: "123 Main St.",
+                    shipper_city: "New York",
+                    shipper_state: "NY",
+                    shipper_postal: "10001",
+                    recipient_address: "401 edmund ave.",
+                    recipient_city: "paterson",
+                    recipient_state: "NJ",
+                    recipient_postal: "07502",
+                    weight: weight,
+                    dimensions: { length, width, height },
+                }),
             });
 
             const data = await response.json();
-
-            if (data.success) {
-                shippingOptionsDiv.innerHTML = "";
-                data.rates.forEach((rate) => {
-                    const rateHTML = `<p>${rate.Service.Description}: $${rate.TotalCharges.MonetaryValue}</p>`;
-                    shippingOptionsDiv.insertAdjacentHTML(
-                        "beforeend",
-                        rateHTML,
-                    );
-                });
+            if (data.error) {
+                alert(data.error);
             } else {
-                shippingOptionsDiv.innerHTML = `<p>Error: ${data.message}</p>`;
+                console.log("Shipping Rates:", data);
+                // Display rates in the UI
             }
         } catch (error) {
-            shippingOptionsDiv.innerHTML = `<p>Error fetching rates.</p>`;
+            console.error("Error fetching rates:", error);
         }
     });
-});

@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator; 
+use Illuminate\Support\Facades\URL;
+use App\Services\UPSService;
+
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(UPSService::class, function ($app) {
+            return new UPSService();
+        });
     }
 
     /**
@@ -25,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (config('app.env') !== 'local') {
+            URL::forceScheme('https');
+        }
         DB::listen(function ($query) {
             \Log::info($query->sql);
             \Log::info($query->bindings);
