@@ -27,8 +27,9 @@
                                     data-item="{{ $item['item_no'] }}"></i>
                             </h6>
                             <small class="text-muted">Item # - {{ $item['item_no'] }}</small><br>
-                            <small class="text-muted">{{ $item['mesh'] ?? 'N/A' }}</small><br>
-                            <small class="text-muted">{{ $item['size'] ?? 'N/A' }}</small><br>
+                            <small class="text-muted">{{ $item['size1'] ?? 'N/A' }}</small><br>
+                            <small class="text-muted">{{ $item['size2'] ?? 'N/A' }}</small><br>
+                            <small class="text-muted">{{ $item['size3'] ?? 'N/A' }}</small><br>
                             <small class="text-muted">{{ $item['color'] ?? 'N/A' }}</small>
                         </td>
                         <td>
@@ -105,7 +106,7 @@
     </main>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/cart-index.js') }}"></script>
+    <script src="{{ secure_asset('js/cart-index.js') }}"></script>
 @endsection
 <!-- Bootstrap Toast Notification -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">

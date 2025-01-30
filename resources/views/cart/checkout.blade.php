@@ -59,29 +59,15 @@
                         </div>
                     </div>
 
-                    <h5 class="mb-3">Package Information</h5>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="weight" class="form-label">Weight (lbs)</label>
-                            <input type="number" id="weight" name="weight" class="form-control"
-                                placeholder="Enter package weight" required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="length" class="form-label">Length (inches)</label>
-                            <input type="number" id="length" name="length" class="form-control" placeholder="Length"
-                                required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="width" class="form-label">Width (inches)</label>
-                            <input type="number" id="width" name="width" class="form-control" placeholder="Width"
-                                required>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="height" class="form-label">Height (inches)</label>
-                            <input type="number" id="height" name="height" class="form-control"
-                                placeholder="Height" required>
-                        </div>
+                    <div class="d-none">
+                        @foreach ($cart as $item)
+                            <div class="product-item" data-weight="{{ $item['weight'] }}"
+                                data-length="{{ $item['shipping_length'] }}" data-width="{{ $item['shipping_width'] }}"
+                                data-height="{{ $item['shipping_height'] }}" data-quantity="{{ $item['quantity'] }}">
+                            </div>
+                        @endforeach
                     </div>
+
 
                     <button type="button" id="calculate-shipping" class="btn btn-primary">Calculate Shipping</button>
                 </form>
@@ -112,7 +98,7 @@
                     </div>
                     <div id="shipping-cost" class="d-flex justify-content-between d-none">
                         <span>Shipping</span>
-                        <span>$0.00</span>
+                        <span id="shipping-cost-value">$0.00</span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <strong>Total</strong>
