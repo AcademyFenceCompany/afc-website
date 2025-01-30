@@ -63,7 +63,8 @@
                         @foreach ($cart as $item)
                             <div class="product-item" data-weight="{{ $item['weight'] }}"
                                 data-length="{{ $item['shipping_length'] }}" data-width="{{ $item['shipping_width'] }}"
-                                data-height="{{ $item['shipping_height'] }}" data-quantity="{{ $item['quantity'] }}">
+                                data-height="{{ $item['shipping_height'] }}"
+                                data-quantity="{{ $item['quantity'] }} data-family_category="{{ $item['family_category'] }}">
                             </div>
                         @endforeach
                     </div>

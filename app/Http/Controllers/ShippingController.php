@@ -19,7 +19,7 @@ class ShippingController extends Controller
     }
 
     public function getShippingRates(Request $request)
-    {   
+    {
         $validated = $request->validate([
             'shipper_address' => 'required|string',
             'shipper_city' => 'required|string',
@@ -29,18 +29,19 @@ class ShippingController extends Controller
             'recipient_city' => 'required|string',
             'recipient_state' => 'required|string',
             'recipient_postal' => 'required|string',
-            'weight' => 'required|numeric',
-            'dimensions.length' => 'required|numeric',
-            'dimensions.width' => 'required|numeric',
-            'dimensions.height' => 'required|numeric',
+            'packages' => 'required|array',
+            'packages.*.weight' => 'required|numeric|max:150', // Validate max weight
+            'packages.*.dimensions.length' => 'required|numeric',
+            'packages.*.dimensions.width' => 'required|numeric',
+            'packages.*.dimensions.height' => 'required|numeric',
         ]);
-
+    
         $rates = $this->upsService->getShippingRates($validated);
-
+    
         if (isset($rates['error'])) {
             return response()->json(['error' => $rates['error']], 400);
         }
-
+    
         return response()->json($rates);
     }
 }
