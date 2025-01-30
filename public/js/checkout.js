@@ -14,24 +14,48 @@ document
         const recipient_postal =
             document.getElementById("destination-zip").value;
 
-        let totalWeight = 0;
-        let maxLength = 0;
-        let maxWidth = 0;
-        let totalHeight = 0;
+        let packages = [];
 
         const products = document.querySelectorAll(".product-item");
         products.forEach((product) => {
-            const weight =
-                parseFloat(product.dataset.weight) *
-                parseInt(product.dataset.quantity);
+            const familyCategory = product.dataset.family_category; // Identify family category
+            const quantity = parseInt(product.dataset.quantity);
+            const weight = parseFloat(product.dataset.weight);
             const length = parseFloat(product.dataset.length);
             const width = parseFloat(product.dataset.width);
             const height = parseFloat(product.dataset.height);
 
-            totalWeight += weight;
-            maxLength = Math.max(maxLength, length);
-            maxWidth = Math.max(maxWidth, width);
-            totalHeight += height;
+            // Check if it's a welded wire product based on family category
+            if (familyCategory === "5") {
+                for (let i = 0; i < quantity; i++) {
+                    if (weight > 150) {
+                        alert(
+                            `Each product of welded wire must weigh under 150 lbs for UPS Ground. Product weight: ${weight} lbs`,
+                        );
+                        return;
+                    }
+                    packages.push({
+                        weight: weight.toFixed(2),
+                        dimensions: {
+                            length: length.toFixed(2),
+                            width: width.toFixed(2),
+                            height: height.toFixed(2),
+                        },
+                    });
+                }
+            } else {
+                // Handle other product types, treating each quantity as a separate package
+                for (let i = 0; i < quantity; i++) {
+                    packages.push({
+                        weight: weight.toFixed(2),
+                        dimensions: {
+                            length: length.toFixed(2),
+                            width: width.toFixed(2),
+                            height: height.toFixed(2),
+                        },
+                    });
+                }
+            }
         });
 
         try {
@@ -44,20 +68,15 @@ document
                     ).content,
                 },
                 body: JSON.stringify({
-                    shipper_address,
-                    shipper_city,
-                    shipper_state,
-                    shipper_postal,
-                    recipient_address,
-                    recipient_city,
-                    recipient_state,
-                    recipient_postal,
-                    weight: totalWeight.toFixed(2),
-                    dimensions: {
-                        length: maxLength.toFixed(2),
-                        width: maxWidth.toFixed(2),
-                        height: totalHeight.toFixed(2),
-                    },
+                    shipper_address: shipper_address,
+                    shipper_city: shipper_city,
+                    shipper_state: shipper_state,
+                    shipper_postal: shipper_postal,
+                    recipient_address: recipient_address,
+                    recipient_city: recipient_city,
+                    recipient_state: recipient_state,
+                    recipient_postal: recipient_postal,
+                    packages: packages, // Send packages array
                 }),
             });
 
@@ -70,40 +89,31 @@ document
                     document.getElementById("shipping-rates");
                 ratesContainer.innerHTML = ""; // Clear previous rates
 
-                // 🔍 **Filter Only UPS Ground (Service Code: "03")**
-                const groundShipment = data.RateResponse.RatedShipment.find(
-                    (shipment) => shipment.Service.Code === "03",
-                );
+                data.RateResponse.RatedShipment.forEach((shipment) => {
+                    const serviceCode = shipment.Service.Code;
+                    const totalCharges = shipment.TotalCharges.MonetaryValue;
 
-                if (groundShipment) {
-                    const serviceCode = groundShipment.Service.Code;
-                    const totalCharges =
-                        groundShipment.TotalCharges.MonetaryValue;
-                    const deliveryTime =
-                        groundShipment.GuaranteedDelivery?.DeliveryByTime ||
-                        "N/A";
+                    // Only display UPS Ground (Service Code: 03)
+                    if (serviceCode === "03") {
+                        const rateElement = document.createElement("div");
+                        rateElement.classList.add("rate-option");
+                        rateElement.innerHTML = `
+                            <label class="d-block">
+                                <input type="radio" name="shipping_option" class="shipping-option"
+                                    data-charge="${totalCharges}" value="${serviceCode}">
+                                UPS Ground - $${totalCharges}
+                            </label>
+                        `;
+                        ratesContainer.appendChild(rateElement);
+                    }
+                });
 
-                    const rateElement = document.createElement("div");
-                    rateElement.classList.add("rate-option");
-                    rateElement.innerHTML = `
-                        <label class="d-block">
-                            <input type="radio" name="shipping_option" class="shipping-option"
-                                data-charge="${totalCharges}" value="${serviceCode}">
-                            <strong>UPS Ground:</strong> $${totalCharges} (Delivery: ${deliveryTime})
-                        </label>
-                    `;
-                    ratesContainer.appendChild(rateElement);
-
-                    // Add event listener for updating total price when selected
-                    document
-                        .querySelectorAll(".shipping-option")
-                        .forEach((option) => {
-                            option.addEventListener("change", updateTotalPrice);
-                        });
-                } else {
-                    ratesContainer.innerHTML =
-                        "<p class='text-danger'>No UPS Ground rates available.</p>";
-                }
+                // Add event listeners for updating total price
+                document
+                    .querySelectorAll(".shipping-option")
+                    .forEach((option) => {
+                        option.addEventListener("change", updateTotalPrice);
+                    });
             }
         } catch (error) {
             console.error("Error fetching rates:", error);
