@@ -1,161 +1,136 @@
-{{-- @dd($cart, $subtotal, $tax, $total); --}}
 @extends('layouts.main')
 
 @section('title', 'Checkout')
 
 @section('content')
     <main class="container my-5">
-        <!-- Returning Customer -->
-        <div class="text-center mb-4">
-            <div class="border border-danger p-2">
-                Returning customer? <a href="{{ route('login') }}" class="text-danger">Click here to login</a>
-            </div>
-        </div>
-
-        <!-- Page Header -->
         <h2 class="text-center mb-4">Checkout</h2>
 
-        <div class="row g-4">
-            <!-- Billing Details -->
+        <div class="row">
             <div class="col-lg-8">
-                <form action="" method="POST">
+                <form id="checkout-form">
                     @csrf
 
-                    <h5 class="mb-3">Billing details</h5>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="first_name" class="form-label">First name *</label>
-                            <input type="text" id="first_name" name="first_name" class="form-control" required>
+                    <h5 class="mb-3">Shipper Information</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="shipper-address" class="form-label">Shipper Address</label>
+                            <input type="text" id="shipper-address" name="shipper_address" class="form-control"
+                                placeholder="Enter shipper address" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="last_name" class="form-label">Last name *</label>
-                            <input type="text" id="last_name" name="last_name" class="form-control" required>
+                        <div class="col-md-6 mb-3">
+                            <label for="shipper-city" class="form-label">Shipper City</label>
+                            <input type="text" id="shipper-city" name="shipper_city" class="form-control"
+                                placeholder="Enter shipper city" required>
                         </div>
-                        <div class="col-md-12">
-                            <label for="country" class="form-label">Country/Region *</label>
-                            <select id="country" name="country" class="form-select" required>
-                                <option value="United States">United States (US)</option>
-                                <!-- Add more countries if needed -->
-                            </select>
+                        <div class="col-md-6 mb-3">
+                            <label for="shipper-state" class="form-label">Shipper State</label>
+                            <input type="text" id="shipper-state" name="shipper_state" class="form-control"
+                                placeholder="Enter shipper state" required>
                         </div>
-                        <div class="col-md-12">
-                            <label for="street_address" class="form-label">Street address *</label>
-                            <input type="text" id="street_address" name="street_address" class="form-control"
-                                placeholder="House number and street name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="city" class="form-label">Town/City *</label>
-                            <input type="text" id="city" name="city" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="state" class="form-label">State *</label>
-                            <select id="state" name="state" class="form-select" required>
-                                <option value="New Jersey">New Jersey</option>
-                                <!-- Add more states if needed -->
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="zip" class="form-label">ZIP Code *</label>
-                            <input type="text" id="zip" name="zip" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="phone" class="form-label">Phone *</label>
-                            <input type="text" id="phone" name="phone" class="form-control" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="email" class="form-label">Email address *</label>
-                            <input type="email" id="email" name="email" class="form-control" required>
+                        <div class="col-md-6 mb-3">
+                            <label for="shipper-postal" class="form-label">Shipper ZIP Code</label>
+                            <input type="text" id="origin-zip" name="shipper_postal" class="form-control"
+                                placeholder="Enter shipper ZIP code" required>
                         </div>
                     </div>
 
-                    <!-- Shipping Options -->
-                    <div class="mt-4">
-                        <h5>Shipping Options</h5>
-                        <div id="shipping-options" class="border p-3 rounded">
-                            <p>Enter your ZIP Code to calculate shipping rates.</p>
+                    <h5 class="mb-3">Recipient Information</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="recipient-address" class="form-label">Recipient Address</label>
+                            <input type="text" id="recipient-address" name="recipient_address" class="form-control"
+                                placeholder="Enter recipient address" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="recipient-city" class="form-label">Recipient City</label>
+                            <input type="text" id="recipient-city" name="recipient_city" class="form-control"
+                                placeholder="Enter recipient city" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="recipient-state" class="form-label">Recipient State</label>
+                            <input type="text" id="recipient-state" name="recipient_state" class="form-control"
+                                placeholder="Enter recipient state" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="recipient-postal" class="form-label">Recipient ZIP Code</label>
+                            <input type="text" id="destination-zip" name="recipient_postal" class="form-control"
+                                placeholder="Enter recipient ZIP code" required>
                         </div>
                     </div>
 
-                    <div class="form-check my-3">
-                        <input type="checkbox" class="form-check-input" id="ship_different" name="ship_different">
-                        <label for="ship_different" class="form-check-label">Ship to a different address?</label>
+                    <h5 class="mb-3">Package Information</h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="weight" class="form-label">Weight (lbs)</label>
+                            <input type="number" id="weight" name="weight" class="form-control"
+                                placeholder="Enter package weight" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="length" class="form-label">Length (inches)</label>
+                            <input type="number" id="length" name="length" class="form-control" placeholder="Length"
+                                required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="width" class="form-label">Width (inches)</label>
+                            <input type="number" id="width" name="width" class="form-control" placeholder="Width"
+                                required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="height" class="form-label">Height (inches)</label>
+                            <input type="number" id="height" name="height" class="form-control"
+                                placeholder="Height" required>
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="order_notes" class="form-label">Order notes (optional)</label>
-                        <textarea id="order_notes" name="order_notes" class="form-control" rows="3"
-                            placeholder="Notes about your order, e.g., special notes for delivery."></textarea>
-                    </div>
+                    <button type="button" id="calculate-shipping" class="btn btn-primary">Calculate Shipping</button>
                 </form>
+
+                <div id="shipping-options" class="mt-4">
+                    <h5 class="mb-3">Available Shipping Rates</h5>
+                    <div id="shipping-rates" class="border p-3"></div>
+                </div>
             </div>
 
-            <!-- Order Summary -->
             <div class="col-lg-4">
-                <h5 class="mb-3">Your order</h5>
-                <div class="border p-3 rounded mb-4">
+                <h5>Your Order</h5>
+                <div class="border p-3">
                     @foreach ($cart as $item)
-                        <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex justify-content-between">
                             <span>{{ $item['product_name'] }} × {{ $item['quantity'] }}</span>
                             <span>${{ number_format($item['total'], 2) }}</span>
                         </div>
                     @endforeach
                     <hr>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between">
                         <span>Subtotal</span>
                         <span>${{ number_format($subtotal, 2) }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="d-flex justify-content-between">
                         <span>Tax</span>
                         <span>${{ number_format($tax, 2) }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total</span>
-                        <span id="total" data-subtotal="{{ $subtotal }}" data-tax="{{ $tax }}">
-                            ${{ number_format($total, 2) }}
-                        </span>
+                    <div id="shipping-cost" class="d-flex justify-content-between d-none">
+                        <span>Shipping</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Total</strong>
+                        <strong id="total-amount"
+                            data-total="{{ $total }}">${{ number_format($total, 2) }}</strong>
                     </div>
                 </div>
-
-                <h5 class="mb-3">Payment Method</h5>
-                <div class="form-check mb-3">
-                    <input type="radio" class="form-check-input" id="credit_card" name="payment_method"
-                        value="credit_card" required>
-                    <label for="credit_card" class="form-check-label">Credit Card</label>
-                </div>
-                <div class="form-check mb-3">
-                    <input type="radio" class="form-check-input" id="paypal" name="payment_method" value="paypal">
-                    <label for="paypal" class="form-check-label">PayPal</label>
-                </div>
-
-                <div class="mb-3">
-                    <label for="card_number" class="form-label">Card Number *</label>
-                    <input type="text" id="card_number" name="card_number" class="form-control" required>
-                </div>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="expiration" class="form-label">Expiration (MM/YY) *</label>
-                        <input type="text" id="expiration" name="expiration" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="cvc" class="form-label">(CVC) *</label>
-                        <input type="text" id="cvc" name="cvc" class="form-control" required>
-                    </div>
-                </div>
-
-                <div class="form-check my-3">
-                    <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
-                    <label for="terms" class="form-check-label">I have read and agree to the website terms and
-                        conditions *</label>
-                </div>
-
-                <button type="submit" class="btn btn-danger w-100">Place Order</button>
             </div>
         </div>
     </main>
-    <!-- Hidden Cart Data -->
-    <div id="cart-data" data-cart="{{ htmlspecialchars(json_encode($cart), ENT_QUOTES, 'UTF-8') }}"></div>
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/checkout.js') }}"></script>
+    <script>
+        window.appConfig = {
+            csrfToken: "{{ csrf_token() }}",
+            calculateShippingUrl: "/shipping-rates",
+        };
+    </script>
+    <script src="{{ secure_asset('js/checkout.js') }}"></script>
 @endsection

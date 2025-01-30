@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!-- CSRF Token -->
     <!-- Favicon -->
-    <link rel="icon" href="{{ url('/resources/images/favicon.ico') }}" type="image/x-icon">
+    {{-- <link rel="icon" href="{{ url('/resources/images/favicon.ico') }}" type="image/x-icon"> --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">

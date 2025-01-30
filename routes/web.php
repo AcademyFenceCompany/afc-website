@@ -12,6 +12,7 @@ use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\ShippingController;
 
 
 
@@ -114,7 +115,6 @@ Route::get('/brochures', function () {
     ]);
 })->name('brochures');
 Route::view('/empty-cart', 'cart/empty')->name('empty-cart');
-// Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
 Route::get('/dashboard', function () {
@@ -134,7 +134,6 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')
 Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
 Route::post('/cart/remove-item', [CartController::class, 'removeItem'])->name('cart.removeItem');
 Route::post('/cart/remove-selected', [CartController::class, 'removeSelectedItems'])->name('cart.removeSelected');
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
 
 
@@ -159,9 +158,8 @@ Route::get('/categories', [CategoriesController::class, 'showTree'])->name('cate
 Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
 
 //Shipping API's 
-Route::post('/calculate-shipping-cost', [App\Http\Controllers\CheckoutController::class, 'calculateShippingCost'])->name('calculate-shipping-cost');
-Route::post('/ups/callback', [App\Http\Controllers\UPSController::class, 'handleCallback'])->name('ups.callback');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+// Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
 
-
-
+Route::post('/shipping-rates', [ShippingController::class, 'getShippingRates']);
 require __DIR__ . '/auth.php';
