@@ -91,13 +91,13 @@ class UPSService
                 ],
                 "Shipment" => [
                     "Shipper" => [
-                        "Name" => "Shipper Name",
+                        "Name" => config('shipper.name'),
                         "ShipperNumber" => $this->shipperNumber,
                         "Address" => [
-                            "AddressLine" => [$requestData['shipper_address']],
-                            "City" => $requestData['shipper_city'],
-                            "StateProvinceCode" => $requestData['shipper_state'],
-                            "PostalCode" => $requestData['shipper_postal'],
+                            "AddressLine" => config('shipper.address'),
+                            "City" => config('shipper.city'),
+                            "StateProvinceCode" =>config('shipper.state'),
+                            "PostalCode" => config('shipper.zip'),
                             "CountryCode" => "US",
                         ],
                     ],
@@ -116,6 +116,8 @@ class UPSService
             ],
         ];
 
+        \Log::info('UPS Request Payload:', ['payload' => $payload]);
+
         $response = $this->client->post("{$this->baseUrl}/api/rating/v1/Shop", [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->accessToken,
@@ -124,10 +126,19 @@ class UPSService
             'json' => $payload,
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        $responseData = json_decode($response->getBody()->getContents(), true);
+        
+        \Log::info('UPS Response:', ['response' => $responseData]);
+
+        return $responseData;
     } catch (\Exception $e) {
-        Log::error('UPS Shipping Rates Error', ['message' => $e->getMessage()]);
+        \Log::error('UPS Shipping Rates Error', [
+            'message' => $e->getMessage(),
+            'request' => $requestData
+        ]);
+
         return ['error' => 'Unable to fetch rates from UPS API.'];
     }
 }
+
 }

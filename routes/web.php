@@ -13,6 +13,7 @@ use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\TForceController;
 
 
 
@@ -161,5 +162,6 @@ Route::get('/categories/{category}/products', [CategoriesController::class, 'get
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 // Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
 
-Route::post('/shipping-rates', [ShippingController::class, 'getShippingRates']);
+
+
 require __DIR__ . '/auth.php';

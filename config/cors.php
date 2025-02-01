@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'paths' => ['api/*', 'shipping-rates'],
+    'paths' => ['api/*', 'ups-rates'],
     'allowed_methods' => ['*'],
     'allowed_origins' => ['*'],
     'allowed_origins_patterns' => [],
