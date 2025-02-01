@@ -9,22 +9,20 @@ use Illuminate\Support\Facades\Log;
 
 class ShippingController extends Controller
 {
-    private $tforceService;
     private $upsService;
 
-    public function __construct(TForceService $tforceService, UPSService $upsService)
+    public function __construct(UPSService $upsService)
     {
-        $this->tforceService = $tforceService;
         $this->upsService = $upsService;
     }
 
     public function getShippingRates(Request $request)
     {
         $validated = $request->validate([
-            'shipper_address' => 'required|string',
-            'shipper_city' => 'required|string',
-            'shipper_state' => 'required|string',
-            'shipper_postal' => 'required|string',
+            // 'shipper_address' => 'required|string',
+            // 'shipper_city' => 'required|string',
+            // 'shipper_state' => 'required|string',
+            // 'shipper_postal' => 'required|string',
             'recipient_address' => 'required|string',
             'recipient_city' => 'required|string',
             'recipient_state' => 'required|string',
