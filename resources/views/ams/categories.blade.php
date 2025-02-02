@@ -9,80 +9,115 @@
         <h2>CATEGORY MANAGEMENT</h2>
     </div>
 
-    <!-- Top Buttons  -->
-
+    <!-- Top Buttons -->
     <div class="row d-flex align-items-center justify-content-between">
-        <!-- Create New Category Button (Left) -->
         <div class="col-md-4">
-            <button class="btn btn-light fa-light fa-plus">
-                Create New Category
+            <button class="btn btn-light">
+                <i class="fa-light fa-plus"></i> Create New Category
             </button>
         </div>
-
-        <!-- Right Section: Select All, Save & Delete -->
-        <div class="col-md-8 d-flex align-items-center justify-content-end gap-3">
-            <!-- Select All Checkbox -->
+        <div class="col-md-8 d-flex align-items-center justify-content-end gap-2">
             <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                    Select all
-                </label>
+                <input class="form-check-input" type="checkbox" id="selectAll">
+                <label class="form-check-label" for="selectAll">Select all</label>
             </div>
-
-            <!-- Save Button -->
             <button class="btn btn-light">Save</button>
-
-            <!-- Delete Button -->
             <button class="btn btn-light">
                 <i class="fa-solid fa-trash-can"></i> Delete
             </button>
         </div>
     </div>
 
-
+    <!-- Category Table -->
     <table class="table">
         <tbody>
+            @foreach ($categories as $category)
             <tr>
-                <td colspan="2">
+                <td colspan="2" class="py-1">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-chevron-up"></i>
-                        <span>WOOD FENCE</span>
+                        <i class="fa-solid fa-chevron-down toggle-icon" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $loop->index }}"></i>
+                        <span>{{ $category->family_category_name }}</span>
                         <i class="fa-regular fa-pen-to-square"></i>
                     </div>
                 </td>
-                <td>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            Select
-                        </label>
-                    </div>
-                </td>
-
-                <td>
-                    <div class="d-flex align-items-center gap-2 fa-light fa-plus">
-                        <span>Add Sub</span>
-                    </div>
-                </td>
-
+                <td><input class="form-check-input" type="checkbox"></td>
+                <td><button class="btn btn-sm btn-light"><i class="fa-light fa-plus"></i> Add Sub</button></td>
                 <td><i class="fa-solid fa-arrows-up-down"></i></td>
-
-                <td>
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="fa-regular fa-copy"></i><span>Copy</span>
-                    </div>
-                </td>
-
-                <td>
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="fa-solid fa-trash-can"></i><span>Delete</span>
-                    </div>
-                </td>
-
+                <td><button class="btn btn-sm btn-light"><i class="fa-regular fa-copy"></i> Copy</button></td>
+                <td><button class="btn btn-sm btn-light"><i class="fa-solid fa-trash-can"></i> Delete</button></td>
             </tr>
-
+            <tr>
+                <td colspan="7" class="py-1">
+                    <div class="collapse" id="collapse-{{ $loop->index }}">
+                        @if (collect($category->children)->isNotEmpty())
+                            <table class="table table-sm">
+                                <tbody>
+                                    @foreach ($category->children as $child)
+                                    <tr>
+                                        <td colspan="2" class="py-1 ps-4">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="fa-solid fa-chevron-down toggle-icon" data-bs-toggle="collapse" data-bs-target="#subcollapse-{{ $loop->parent->index }}-{{ $loop->index }}"></i>
+                                                <span>{{ $child->family_category_name }}</span>
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </div>
+                                        </td>
+                                        <td><input class="form-check-input" type="checkbox"></td>
+                                        <td><button class="btn btn-sm btn-light"><i class="fa-light fa-plus"></i> Add Sub</button></td>
+                                        <td><i class="fa-solid fa-arrows-up-down"></i></td>
+                                        <td><button class="btn btn-sm btn-light"><i class="fa-regular fa-copy"></i> Copy</button></td>
+                                        <td><button class="btn btn-sm btn-light"><i class="fa-solid fa-trash-can"></i> Delete</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7" class="py-1 ps-5">
+                                            <div class="collapse" id="subcollapse-{{ $loop->parent->index }}-{{ $loop->index }}">
+                                                @if (collect($child->children)->isNotEmpty())
+                                                    <table class="table table-sm">
+                                                        <tbody>
+                                                            @foreach ($child->children as $subChild)
+                                                            <tr>
+                                                                <td colspan="2" class="py-1 ps-5">
+                                                                    <div class="d-flex align-items-center gap-2">
+                                                                        <i class="fa-solid fa-chevron-down toggle-icon" data-bs-toggle="collapse" data-bs-target="#subsubcollapse-{{ $loop->parent->parent->index }}-{{ $loop->parent->index }}-{{ $loop->index }}"></i>
+                                                                        <span>{{ $subChild->family_category_name }}</span>
+                                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                                    </div>
+                                                                </td>
+                                                                <td><input class="form-check-input" type="checkbox"></td>
+                                                                <td><button class="btn btn-sm btn-light"><i class="fa-light fa-plus"></i> Add Sub</button></td>
+                                                                <td><i class="fa-solid fa-arrows-up-down"></i></td>
+                                                                <td><button class="btn btn-sm btn-light"><i class="fa-regular fa-copy"></i> Copy</button></td>
+                                                                <td><button class="btn btn-sm btn-light"><i class="fa-solid fa-trash-can"></i> Delete</button></td>
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+                </td>
+            </tr>
+            @endforeach
         </tbody>
     </table>
+</div>
+
+<script>
+    function toggleChildren(event) {
+        let childrenList = event.target.nextElementSibling;
+        if (childrenList) {
+            childrenList.style.display = childrenList.style.display === "none" ? "block" : "none";
+        }
+    }
+</script>
+
+
+
 
 
     <ul class="tree">
@@ -113,5 +148,3 @@
         }
     </script>
 
-
-</div>

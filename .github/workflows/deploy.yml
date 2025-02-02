@@ -1,6 +1,6 @@
 name: Deploy to DigitalOcean
 
-on:   
+on:
   push:
     branches:
       - main
@@ -13,14 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.DO_PRIVATE_KEY }}
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DO_PRIVATE_KEY }}
 
-    - name: Deploy to Droplet
-      run: |
-        ssh -o StrictHostKeyChecking=no root@167.99.229.127 "/home/academyfence/public_html/academyfence/deploy.sh"
+      - name: Deploy to Droplet
+        run: |
+          ssh -o StrictHostKeyChecking=no root@167.99.229.127 "/home/academyfence/public_html/academyfence/deploy.sh"

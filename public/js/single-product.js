@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
     });
 
-
     function updateProductDetails(data) {
         // Update common fields
         document.getElementById("product-name").innerHTML = `
@@ -27,11 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (data.price_per_unit) {
-            document.getElementById("product-price").textContent = `$${parseFloat(data.price_per_unit).toFixed(2)}`;
+            document.getElementById("product-price").textContent =
+                `$${parseFloat(data.price_per_unit).toFixed(2)}`;
         }
 
         if (data.general_image || data.small_image || data.large_image) {
-            document.getElementById("product-image").src = data.general_image || data.small_image || data.large_image;
+            document.getElementById("product-image").src =
+                data.general_image || data.small_image || data.large_image;
         }
 
         // Special handling for Wood Fence

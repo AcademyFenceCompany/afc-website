@@ -15,7 +15,7 @@ function updateMiniCart(cart) {
         emptyCartMessage.classList.add("d-none");
 
         // Populate mini cart dynamically
-        Object.values(cart).forEach(item => {
+        Object.values(cart).forEach((item) => {
             miniCartItems.innerHTML += `
                 <li class="d-flex justify-content-between align-items-start mb-2">
                     <div>
@@ -32,9 +32,7 @@ function updateMiniCart(cart) {
     }
 }
 
-
-
-document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
     button.addEventListener("click", function () {
         const itemData = {
             item_no: this.getAttribute("data-item"),
@@ -54,21 +52,18 @@ document.querySelectorAll(".add-to-cart-btn").forEach(button => {
             },
             body: JSON.stringify(itemData),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update the mini cart dynamically
-                updateMiniCart(data.cart);
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Update the mini cart dynamically
+                    updateMiniCart(data.cart);
 
-                // Show success notification
-                showToast("Item added to cart", "bg-success");
-            } else {
-                showToast("Failed to add item", "bg-danger");
-            }
-        })
-        .catch(error => console.error("Error adding item:", error));
+                    // Show success notification
+                    showToast("Item added to cart", "bg-success");
+                } else {
+                    showToast("Failed to add item", "bg-danger");
+                }
+            })
+            .catch((error) => console.error("Error adding item:", error));
     });
 });
-
-
-    
