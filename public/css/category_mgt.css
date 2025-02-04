@@ -1,0 +1,53 @@
+.table .green {
+    padding: 4px;
+    border: 1px solid black;
+    height: 40px;
+}
+
+table {
+    border-spacing: 0 10px; /* First value = horizontal, second value = vertical spacing */
+    border-collapse: separate; /* Ensures spacing works */
+}
+
+/* Container for the dropdown */
+.dropdown-container {
+    width: 1177px; /* Match the width from the image */
+    border: 1px solid #000; /* Black border */
+    border-radius: 4px; /* Slightly rounded corners */
+    overflow: hidden; /* Prevent overflow issues */
+}
+
+/* Header section with title and icons */
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between elements */
+    padding: 10px 15px; /* Adjust spacing inside */
+    font-size: 16px; /* Text size */
+    background-color: #fff; /* White background */
+    cursor: pointer; /* Indicates clickable dropdown */
+}
+
+/* Dropdown icon (arrow) */
+.dropdown-icon {
+    margin-right: 10px; /* Space to the title */
+}
+
+/* Edit icon */
+.edit-icon {
+    margin-left: auto; /* Push to the far right */
+    cursor: pointer; /* Indicates edit is clickable */
+}
+
+/* Content inside the dropdown */
+.dropdown-content {
+    display: none; /* Hidden by default */
+    background-color: #f9f9f9; /* Light background for dropdown content */
+    padding: 10px; /* Add some spacing */
+}
+
+/* Show content when container is active */
+.dropdown-container.active .dropdown-content {
+    display: block;
+}
+

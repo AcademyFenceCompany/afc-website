@@ -33,11 +33,11 @@
         <tbody>
             @foreach ($categories as $category)
             <tr>
-                <td colspan="2" class="py-1">
+                <td colspan="2" class="green d-flex align-items-center">
                     <div class="d-flex align-items-center gap-2">
                         <i class="fa-solid fa-chevron-down toggle-icon" data-bs-toggle="collapse" data-bs-target="#collapse-{{ $loop->index }}"></i>
-                        <span>{{ $category->family_category_name }}</span>
-                        <i class="fa-regular fa-pen-to-square"></i>
+                        <span data-bs-toggle="collapse" data-bs-target="#collapse-{{ $loop->index }}">{{ $category->family_category_name }}</span>
+                        <i class="fa-regular fa-pen-to-square "></i>
                     </div>
                 </td>
                 <td><input class="form-check-input" type="checkbox"></td>
@@ -54,7 +54,7 @@
                                 <tbody>
                                     @foreach ($category->children as $child)
                                     <tr>
-                                        <td colspan="2" class="py-1 ps-4">
+                                        <td colspan="2" class="py-1 ps-4 green d-flex align-items-center">
                                             <div class="d-flex align-items-center gap-2">
                                                 <i class="fa-solid fa-chevron-down toggle-icon" data-bs-toggle="collapse" data-bs-target="#subcollapse-{{ $loop->parent->index }}-{{ $loop->index }}"></i>
                                                 <span>{{ $child->family_category_name }}</span>
@@ -107,6 +107,26 @@
     </table>
 </div>
 
+<!-- <div class="dropdown-container">
+    <div class="dropdown-header">
+        <span class="dropdown-icon"><i class="fa-solid fa-chevron-down toggle-icon"></i></span>
+        <span class="dropdown-title">Welded Wire</span>
+        <span class="edit-icon"><i class="fa-regular fa-pen-to-square "></i></span>
+        <span class="edit-icon"><input class="form-check-input" type="checkbox">Select</span>
+        <span class="edit-icon">✎</span>
+        <span class="edit-icon">✎</span>
+        <span class="edit-icon">✎</span>
+        <span class="edit-icon">✎</span>
+    </div>
+    <div class="dropdown-content">
+    <span class="dropdown-icon">▼</span>
+    <span class="dropdown-title">Welded Wire</span>
+    </div>
+</div> -->
+
+
+
+
 <script>
     function toggleChildren(event) {
         let childrenList = event.target.nextElementSibling;
@@ -114,6 +134,12 @@
             childrenList.style.display = childrenList.style.display === "none" ? "block" : "none";
         }
     }
+
+    document.querySelector('.dropdown-header').addEventListener('click', function() {
+    const container = this.parentElement;
+    container.classList.toggle('active');
+});
+
 </script>
 
 
