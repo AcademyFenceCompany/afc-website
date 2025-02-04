@@ -144,4 +144,21 @@ class CartController extends Controller
             'message' => 'Cart cleared successfully',
         ]);
     }
+    public function update(Request $request)
+{
+    $cart = session()->get('cart', []);
+
+    if (isset($cart[$request->item_no])) {
+        $cart[$request->item_no]['quantity'] = $request->quantity;
+        $cart[$request->item_no]['total'] = $cart[$request->item_no]['price'] * $request->quantity;
+    }
+
+    session()->put('cart', $cart);
+
+    return response()->json([
+        'success' => true,
+        'subtotal' => array_sum(array_column($cart, 'total'))
+    ]);
+}
+
 }

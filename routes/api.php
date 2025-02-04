@@ -15,6 +15,7 @@ use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +32,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Shipping apis
 Route::post('/ups-rates', [ShippingController::class, 'getShippingRates']);
 Route::post('/tforce-rates', [TForceController::class, 'getRate']);
+
+//Authorize.net payment api
+Route::post('/charge', [PaymentController::class, 'chargeCreditCard']);
