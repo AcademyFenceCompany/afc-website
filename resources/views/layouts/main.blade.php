@@ -49,8 +49,8 @@
             }, 60000); // 60 seconds
         });
     </script>
-    {{-- <script src="{{ asset('js/cart.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/cart-item.js') }}"></script> --}}
+    {{-- <script src="{{ secure_asset('js/cart.js') }}"></script> --}}
+    {{-- <script src="{{ secure_asset('js/cart-item.js') }}"></script> --}}
 
 </body>
 

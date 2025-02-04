@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
 </head>
 
 <body>
@@ -107,8 +107,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('js/user-management.js') }}"></script>
-    <script src="{{ asset('js/ams.js') }}"></script>
+    <script src="{{ secure_asset('js/user-management.js') }}"></script>
+    <script src="{{ secure_asset('js/ams.js') }}"></script>
 
 </body>
 

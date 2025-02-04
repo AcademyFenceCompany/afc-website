@@ -177,6 +177,24 @@
                             data-total="{{ $total }}">${{ number_format($total, 2) }}</strong>
                     </div>
                 </div>
+
+                <!-- Payment Information -->
+                <form action="api/charge" method="POST">
+                    @csrf
+                    <label for="card_number">Card Number:</label>
+                    <input type="text" name="card_number" id="card_number" required>
+
+                    <label for="expiration_date">Expiration Date (MM/YYYY):</label>
+                    <input type="text" name="expiration_date" id="expiration_date" required>
+
+                    <label for="cvv">CVV:</label>
+                    <input type="text" name="cvv" id="cvv" required>
+
+                    <label for="amount">Amount:</label>
+                    <input type="text" name="amount" id="amount" required>
+
+                    <button type="submit">Submit Payment</button>
+                </form>
             </div>
         </div>
     </main>
@@ -220,6 +238,7 @@
                 shippingSection.classList.add('d-none');
                 calculateShippingButton.classList.add('d-none'); // Hide the button
                 shippingRatesSection.classList.add('d-none'); // Hide the shipping rates section
+                document.getElementById('shipping-cost-value').innerText = '$0.00'; // Set shipping cost to $0.00
             }
         });
     </script>

@@ -79,6 +79,8 @@ document
                     tforceResponse.detail.forEach((shipment) => {
                         if (shipment.service.code === "308") {
                             const totalCharges =
+                                shipment.shipmentCharges.total.value /
+                                    (1 - parseFloat(33) / 100) +
                                 shipment.shipmentCharges.total.value;
 
                             const rateElement = document.createElement("div");
@@ -87,7 +89,7 @@ document
                                 <label class="d-block">
                                     <input type="radio" name="shipping_option" class="shipping-option"
                                         data-charge="${totalCharges}" value="tforce-ltl">
-                                    TForce Freight LTL - $${totalCharges} 
+                                    TForce Freight LTL - $${parseFloat(totalCharges).toFixed(2)} 
                                     (Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s))
                                 </label>
                             `;

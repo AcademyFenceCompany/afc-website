@@ -1,3 +1,4 @@
+{{-- @dd($meshSize_products) ; --}}
 @extends('layouts.main')
 
 @section('title', 'Welded Wire')
@@ -140,8 +141,24 @@
                                         <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                             data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
                                             data-price="{{ $product->price_per_unit }}" data-color="{{ $product->color }}"
-                                            data-size="{{ $product->size1 }}"
-                                            data-mesh="{{ $product->size2 }} {{ $product->size3 }}">
+                                            data-size1="{{ $product->size1 }}" data-size2="{{ $product->size2 }}"
+                                            data-size3="{{ $product->size3 }}" data-specialty="{{ $product->specialty }}"
+                                            data-material="{{ $product->material }}"
+                                            data-spacing="{{ $product->spacing }}" data-coating="{{ $product->coating }}"
+                                            data-weight="{{ $product->weight }}"
+                                            data-family_category="{{ $product->family_category_id }}"
+                                            data-general_image="{{ $product->general_image }}"
+                                            data-small_image="{{ $product->small_image }}"
+                                            data-large_image="{{ $product->large_image }}"
+                                            data-free_shipping="{{ $product->free_shipping }}"
+                                            data-special_shipping="{{ $product->special_shipping }}"
+                                            data-amount_per_box="{{ $product->amount_per_box }}"
+                                            data-description="{{ $product->description }}"
+                                            data-subcategory_id="{{ $product->subcategory_id }}"
+                                            data-shipping_length="{{ $product->shipping_length }}"
+                                            data-shipping_width="{{ $product->shipping_width }}"
+                                            data-shipping_height="{{ $product->shipping_height }}"
+                                            data-shipping_class="{{ $product->shipping_class }}">
                                             Add to Cart
                                         </button>
                                     </td>
