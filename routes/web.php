@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TForceController;
+use App\Http\Controllers\StateMarkupController;
 
 
 
@@ -162,6 +163,10 @@ Route::get('/categories/{category}/products', [CategoriesController::class, 'get
 //Shipping API's 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 // Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
+
+Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('shipping-markup');;
+Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
+Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
 
 

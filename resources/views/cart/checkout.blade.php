@@ -128,7 +128,6 @@
                         </div>
                     </div>
 
-
                     <div class="d-none">
                         @foreach ($cart as $item)
                             <div class="product-item" data-weight="{{ $item['weight'] }}"
@@ -138,7 +137,6 @@
                             </div>
                         @endforeach
                     </div>
-
 
                     <button type="button" id="calculate-shipping" class="btn btn-primary">Calculate Shipping</button>
                 </form>
@@ -191,7 +189,8 @@
                     <input type="text" name="cvv" id="cvv" required>
 
                     <label for="amount">Amount:</label>
-                    <input type="text" name="amount" id="amount" required>
+                    <input type="hidden" name="amount" id="amount" value="{{ number_format($total, 2) }}">
+
 
                     <button type="submit">Submit Payment</button>
                 </form>

@@ -62,7 +62,7 @@
             <a href="#" class="menu-item">Delivery Log</a>
             <a href="#" class="menu-item">Freight Shipping Log</a>
             <a href="#" class="menu-item">Small Package Log</a>
-            <a href="#" class="menu-item">Shipping Markup</a>
+            <a href="{{ route('shipping-markup') }}" class="menu-item">Shipping Markup</a>
         </div>
 
         <!-- Suppliers -->
@@ -93,7 +93,7 @@
     <div class="content">
         <!-- Header Section -->
         <div class="header">
-            <h2>Academy Fence Management System</h2>
+            <h2>@yield('title')</h2>
             <div class="header-buttons">
                 <p class="text-center">Welcome {{ auth()->user()->username }}</p>
                 <a href="{{ route('customers.index') }}" class="btn btn-primary">New Order</a>
