@@ -54,19 +54,27 @@
             <a href="{{ route('customers.index') }}" class="menu-item">View Customers</a>
         </div>
 
-        <!-- Shipping -->
+
         <a class="menu-item" data-bs-toggle="collapse" href="#shippingMenu" role="button" aria-expanded="false"
             aria-controls="shippingMenu">
             Shipping <i class="bi bi-caret-down-fill"></i>
         </a>
+
+        <div class="collapse submenu" id="productsMenu">
+            <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
+            <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
+            <a href="{{ route('categories.display') }}" class="menu-item">Category Management</a>
+        </div>
+
+        <!-- Shipping -->
         <div class="collapse submenu" id="shippingMenu">
-            <a href="#" class="menu-item">Add Shippers</a>
-            <a href="#" class="menu-item">Add Contacts to Shipper</a>
-            <a href="#" class="menu-item">View Shippers</a>
-            <a href="#" class="menu-item">Delivery Log</a>
-            <a href="#" class="menu-item">Freight Shipping Log</a>
-            <a href="#" class="menu-item">Small Package Log</a>
-            <a href="#" class="menu-item">Shipping Markup</a>
+            <a href="{{ route('shippers.view', ['page' => 'add_shippers']) }}" class="menu-item" class="menu-item">Add Shippers</a>
+            <a href="{{ route('shippers.view', ['page' => 'add_shippers_contacts']) }}" class="menu-item">Add Contacts to Shipper</a>
+            <a href="{{ route('shippers.view', ['page' => 'index_shippers']) }}" class="menu-item">View Shippers</a>
+            <a href="{{ route('shippers.view', ['page' => 'delivery_log']) }}" class="menu-item">Delivery Log</a>
+            <a href="{{ route('shippers.view', ['page' => 'freight_log']) }}" class="menu-item">Freight Shipping Log</a>
+            <a href="{{ route('shippers.view', ['page' => 'sm_package']) }}" class="menu-item">Small Package Log</a>
+            <a href="{{ route('shippers.view', ['page' => 'shipping_markup']) }}" class="menu-item">Shipping Markup</a>
         </div>
 
         <!-- Suppliers -->
@@ -95,20 +103,28 @@
             </i>
         </a>
         <div class="collapse submenu" id="officeSheets">
-            <a href="resources/office_sheets/Time_Sheet-template.pdf" target="_blank" class="menu-item">Time Sheet Template</a>
+            <a href="resources/office_sheets/Time_Sheet-template.pdf" target="_blank" class="menu-item">Time Sheet
+                Template</a>
             <a href="resources/office_sheets/Freight_Log.xls" target="_blank" class="menu-item">Freight Log</a>
             <a href="resources/office_sheets/Proposal.pdf" target="_blank" class="menu-item">Proposal</a>
             <a href="resources/office_sheets/Proposal_Cl.pdf" target="_blank" class="menu-item">Proposal Cl</a>
-            <a href="resources/office_sheets/Proposal_Non_Cl.pdf"target="_blank" class="menu-item">Proposal Cl w/email</a>
-            <a href="resources/office_sheets/chainlinkassemblydiagram.pdf" target="_blank" class="menu-item">Chain Link Assembly Diagram</a>
-            <a href="resources/office_sheets/work_order-updated_07-19-2019.pdf" target="_blank" class="menu-item">Work Order</a>
+            <a href="resources/office_sheets/Proposal_Non_Cl.pdf" target="_blank" class="menu-item">Proposal Cl
+                w/email</a>
+            <a href="resources/office_sheets/chainlinkassemblydiagram.pdf" target="_blank" class="menu-item">Chain Link
+                Assembly Diagram</a>
+            <a href="resources/office_sheets/work_order-updated_07-19-2019.pdf" target="_blank" class="menu-item">Work
+                Order</a>
             <a href="resources/office_sheets/lead-current.pdf" target="_blank" class="menu-item">Lead Sheet</a>
             <a href="resources/office_sheets/yard-sale.pdf" target="_blank" class="menu-item">Blank Yard Sale</a>
-            <a href="resources/office_sheets/Yard Sale Chain Link Sales Sheet.pdf" target="_blank" class="menu-item">Yard Sale</a>
-            <a href="resources/office_sheets/woodfencinggeneralorderform.pdf" target="_blank" class="menu-item">Wood Fencing Order Sheet</a>
-            <a href="resources/office_sheets/customerquotefaxsheet.pdf" target="_blank" class="menu-item">Quote Sheet</a>
+            <a href="resources/office_sheets/Yard Sale Chain Link Sales Sheet.pdf" target="_blank"
+                class="menu-item">Yard Sale</a>
+            <a href="resources/office_sheets/woodfencinggeneralorderform.pdf" target="_blank" class="menu-item">Wood
+                Fencing Order Sheet</a>
+            <a href="resources/office_sheets/customerquotefaxsheet.pdf" target="_blank" class="menu-item">Quote
+                Sheet</a>
             <a href="resources/office_sheets/Procalls sheet.pdf" target="_blank" class="menu-item">Pro Call Sheet</a>
-            <a href="resources/office_sheets/woodfencinggeneralorderform.pdf" target="_blank" class="menu-item">Fencing Order Sheet</a>
+            <a href="resources/office_sheets/woodfencinggeneralorderform.pdf" target="_blank" class="menu-item">Fencing
+                Order Sheet</a>
             <a href="resources/office_sheets/returnsheet.pdf" target="_blank" class="menu-item">Return Sheet</a>
         </div>
 

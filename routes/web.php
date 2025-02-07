@@ -12,9 +12,7 @@ use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
-
-
-
+use App\Http\Controllers\ShipperController;
 
 
 
@@ -163,14 +161,32 @@ Route::get('/ams/activity', function () {
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
-
 Route::get('/users', [UserManagementController::class, 'index'])->name('user.index');
 Route::put('/user/{id}', [UserManagementController::class, 'update']);
+
+
 
 // Family Category Tree - AMS
 Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
 Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
 
 
+// Shipping
+Route::get('/shippers/{page}', [ShipperController::class, 'showView'])
+    ->whereIn('page', [
+        'index_shippers',
+        'add_shippers',
+        'add_shippers_contacts',
+        'delivery_log',
+        'freight_log',
+        'sm_package',
+        'shipping_markup'
+    ])->name('shippers.view');
 
 require __DIR__ . '/auth.php';
+
+
+
+
+
+
