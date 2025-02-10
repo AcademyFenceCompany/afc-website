@@ -61,6 +61,45 @@
     gap: 8px;
 }
 
+/* Table Header Style */
+.table-header {
+    background-color: #4a4458; /* Dark purple background */
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Rounded corners for the header */
+}
+
+/* Table Row Style */
+.table-row {
+    background-color: #ffffff; /* White background */
+    border-bottom: 1px solid #ddd; /* Subtle row separator */
+}
+
+.table-row:last-child {
+    border-bottom: none; /* Remove border for the last row */
+}
+
+.btn-primary {
+    background-color: #4a4458; /* Matches header color */
+    border: none;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #d6d2e3; /* Slightly darker shade */
+    color: #6d6482;
+}
+
+.btn-secondary {
+    background-color: #eae7f1; /* Light gray-purple */
+    border: none;
+    color: #6d6482;
+}
+
+.btn-secondary:hover {
+    background-color: #d6d2e3; /* Slightly darker shade */
+}
+
+
 
 
 
