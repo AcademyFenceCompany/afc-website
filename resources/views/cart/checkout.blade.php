@@ -177,26 +177,48 @@
                 </div>
 
                 <!-- Payment Information -->
-                <form action="api/charge" method="POST">
-                    @csrf
-                    <label for="card_number">Card Number:</label>
-                    <input type="text" name="card_number" id="card_number" required>
+                <div class="mt-4">
+                    <h5 class="mb-3">Payment Information</h5>
+                    <form action="api/charge" method="POST" class="border p-4 rounded bg-white shadow-sm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="card_number" class="form-label">Card Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                                <input type="text" name="card_number" id="card_number" class="form-control" required
+                                    placeholder="**** **** **** ****">
+                            </div>
+                        </div>
 
-                    <label for="expiration_date">Expiration Date (MM/YYYY):</label>
-                    <input type="text" name="expiration_date" id="expiration_date" required>
+                        <div class="row mb-3">
+                            <div class="col-md-8">
+                                <label for="expiration_date" class="form-label">Expiration Date</label>
+                                <input type="text" name="expiration_date" id="expiration_date" class="form-control"
+                                    required placeholder="MM/YYYY">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="cvv" class="form-label">CVV</label>
+                                <input type="text" name="cvv" id="cvv" class="form-control" required
+                                    placeholder="***">
+                            </div>
+                        </div>
 
-                    <label for="cvv">CVV:</label>
-                    <input type="text" name="cvv" id="cvv" required>
+                        <input type="hidden" name="amount" id="amount" value="{{ number_format($total, 2) }}">
 
-                    <label for="amount">Amount:</label>
-                    <input type="hidden" name="amount" id="amount" value="{{ number_format($total, 2) }}">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-lock me-2"></i>Pay ${{ number_format($total, 2) }} Securely
+                        </button>
 
-
-                    <button type="submit">Submit Payment</button>
-                </form>
+                        <div class="mt-3 text-center">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i> Your payment information is secure and encrypted
+                            </small>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </main>
+    </div>
 @endsection
 
 @section('scripts')

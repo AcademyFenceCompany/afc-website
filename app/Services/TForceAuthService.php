@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 
 class TForceAuthService
@@ -66,23 +67,21 @@ class TForceAuthService
             throw new \Exception('Failed to retrieve access token: ' . $e->getMessage());
         }
     }
-    public function getRates(array $requestData)
-{
-    try {
-        $accessToken = $this->getAccessToken(); // Retrieve the valid access token
 
-        $client = new Client();
-        $response = $client->post("https://api.tforcefreight.com/rating/getRate?api-version=v1", [
-            'headers' => [
-                'Authorization' => "Bearer $accessToken",
-                'Content-Type' => 'application/json',
-            ],
-            'json' => [
+    public function getRates(array $requestData)
+    {
+        try {
+            $accessToken = $this->getAccessToken(); // Retrieve the valid access token
+
+            $client = new Client();
+            
+            // Build the request payload
+            $payload = [
                 "requestOptions" => [
                     "serviceCode" => "308",
-                    "pickupDate" => date('Y-m-d'), // Ensure correct date format
+                    "pickupDate" => date('Y-m-d'),
                     "type" => "L",
-                    "densityEligible" => false,
+                    "densityEligible" => true,
                     "timeInTransit" => true,
                     "quoteNumber" => true,
                     "customerContext" => "Checkout API",
@@ -105,49 +104,139 @@ class TForceAuthService
                 ],
                 "payment" => [
                     "payer" => [
+                        "type" => "S",
+                        "accountNumber" => config('tforce.account_number'),
                         "address" => [
                             "city" => config('shipper.city'),
                             "stateProvinceCode" => config('shipper.state'),
                             "postalCode" => config('shipper.zip'),
                             "country" => "US",
-                        ],
+                        ]
                     ],
-                    "billingCode" => "30",
-                ],
-                "serviceOptions" => [
-                    "pickup" => ["INPU", "LIFO"],
-                    "delivery" => ["INDE", "LIFD"],
+                    "billingCode" => "10",
                 ],
                 "commodities" => array_map(function ($package) {
+                    // Calculate density for proper freight class
+                    $volume = ($package['dimensions']['length'] * $package['dimensions']['width'] * $package['dimensions']['height']) / 1728;
+                    $density = $package['weight'] / $volume;
+                    
+                    // Determine freight class based on density
+                    $freightClass = $this->getFreightClassByDensity($density);
+                    
+                    // Log the density calculation
+                    Log::channel('daily')->info('Package density calculation', [
+                        'dimensions' => $package['dimensions'],
+                        'weight' => $package['weight'],
+                        'volume' => $volume,
+                        'density' => $density,
+                        'freightClass' => $freightClass
+                    ]);
+                    
                     return [
-                        "class" => "50", // Ensure the freight class is valid
-                        "pieces" => 9, // Ensure each package has a valid piece count
+                        "handlingUnits" => 1,
+                        "pieces" => 1,
                         "weight" => [
-                            "weight" => (int) $package['weight'], // Ensure weight is an integer
-                            "weightUnit" => "LBS",
+                            "weight" => (int) $package['weight'],
+                            "weightUnit" => "LBS"
                         ],
-                        "packagingType" => "BOX",
                         "dimensions" => [
-                            "length" => (int) $package['dimensions']['length'], // Ensure integer values
+                            "length" => (int) $package['dimensions']['length'],
                             "width" => (int) $package['dimensions']['width'],
                             "height" => (int) $package['dimensions']['height'],
                             "unit" => "IN",
                         ],
+                        "class" => $freightClass,
+                        "packagingType" => "BOX",
                     ];
                 }, $requestData['packages']),
-            ],
-        ]);
+            ];
 
-        return json_decode($response->getBody(), true);
-    } catch (\Exception $e) {
-        return [
-            'error' => 'Unable to fetch rates from TForce API. ' . $e->getMessage(),
-        ];
+            // Log request
+            Log::channel('daily')->info('TForce Request', [
+                'payload' => $payload,
+                'url' => "https://api.tforcefreight.com/rating/getRate?api-version=v1"
+            ]);
+
+            $response = $client->post("https://api.tforcefreight.com/rating/getRate?api-version=v1", [
+                'headers' => [
+                    'Authorization' => "Bearer $accessToken",
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $payload,
+            ]);
+
+            $responseData = json_decode($response->getBody(), true);
+            
+            // Log response
+            Log::channel('daily')->info('TForce Response', [
+                'data' => $responseData
+            ]);
+
+            return $responseData;
+        } catch (\Exception $e) {
+            $errorResponse = '';
+            if (method_exists($e, 'getResponse')) {
+                $response = $e->getResponse();
+                if ($response) {
+                    $errorResponse = $response->getBody()->getContents();
+                }
+            }
+            
+            // Log error
+            Log::channel('daily')->error('TForce API Error', [
+                'error' => $e->getMessage(),
+                'response' => $errorResponse,
+                'request' => $requestData,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return [
+                'error' => 'Unable to fetch rates from TForce API. ' . $e->getMessage(),
+                'details' => $errorResponse
+            ];
+        }
     }
+
+    /**
+     * Determine freight class based on density
+     *
+     * @param float $density Density in pounds per cubic foot
+     * @return string Freight class
+     */
+    private function getFreightClassByDensity($density)
+    {
+        // Valid TForce freight classes
+        $validClasses = [
+            '50', '55', '60', '65', '70', '77.5', '85', '92.5',
+            '100', '110', '125', '150', '175', '200', '250', '300', '400', '500'
+        ];
+
+        // Freight class determination based on density
+        $class = '500'; // Default to highest class
         
-        \Log::info('tforce Request:', ['request' => $requestData]);
-        \Log::info('tforce Response:', ['response' => $response->json()]);
+        if ($density >= 50) $class = '50';
+        elseif ($density >= 35) $class = '55';
+        elseif ($density >= 30) $class = '60';
+        elseif ($density >= 22.5) $class = '65';
+        elseif ($density >= 15) $class = '70';
+        elseif ($density >= 13.5) $class = '77.5';
+        elseif ($density >= 12) $class = '85';
+        elseif ($density >= 10.5) $class = '92.5';
+        elseif ($density >= 9) $class = '100';
+        elseif ($density >= 8) $class = '110';
+        elseif ($density >= 7) $class = '125';
+        elseif ($density >= 6) $class = '150';
+        elseif ($density >= 5) $class = '175';
+        elseif ($density >= 4) $class = '200';
+        elseif ($density >= 3) $class = '250';
+        elseif ($density >= 2) $class = '300';
+        elseif ($density >= 1) $class = '400';
 
-}
+        // Ensure we're returning a valid class
+        if (!in_array($class, $validClasses)) {
+            $class = '500'; // Default to highest class if something goes wrong
+        }
 
+        return $class;
+    }
 }
