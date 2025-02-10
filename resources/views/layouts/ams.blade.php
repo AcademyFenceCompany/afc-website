@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('css/ams__products.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/category_mgt.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/shippers.css') }}">
 </head>
 
 <body>
