@@ -104,12 +104,29 @@ document
                     tforceResponse.detail.forEach((shipment) => {
                         const serviceCode = shipment.service.code;
 
-                        const thirtyThreeMarkup =
-                            shipment.shipmentCharges.total.value / (1 - 0.33);
-                        const totalCharges =
-                            thirtyThreeMarkup +
-                            stateMarkup +
-                            shipment.shipmentCharges.total.value;
+                        // Map TForce service codes to readable names
+                        const serviceNames = {
+                            308: "Standard LTL",
+                            309: "Economy",
+                            310: "Guaranteed LTL",
+                            311: "Guaranteed AM",
+                            312: "Guaranteed PM",
+                        };
+
+                        const serviceName =
+                            serviceNames[serviceCode] ||
+                            `Service ${serviceCode}`;
+
+                        // Base price
+                        const basePrice = parseFloat(
+                            shipment.shipmentCharges.total.value,
+                        );
+
+                        // Apply 33% markup
+                        const thirtyThreeMarkup = basePrice / (1 - 0.33);
+
+                        // Add state markup
+                        const totalCharges = thirtyThreeMarkup + stateMarkup;
 
                         const rateElement = document.createElement("div");
                         rateElement.classList.add("rate-option");
@@ -117,8 +134,8 @@ document
                             <label class="d-block">
                                 <input type="radio" name="shipping_option" class="shipping-option"
                                     data-charge="${totalCharges}" value="tforce-${serviceCode}">
-                                TForce Freight (Service ${serviceCode}) - 
-                                $${parseFloat(shipment.shipmentCharges.total.value).toFixed(2)}
+                                TForce Freight (${serviceName}) - 
+                                $${parseFloat(totalCharges).toFixed(2)}
                                 (Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s))
                             </label>
                         `;
@@ -156,12 +173,11 @@ document
                         rlResult.ServiceLevels.forEach((service) => {
                             const serviceTitle = service.Title;
                             const netCharge = parseFloat(
-                                service.NetCharge.replace("$", "").replace(
-                                    ",",
-                                    "",
-                                ),
+                                service.NetCharge.replace(/[^0-9.]/g, ""),
                             );
-                            const totalCharge = netCharge + stateMarkup;
+                            // Apply same 33% markup as TForce
+                            const thirtyThreeMarkup = netCharge / (1 - 0.33);
+                            const totalCharge = thirtyThreeMarkup + stateMarkup;
 
                             const rateElement = document.createElement("div");
                             rateElement.classList.add("rate-option");
@@ -170,7 +186,7 @@ document
                                     <input type="radio" name="shipping_option" class="shipping-option"
                                         data-charge="${totalCharge}" value="rlcarriers-${service.Code}">
                                     R&L Carriers (${serviceTitle}) - 
-                                    $${netCharge.toFixed(2)}
+                                    $${totalCharge.toFixed(2)}
                                     (Transit Time: ${service.ServiceDays} Days)
                                 </label>
                             `;
