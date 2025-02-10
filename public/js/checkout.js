@@ -135,7 +135,7 @@ document
                                 <input type="radio" name="shipping_option" class="shipping-option"
                                     data-charge="${totalCharges}" value="tforce-${serviceCode}">
                                 TForce Freight (${serviceName}) - 
-                                $${parseFloat(totalCharges).toFixed(2)}
+                                $${basePrice.toFixed(2)}
                                 (Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s))
                             </label>
                         `;
