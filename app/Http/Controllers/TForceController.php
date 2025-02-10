@@ -17,15 +17,15 @@ class TForceController extends Controller
     public function getRate(Request $request)
     {
         $validated = $request->validate([
-            // 'shipper_address' => 'required|string',
-            // 'shipper_city' => 'required|string',
-            // 'shipper_state' => 'required|string',
-            // 'shipper_postal' => 'required|string',
             'recipient_address' => 'required|string',
             'recipient_city' => 'required|string',
             'recipient_state' => 'required|string',
             'recipient_postal' => 'required|string',
             'packages' => 'required|array',
+            'packages.*.weight' => 'required|numeric',
+            'packages.*.dimensions.length' => 'required|numeric',
+            'packages.*.dimensions.width' => 'required|numeric',
+            'packages.*.dimensions.height' => 'required|numeric',
         ]);
 
         $rates = $this->authService->getRates($validated);
