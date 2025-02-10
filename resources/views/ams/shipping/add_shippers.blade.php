@@ -114,7 +114,7 @@
     </div>
 
     <!-- Submit & Cancel Buttons -->
-    <div class="text-center mt-4">
+    <div class="text-center mt-4 button-group">
         <button type="submit" class="btn add-shipper-btn">Add Shipper</button>
         <button type="button" class="btn cancel-btn">Cancel</button>
     </div>
