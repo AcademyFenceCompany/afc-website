@@ -16,7 +16,7 @@ use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\RLCarriersController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Shipping apis
 Route::post('/ups-rates', [ShippingController::class, 'getShippingRates']);
 Route::post('/tforce-rates', [TForceController::class, 'getRate']);
+Route::post('/rl-carriers-rates', [RLCarriersController::class, 'getRates']);
+
 
 //Authorize.net payment api
 Route::post('/charge', [PaymentController::class, 'chargeCreditCard']);

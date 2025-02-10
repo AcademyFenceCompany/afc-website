@@ -42,6 +42,7 @@ document
             const length = parseFloat(product.dataset.length);
             const width = parseFloat(product.dataset.width);
             const height = parseFloat(product.dataset.height);
+            console.log(weight, length, width, height);
 
             // Calculate total weight
             totalWeight += weight * quantity;
@@ -74,9 +75,8 @@ document
         ratesContainer.appendChild(loadingSpinner);
 
         try {
-            // Handle cases where totalWeight >= 150
             if (totalWeight >= 150) {
-                // Only call TForce API
+                // Call **TForce API**
                 const tforceResponse = await fetch("api/tforce-rates", {
                     method: "POST",
                     headers: {
@@ -94,41 +94,83 @@ document
                     }),
                 }).then((res) => res.json());
 
+                // Call **R&L Carriers API**
+                const rlCarriersResponse = await fetch(
+                    "api/rl-carriers-rates",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector(
+                                'meta[name="csrf-token"]',
+                            ).content,
+                        },
+                        body: JSON.stringify({
+                            recipient_address,
+                            recipient_city,
+                            recipient_state,
+                            recipient_postal,
+                            packages,
+                        }),
+                    },
+                ).then((res) => res.json());
+
                 ratesContainer.innerHTML = ""; // Clear the spinner
 
-                // Handle TForce response
+                // **Handle TForce Response**
                 if (tforceResponse.detail && tforceResponse.detail.length > 0) {
                     tforceResponse.detail.forEach((shipment) => {
-                        if (shipment.service.code === "308") {
-                            const thirtyThreeMarkup =
-                                shipment.shipmentCharges.total.value /
-                                (1 - parseFloat(33) / 100);
-                            console.log(thirtyThreeMarkup);
-                            const totalCharges =
-                                thirtyThreeMarkup +
-                                stateMarkup +
-                                shipment.shipmentCharges.total.value;
-                            const rateElement = document.createElement("div");
-                            rateElement.classList.add("rate-option");
-                            rateElement.innerHTML = `
-                                <label class="d-block">
-                                    <input type="radio" name="shipping_option" class="shipping-option"
-                                        data-charge="${totalCharges}" value="tforce-ltl">
-                                    TForce Freight LTL $${parseFloat(shipment.shipmentCharges.total.value).toFixed(2)}
-                                    (Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s))
-                                </label>
-                            `;
-                            ratesContainer.appendChild(rateElement);
-                        }
+                        const serviceCode = shipment.service.code;
+
+                        const thirtyThreeMarkup =
+                            shipment.shipmentCharges.total.value / (1 - 0.33);
+                        const totalCharges =
+                            thirtyThreeMarkup +
+                            stateMarkup +
+                            shipment.shipmentCharges.total.value;
+
+                        const rateElement = document.createElement("div");
+                        rateElement.classList.add("rate-option");
+                        rateElement.innerHTML = `
+                            <label class="d-block">
+                                <input type="radio" name="shipping_option" class="shipping-option"
+                                    data-charge="${totalCharges}" value="tforce-${serviceCode}">
+                                TForce Freight (Service ${serviceCode}) - 
+                                $${parseFloat(shipment.shipmentCharges.total.value).toFixed(2)}
+                                (Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s))
+                            </label>
+                        `;
+                        ratesContainer.appendChild(rateElement);
                     });
-                } else {
-                    ratesContainer.innerHTML = `
-                        <div class="alert alert-info">
-                            No TForce rates available for packages over 150 lbs.
-                        </div>`;
+                }
+
+                // **Handle R&L Carriers Response**
+                if (rlCarriersResponse.d && rlCarriersResponse.d.Result) {
+                    const rlResult = rlCarriersResponse.d.Result;
+
+                    rlResult.ServiceLevels.forEach((service) => {
+                        const serviceTitle = service.Title;
+                        const netCharge = parseFloat(
+                            service.NetCharge.replace("$", "").replace(",", ""),
+                        );
+                        const totalCharge = netCharge + stateMarkup;
+
+                        const rateElement = document.createElement("div");
+                        rateElement.classList.add("rate-option");
+                        rateElement.innerHTML = `
+                            <label class="d-block">
+                                <input type="radio" name="shipping_option" class="shipping-option"
+                                    data-charge="${totalCharge}" value="rlcarriers-${service.Code}">
+                                R&L Carriers (${serviceTitle}) - 
+                                $${netCharge.toFixed(2)}
+                                (Transit Time: ${service.ServiceDays} Days)
+                            </label>
+                        `;
+                        ratesContainer.appendChild(rateElement);
+                    });
                 }
             } else {
-                // Only call UPS API
+                // Call **UPS API**
                 const upsResponse = await fetch("api/ups-rates", {
                     method: "POST",
                     headers: {
@@ -148,7 +190,7 @@ document
 
                 ratesContainer.innerHTML = ""; // Clear the spinner
 
-                // Handle UPS response
+                // **Handle UPS Response**
                 if (
                     upsResponse.RateResponse &&
                     upsResponse.RateResponse.RatedShipment.length > 0
@@ -156,49 +198,26 @@ document
                     upsResponse.RateResponse.RatedShipment.forEach(
                         (shipment) => {
                             if (shipment.Service.Code === "03") {
-                                const thirtyThreeMarkup =
-                                    shipment.TotalCharges.MonetaryValue /
-                                    (1 - parseFloat(33) / 100);
-                                console.log(thirtyThreeMarkup);
                                 const totalCharges =
-                                    thirtyThreeMarkup +
-                                    stateMarkup +
-                                    shipment.TotalCharges.MonetaryValue;
+                                    shipment.TotalCharges.MonetaryValue +
+                                    stateMarkup;
 
                                 const rateElement =
                                     document.createElement("div");
                                 rateElement.classList.add("rate-option");
                                 rateElement.innerHTML = `
-                                    <label class="d-block">
-                                        <input type="radio" name="shipping_option" class="shipping-option"
-                                            data-charge="${shipment.TotalCharges.MonetaryValue}" value="ups-ground">
-                                        UPS Ground - $${totalCharges}
-                                    </label>
-                                `;
+                                <label class="d-block">
+                                    <input type="radio" name="shipping_option" class="shipping-option"
+                                        data-charge="${totalCharges}" value="ups-ground">
+                                    UPS Ground - $${shipment.TotalCharges.MonetaryValue}
+                                </label>
+                            `;
                                 ratesContainer.appendChild(rateElement);
                             }
                         },
                     );
-                } else {
-                    ratesContainer.innerHTML = `
-                        <div class="alert alert-info">
-                            No UPS Ground rates available for packages under 150 lbs.
-                        </div>`;
                 }
             }
-
-            // Fallback: No rates available at all
-            if (!ratesContainer.innerHTML.trim()) {
-                ratesContainer.innerHTML = `
-                    <div class="alert alert-warning">
-                        No shipping options available for the entered details. Please try again or contact support.
-                    </div>`;
-            }
-
-            // Update total price when a shipping option is selected
-            document.querySelectorAll(".shipping-option").forEach((option) => {
-                option.addEventListener("change", updateTotalPrice);
-            });
         } catch (error) {
             console.error("Error fetching rates:", error);
             ratesContainer.innerHTML = `
@@ -207,95 +226,3 @@ document
                 </div>`;
         }
     });
-
-function updateTotalPrice() {
-    const selectedOption = document.querySelector(
-        'input[name="shipping_option"]:checked',
-    );
-    if (!selectedOption) return;
-
-    // Get the shipping cost
-    const shippingCost = parseFloat(selectedOption.dataset.charge);
-
-    // Get the initial total
-    const totalAmountElement = document.getElementById("total-amount");
-    const initialTotal = parseFloat(totalAmountElement.dataset.total);
-
-    // Calculate the new total
-    const newTotal = initialTotal + shippingCost + stateMarkup;
-
-    // Update total in UI
-    document.getElementById("shipping-cost").classList.remove("d-none");
-    document.getElementById("shipping-cost-value").textContent =
-        `$${shippingCost.toFixed(2)}`;
-    totalAmountElement.textContent = `$${newTotal.toFixed(2)}`;
-
-    // Update the payment amount field
-    document.getElementById("amount").value = newTotal.toFixed(2);
-}
-
-// Add event listeners for shipping options
-document.querySelectorAll(".shipping-option").forEach((option) => {
-    option.addEventListener("change", updateTotalPrice);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-    // Load Accept.js library
-    const script = document.createElement("script");
-    script.src = "https://js.authorize.net/v3/AcceptUI.js";
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = function () {
-        Accept.environment =
-            "{{ config('services.authorize_net.environment') }}";
-        Accept.apiLoginID =
-            "{{ config('services.authorize_net.api_login_id') }}";
-
-        Accept.createView({
-            clientKey:
-                "{{ config('services.authorize_net.public_client_key') }}",
-            apiLoginID: "{{ config('services.authorize_net.api_login_id') }}",
-            type: "card",
-        });
-    };
-
-    // Handle form submission
-    document
-        .getElementById("submit-button")
-        .addEventListener("click", function () {
-            Accept.dispatchData({
-                successCallback: function (response) {
-                    // Set payment nonce
-                    document.getElementById("payment-nonce").value =
-                        response.dataValue;
-
-                    // Submit form via AJAX
-                    fetch("/api/charge", {
-                        method: "POST",
-                        body: new FormData(
-                            document.getElementById("payment-form"),
-                        ),
-                        headers: {
-                            "X-CSRF-TOKEN": document.querySelector(
-                                'meta[name="csrf-token"]',
-                            ).content,
-                        },
-                    })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            // Handle successful payment
-                            alert("Payment processed successfully");
-                        })
-                        .catch((error) => {
-                            // Handle payment error
-                            console.error("Payment error:", error);
-                        });
-                },
-                errorCallback: function (response) {
-                    // Handle tokenization errors
-                    console.error("Tokenization error:", response.errorMessage);
-                },
-            });
-        });
-});

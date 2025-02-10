@@ -120,8 +120,8 @@ class TForceAuthService
                 ],
                 "commodities" => array_map(function ($package) {
                     return [
-                        "class" => "100", // Ensure the freight class is valid
-                        "pieces" => 1, // Ensure each package has a valid piece count
+                        "class" => "50", // Ensure the freight class is valid
+                        "pieces" => 9, // Ensure each package has a valid piece count
                         "weight" => [
                             "weight" => (int) $package['weight'], // Ensure weight is an integer
                             "weightUnit" => "LBS",
