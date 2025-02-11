@@ -15,13 +15,27 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TForceController;
 use App\Http\Controllers\StateMarkupController;
+use App\Http\Controllers\Ams\OrderController;
 
 
-
-
-
-
-
+// AMS Routes
+Route::prefix('ams')->group(function () {
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
+    Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
+    Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('ams.orders.update-status');
+    Route::get('/customers/{customer}/addresses', [OrderController::class, 'getCustomerAddresses'])->name('ams.customers.addresses');
+    
+    // Debug route
+    Route::get('/debug/products', function() {
+        $products = \App\Models\Product::with(['details', 'familyCategory'])->get();
+        return response()->json([
+            'total' => $products->count(),
+            'categories' => \App\Models\FamilyCategory::pluck('name'),
+            'sample' => $products->first()
+        ]);
+    });
+});
 
 Route::get('/resources/images/{filename}', function ($filename) {
     $path = resource_path('images/' . $filename);
