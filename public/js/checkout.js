@@ -120,20 +120,24 @@ document
                         // Base price
                         const basePrice = parseFloat(
                             shipment.shipmentCharges.baseFreightCharge?.value ||
-                            shipment.shipmentCharges.total.value
+                                shipment.shipmentCharges.total.value,
                         );
 
                         // Get accessorial charges
-                        const accessorialCharges = shipment.accessorialCharges || [];
-                        const residentialFee = accessorialCharges.find(
-                            (charge) => charge.accessorialCode === "RESD"
-                        )?.amount || 0;
-                        const liftGateFee = accessorialCharges.find(
-                            (charge) => charge.accessorialCode === "LIFTG"
-                        )?.amount || 0;
+                        const accessorialCharges =
+                            shipment.accessorialCharges || [];
+                        const residentialFee =
+                            accessorialCharges.find(
+                                (charge) => charge.accessorialCode === "RESD",
+                            )?.amount || 0;
+                        const liftGateFee =
+                            accessorialCharges.find(
+                                (charge) => charge.accessorialCode === "LIFTG",
+                            )?.amount || 0;
 
                         // Calculate total with markups
-                        const subtotal = basePrice + residentialFee + liftGateFee;
+                        const subtotal =
+                            basePrice + residentialFee + liftGateFee;
                         const thirtyThreeMarkup = subtotal / (1 - 0.33);
                         const totalCharges = thirtyThreeMarkup + stateMarkup;
 
@@ -147,8 +151,8 @@ document
                                 $${totalCharges.toFixed(2)}
                                 <div class="shipping-breakdown small text-muted ms-4 mt-1">
                                     <div>Base Rate: $${basePrice.toFixed(2)}</div>
-                                    ${residentialFee ? `<div>Residential Delivery: +$${residentialFee.toFixed(2)}</div>` : ''}
-                                    ${liftGateFee ? `<div>Lift Gate Service: +$${liftGateFee.toFixed(2)}</div>` : ''}
+                                    ${residentialFee ? `<div>Residential Delivery: +$${residentialFee.toFixed(2)}</div>` : ""}
+                                    ${liftGateFee ? `<div>Lift Gate Service: +$${liftGateFee.toFixed(2)}</div>` : ""}
                                     <div>Markup: +$${(thirtyThreeMarkup - subtotal).toFixed(2)}</div>
                                     <div>State Fee: +$${stateMarkup.toFixed(2)}</div>
                                 </div>
@@ -208,9 +212,9 @@ document
                                     R&L Carriers (${serviceTitle}) - 
                                     $${totalCharge.toFixed(2)}
                                     <div class="shipping-breakdown">
-                                        <small>Base Rate: $${netCharge.toFixed(2)}</small>
-                                        <small>33% Markup: +$${markupAmount.toFixed(2)}</small>
-                                        <small>State Markup: +$${stateMarkup.toFixed(2)}</small>
+                                        <small>Base Rate: $${netCharge.toFixed(2)}</small><br>
+                                        <small>Markup: +$${markupAmount.toFixed(2)}</small><br>
+                                        <small>State Markup: +$${stateMarkup.toFixed(2)}</small><br>
                                     </div>
                                     <div class="transit-time">
                                         (Transit Time: ${service.ServiceDays} Day(s))

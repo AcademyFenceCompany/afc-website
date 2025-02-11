@@ -104,9 +104,26 @@ class RLCarriersService
 
             // Transform response to match frontend expectations
             if ($responseData['WasSuccess'] === 'true' && isset($responseData['Result'])) {
+                $result = $responseData['Result'];
+                $charges = [];
+                
+                // Extract all charges from the response
+                if (isset($result['Charges']['Charge'])) {
+                    foreach ($result['Charges']['Charge'] as $charge) {
+                        // Skip charges with empty type
+                        if (empty($charge['Type'])) {
+                            continue;
+                        }
+                        $charges[$charge['Type']] = [
+                            'Title' => $charge['Title'],
+                            'Amount' => $charge['Amount']
+                        ];
+                    }
+                }
+
                 // Find standard service
                 $standardService = null;
-                foreach ($responseData['Result']['ServiceLevels']['ServiceLevel'] as $service) {
+                foreach ($result['ServiceLevels']['ServiceLevel'] as $service) {
                     if ($service['Code'] === 'STD') {
                         $standardService = $service;
                         break;
@@ -114,16 +131,28 @@ class RLCarriersService
                 }
 
                 if ($standardService) {
-                    // Log the full standard service response for debugging
-                    Log::info('R&L Standard Service Details:', ['service' => $standardService]);
+                    // Get base freight charge (discounted)
+                    $baseCharge = floatval(str_replace(['$', ','], '', $charges['DISCNF']['Amount'] ?? '0'));
+                    
+                    // Get fuel surcharge
+                    $fuelSurcharge = floatval(str_replace(['$', ','], '', $charges['FUEL']['Amount'] ?? '0'));
+                    
+                    // Add residential and lift gate fees
+                    $residentialFee = 118.00;
+                    $liftGateFee = 33.00;
+                    
+                    // Calculate total
+                    $totalCharge = $baseCharge + $fuelSurcharge + $residentialFee + $liftGateFee;
 
-                    // Calculate total charges including all fees
-                    $baseCharge = floatval(str_replace(['$', ','], '', $standardService['NetCharge']));
-                    $fuelSurcharge = isset($standardService['FuelSurcharge']) ? floatval(str_replace(['$', ','], '', $standardService['FuelSurcharge'])) : 0;
-                    $liftGateFee = isset($standardService['LiftGateFee']) ? floatval(str_replace(['$', ','], '', $standardService['LiftGateFee'])) : 33.00;
-                    $residentialFee = isset($standardService['ResidentialFee']) ? floatval(str_replace(['$', ','], '', $standardService['ResidentialFee'])) : 118.00;
-
-                    $totalCharge = $baseCharge + $fuelSurcharge + $liftGateFee + $residentialFee;
+                    // Log the calculation for debugging
+                    Log::info('R&L Rate Calculation', [
+                        'baseCharge' => $baseCharge,
+                        'fuelSurcharge' => $fuelSurcharge,
+                        'residentialFee' => $residentialFee,
+                        'liftGateFee' => $liftGateFee,
+                        'totalCharge' => $totalCharge,
+                        'allCharges' => $charges
+                    ]);
 
                     return [
                         'd' => [

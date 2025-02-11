@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AMS - @yield('title')</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
+    @yield('styles')
 </head>
 
 <body>
@@ -96,7 +95,7 @@
             <h2>@yield('title')</h2>
             <div class="header-buttons">
                 <p class="text-center">Welcome {{ auth()->user()->username }}</p>
-                <a href="{{ route('customers.index') }}" class="btn btn-primary">New Order</a>
+                <a href="{{ route('ams.orders.create') }}" class="btn btn-primary">New Order</a>
                 <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                     @csrf
                     <button type="submit" class="btn btn-danger">Log Out</button>
@@ -106,10 +105,19 @@
         @yield('content')
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ secure_asset('js/user-management.js') }}"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set up CSRF token for AJAX requests
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
     <script src="{{ secure_asset('js/ams.js') }}"></script>
-
+    @yield('scripts')
 </body>
 
 </html>
