@@ -178,8 +178,6 @@ Route::get('/shippers/{page}', [ShipperController::class, 'showView'])
         'add_shippers',
         'add_shippers_contacts',
         'delivery_log',
-        'freight_log',
-        'sm_package',
         'shipping_markup'
     ])->name('shippers.view');
 

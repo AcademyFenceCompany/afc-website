@@ -72,8 +72,6 @@
             <a href="{{ route('shippers.view', ['page' => 'add_shippers_contacts']) }}" class="menu-item">Add Contacts to Shipper</a>
             <a href="{{ route('shippers.view', ['page' => 'index_shippers']) }}" class="menu-item">View Shippers</a>
             <a href="{{ route('shippers.view', ['page' => 'delivery_log']) }}" class="menu-item">Delivery Log</a>
-            <a href="{{ route('shippers.view', ['page' => 'freight_log']) }}" class="menu-item">Freight Shipping Log</a>
-            <a href="{{ route('shippers.view', ['page' => 'sm_package']) }}" class="menu-item">Small Package Log</a>
             <a href="{{ route('shippers.view', ['page' => 'shipping_markup']) }}" class="menu-item">Shipping Markup</a>
         </div>
 
