@@ -119,13 +119,22 @@ document
 
                         // Base price
                         const basePrice = parseFloat(
-                            shipment.shipmentCharges.total.value,
+                            shipment.shipmentCharges.baseFreightCharge?.value ||
+                            shipment.shipmentCharges.total.value
                         );
 
-                        // Apply 33% markup
-                        const thirtyThreeMarkup = basePrice / (1 - 0.33);
+                        // Get accessorial charges
+                        const accessorialCharges = shipment.accessorialCharges || [];
+                        const residentialFee = accessorialCharges.find(
+                            (charge) => charge.accessorialCode === "RESD"
+                        )?.amount || 0;
+                        const liftGateFee = accessorialCharges.find(
+                            (charge) => charge.accessorialCode === "LIFTG"
+                        )?.amount || 0;
 
-                        // Add state markup
+                        // Calculate total with markups
+                        const subtotal = basePrice + residentialFee + liftGateFee;
+                        const thirtyThreeMarkup = subtotal / (1 - 0.33);
                         const totalCharges = thirtyThreeMarkup + stateMarkup;
 
                         const rateElement = document.createElement("div");
@@ -135,8 +144,17 @@ document
                                 <input type="radio" name="shipping_option" class="shipping-option"
                                     data-charge="${totalCharges}" value="tforce-${serviceCode}">
                                 TForce Freight (${serviceName}) - 
-                                $${basePrice.toFixed(2)}
-                                (Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s))
+                                $${totalCharges.toFixed(2)}
+                                <div class="shipping-breakdown small text-muted ms-4 mt-1">
+                                    <div>Base Rate: $${basePrice.toFixed(2)}</div>
+                                    ${residentialFee ? `<div>Residential Delivery: +$${residentialFee.toFixed(2)}</div>` : ''}
+                                    ${liftGateFee ? `<div>Lift Gate Service: +$${liftGateFee.toFixed(2)}</div>` : ''}
+                                    <div>Markup: +$${(thirtyThreeMarkup - subtotal).toFixed(2)}</div>
+                                    <div>State Fee: +$${stateMarkup.toFixed(2)}</div>
+                                </div>
+                                <div class="text-muted ms-4 mt-1">
+                                    Transit Time: ${shipment.timeInTransit.timeInTransit} Day(s)
+                                </div>
                             </label>
                         `;
                         ratesContainer.appendChild(rateElement);
@@ -176,8 +194,10 @@ document
                                 service.NetCharge.replace(/[^0-9.]/g, ""),
                             );
                             // Apply same 33% markup as TForce
-                            const thirtyThreeMarkup = netCharge / (1 - 0.33);
-                            const totalCharge = thirtyThreeMarkup + stateMarkup;
+                            const markupAmount =
+                                (netCharge * 0.33) / (1 - 0.33); // Calculate the actual markup amount
+                            const priceWithMarkup = netCharge + markupAmount;
+                            const totalCharge = priceWithMarkup + stateMarkup;
 
                             const rateElement = document.createElement("div");
                             rateElement.classList.add("rate-option");
@@ -187,7 +207,14 @@ document
                                         data-charge="${totalCharge}" value="rlcarriers-${service.Code}">
                                     R&L Carriers (${serviceTitle}) - 
                                     $${totalCharge.toFixed(2)}
-                                    (Transit Time: ${service.ServiceDays} Days)
+                                    <div class="shipping-breakdown">
+                                        <small>Base Rate: $${netCharge.toFixed(2)}</small>
+                                        <small>33% Markup: +$${markupAmount.toFixed(2)}</small>
+                                        <small>State Markup: +$${stateMarkup.toFixed(2)}</small>
+                                    </div>
+                                    <div class="transit-time">
+                                        (Transit Time: ${service.ServiceDays} Day(s))
+                                    </div>
                                 </label>
                             `;
                             ratesContainer.appendChild(rateElement);
@@ -300,25 +327,45 @@ document
                 shippingCostValue.textContent = `$${shippingCost.toFixed(2)}`;
             }
 
-            // Update total
-            const subtotalElement = document.querySelector(
-                ".d-flex:nth-child(6) span:last-child",
+            // Get the order summary elements
+            const orderSummary = document.querySelector(
+                ".col-lg-4 .border.p-3",
             );
-            const taxElement = document.querySelector(
-                ".d-flex:nth-child(7) span:last-child",
+            const subtotalElement = orderSummary.querySelector(
+                ".d-flex:not(#shipping-cost):nth-of-type(2) span:last-child",
+            );
+            const taxElement = orderSummary.querySelector(
+                ".d-flex:not(#shipping-cost):nth-of-type(3) span:last-child",
             );
 
+            // Parse values
             const subtotal = parseFloat(
-                subtotalElement.textContent.replace("$", ""),
+                subtotalElement.textContent.replace(/[^0-9.]/g, ""),
             );
-            const tax = parseFloat(taxElement.textContent.replace("$", ""));
+            const tax = parseFloat(
+                taxElement.textContent.replace(/[^0-9.]/g, ""),
+            );
 
+            // Calculate new total
             const total = subtotal + tax + shippingCost;
 
             // Update total display
-            const totalElement = document.getElementById("total-cost");
+            const totalElement = document.getElementById("total-amount");
             if (totalElement) {
                 totalElement.textContent = `$${total.toFixed(2)}`;
+                totalElement.dataset.total = total.toFixed(2);
+            }
+
+            // Update the hidden amount field in the payment form
+            const amountInput = document.getElementById("amount");
+            if (amountInput) {
+                amountInput.value = total.toFixed(2);
+            }
+
+            // Update the Pay Now button text
+            const payButton = document.getElementById("submit-payment");
+            if (payButton) {
+                payButton.textContent = `Pay Now $${total.toFixed(2)}`;
             }
 
             // Store selected shipping cost
