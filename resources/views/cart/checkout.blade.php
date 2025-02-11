@@ -152,9 +152,15 @@
                 <div class="border p-3">
                     @foreach ($cart as $item)
                         <div class="d-flex justify-content-between">
-                            <span>{{ $item['product_name'] }} × {{ $item['quantity'] }}</span>
-                            <span>${{ number_format($item['total'], 2) }}</span>
+                            <span>{{ $item['product_name'] }} × {{ $item['quantity'] }}</span><br>
+                            <span>${{ number_format($item['total'], 2) }}</span><br>
                         </div>
+                        <small class="text-muted">Item # - {{ $item['item_no'] }}</small><br>
+                        <small class="text-muted">Item # - {{ $item['weight'] }} LBS</small><br>
+                        <small class="text-muted">{{ $item['size1'] ?? 'N/A' }}</small><br>
+                        <small class="text-muted">{{ $item['size2'] ?? 'N/A' }}</small><br>
+                        <small class="text-muted">{{ $item['size3'] ?? 'N/A' }}</small><br>
+                        <small class="text-muted">{{ $item['color'] ?? 'N/A' }}</small>
                     @endforeach
                     <hr>
                     <div class="d-flex justify-content-between">
@@ -179,46 +185,72 @@
                 <!-- Payment Information -->
                 <div class="mt-4">
                     <h5 class="mb-3">Payment Information</h5>
-                    <form action="api/charge" method="POST" class="border p-4 rounded bg-white shadow-sm">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="card_number" class="form-label">Card Number</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
-                                <input type="text" name="card_number" id="card_number" class="form-control" required
-                                    placeholder="**** **** **** ****">
+                    <div class="border p-3">
+                        <form id="payment-form" action="api/charge" method="POST" class="needs-validation" novalidate>
+                            @csrf
+                            <input type="hidden" name="amount" id="amount" value="{{ number_format($total, 2) }}">
+                            <div class="mb-3">
+                                <label for="card-number" class="form-label">Card Number</label>
+                                <input type="text" class="form-control" id="card-number" name="card_number" required
+                                    placeholder="1234 5678 9012 3456">
+                                <div class="invalid-feedback">
+                                    Please enter a valid card number
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-8">
-                                <label for="expiration_date" class="form-label">Expiration Date</label>
-                                <input type="text" name="expiration_date" id="expiration_date" class="form-control"
-                                    required placeholder="MM/YYYY">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="card-expiry" class="form-label">Expiration Date</label>
+                                    <input type="text" class="form-control" id="card-expiry" name="expiration_date"
+                                        required placeholder="MM/YY">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid expiration date
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="card-cvc" class="form-label">Security Code</label>
+                                    <input type="text" class="form-control" id="card-cvc" name="cvv" required
+                                        placeholder="CVC">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid security code
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <label for="cvv" class="form-label">CVV</label>
-                                <input type="text" name="cvv" id="cvv" class="form-control" required
-                                    placeholder="***">
-                            </div>
-                        </div>
 
-                        <input type="hidden" name="amount" id="amount" value="{{ number_format($total, 2) }}">
-
-                        <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-lock me-2"></i>Pay ${{ number_format($total, 2) }} Securely
-                        </button>
-
-                        <div class="mt-3 text-center">
-                            <small class="text-muted">
-                                <i class="fas fa-shield-alt me-1"></i> Your payment information is secure and encrypted
-                            </small>
-                        </div>
-                    </form>
+                            <button type="submit" class="btn btn-primary w-100" id="submit-payment">
+                                Pay Now {{ number_format($total, 2) }}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+@endsection
+
+@section('styles')
+    <style>
+        .shipping-breakdown {
+            font-size: 0.875rem;
+        }
+
+        .shipping-option-label {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .shipping-option-label:hover {
+            background-color: #f8f9fa;
+        }
+
+        .shipping-option-label input[type="radio"] {
+            margin-right: 8px;
+        }
+    </style>
 @endsection
 
 @section('scripts')

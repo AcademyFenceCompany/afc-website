@@ -37,7 +37,12 @@ class RLCarriersService
                 $itemsXml .= '
                     <Item>
                         <Weight>' . floatval($package['weight']) . '</Weight>
-                        <Class>50</Class>
+                        <Class>' . $this->calculateFreightClass(
+                            floatval($package['weight']),
+                            floatval($package['dimensions']['length']),
+                            floatval($package['dimensions']['width']),
+                            floatval($package['dimensions']['height'])
+                        ) . '</Class>
                         <Length>' . floatval($package['dimensions']['length']) . '</Length>
                         <Width>' . floatval($package['dimensions']['width']) . '</Width>
                         <Height>' . floatval($package['dimensions']['height']) . '</Height>
@@ -67,8 +72,10 @@ class RLCarriersService
                 </Destination>
                 <Items>' . $itemsXml . '</Items>
                 <IsResidentialDelivery>true</IsResidentialDelivery>
+                <IsLiftGateDeliveryRequested>true</IsLiftGateDeliveryRequested>
                 <IncludeDetailedPricing>true</IncludeDetailedPricing>
                 <ShowAlternativeServices>true</ShowAlternativeServices>
+                <IncludeFuelSurcharge>true</IncludeFuelSurcharge>
             </request>
         </GetRateQuote>
     </soap:Body>
@@ -107,6 +114,17 @@ class RLCarriersService
                 }
 
                 if ($standardService) {
+                    // Log the full standard service response for debugging
+                    Log::info('R&L Standard Service Details:', ['service' => $standardService]);
+
+                    // Calculate total charges including all fees
+                    $baseCharge = floatval(str_replace(['$', ','], '', $standardService['NetCharge']));
+                    $fuelSurcharge = isset($standardService['FuelSurcharge']) ? floatval(str_replace(['$', ','], '', $standardService['FuelSurcharge'])) : 0;
+                    $liftGateFee = isset($standardService['LiftGateFee']) ? floatval(str_replace(['$', ','], '', $standardService['LiftGateFee'])) : 33.00;
+                    $residentialFee = isset($standardService['ResidentialFee']) ? floatval(str_replace(['$', ','], '', $standardService['ResidentialFee'])) : 118.00;
+
+                    $totalCharge = $baseCharge + $fuelSurcharge + $liftGateFee + $residentialFee;
+
                     return [
                         'd' => [
                             'Result' => [
@@ -114,8 +132,14 @@ class RLCarriersService
                                     [
                                         'Title' => $standardService['Title'],
                                         'Code' => $standardService['Code'],
-                                        'NetCharge' => $standardService['NetCharge'],
-                                        'ServiceDays' => $standardService['ServiceDays']
+                                        'NetCharge' => '$' . number_format($totalCharge, 2),
+                                        'ServiceDays' => $standardService['ServiceDays'],
+                                        'Details' => [
+                                            'BaseCharge' => '$' . number_format($baseCharge, 2),
+                                            'FuelSurcharge' => '$' . number_format($fuelSurcharge, 2),
+                                            'LiftGateFee' => '$' . number_format($liftGateFee, 2),
+                                            'ResidentialFee' => '$' . number_format($residentialFee, 2)
+                                        ]
                                     ]
                                 ]
                             ]

@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class TForceAuthService
 {
@@ -85,6 +86,10 @@ class TForceAuthService
                     "timeInTransit" => true,
                     "quoteNumber" => true,
                     "customerContext" => "Checkout API",
+                    "accessorials" => [
+                        "LIFTG" => true,  // Lift gate delivery
+                        "RESD" => true,   // Residential delivery
+                    ],
                 ],
                 "shipFrom" => [
                     "address" => [
@@ -100,6 +105,7 @@ class TForceAuthService
                         "stateProvinceCode" => $requestData['recipient_state'],
                         "postalCode" => $requestData['recipient_postal'],
                         "country" => "US",
+                        "residential" => true
                     ],
                 ],
                 "payment" => [
@@ -114,6 +120,12 @@ class TForceAuthService
                         ]
                     ],
                     "billingCode" => "10",
+                ],
+                "serviceOptions" => [
+                    "delivery" => [
+                        "LIFD", // Lift Gate Delivery
+                        "RESD"  // Inside Delivery
+                    ]
                 ],
                 "commodities" => array_map(function ($package) {
                     // Calculate density for proper freight class
@@ -173,9 +185,9 @@ class TForceAuthService
             ]);
 
             return $responseData;
-        } catch (\Exception $e) {
+        } catch (RequestException $e) {
             $errorResponse = '';
-            if (method_exists($e, 'getResponse')) {
+            if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 if ($response) {
                     $errorResponse = $response->getBody()->getContents();
