@@ -13,8 +13,7 @@ use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ShipperController;
-
-
+use App\Http\Controllers\CategoryController;
 
 
 Route::get('/resources/images/{filename}', function ($filename) {
@@ -177,11 +176,20 @@ Route::get('/shippers/{page}', [ShipperController::class, 'showView'])
         'index_shippers',
         'add_shippers',
         'add_shippers_contacts',
-        'delivery_log',
+        'delivery_status',
         'shipping_markup'
     ])->name('shippers.view');
 
 require __DIR__ . '/auth.php';
+
+
+Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+
+
+
+Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+
 
 
 

@@ -54,24 +54,16 @@
             <a href="{{ route('customers.index') }}" class="menu-item">View Customers</a>
         </div>
 
-
+        <!-- Shipping -->
         <a class="menu-item" data-bs-toggle="collapse" href="#shippingMenu" role="button" aria-expanded="false"
             aria-controls="shippingMenu">
             Shipping <i class="bi bi-caret-down-fill"></i>
         </a>
-
-        <div class="collapse submenu" id="productsMenu">
-            <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
-            <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
-            <a href="{{ route('categories.display') }}" class="menu-item">Category Management</a>
-        </div>
-
-        <!-- Shipping -->
         <div class="collapse submenu" id="shippingMenu">
             <a href="{{ route('shippers.view', ['page' => 'add_shippers']) }}" class="menu-item" class="menu-item">Add Shippers</a>
             <a href="{{ route('shippers.view', ['page' => 'add_shippers_contacts']) }}" class="menu-item">Add Contacts to Shipper</a>
             <a href="{{ route('shippers.view', ['page' => 'index_shippers']) }}" class="menu-item">View Shippers</a>
-            <a href="{{ route('shippers.view', ['page' => 'delivery_log']) }}" class="menu-item">Delivery Log</a>
+            <a href="{{ route('shippers.view', ['page' => 'delivery_status']) }}" class="menu-item">Delivery Status</a>
             <a href="{{ route('shippers.view', ['page' => 'shipping_markup']) }}" class="menu-item">Shipping Markup</a>
         </div>
 

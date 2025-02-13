@@ -12,7 +12,7 @@ class ShipperController extends Controller
             'index_shippers',
             'add_shippers',
             'add_shippers_contacts',
-            'delivery_log',
+            'delivery_status',
             'shipping_markup'
         ];
 

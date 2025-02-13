@@ -98,7 +98,7 @@ class CategoriesController extends Controller
     public function getProducts($category_id)
     {
         // Fetch products for the given category ID
-        $products =  DB::table('products')
+        $products = DB::table('products')
             ->join("product_details", "products.product_id", "=", "product_details.product_id")
             ->where('subcategory_id', $category_id)
             ->select('*')
@@ -107,4 +107,13 @@ class CategoriesController extends Controller
         // Return product data as JSON
         return response()->json(['products' => $products]);
     }
+
+    public function create()
+    {
+        return view('ams.product.add-new-category'); // Ensure you have this view file
+    }
+
 }
+
+
+
