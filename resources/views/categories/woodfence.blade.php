@@ -1,4 +1,4 @@
-{{-- <pre>{{ dd($subcategories) }}</pre> --}}
+{{-- <pre>{{ dd($wood_categories) }}</pre> --}}
 @extends('layouts.main')
 
 @section('title', 'Wood Fence Products')
@@ -73,47 +73,57 @@
 
         <!-- Product List Section -->
         <div class="row g-4">
-            @foreach ($subcategories as $category)
+            @foreach ($wood_categories as $category)
                 <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
                     <div class="card product-card shadow-sm p-3 w-100">
                         <div class="d-flex flex-column align-items-center">
                             <!-- Image Section -->
                             <div class="product-image me-3">
-                                {{-- @if ($category['image'])
-                                    <img src="{{ $category['image'] }}" alt="{{ $category['image'] }}"
-                                        class="img-fluid rounded" style="max-height: 300px; max-width: 300px;">
-                                @endif --}}
+                                @if ($category['image'])
+                                    <img src="{{ $category['image'] }}" class="img-fluid rounded"
+                                        style="max-height: 300px; max-width: 300px;">
+                                @endif
                             </div>
                             <!-- Content Section -->
                             <div
                                 class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
                                 <div class="text-center">
-                                    <h5 class="fw-bold">{{ $category->family_category_name }}</h5>
-                                    <p class="text-muted">{{ $category->category_description }}</p>
+                                    <h5 class="fw-bold">{{ $category['family_category_name'] }}</h5>
+                                    <p class="text-muted">{{ $category['category_description'] }}</p>
                                 </div>
 
                                 <!-- Spacing Options -->
-                                @if (!empty($category->spacing_options) && $category->spacing_options->isNotEmpty())
-                                    <div class="mt-3">
-                                        @foreach ($category->spacing_options as $spacing)
-                                            <a href="{{ route('woodfence.specs', [
-                                                'subcategoryId' => $category->family_category_id,
-                                                'categoryName' => $category->family_category_name,
-                                                'spacing' => urlencode($spacing),
-                                            ]) }}"
-                                                class="btn btn-danger text-white me-2">
-                                                {{ $spacing }}
-                                            </a>
+                                @if ($category['spacing'])
+                                    <div class="mt-3 ">
+                                        @foreach ($category['spacing'] as $spacing)
+                                            @if ($spacing)
+                                                <a href="{{ route('woodfence.specs', [
+                                                    'subcategoryId' => $category['family_category_id'],
+                                                    'spacing' => $spacing,
+                                                    // 'categoryName' => $category['family_category_name'],
+                                                ]) }}"
+                                                    class="btn btn-danger text-white me-2">
+                                                    {{ $spacing }}
+                                                </a>
+                                            @endif
                                         @endforeach
                                     </div>
-                                @else
-                                    {{-- <div class="mt-3">
-                                        <a href="{{ route('woodfence.specs', ['subcategoryId' => $category->family_category_id]) }}"
-                                            class="btn btn-danger text-white">
-                                            View Products
-                                        </a>
-                                    </div> --}}
                                 @endif
+                                <!-- Style -->
+                                {{-- @if ($category['style'])
+                        <div class="mt-3 ">
+                            @foreach ($category['style'] as $style)
+                            @if ($spacing)
+                            <a href="{{ route('woodfence.specs', [
+                                    'subcategoryId' => $category['family_category_id'],
+                                    'style' => $style
+                            ]) }}" class="btn btn-danger text-white me-2">
+                        {{ $style }}
+                        </a>
+                        @endif
+                        @endforeach
+                    </div>
+                    @endif --}}
                             </div>
                         </div>
                     </div>

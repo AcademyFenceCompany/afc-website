@@ -20,15 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         document.getElementById("item-number").textContent =
             data.item_no ?? "N/A";
-        document.getElementById("weight").textContent = data.weight
-            ? `${data.weight} lbs`
-            : "N/A";
-        document.getElementById("product-price").textContent =
-            data.price_per_unit
-                ? `$${parseFloat(data.price_per_unit).toFixed(2)}`
-                : "N/A";
-        document.getElementById("product-image").src =
-            data.large_image || "/path/to/default-image.jpg";
+
+        if (data.weight) {
+            document.getElementById("weight").textContent = data.weight;
+        }
+
+        if (data.price_per_unit) {
+            document.getElementById("product-price").textContent =
+                `$${parseFloat(data.price_per_unit).toFixed(2)}`;
+        }
+
+        if (data.general_image || data.small_image || data.large_image) {
+            document.getElementById("product-image").src =
+                data.general_image || data.small_image || data.large_image;
+        }
 
         // Special handling for Wood Fence
         if (data.family_category_id === 16) {
@@ -57,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } else {
             // Hide Wood Fence attributes if not relevant
-            document.getElementById("woodfence-attributes").style.display =
-                "none";
+            // document.getElementById("woodfence-attributes").style.display =
+            //     "none";
         }
     }
 });

@@ -1,0 +1,105 @@
+.dropdown-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-wrapper select {
+    width: 100%;
+    padding-left: 30px; /* Space for the left icon */
+    appearance: none; /* Hide default dropdown arrow */
+}
+
+.dropdown-icon {
+    position: absolute;
+    left: 10px; /* Move the icon to the left */
+    pointer-events: none; /* Prevent clicking the icon */
+    color: #555; /* Adjust color */
+}
+
+/* Add Shipper Button */
+.add-shipper-btn {
+    background-color: #4a4458; /* Dark gray-purple color */
+    color: #fff; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.add-shipper-btn:hover {
+    background-color: #C1BFD8; /* Slightly darker shade on hover */
+    color: #3b3647;
+    font-weight: 500;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow on hover */
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background-color: #eae7f1; /* Light gray-purple background */
+    color: #6d6482; /* Gray-purple text */
+    border: none; /* No border */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.cancel-btn:hover {
+    background-color: #d6d2e3; /* Darker shade on hover */
+    color: #4a4458; /* Text becomes darker */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+}
+
+.button-group {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    gap: 8px;
+}
+
+/* Table Header Style */
+.table-header {
+    background-color: #4a4458; /* Dark purple background */
+    font-weight: bold;
+    border-radius: 8px 8px 0 0; /* Rounded corners for the header */
+}
+
+/* Table Row Style */
+.table-row {
+    background-color: #ffffff; /* White background */
+    border-bottom: 1px solid #ddd; /* Subtle row separator */
+}
+
+.table-row:last-child {
+    border-bottom: none; /* Remove border for the last row */
+}
+
+.btn-primary {
+    background-color: #4a4458; /* Matches header color */
+    border: none;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #d6d2e3; /* Slightly darker shade */
+    color: #6d6482;
+}
+
+.btn-secondary {
+    background-color: #eae7f1; /* Light gray-purple */
+    border: none;
+    color: #6d6482;
+}
+
+.btn-secondary:hover {
+    background-color: #d6d2e3; /* Slightly darker shade */
+}
+
+
+
+
+

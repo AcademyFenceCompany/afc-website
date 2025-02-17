@@ -10,12 +10,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
-
-
-
-
-
-
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\UserManagementController;
+use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 
 
 Route::get('/resources/images/{filename}', function ($filename) {
@@ -43,6 +42,20 @@ Route::get('/resources/brochures/{filename}', function ($filename) {
 
     return Response::make($file, 200)->header("Content-Type", $type);
 });
+
+Route::get('/resources/office_sheets/{filename}', function ($filename) {
+    $path = resource_path('office_sheets/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    return Response::make($file, 200)->header("Content-Type", $type);
+});
+
 Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
@@ -58,7 +71,7 @@ Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizePro
 
 Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
-Route::get('/wood-fence/specs/{categoryName}/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsBySpacing'])
+Route::get('/wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
 
@@ -89,24 +102,29 @@ Route::get('/about', function () {
 
 Route::get('/policy', function () {
     return view('pages.policy', [
-        'title' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms',
-        'header' => 'Policies, Terms & Conditions', 'header' => 'Policies & Terms'
+        'title' => 'Policies, Terms & Conditions',
+        'header' => 'Policies & Terms',
+        'header' => 'Policies, Terms & Conditions',
+        'header' => 'Policies & Terms'
     ]);
 })->name('policy');
 
 Route::get('/privacy-policy', function () {
     return view('pages.privacypolicy', [
-        'title' => 'Privacy Policy', 'header' => 'Privacy Policy',
-        'header' => 'Privacy Policy', 'header' => 'Privacy Policy'
+        'title' => 'Privacy Policy',
+        'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy',
+        'header' => 'Privacy Policy'
     ]);
 })->name('privacypolicy');
 
 Route::get('/brochures', function () {
     return view('pages.brochures', [
-        'title' => 'Brochures', 'header' => 'Brochures'
+        'title' => 'Brochures',
+        'header' => 'Brochures'
     ]);
 })->name('brochures');
-Route::view('/empty-cart','cart/empty')->name('empty-cart');
+Route::view('/empty-cart', 'cart/empty')->name('empty-cart');
 Route::view('/checkout', 'cart.checkout')->name('cart.checkout');
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
 
@@ -134,13 +152,44 @@ Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear')
 // AMS Routes
 Route::get('/ams', function () {
     return redirect()->route('ams.activity');
-})->name('ams.home');
+})->middleware('auth')->name('ams.home');
+
 
 Route::get('/ams/activity', function () {
     return view('ams.activity');
 })->name('ams.activity');
 
+Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
+
+Route::get('/users', [UserManagementController::class, 'index'])->name('user.index');
+Route::put('/user/{id}', [UserManagementController::class, 'update']);
 
 
 
-require __DIR__.'/auth.php';
+// Family Category Tree - AMS
+Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
+Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
+
+
+// Shipping
+Route::get('/shippers/{page}', [ShipperController::class, 'showView'])
+    ->whereIn('page', [
+        'index_shippers',
+        'add_shippers',
+        'add_shippers_contacts',
+        'delivery_status',
+        'shipping_markup'
+    ])->name('shippers.view');
+
+require __DIR__ . '/auth.php';
+
+
+Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+
+
+Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+
+// Inventory
+Route::get('ams/inventory', [InventoryController::class, 'index'])->name('inventory');
+

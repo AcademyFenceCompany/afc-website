@@ -1,12 +1,12 @@
-/* General Styles */
 body {
+    font-family: "Inter", sans-serif;
     display: flex;
     height: 100vh;
     margin: 0;
-    font-family: Arial, sans-serif;
     background-color: #c1bfd8;
 }
 
+/* Sidebar Styles */
 .sidebar {
     width: 250px;
     background-color: #4e4c67;
@@ -14,137 +14,295 @@ body {
     display: flex;
     flex-direction: column;
     padding: 1rem;
+    height: 100vh;
 }
 
 .sidebar h3 {
     text-align: center;
     margin-bottom: 2rem;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
 .menu-item {
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     background-color: #6c6b88;
     color: white;
     text-decoration: none;
     border-radius: 5px;
+    display: block;
+    font-weight: 500;
 }
 
 .menu-item:hover {
     background-color: #5a5975;
 }
 
+.menu-item.active {
+    background-color: #8e8ba8;
+}
+
+.submenu {
+    padding-left: 15px;
+}
+
+.submenu .menu-item {
+    font-size: 0.9rem;
+}
+
+/* Content Styles */
 .content {
     flex: 1;
-    padding: 1rem;
+    padding: 2rem;
     background-color: #f5f5f5;
     overflow-y: auto;
 }
 
-/* Header Section */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #8e8ba8;
     color: white;
-    padding: 15px;
+    padding: 1rem;
     border-radius: 5px;
-    margin-bottom: 20px;
 }
 
 .header h2 {
     margin: 0;
     font-size: 1.5rem;
-}
-
-.header-buttons {
-    display: flex;
-    gap: 10px;
+    font-weight: bold;
 }
 
 .header-buttons .btn {
-    background-color: #4e4c67;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.header-buttons .btn:hover {
-    background-color: #3c3b55;
+    margin-left: 10px;
 }
 
 /* Filters Section */
 .filters {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-.search-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.search-input {
+.filters .search-input {
     flex: 1;
-    padding: 10px;
+    padding: 0.5rem;
     border: 1px solid #ddd;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
-.search-btn {
-    padding: 10px 15px;
+.filters .search-btn {
+    padding: 0.5rem 1rem;
     background-color: #4e4c67;
     color: white;
     border: none;
-    border-radius: 3px;
-    cursor: pointer;
+    border-radius: 5px;
 }
 
-.search-btn:hover {
-    background-color: #3c3b55;
+.filter-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 
-.filter-options {
-    display: flex;
-    gap: 20px;
-}
-
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.filter-input,
-.filter-select {
-    padding: 10px;
+.filter-group select,
+.filter-group input {
+    padding: 0.5rem;
     border: 1px solid #ddd;
-    border-radius: 3px;
+    border-radius: 5px;
+    width: 100%;
 }
 
+/* Table Styles */
 .table {
     width: 100%;
-    border-collapse: collapse;
     margin-top: 1rem;
     background-color: white;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .table th,
 .table td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    border: none;
+    padding: 1rem;
     text-align: left;
+    font-size: 0.9rem;
+}
+
+.table thead th {
+    background-color: #4e4c67;
+    color: white;
+    font-weight: bold;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table tbody tr:hover {
+    background-color: #f9f9f9;
 }
 
 .status-oms {
-    background-color: #6c6b88;
-    padding: 5px;
     color: white;
-    border-radius: 3px;
+    background-color: #6c6b88;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+
+/* Footer Styles */
+.footer {
+    margin-top: 2rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.image-preview-container {
+    margin-bottom: 20px;
+}
+
+.image-preview {
+    width: 300px;
+    height: 200px;
+    border: 2px dashed #ccc;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.preview-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.no-image {
+    color: #666;
+    text-align: center;
+}
+
+input[type="file"] {
+    margin-top: 10px;
+}
+
+/* Basic tree styling */
+ul.tree {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.category {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+/* Style for the toggle button */
+.toggle-btn {
+    font-weight: bold;
+    cursor: pointer;
+    color: #007bff;
+}
+
+/* Styling for children nodes */
+.children {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none;
+    /* Children are hidden by default */
+}
+
+/* Optionally, add some animation for smooth toggling */
+.children {
+    transition: all 0.3s ease;
+}
+
+/* Basic tree styling */
+ul.tree {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.category {
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+/* Style for the toggle button */
+.toggle-btn {
+    font-weight: bold;
+    cursor: pointer;
+    color: #007bff;
+}
+
+/* Styling for children nodes */
+.children {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none;
+    /* Children are hidden by default */
+}
+
+/* Optionally, add some animation for smooth toggling */
+.children {
+    transition: all 0.3s ease;
+}
+.category-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-item {
+    border-bottom: 1px solid #eee;
+}
+
+.category-link {
+    color: #333;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    flex-grow: 1;
+}
+
+.category-link:hover {
+    background-color: #f8f9fa;
+    text-decoration: none;
+}
+
+.category-link.active {
+    background-color: #e9ecef;
+    font-weight: 500;
+}
+
+.nested {
+    list-style: none;
+    padding-left: 20px;
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.toggle-btn {
+    padding: 4px 8px;
+    color: #666;
+}
+
+.toggle-btn i {
+    transition: transform 0.2s;
+}
+
+.toggle-btn.active i {
+    transform: rotate(90deg);
 }

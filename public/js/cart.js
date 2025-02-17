@@ -18,15 +18,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle increase/decrease quantity
     document.addEventListener("click", (event) => {
-        if (event.target.classList.contains("quantity-increase") || event.target.classList.contains("quantity-decrease")) {
-            const input = event.target.closest(".d-flex, .text-center").querySelector(".quantity-input");
+        if (
+            event.target.classList.contains("quantity-increase") ||
+            event.target.classList.contains("quantity-decrease")
+        ) {
+            const input = event.target
+                .closest(".d-flex, .text-center")
+                .querySelector(".quantity-input");
 
             if (input) {
                 let quantity = parseInt(input.value) || 1;
 
                 if (event.target.classList.contains("quantity-increase")) {
                     quantity++;
-                } else if (event.target.classList.contains("quantity-decrease") && quantity > 1) {
+                } else if (
+                    event.target.classList.contains("quantity-decrease") &&
+                    quantity > 1
+                ) {
                     quantity--;
                 }
 
@@ -53,16 +61,28 @@ document.addEventListener("DOMContentLoaded", () => {
             const color = button.dataset.color || "";
             const size = button.dataset.size || "";
             const mesh = button.dataset.mesh || "";
-            const quantityInput = button.closest("tr")?.querySelector(".quantity-input") || document.querySelector(".quantity-input");
+            const quantityInput =
+                button.closest("tr")?.querySelector(".quantity-input") ||
+                document.querySelector(".quantity-input");
             const quantity = parseInt(quantityInput?.value || 1);
 
-            console.log("Add to Cart:", { itemNo, productName, price, color, size, mesh, quantity });
+            console.log("Add to Cart:", {
+                itemNo,
+                productName,
+                price,
+                color,
+                size,
+                mesh,
+                quantity,
+            });
 
             fetch("/cart/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                    "X-CSRF-TOKEN": document.querySelector(
+                        'meta[name="csrf-token"]',
+                    ).content,
                 },
                 body: JSON.stringify({
                     item_no: itemNo,
@@ -83,11 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
                             const toast = new bootstrap.Toast(toastEl);
                             toast.show();
                         }
-                
+
                         // Update cart count
-                        const cartCountElement = document.getElementById("cart-count");
-                        if (cartCountElement) cartCountElement.textContent = data.cartCount;
-                
+                        const cartCountElement =
+                            document.getElementById("cart-count");
+                        if (cartCountElement)
+                            cartCountElement.textContent = data.cartCount;
+
                         // Update mini cart
                         updateMiniCart(data.cart);
                     } else {

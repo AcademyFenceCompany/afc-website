@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ProductMedia extends Model
 {
     use HasFactory;
+    protected $table = 'product_media';
+    public $timestamps = false;
 
     protected $fillable = [
         'product_id',
@@ -23,6 +25,6 @@ class ProductMedia extends Model
      */
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'product_id');
     }
 }

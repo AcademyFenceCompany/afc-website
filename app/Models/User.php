@@ -2,54 +2,58 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'customers'; // Specify the table name
+    protected $table = 'ams-users';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    const LEVEL_STAFF = 'Staff';
+    const LEVEL_ADMIN = 'Admin';
+    const LEVEL_GOD = 'God';
+
     protected $fillable = [
-        'name',
-        'email',
+        'username',
+        'firstname',
+        'lastname',
+        'level',
+        'enabled',
         'password',
-        'phone',
-        'street_address',
-        'city',
-        'state',
-        'zip',
+        'remember_token'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'created' => 'datetime',
+        'lastlog' => 'datetime',
+        'enabled' => 'boolean',
+        'level' => 'string'
     ];
+
+    protected $attributes = [
+        'enabled' => 1 // Default value for new users
+    ];
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->firstname} {$this->lastname}";
+    }
+
+    public function getLastLoginAttribute()
+    {
+        if (!$this->lastlog) {
+            return 'Never logged in';
+        }
+        return \Carbon\Carbon::parse($this->lastlog)->format('M d, Y h:i A');
+    }
 }
