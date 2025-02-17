@@ -11,13 +11,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/ams__products.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/normalize.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/shippers.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/inventory.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/ams__products.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/normalize.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/shippers.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/inventory.css') }}">
 </head>
 
 <body>
@@ -113,8 +112,7 @@
             <a href="resources/office_sheets/chainlinkassemblydiagram.pdf" target="_blank" class="menu-item">Chain
                 Link
                 Assembly Diagram</a>
-            <a href="resources/office_sheets/work_order-updated_07-19-2019.pdf" target="_blank"
-                class="menu-item">Work
+            <a href="resources/office_sheets/work_order-updated_07-19-2019.pdf" target="_blank" class="menu-item">Work
                 Order</a>
             <a href="resources/office_sheets/lead-current.pdf" target="_blank" class="menu-item">Lead Sheet</a>
             <a href="resources/office_sheets/yard-sale.pdf" target="_blank" class="menu-item">Blank Yard Sale</a>
@@ -125,8 +123,7 @@
             <a href="resources/office_sheets/customerquotefaxsheet.pdf" target="_blank" class="menu-item">Quote
                 Sheet</a>
             <a href="resources/office_sheets/Procalls sheet.pdf" target="_blank" class="menu-item">Pro Call Sheet</a>
-            <a href="resources/office_sheets/woodfencinggeneralorderform.pdf" target="_blank"
-                class="menu-item">Fencing
+            <a href="resources/office_sheets/woodfencinggeneralorderform.pdf" target="_blank" class="menu-item">Fencing
                 Order Sheet</a>
             <a href="resources/office_sheets/returnsheet.pdf" target="_blank" class="menu-item">Return Sheet</a>
         </div>
