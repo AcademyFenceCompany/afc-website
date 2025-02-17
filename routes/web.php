@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 
 
 Route::get('/resources/images/{filename}', function ($filename) {
@@ -186,13 +187,9 @@ require __DIR__ . '/auth.php';
 Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
 
 
-
 Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 
-
-
-
-
-
+// Inventory
+Route::get('ams/inventory', [InventoryController::class, 'index'])->name('inventory');
 

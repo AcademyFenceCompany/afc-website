@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('css/ams__products.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/shippers.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/inventory.css') }}">
 </head>
 
 <body>
@@ -60,8 +61,10 @@
             Shipping <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="shippingMenu">
-            <a href="{{ route('shippers.view', ['page' => 'add_shippers']) }}" class="menu-item" class="menu-item">Add Shippers</a>
-            <a href="{{ route('shippers.view', ['page' => 'add_shippers_contacts']) }}" class="menu-item">Add Contacts to Shipper</a>
+            <a href="{{ route('shippers.view', ['page' => 'add_shippers']) }}" class="menu-item" class="menu-item">Add
+                Shippers</a>
+            <a href="{{ route('shippers.view', ['page' => 'add_shippers_contacts']) }}" class="menu-item">Add Contacts
+                to Shipper</a>
             <a href="{{ route('shippers.view', ['page' => 'index_shippers']) }}" class="menu-item">View Shippers</a>
             <a href="{{ route('shippers.view', ['page' => 'delivery_status']) }}" class="menu-item">Delivery Status</a>
             <a href="{{ route('shippers.view', ['page' => 'shipping_markup']) }}" class="menu-item">Shipping Markup</a>
@@ -86,7 +89,13 @@
                 <i class="fas fa-users-cog"></i>
                 <span>User Management</span>
             </a>
-        @endif <a href="#" class="menu-item">Inventory</a>
+        @endif
+
+        <!-- Inventory -->
+        <a href="{{ route('inventory', ['page' => 'inventory_index']) }}" class="menu-item">Inventory</a>
+
+
+        <!-- Office Sheets -->
         <a class="menu-item" data-bs-toggle="collapse" href="#officeSheets" role="button" aria-expanded="false"
             aria-controls="suppliersMenu">
             Office Sheets<i class="bi bi-caret-down-fill">
