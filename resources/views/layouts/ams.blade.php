@@ -13,11 +13,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/ams__products.css') }}">
-    <link rel="stylesheet" href="{{ asset('vendor/normalize.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/shippers.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/inventory.css') }}">
+    {{-- <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}"> --}}
+    <link rel="stylesheet" href="{{ secure_asset('css/ams__products.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('vendor/normalize.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/shippers.css') }}">
+    <link rel="stylesheet" href="{{ secure_asset('css/inventory.css') }}">
 </head>
 
 <body>
