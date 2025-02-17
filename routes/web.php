@@ -12,8 +12,6 @@ use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\ShippingController;
-use App\Http\Controllers\TForceController;
 use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\Ams\OrderController;
 

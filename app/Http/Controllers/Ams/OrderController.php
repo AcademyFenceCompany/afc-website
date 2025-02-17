@@ -100,60 +100,74 @@ class OrderController extends Controller
      */
     public function getProducts(Request $request)
     {
-        Log::info('Loading products for category: ' . $request->category);
-        
-        $query = Product::with(['details', 'inventory', 'familyCategory'])
-            ->select([
-                'products.product_id',
-                'products.item_no',
-                'products.description',
-                'products.price_per_unit',
-                'products.family_category_id'
-            ]);
+        try {
+            Log::info('Loading products for category: ' . $request->category);
+            
+            if (!$request->filled('category')) {
+                Log::warning('No category ID provided');
+                return response()->json([]);
+            }
 
-        // Filter by category if provided
-        if ($request->filled('category')) {
-            $categoryId = $request->category;
-            $query->where('family_category_id', $categoryId);
-        }
+            // Get products with all necessary details
+            $products = DB::table('products')
+                ->select([
+                    'products.product_id',
+                    'products.item_no',
+                    'products.description as product_name',
+                    'products.price_per_unit',
+                    'product_details.color',
+                    'product_details.style',
+                    'product_details.speciality',
+                    'product_details.size1',
+                    'product_details.size2',
+                    'product_details.size3',
+                    'inventory_details.in_stock_hq',
+                    'inventory_details.in_stock_warehouse'
+                ])
+                ->leftJoin('product_details', 'products.product_id', '=', 'product_details.product_id')
+                ->leftJoin('inventory_details', 'products.product_id', '=', 'inventory_details.product_id')
+                ->where('products.family_category_id', $request->category)
+                ->get();
 
-        // Search filter if provided
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('description', 'like', "%{$search}%")
-                  ->orWhere('item_no', 'like', "%{$search}%");
+            Log::info('Found ' . $products->count() . ' products');
+            if ($products->isNotEmpty()) {
+                Log::info('Sample product:', $products->first()->toArray());
+            }
+
+            // Format products for response
+            $formattedProducts = $products->map(function ($product) {
+                return [
+                    'product_id' => $product->product_id,
+                    'item_no' => $product->item_no,
+                    'description' => $product->product_name,
+                    'price_per_unit' => floatval($product->price_per_unit),
+                    'details' => [
+                        'color' => $product->color,
+                        'style' => $product->style,
+                        'specialty' => $product->speciality,
+                        'size1' => $product->size1,
+                        'size2' => $product->size2,
+                        'size3' => $product->size3
+                    ],
+                    'inventory' => [
+                        'quantity' => ($product->in_stock_hq ?? 0) + ($product->in_stock_warehouse ?? 0)
+                    ]
+                ];
             });
-        }
 
-        $products = $query->get();
-        
-        Log::info('Found ' . $products->count() . ' products');
-        if ($products->isNotEmpty()) {
-            Log::info('Sample product:', $products->first()->toArray());
+            return response()->json($formattedProducts);
+            
+        } catch (\Exception $e) {
+            Log::error('Error in getProducts: ' . $e->getMessage(), [
+                'category' => $request->category,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'error' => 'Failed to load products',
+                'message' => config('app.debug') ? $e->getMessage() : 'An error occurred while loading products'
+            ], 500);
         }
-        
-        $formattedProducts = $products->map(function ($product) {
-            return [
-                'product_id' => $product->product_id,
-                'item_no' => $product->item_no,
-                'description' => $product->description,
-                'price_per_unit' => $product->price_per_unit,
-                'details' => [
-                    'color' => optional($product->details)->color,
-                    'size1' => optional($product->details)->size1,
-                    'size2' => optional($product->details)->size2,
-                    'style' => optional($product->details)->style
-                ],
-                'inventory' => [
-                    'quantity' => (optional($product->inventory)->in_stock_hq ?? 0) + 
-                                (optional($product->inventory)->in_stock_warehouse ?? 0)
-                ],
-                'category' => optional($product->familyCategory)->family_category_name ?? 'N/A'
-            ];
-        });
-
-        return response()->json($formattedProducts);
     }
 
     /**

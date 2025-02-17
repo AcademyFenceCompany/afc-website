@@ -71,49 +71,43 @@ $(document).ready(function() {
         // Show loading state
         $('#productsTable tbody').html('<tr><td colspan="10" class="text-center">Loading products...</td></tr>');
 
+        // Make AJAX request to get products
         $.ajax({
-            url: '/ams/orders/products',
+            url: `/categories/${categoryId}/products`,  
             method: 'GET',
-            data: { category: categoryId },
             success: function(products) {
                 console.log('Products loaded:', products);
-                renderProductsTable(products);
+                renderProductsTable(products.products); // Access the products array from the response
+                
+                // Update active category
+                $('.category-link').removeClass('active');
+                $(`[data-category-id="${categoryId}"]`).addClass('active');
             },
-            error: function(error) {
-                console.error('Error loading products:', error);
+            error: function(xhr, status, error) {
+                console.error('Error loading products:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
                 $('#productsTable tbody').html('<tr><td colspan="10" class="text-center text-danger">Error loading products. Please try again.</td></tr>');
             }
         });
     }
 
-    // Product search functionality
-    $('#productSearch').on('input', function() {
-        const searchTerm = $(this).val().toLowerCase();
-        if (searchTerm.length >= 2) {
-            $.ajax({
-                url: '/ams/orders/products',
-                method: 'GET',
-                data: { search: searchTerm },
-                success: function(products) {
-                    renderProductsTable(products);
-                }
-            });
-        }
-    });
-
     // Render products in modal table
     function renderProductsTable(products) {
-        console.log('Rendering products table...');
+        console.log('Rendering products table with:', products);
         const tbody = $('#productsTable tbody');
         tbody.empty();
 
         if (!Array.isArray(products) || products.length === 0) {
-            tbody.append('<tr><td colspan="10" class="text-center">No products found</td></tr>');
+            tbody.html('<tr><td colspan="10" class="text-center">No products found in this category</td></tr>');
             return;
         }
 
         products.forEach(product => {
-            console.log('Processing product:', product);
+            // Ensure price is a valid number
+            const price = parseFloat(product.price_per_unit) || 0;
             const row = `
                 <tr data-product-id="${product.product_id}">
                     <td>${product.item_no || ''}</td>
@@ -122,7 +116,7 @@ $(document).ready(function() {
                     <td>${product.details?.size1 || ''}</td>
                     <td>${product.details?.size2 || ''}</td>
                     <td>${product.details?.style || ''}</td>
-                    <td>$${(product.price_per_unit || 0).toFixed(2)}</td>
+                    <td>$${price.toFixed(2)}</td>
                     <td>${product.inventory?.quantity || 0}</td>
                     <td>
                         <input type="number" class="form-control form-control-sm product-quantity" 
@@ -142,11 +136,28 @@ $(document).ready(function() {
         $('.product-quantity').on('input', function() {
             const max = parseInt($(this).attr('max'));
             let val = parseInt($(this).val());
-            if (val > max) {
+            if (isNaN(val) || val < 1) {
+                $(this).val(1);
+            } else if (val > max) {
                 $(this).val(max);
             }
         });
     }
+
+    // Product search functionality
+    $('#productSearch').on('input', function() {
+        const searchTerm = $(this).val().toLowerCase();
+        if (searchTerm.length >= 2) {
+            $.ajax({
+                url: '/ams/orders/products',
+                method: 'GET',
+                data: { search: searchTerm },
+                success: function(products) {
+                    renderProductsTable(products);
+                }
+            });
+        }
+    });
 
     // Add selected products to order
     $('#addSelectedProducts').click(function() {
