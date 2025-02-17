@@ -18,11 +18,12 @@ class CategoryController extends Controller
     {
         // Validate input
         $request->validate([
-            'category_name' => 'required|string|max:255',
-            'category_url' => 'required|string|max:255',
-            'category_meta_title' => 'required|string|max:255',
-            'category_meta_keywords' => 'required|string|max:255',
-            'category_meta_description' => 'nullable|string',
+            'family_category_id' => 'required|string|max:255',
+            'parent_category_id' => 'required|string|max:255',
+            // 'category_url' => 'required|string|max:255',
+            'family_category_name' => 'required|string|max:255',
+            // 'category_meta_keywords' => 'required|string|max:255',
+            'category_description' => 'nullable|string',
         ]);
 
         // Save to database

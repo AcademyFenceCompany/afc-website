@@ -42,7 +42,7 @@
                             <div class="col-md-6">
                                 <label for="category_url" class="form-label">URL Name</label>
                                 <input type="text" id="category_url" name="category_url" class="form-control"
-                                    placeholder="Type URL name..." required>
+                                    placeholder="Type URL name...">
                             </div>
                         </div>
 
@@ -55,7 +55,7 @@
                             <div class="col-md-6">
                                 <label for="category_meta_keywords" class="form-label">Category Meta Keywords</label>
                                 <input type="text" id="category_meta_keywords" name="category_meta_keywords"
-                                    class="form-control" placeholder="Type Category Meta Keywords..." required>
+                                    class="form-control" placeholder="Type Category Meta Keywords...">
                             </div>
                         </div>
 
