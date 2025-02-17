@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
@@ -11,6 +14,7 @@
         "gabrielbull/ups-api": "^2.1",
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^9.19",
+        "laravel/installer": "^4.5",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7"
     },

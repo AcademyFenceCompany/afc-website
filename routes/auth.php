@@ -110,6 +110,14 @@ Route::prefix('customers')->group(function () {
     Route::post('/', [CustomerController::class, 'store'])->name('customers.store');
 });
 
+// Shipping Routes
+Route::prefix('shipping')->group(function () {
+    Route::get('/shippers', [ShipperController::class, 'index'])->name('shippers.index');
+    Route::get('/shippers/add', [ShipperController::class, 'create'])->name('shippers.add');
+
+});
+
+
 // API Routes
 Route::prefix('api')->group(function () {
     // Customer Search
@@ -122,3 +130,5 @@ Route::prefix('api')->group(function () {
 });
 
 Route::get('/orders/{orderId}', [ActivityController::class, 'show'])->name('orders.show');
+Route::view('/office-sheets', 'ams.office_sheets.index_office_sheets')->name('office-sheets');
+

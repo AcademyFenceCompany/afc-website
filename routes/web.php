@@ -12,15 +12,10 @@ use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
-use App\Http\Controllers\ShippingController;
-use App\Http\Controllers\TForceController;
 use App\Http\Controllers\StateMarkupController;
-
-
-
-
-
-
+use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 
 
 Route::get('/resources/images/{filename}', function ($filename) {
@@ -48,6 +43,20 @@ Route::get('/resources/brochures/{filename}', function ($filename) {
 
     return Response::make($file, 200)->header("Content-Type", $type);
 });
+
+Route::get('/resources/office_sheets/{filename}', function ($filename) {
+    $path = resource_path('office_sheets/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    return Response::make($file, 200)->header("Content-Type", $type);
+});
+
 Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
@@ -152,9 +161,10 @@ Route::get('/ams/activity', function () {
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
-
 Route::get('/users', [UserManagementController::class, 'index'])->name('user.index');
 Route::put('/user/{id}', [UserManagementController::class, 'update']);
+
+
 
 // Family Category Tree - AMS
 Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
@@ -169,5 +179,25 @@ Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'upda
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
 
+// Shipping
+Route::get('/shippers/{page}', [ShipperController::class, 'showView'])
+    ->whereIn('page', [
+        'index_shippers',
+        'add_shippers',
+        'add_shippers_contacts',
+        'delivery_status',
+        'shipping_markup'
+    ])->name('shippers.view');
 
 require __DIR__ . '/auth.php';
+
+
+Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+
+
+Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
+
+// Inventory
+Route::get('ams/inventory', [InventoryController::class, 'index'])->name('inventory');
+

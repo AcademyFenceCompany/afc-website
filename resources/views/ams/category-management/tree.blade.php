@@ -1,4 +1,4 @@
-<li class="category">
+<!-- <li class="category">
     @if (count($category->children) > 0)
         <h5 class="toggle-btn" onclick="toggleChildren(event)">{{ $category->family_category_name }}</h5>
 
@@ -12,13 +12,13 @@
             <a href="javascript:void(0)" onclick="fetchProducts('{{ $category->family_category_id }}', this)">
                 {{ $category->family_category_name }}
             </a>
-        </h5>
+        </h5> -->
 
         <!-- Hidden table to display products -->
-        <div class="product-table" style="display: none;">
-            <table class="table table-bordered table-striped mt-2">
+        <!-- <div class="product-table" style="display: none;">
+            <table class="table table-bordered table-striped mt-2"> -->
                 {{-- Make sure th is in the same order as tr in fetchProducts --}}
-                <thead>
+                <!-- <thead>
                     <tr>
                         <th>Product ID</th>
                         <th>Item No.</th>
@@ -32,9 +32,9 @@
                         <th>Size 3</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody> -->
                     <!-- Product rows will be dynamically added here -->
-                </tbody>
+                <!-- </tbody>
             </table>
         </div>
     @endif
@@ -42,8 +42,8 @@
 
 <script>
     function fetchProducts(categoryId, link) {
-        console.log(categoryId)
-        // Find the sibling div containing the product table
+        console.log(categoryId) -->
+        <!-- // Find the sibling div containing the product table
         const productTable = link.closest('h5').nextElementSibling;
 
         // Toggle table visibility
@@ -88,8 +88,8 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                     <td colspan="5" style="text-align: center;">No products found</td>
-                `;
-                    tbody.appendChild(row);
+                `; -->
+                    <!-- tbody.appendChild(row);
                 }
                 console.log(data);
                 // Show the table
@@ -101,4 +101,34 @@
                 alert('Failed to load products. Please try again.');
             });
     }
-</script>
+</script> -->
+
+
+<!-- Took from categpries.blade - this page "tree.blade" - must be remove. Just saving a code to be safe -->
+<!-- <ul class="tree">
+    @foreach ($categories as $category)
+        <li class="category"> -->
+            <!-- Category with children, display the toggle button and recursive children -->
+            <!-- <h3 class="toggle-btn" onclick="toggleChildren(event)">
+                {{ $category->family_category_name }}
+            </h3> -->
+            <!-- <ul class="children" style="display: none;"> Keep children hidden by default -->
+                <!-- @foreach ($category->children as $child)
+                    @include('ams.tree', ['category' => $child])
+                @endforeach
+            </ul>
+        </li>
+    @endforeach
+</ul> -->
+
+
+<!-- <script> -->
+    <!-- // JavaScript function to toggle children visibility
+    function toggleChildren(event) {
+        const childrenList = event.target.nextElementSibling;
+        if (childrenList) {
+            childrenList.style.display = (childrenList.style.display === "none" || childrenList.style.display === "") ?
+                "block" : "none";
+        }
+    }
+</script> -->
