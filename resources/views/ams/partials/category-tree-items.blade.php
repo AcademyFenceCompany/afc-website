@@ -8,9 +8,9 @@
             @else
                 <span class="ps-3"></span>
             @endif
-            <a href="javascript:void(0)" onclick="loadProductsByCategory('{{ $category->family_category_id }}')"
+            <a href="javascript:void(0)" 
                 class="category-link {{ request('category') == $category->family_category_id ? 'active' : '' }}"
-                data-category-id="{{ $category->family_category_id }}">
+                data-category-id="{{ $category->family_category_id }}" data-action="load-products">
                 {{ $category->family_category_name }}
                 <span class="badge bg-secondary float-end">{{ $category->products_count }}</span>
             </a>

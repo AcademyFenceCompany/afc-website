@@ -6,8 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerAddress extends Model
 {
+    public $timestamps = false;
+    
+    protected $primaryKey = 'customer_address_id';
+    
     protected $fillable = [
         'customer_id',
+        'original_customer_id',
+        'original_address_id',
         'address_1',
         'address_2',
         'address_name',

@@ -24,6 +24,13 @@ Route::prefix('ams')->group(function () {
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('ams.orders.update-status');
     Route::get('/customers/{customer}/addresses', [OrderController::class, 'getCustomerAddresses'])->name('ams.customers.addresses');
     
+    // Customer Address Routes
+    Route::prefix('/customers/{customer}/addresses')->group(function () {
+        Route::post('/', [OrderController::class, 'storeAddress'])->name('ams.customers.addresses.store');
+        Route::put('/{address}', [OrderController::class, 'updateAddress'])->name('ams.customers.addresses.update');
+        Route::delete('/{address}', [OrderController::class, 'deleteAddress'])->name('ams.customers.addresses.delete');
+    });
+    
     // Debug route
     Route::get('/debug/products', function() {
         $products = \App\Models\Product::with(['details', 'familyCategory'])->get();
