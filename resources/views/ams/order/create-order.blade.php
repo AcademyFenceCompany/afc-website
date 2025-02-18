@@ -9,9 +9,18 @@
             <div class="col-md-12">
                 <div class="d-flex align-items-center gap-2">
                     <div class="input-group input-group-sm" style="width: auto;">
+                        <span class="input-group-text">Customer</span>
+                        <select class="form-select form-select-sm" id="customer-select" style="min-width: 200px;">
+                            <option value="">Select Customer...</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->customer_id }}">{{ $customer->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="input-group input-group-sm" style="width: auto;">
                         <span class="input-group-text">Call Date</span>
-                        <input type="date" class="form-control form-control-sm" id="call-date" value="{{ date('Y-m-d') }}"
-                            readonly>
+                        <input type="date" class="form-control form-control-sm" id="call-date"
+                            value="{{ date('Y-m-d') }}" readonly>
                     </div>
                     <div class="input-group input-group-sm" style="width: auto;">
                         <span class="input-group-text">Quote</span>
@@ -40,7 +49,8 @@
             </div>
             <div class="col-md-12 text-end mb-2">
                 <button type="button" class="btn btn-sm btn-success me-1" id="save-order">Save and Finish</button>
-                <button type="button" class="btn btn-sm btn-primary" id="addItemsBtn" data-bs-toggle="modal" data-bs-target="#productModal">
+                <button type="button" class="btn btn-sm btn-primary" id="addItemsBtn" data-bs-toggle="modal"
+                    data-bs-target="#productModal">
                     Add Items
                 </button>
             </div>
@@ -56,7 +66,10 @@
                         <div class="card-body p-2">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h6 class="card-title mb-0">Shipping Information</h6>
-                                <button type="button" class="btn btn-sm btn-outline-primary py-0" data-bs-toggle="modal" data-bs-target="#addressBookModal">View Address Book</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addressBookModal">
+                                    <i class="fas fa-address-book"></i> Address Book
+                                </button>
                             </div>
                             <div class="form-check form-check-inline mb-2">
                                 <input class="form-check-input" type="checkbox" id="non-residential">
@@ -73,9 +86,10 @@
                         <div class="card-body p-2">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h6 class="card-title mb-0">Billing Information</h6>
-                                <button type="button" class="btn btn-sm btn-outline-primary py-0" data-bs-toggle="modal" data-bs-target="#addressBookModal">View Address Book</button>
+                                <button type="button" class="btn btn-sm btn-outline-primary py-0" data-bs-toggle="modal"
+                                    data-bs-target="#addressBookModal">View Address Book</button>
                             </div>
-                            <select class="form-select form-select-sm" id="billing-address">
+                            <select class="form-select form-select-sm" id="billing-address-select">
                                 <option value="">Select Address</option>
                             </select>
                         </div>
@@ -186,6 +200,13 @@
             <!-- Order Items Table -->
             <div class="card card-sm">
                 <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="card-title mb-0">Order Items</h6>
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                            data-bs-target="#productModal">
+                            <i class="fas fa-plus"></i> Add Products
+                        </button>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-hover" id="orderItemsTable">
                             <thead>
@@ -193,9 +214,8 @@
                                     <th>Item #</th>
                                     <th>Description</th>
                                     <th>Color</th>
-                                    <th>Size</th>
+                                    <th>Size 1</th>
                                     <th>Size 2</th>
-                                    <th>Style</th>
                                     <th>Unit Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
@@ -204,10 +224,59 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="10" class="text-center">No items added yet</td>
+                                    <td colspan="9" class="text-center">No items added yet</td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Totals -->
+            <div class="card card-sm mt-2">
+                <div class="card-body p-2">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <div class="mb-2">
+                                <label class="form-label small">Shipping Cost ($)</label>
+                                <input type="number" class="form-control form-control-sm" id="shipping-cost"
+                                    value="0" min="0" step="0.01">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small">Tax Rate (%)</label>
+                                <input type="number" class="form-control form-control-sm" id="tax-rate" value="0"
+                                    min="0" max="100" step="0.01">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small">Discount ($)</label>
+                                <input type="number" class="form-control form-control-sm" id="discount" value="0"
+                                    min="0" step="0.01">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>Subtotal:</td>
+                                    <td class="text-end">$<span id="subtotal">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Shipping:</td>
+                                    <td class="text-end">$<span id="shipping-cost-display">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Tax:</td>
+                                    <td class="text-end">$<span id="tax-amount">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Discount:</td>
+                                    <td class="text-end">-$<span id="discount-display">0.00</span></td>
+                                </tr>
+                                <tr class="fw-bold">
+                                    <td>Total:</td>
+                                    <td class="text-end">$<span id="total">0.00</span></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -220,21 +289,23 @@
                             <div class="d-flex align-items-center gap-3">
                                 <button type="button" class="btn btn-sm btn-primary">Calculate Shipping</button>
                                 <button type="button" class="btn btn-sm btn-danger">Delete Shipping</button>
-                                
+
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="form-check form-check-inline m-0">
                                         <input class="form-check-input" type="checkbox" id="tax-exempt">
                                         <label class="form-check-label small" for="tax-exempt">Tax Exempt</label>
                                     </div>
-                                    
+
                                     <div class="input-group input-group-sm" style="width: auto;">
                                         <span class="input-group-text">Deposit</span>
                                         <div class="input-group-text">
-                                            <input class="form-check-input mt-0" type="radio" name="deposit" value="1st">
+                                            <input class="form-check-input mt-0" type="radio" name="deposit"
+                                                value="1st">
                                             <label class="form-check-label ms-1">1st</label>
                                         </div>
                                         <div class="input-group-text">
-                                            <input class="form-check-input mt-0" type="radio" name="deposit" value="2nd">
+                                            <input class="form-check-input mt-0" type="radio" name="deposit"
+                                                value="2nd">
                                             <label class="form-check-label ms-1">2nd</label>
                                         </div>
                                     </div>
@@ -247,7 +318,8 @@
                                     <input type="text" class="form-control form-control-sm" placeholder="Class">
                                     <input type="text" class="form-control form-control-sm" placeholder="Cost Price">
                                     <input type="text" class="form-control form-control-sm" placeholder="Zip">
-                                    <input type="date" class="form-control form-control-sm" id="res-date" value="{{ date('Y-m-d') }}">
+                                    <input type="date" class="form-control form-control-sm" id="res-date"
+                                        value="{{ date('Y-m-d') }}">
                                     <input type="text" class="form-control form-control-sm" placeholder="Packages">
                                     <input type="text" class="form-control form-control-sm" placeholder="Quoted by">
                                     <input type="text" class="form-control form-control-sm" placeholder="Quote #">
@@ -331,20 +403,24 @@
                                 <div class="card-body p-2">
                                     <div class="input-group input-group-sm mb-2">
                                         <span class="input-group-text">Search</span>
-                                        <input type="text" class="form-control" id="categorySearch" placeholder="Search categories...">
+                                        <input type="text" class="form-control" id="categorySearch"
+                                            placeholder="Search categories...">
                                     </div>
                                     <ul class="category-tree">
-                                        @include('ams.partials.category-tree-items', ['categories' => $categories])
+                                        @include('ams.partials.category-tree-items', [
+                                            'categories' => $categories,
+                                        ])
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Products Table -->
                         <div class="col-md-9">
                             <div class="input-group input-group-sm mb-2">
                                 <span class="input-group-text">Search</span>
-                                <input type="text" class="form-control" id="productSearch" placeholder="Search products...">
+                                <input type="text" class="form-control" id="productSearch"
+                                    placeholder="Search products...">
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-sm table-hover" id="productsTable">
@@ -353,28 +429,29 @@
                                             <th>Item #</th>
                                             <th>Description</th>
                                             <th>Color</th>
-                                            <th>Size</th>
+                                            <th>Size 1</th>
                                             <th>Size 2</th>
-                                            <th>Style</th>
                                             <th>Unit Price</th>
                                             <th>Stock</th>
                                             <th>Quantity</th>
-                                            <th></th>
+                                            <th>Select</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td colspan="10" class="text-center">Select a category to view products</td>
+                                            <td colspan="9" class="text-center">Select a category to view products</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-sm btn-primary" id="addSelectedProducts">Add
+                                Selected</button>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-sm btn-primary" id="addSelectedProducts">Add Selected</button>
                 </div>
             </div>
         </div>
@@ -382,28 +459,107 @@
 
     <!-- Address Book Modal -->
     <div class="modal fade" id="addressBookModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Address Book</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Add New Address Button -->
                     <div class="mb-3">
-                        <select class="form-select form-select-sm mb-2" id="customerSelect">
-                            <option value="">Select Customer...</option>
-                            @foreach($customers as $customer)
-                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                            @endforeach
-                        </select>
+                        <button type="button" class="btn btn-sm btn-primary" id="addNewAddressBtn">
+                            <i class="fas fa-plus"></i> Add New Address
+                        </button>
                     </div>
-                    <div id="addressList">
-                        <!-- Addresses will be loaded here -->
+
+                    <!-- Address List -->
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover" id="addressTable">
+                            <thead>
+                                <tr>
+                                    <th>Address</th>
+                                    <th>City</th>
+                                    <th>State</th>
+                                    <th>Zip</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="addressTableLoading" style="display: none;">
+                                    <td colspan="6" class="text-center">Loading addresses...</td>
+                                </tr>
+                                <tr id="addressTableEmpty" style="display: none;">
+                                    <td colspan="6" class="text-center">No addresses found</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-sm btn-primary" id="selectAddress">Select Address</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Address Modal -->
+    <div class="modal fade" id="addressFormModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add/Edit Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addressForm">
+                        <input type="hidden" id="address_id">
+                        <div class="mb-3">
+                            <label for="address_line1" class="form-label">Address Line 1</label>
+                            <input type="text" class="form-control form-control-sm" id="address_line1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="address_line2" class="form-label">Address Line 2</label>
+                            <input type="text" class="form-control form-control-sm" id="address_line2">
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control form-control-sm" id="city" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" class="form-control form-control-sm" id="state" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="zipcode" class="form-label">Zip Code</label>
+                                <input type="text" class="form-control form-control-sm" id="zipcode" required>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="shipping_flag">
+                                    <label class="form-check-label" for="shipping_flag">
+                                        Shipping Address
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="billing_flag">
+                                    <label class="form-check-label" for="billing_flag">
+                                        Billing Address
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveAddressBtn">Save Address</button>
                 </div>
             </div>
         </div>
@@ -412,40 +568,50 @@
 @endsection
 
 @section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .card-sm {
             border: 1px solid rgba(0, 0, 0, 0.125);
         }
+
         .category-tree {
             list-style: none;
             padding-left: 0;
         }
+
         .category-tree ul {
             list-style: none;
             padding-left: 1.5rem;
         }
+
         .category-item {
             margin-bottom: 0.25rem;
         }
+
         .toggle-btn {
             padding: 0;
             color: #6c757d;
         }
+
         .category-link {
             text-decoration: none;
             color: #212529;
             cursor: pointer;
         }
+
         .category-link:hover {
             color: #0d6efd;
         }
+
         .category-link.active {
             color: #0d6efd;
             font-weight: 500;
         }
+
         .nested {
             display: none;
         }
+
         .card-sm {
             margin-bottom: 0.5rem;
         }
