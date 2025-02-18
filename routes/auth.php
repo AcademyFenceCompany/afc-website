@@ -18,7 +18,13 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
+// Category Management (Protected by Authentication)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store'); // Added store route
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
@@ -99,6 +105,12 @@ Route::middleware(['auth'])->group(function () {
     ->name('products.deleteImage');
 });
 
+// Category Management (Protected by Authentication)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store'); // Added store route
+});
+
 
 
 // Customer Routes
@@ -114,7 +126,6 @@ Route::prefix('customers')->group(function () {
 Route::prefix('shipping')->group(function () {
     Route::get('/shippers', [ShipperController::class, 'index'])->name('shippers.index');
     Route::get('/shippers/add', [ShipperController::class, 'create'])->name('shippers.add');
-
 });
 
 
