@@ -20,7 +20,10 @@ use App\Http\Controllers\Ams\OrderController;
 Route::prefix('ams')->group(function () {
     Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
+    Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
+    Route::get('/orders/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.orders.category.show');
     Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
+    Route::get('/orders/products/all', [OrderController::class, 'getAllProducts'])->name('ams.orders.all-products');
     Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('ams.orders.update-status');
     Route::get('/customers/{customer}/addresses', [OrderController::class, 'getCustomerAddresses'])->name('ams.customers.addresses');
     
