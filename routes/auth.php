@@ -12,9 +12,9 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\CategoryToProductController;
-use App\Http\Controllers\getProductsByCategory;
-use App\Http\Controllers\OrderController;
+// use App\Http\Controllers\CategoryToProductController;
+// use App\Http\Controllers\getProductsByCategory;
+// use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
@@ -105,11 +105,11 @@ Route::middleware(['auth'])->group(function () {
     ->name('products.deleteImage');
 });
 
-// Category Management (Protected by Authentication)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-    Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store'); // Added store route
-});
+// // Category Management (Protected by Authentication)
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+//     Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store'); // Added store route
+// });
 
 
 

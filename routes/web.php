@@ -174,7 +174,8 @@ Route::get('/categories/{category}/products', [CategoriesController::class, 'get
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 // Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
 
-Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('shipping-markup');;
+Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('shipping-markup');
+;
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
@@ -189,15 +190,11 @@ Route::get('/shippers/{page}', [ShipperController::class, 'showView'])
         'shipping_markup'
     ])->name('shippers.view');
 
-require __DIR__ . '/auth.php';
-
-
-Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
-
-
-Route::get('/categories/create', [CategoriesController::class, 'create'])->name('categories.create');
+Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
 Route::post('/categories/store', [CategoryController::class, 'store'])->name('categories.store');
 
 // Inventory
 Route::get('ams/inventory', [InventoryController::class, 'index'])->name('inventory');
+
+require __DIR__ . '/auth.php';
 

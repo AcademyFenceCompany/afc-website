@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\FamilyCategory;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
-use App\Models\InventoryDetail;
+// use App\Models\InventoryDetail;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller

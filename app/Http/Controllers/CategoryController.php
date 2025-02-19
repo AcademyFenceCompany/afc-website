@@ -12,7 +12,7 @@ class CategoryController extends Controller
     {
         $familyCategories = FamilyCategory::all(); // Fetch all family categories
 
-        return view('categories.create', compact('familyCategories')); // Pass data to view
+        return view('ams.category-management.add-new-category', compact('familyCategories')); // Pass data to view
     }
 
     // Store the new category
@@ -20,7 +20,6 @@ class CategoryController extends Controller
     {
         // Validate input
         $validatedData = $request->validate([
-            'family_category_id' => 'required|integer|exists:family_categories,family_category_id',
             'parent_category_id' => 'nullable|integer|exists:family_categories,family_category_id',
             'family_category_name' => 'required|string|max:255',
             'category_description' => 'nullable|string',
@@ -30,7 +29,7 @@ class CategoryController extends Controller
             // Create new category
             FamilyCategory::create($validatedData);
 
-            return redirect()->route('categories.create')->with('success', 'Category created successfully!');
+            return redirect('/')->with('success', 'Category created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to create category: ' . $e->getMessage());
         }
