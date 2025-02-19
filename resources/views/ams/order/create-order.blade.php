@@ -13,7 +13,12 @@
                         <select class="form-select form-select-sm" id="customer-select" style="min-width: 200px;">
                             <option value="">Select Customer...</option>
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->customer_id }}">{{ $customer->name }}</option>
+                                <option value="{{ $customer->customer_id }}" data-email="{{ $customer->email }}"
+                                    data-company="{{ $customer->company_name }}" data-phone="{{ $customer->phone }}"
+                                    data-alt-phone="{{ $customer->alternative_phone }}" data-fax="{{ $customer->fax }}"
+                                    {{ request('customer_id') == $customer->customer_id ? 'selected' : '' }}>
+                                    {{ $customer->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -86,8 +91,8 @@
                         <div class="card-body p-2">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <h6 class="card-title mb-0">Billing Information</h6>
-                                <button type="button" class="btn btn-sm btn-outline-primary py-0" data-bs-toggle="modal"
-                                    data-bs-target="#addressBookModal">View Address Book</button>
+                                {{-- <button type="button" class="btn btn-sm btn-outline-primary py-0" data-bs-toggle="modal"
+                                    data-bs-target="#addressBookModal">View Address Book</button> --}}
                             </div>
                             <select class="form-select form-select-sm" id="billing-address-select">
                                 <option value="">Select Address</option>
@@ -645,4 +650,14 @@
 
 @section('scripts')
     <script src="{{ secure_asset('js/order-management.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Auto-trigger customer selection if customer_id is in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const customerId = urlParams.get('customer_id');
+            if (customerId) {
+                $('#customer-select').val(customerId).trigger('change');
+            }
+        });
+    </script>
 @endsection

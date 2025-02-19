@@ -7,6 +7,15 @@
         <!-- Order Summary and Shipping Info -->
         <div class="grid-container">
             <div class="section order-summary">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title mb-0">Order Details</h5>
+                    <div>
+                        <a href="{{ route('ams.orders.create', ['customer_id' => $order->customer_id]) }}"
+                            class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus"></i> Create Order for this Customer
+                        </a>
+                    </div>
+                </div>
                 <h2 class="section-title"><i class="fas fa-receipt"></i> Order Summary</h2>
                 <p><strong>Customer:</strong>
                     {{ $order->customer->name ?? 'N/A' }}

@@ -43,6 +43,10 @@
                                     class="btn btn-sm btn-warning">
                                     Edit
                                 </a>
+                                <a href="{{ route('ams.orders.create', ['customer_id' => $customer->customer_id]) }}"
+                                    class="btn btn-sm btn-success">
+                                    <i class="fas fa-plus"></i> Create Order
+                                </a>
                             </td>
                         </tr>
                     @empty
@@ -87,8 +91,11 @@
                             <td>${customer.email || 'N/A'}</td>
                             <td>${customer.orders_count || 0}</td>
                             <td>
-                                <a href="{{ route('customers.show', $customer->customer_id) }}" class="btn btn-sm btn-primary">View</a>
-                                <a href="{{ route('customers.edit', $customer->customer_id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="/ams/customers/${customer.customer_id}" class="btn btn-sm btn-primary">View</a>
+                                <a href="/ams/customers/${customer.customer_id}/edit" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="/ams/orders/create?customer_id=${customer.customer_id}" class="btn btn-sm btn-success">
+                                    <i class="fas fa-plus"></i> Create Order
+                                </a>
                             </td>
                         </tr>
                     `;

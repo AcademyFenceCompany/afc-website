@@ -21,9 +21,10 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new order.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         $salesPersons = User::all();
         $customers = Customer::with(['addresses'])->get();
@@ -44,6 +45,12 @@ class OrderController extends Controller
         }])
         ->whereNull('parent_category_id')
         ->get();
+        
+        // If customer_id is provided, ensure it exists in the customers collection
+        $customer_id = $request->query('customer_id');
+        if ($customer_id && !$customers->contains('customer_id', $customer_id)) {
+            return redirect()->route('ams.orders.create')->with('error', 'Invalid customer selected.');
+        }
         
         return view('ams.order.create-order', compact('salesPersons', 'customers', 'categories'));
     }
@@ -171,22 +178,20 @@ class OrderController extends Controller
     }
 
     /**
-     * Get addresses for a customer
+     * Get customer addresses
+     *
+     * @param  \App\Models\Customer  $customer
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function getCustomerAddresses($customerId)
+    public function getCustomerAddresses(Customer $customer)
     {
         try {
-            Log::info('Loading addresses for customer', ['customer_id' => $customerId]);
-
-            $addresses = CustomerAddress::where('customer_id', $customerId)
+            $addresses = $customer->addresses()
                 ->select([
                     'customer_address_id',
                     'customer_id',
-                    'original_customer_id',
-                    'original_address_id',
                     'address_1',
                     'address_2',
-                    'address_name',
                     'city',
                     'state',
                     'zipcode',
@@ -206,7 +211,7 @@ class OrderController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Failed to load addresses', [
-                'customer_id' => $customerId,
+                'customer_id' => $customer->customer_id,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
