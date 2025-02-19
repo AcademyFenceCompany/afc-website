@@ -97,7 +97,7 @@
                             <i class="bi bi-list"></i> Menu
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Option 1</a></li>
+                            <li><a class="dropdown-item" href='{{ route('weldedwire') }}'>Welded Wire</a></li>
                             <li><a class="dropdown-item" href="#">Option 2</a></li>
                             <li><a class="dropdown-item" href="#">Option 3</a></li>
                         </ul>
@@ -115,9 +115,9 @@
                         NJ Fence INSTALLATION Guide
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
+                        <li><a class="dropdown-item" href="https://www.academyfence.com/codes-and-permits/">Explore Now</a></li>
+                        <li><a class="dropdown-item" href="https://www.academyfence.com/codes-and-permits/photo-gallery/">View Photo Gallery</a></li>
+                        <!-- <li><a class="dropdown-item" href="#">Option 3</a></li> -->
                     </ul>
                 </div>
             </div>
