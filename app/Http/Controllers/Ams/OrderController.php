@@ -389,4 +389,106 @@ class OrderController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+
+    /**
+     * Display all products organized by gauge/size/color.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function getAllProducts()
+    {
+        // Get all products with their details and categories
+        $products = Product::join('product_details', 'products.product_id', '=', 'product_details.product_id')
+            ->select([
+                'products.*',
+                'product_details.size1',
+                'product_details.size2',
+                'product_details.size3',
+                'product_details.color',
+                'product_details.style',
+                'product_details.material',
+                'product_details.spacing',
+                'product_details.coating'
+            ])
+            ->orderBy('product_details.size1')
+            ->orderBy('product_details.color')
+            ->get();
+
+        // Group products by size and color
+        $groupedProducts = $products->groupBy('details.size1')->map(function ($sizeGroup) {
+            return $sizeGroup->groupBy('details.color');
+        });
+
+        // Get categories for the sidebar
+        $categories = FamilyCategory::whereNull('parent_category_id')
+            ->with('children')
+            ->get();
+
+        return view('ams.order.all-products', [
+            'groupedProducts' => $groupedProducts,
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * Display the list of parent categories
+     */
+    public function categories()
+    {
+        $categories = FamilyCategory::whereNull('parent_category_id')
+            ->withCount('children')
+            ->withCount('products')
+            ->get();
+
+        return view('ams.order.categories.index', [
+            'categories' => $categories
+        ]);
+    }
+
+    /**
+     * Display a category and its subcategories or products
+     */
+    public function showCategory(FamilyCategory $category)
+    {
+        // Load relationships
+        $category->load(['parent', 'children' => function($query) {
+            $query->withCount('children')->withCount('products');
+        }]);
+
+        // Get products if this category has any
+        $products = Product::join('product_details', 'products.product_id', '=', 'product_details.product_id')
+            ->where('products.family_category_id', $category->family_category_id)
+            ->select([
+                'products.product_id',
+                'products.product_name',
+                'products.item_no',
+                'products.description',
+                'products.price_per_unit',
+                'product_details.size1',
+                'product_details.size2',
+                'product_details.size3',
+                'product_details.coating',
+                'product_details.color'
+            ])
+            ->orderBy('product_details.size2')
+            ->orderBy('product_details.coating')
+            ->orderBy('product_details.color')
+            ->orderBy('products.item_no')
+            ->get();
+
+        // Group products by size2, coating, size3, and color
+        $groupedProducts = $products->groupBy(function($product) {
+            $parts = [];
+            if ($product->size2) $parts[] = $product->size2;
+            if ($product->coating) $parts[] = $product->coating;
+            if ($product->size3) $parts[] = $product->size3;
+            if ($product->color) $parts[] = $product->color;
+            return implode(' ', $parts) ?: 'Uncategorized';
+        });
+
+        return view('ams.order.categories.show', [
+            'category' => $category,
+            'groupedProducts' => $groupedProducts
+        ]);
+    }
 }

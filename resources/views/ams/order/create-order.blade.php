@@ -54,10 +54,9 @@
             </div>
             <div class="col-md-12 text-end mb-2">
                 <button type="button" class="btn btn-sm btn-success me-1" id="save-order">Save and Finish</button>
-                <button type="button" class="btn btn-sm btn-primary" id="addItemsBtn" data-bs-toggle="modal"
-                    data-bs-target="#productModal">
+                <a href="{{ route('ams.orders.categories') }}" class="btn btn-sm btn-primary" id="addItemsBtn">
                     Add Items
-                </button>
+                </a>
             </div>
         </div>
 
@@ -207,10 +206,9 @@
                 <div class="card-body p-2">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <h6 class="card-title mb-0">Order Items</h6>
-                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                            data-bs-target="#productModal">
-                            <i class="fas fa-plus"></i> Add Products
-                        </button>
+                        <a href="{{ route('ams.orders.categories') }}" class="btn btn-sm btn-primary">
+                            Add Products
+                        </a>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-sm table-hover" id="orderItemsTable">
@@ -398,7 +396,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Select Products</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div>
+                        <a href="{{ route('ams.orders.all-products') }}" class="btn btn-sm btn-outline-primary me-2">
+                            See All Products
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
                 </div>
                 <div class="modal-body">
                     <div class="row">
