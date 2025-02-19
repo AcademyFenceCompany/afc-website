@@ -25,65 +25,69 @@ $(document).ready(function () {
     function loadCustomerAddresses(customerId) {
         if (!customerId) {
             $("#shippingAddressList, #billingAddressList").empty();
+            $("#shipping-address, #billing-address-select").empty()
+                .append('<option value="">Select Address</option>');
             return;
         }
 
         console.log("Loading addresses for customer:", customerId);
         $("#shippingAddressList, #billingAddressList").html(
-            '<div class="text-center">Loading addresses...</div>',
+            '<div class="text-center">Loading addresses...</div>'
         );
 
         $.ajax({
             url: `/ams/customers/${customerId}/addresses`,
             method: "GET",
-            success: function (addresses) {
-                console.log("Loaded addresses:", addresses);
+            success: function (response) {
+                console.log("Loaded addresses:", response);
+                if (response.success && response.addresses) {
+                    const addresses = response.addresses;
+                    
+                    // Split addresses based on flags
+                    const shippingAddresses = addresses.filter(addr => addr.shipping_flag === 1);
+                    const billingAddresses = addresses.filter(addr => addr.billing_flag === 1);
 
-                // Split addresses based on flags
-                const shippingAddresses = addresses.filter(
-                    (addr) => addr.shipping_flag === 1,
-                );
-                const billingAddresses = addresses.filter(
-                    (addr) => addr.billing_flag === 1,
-                );
+                    console.log("Shipping addresses:", shippingAddresses);
+                    console.log("Billing addresses:", billingAddresses);
 
-                console.log("Shipping addresses:", shippingAddresses);
-                console.log("Billing addresses:", billingAddresses);
+                    // Update address book lists
+                    renderAddressList(shippingAddresses, "shipping");
+                    renderAddressList(billingAddresses, "billing");
 
-                // Render both lists
-                renderAddressList(shippingAddresses, "shipping");
-                renderAddressList(billingAddresses, "billing");
+                    // Update address selects
+                    updateAddressSelects(addresses);
 
-                // Store addresses in data attributes for later use
-                $("#addressBookModal").data(
-                    "shipping-addresses",
-                    shippingAddresses,
-                );
-                $("#addressBookModal").data(
-                    "billing-addresses",
-                    billingAddresses,
-                );
+                    // Store addresses in modal data for later use
+                    $("#addressBookModal").data("addresses", addresses);
+                } else {
+                    console.error('Invalid response format:', response);
+                    clearAddressLists();
+                }
             },
             error: function (xhr, status, error) {
                 console.error("AJAX error:", status, error);
-                $("#shippingAddressList, #billingAddressList").html(
-                    '<div class="alert alert-danger">Error loading addresses. Please try again.</div>',
-                );
-            },
+                clearAddressLists();
+            }
         });
+    }
+
+    // Clear address lists and selects
+    function clearAddressLists() {
+        $("#shippingAddressList, #billingAddressList").html(
+            '<div class="alert alert-danger">No addresses found</div>'
+        );
+        $("#shipping-address, #billing-address-select").empty()
+            .append('<option value="">Select Address</option>');
     }
 
     // Render address list
     function renderAddressList(addresses, type) {
-        const container =
-            type === "shipping"
-                ? $("#shippingAddressList")
-                : $("#billingAddressList");
+        const container = type === "shipping" ? $("#shippingAddressList") : $("#billingAddressList");
         container.empty();
 
         if (!addresses || addresses.length === 0) {
             container.html(
-                `<div class="alert alert-info">No ${type} addresses found.</div>`,
+                `<div class="alert alert-info">No ${type} addresses found.</div>`
             );
             return;
         }
@@ -94,16 +98,51 @@ $(document).ready(function () {
                     <input class="form-check-input address-select" 
                            type="radio" 
                            name="${type}_address" 
-                           value="${address.id}"
+                           value="${address.customer_address_id}"
                            data-address-type="${type}">
                     <label class="form-check-label">
-                        ${address.address_line1}<br>
-                        ${address.address_line2 ? address.address_line2 + "<br>" : ""}
-                        ${address.city}, ${address.state} ${address.zip_code}
+                        ${address.address_1}<br>
+                        ${address.address_2 ? address.address_2 + "<br>" : ""}
+                        ${address.city}, ${address.state} ${address.zipcode}
                     </label>
                 </div>
             `;
             container.append(addressHtml);
+        });
+    }
+
+    // Update shipping and billing address selects
+    function updateAddressSelects(addresses) {
+        const shippingSelect = $("#shipping-address");
+        const billingSelect = $("#billing-address-select");
+
+        // Clear existing options
+        shippingSelect.empty().append('<option value="">Select Shipping Address</option>');
+        billingSelect.empty().append('<option value="">Select Billing Address</option>');
+
+        if (!addresses || addresses.length === 0) {
+            return;
+        }
+
+        // Add new options
+        addresses.forEach((addr) => {
+            const addressText = `${addr.address_1}${addr.address_2 ? ", " + addr.address_2 : ""}, ${addr.city || ""}, ${addr.state || ""} ${addr.zipcode || ""}`;
+
+            if (addr.shipping_flag === 1) {
+                shippingSelect.append(`
+                    <option value="${addr.customer_address_id}">${addressText}</option>
+                `);
+            }
+            if (addr.billing_flag === 1) {
+                billingSelect.append(`
+                    <option value="${addr.customer_address_id}">${addressText}</option>
+                `);
+            }
+        });
+
+        console.log("Updated address selects:", {
+            shippingAddresses: shippingSelect.find("option").length - 1,
+            billingAddresses: billingSelect.find("option").length - 1
         });
     }
 
@@ -164,7 +203,7 @@ $(document).ready(function () {
     // Update shipping and billing address selects
     function updateAddressSelects(addresses) {
         const shippingSelect = $("#shipping-address");
-        const billingSelect = $("#billing-address-select"); // Updated to match the blade template ID
+        const billingSelect = $("#billing-address-select");
 
         // Clear existing options
         shippingSelect
@@ -380,6 +419,12 @@ $(document).ready(function () {
                 $("#shippingAddressList, #billingAddressList").empty();
             }
         });
+
+        // Trigger customer selection on page load if customer is pre-selected
+        const customerSelect = $("#customer-select");
+        if (customerSelect.val()) {
+            customerSelect.trigger("change");
+        }
     });
 
     // Debug: Log when document is ready
@@ -543,38 +588,38 @@ $(document).ready(function () {
     });
 
     // Handle customer selection
-    $('#customer-select').change(function() {
+    $("#customer-select").change(function () {
         const customerId = $(this).val();
-        console.log('Selected customer ID:', customerId);
-        
+        console.log("Selected customer ID:", customerId);
+
         if (!customerId) {
             loadAddressTable([]);
             return;
         }
 
         // Show loading state
-        const tbody = $('#addressTable tbody');
-        tbody.find('tr:not(#addressTableLoading, #addressTableEmpty)').remove();
-        $('#addressTableLoading').show();
-        $('#addressTableEmpty').hide();
+        const tbody = $("#addressTable tbody");
+        tbody.find("tr:not(#addressTableLoading, #addressTableEmpty)").remove();
+        $("#addressTableLoading").show();
+        $("#addressTableEmpty").hide();
 
         // Load customer addresses
         $.ajax({
             url: `/ams/customers/${customerId}/addresses`,
-            method: 'GET',
-            success: function(response) {
-                console.log('Addresses loaded:', response);
+            method: "GET",
+            success: function (response) {
+                console.log("Addresses loaded:", response);
                 if (response.success && response.addresses) {
                     loadAddressTable(response.addresses);
                 } else {
-                    console.error('Invalid response format:', response);
+                    console.error("Invalid response format:", response);
                     loadAddressTable([]);
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('Error loading addresses:', error);
+            error: function (xhr, status, error) {
+                console.error("Error loading addresses:", error);
                 loadAddressTable([]);
-            }
+            },
         });
         saveFormState(); // Save state after customer selection
     });
@@ -582,40 +627,50 @@ $(document).ready(function () {
     // Save form data to localStorage
     function saveFormState() {
         const formState = {
-            customerId: $('#customer-select').val(),
-            shippingAddressId: $('#shipping-address').val(),
-            billingAddressId: $('#billing-address-select').val(),
-            nonResidential: $('#non-residential').prop('checked'),
+            customerId: $("#customer-select").val(),
+            shippingAddressId: $("#shipping-address").val(),
+            billingAddressId: $("#billing-address-select").val(),
+            nonResidential: $("#non-residential").prop("checked"),
             origin: $('input[name="origin"]:checked').val(),
             shippingMethod: $('input[name="shipping_method"]:checked').val(),
             orderItems: orderItems,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
         };
-        localStorage.setItem('orderFormState', JSON.stringify(formState));
-        console.log('Form state saved:', formState);
+        localStorage.setItem("orderFormState", JSON.stringify(formState));
+        console.log("Form state saved:", formState);
     }
 
     // Load form data from localStorage
     function loadFormState() {
-        const savedState = localStorage.getItem('orderFormState');
+        const savedState = localStorage.getItem("orderFormState");
         if (!savedState) return;
 
         try {
             const formState = JSON.parse(savedState);
-            console.log('Loading saved form state:', formState);
+            console.log("Loading saved form state:", formState);
 
             // Restore customer selection
             if (formState.customerId) {
-                $('#customer-select').val(formState.customerId).trigger('change');
+                $("#customer-select")
+                    .val(formState.customerId)
+                    .trigger("change");
             }
 
             // Restore other form fields
-            $('#non-residential').prop('checked', formState.nonResidential || false);
+            $("#non-residential").prop(
+                "checked",
+                formState.nonResidential || false,
+            );
             if (formState.origin) {
-                $(`input[name="origin"][value="${formState.origin}"]`).prop('checked', true);
+                $(`input[name="origin"][value="${formState.origin}"]`).prop(
+                    "checked",
+                    true,
+                );
             }
             if (formState.shippingMethod) {
-                $(`input[name="shipping_method"][value="${formState.shippingMethod}"]`).prop('checked', true);
+                $(
+                    `input[name="shipping_method"][value="${formState.shippingMethod}"]`,
+                ).prop("checked", true);
             }
 
             // Restore order items
@@ -623,10 +678,9 @@ $(document).ready(function () {
                 orderItems = formState.orderItems;
                 updateOrderItemsTable();
             }
-
         } catch (error) {
-            console.error('Error loading form state:', error);
-            localStorage.removeItem('orderFormState');
+            console.error("Error loading form state:", error);
+            localStorage.removeItem("orderFormState");
         }
     }
 
