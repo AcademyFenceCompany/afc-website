@@ -62,40 +62,44 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">{{ $category->family_category_name }} Products</h5>
 
-                        @if ($groupedProducts->isNotEmpty())
-                            <div class="row">
-                                @foreach ($groupedProducts as $title => $products)
-                                    <div class="col-md-4 mb-4">
-                                        <div class="card">
-                                            <h6 class="card-header bg-dark text-white">{{ $title }}</h6>
-                                            <div class="card-body p-0">
+                        @if ($columns->isNotEmpty())
+                            <div class="row g-4">
+                                @foreach ($columns as $columnGroups)
+                                    <div class="col-md-4">
+                                        @foreach ($columnGroups as $title => $products)
+                                            <div class="product-group mb-4">
+                                                <div class="header bg-dark text-white py-2 px-3">{{ $title }}</div>
                                                 <div class="table-responsive">
-                                                    <table class="table table-sm table-hover mb-0">
+                                                    <table class="table table-sm mb-0">
                                                         <thead>
-                                                            <tr>
-                                                                <th>Size</th>
-                                                                <th>Price</th>
-                                                                <th>Item Number</th>
-                                                                <th>Qty</th>
-                                                                <th></th>
+                                                            <tr class="bg-secondary text-white">
+                                                                <th class="px-2" style="width: 20%">Size</th>
+                                                                <th class="px-2" style="width: 12%">Price</th>
+                                                                <th class="px-2" style="width: 20%">Item #</th>
+                                                                <th class="px-2" style="width: 10%">WT</th>
+                                                                <th class="px-2" style="width: 8%">EO</th>
+                                                                <th class="px-2" style="width: 8%">HQ</th>
+                                                                <th class="px-2" style="width: 12%">Qty</th>
+                                                                <th class="px-2" style="width: 10%"></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             @foreach ($products as $product)
                                                                 <tr>
-                                                                    <td>{{ $product->size1 }}</td>
-                                                                    <td>${{ number_format($product->price_per_unit, 2) }}
-                                                                    </td>
-                                                                    <td>{{ $product->item_no }}</td>
-                                                                    <td>
+                                                                    <td class="px-2">{{ $product->size1 }}</td>
+                                                                    <td class="px-2">${{ number_format($product->price_per_unit, 2) }}</td>
+                                                                    <td class="px-2">{{ $product->item_no }}</td>
+                                                                    <td class="px-2">{{ $product->weight }}</td>
+                                                                    <td class="px-2">{{ $product->in_stock_warehouse }}</td>
+                                                                    <td class="px-2">{{ $product->in_stock_hq }}</td>
+                                                                    <td class="px-2">
                                                                         <input type="number"
                                                                             class="form-control form-control-sm product-quantity"
-                                                                            style="width: 60px" value="1"
-                                                                            min="1">
+                                                                            value="1" min="1">
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="px-2">
                                                                         <button type="button"
-                                                                            class="btn btn-sm btn-primary add-single-product"
+                                                                            class="btn btn-sm btn-primary add-single-product w-100"
                                                                             data-product-id="{{ $product->product_id }}"
                                                                             data-product-name="{{ $product->product_name }}"
                                                                             data-product-price="{{ $product->price_per_unit }}">
@@ -108,7 +112,7 @@
                                                     </table>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 @endforeach
                             </div>
@@ -188,22 +192,63 @@
 
 @section('styles')
     <style>
-        .size-section {
-            margin-bottom: 2rem;
+        .product-group {
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            overflow: hidden;
         }
 
+        .product-group .header {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .table {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        .table td,
         .table th {
-            background-color: #f8f9fa;
-            position: sticky;
-            top: 0;
+            padding: 0.25rem 0.5rem;
+            vertical-align: middle;
+            font-size: 11px;
+            line-height: 1.2;
         }
 
-        .table td {
-            padding: 0.5rem !important;
+        .table thead th {
+            border-bottom: 0;
+            background-color: #6c757d;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         .product-quantity {
-            width: 60px !important;
+            width: 45px !important;
+            padding: 0.15rem 0.25rem;
+            text-align: center;
+            font-size: 11px;
+            height: 22px;
+        }
+
+        .btn-primary {
+            padding: 0.15rem 0.25rem;
+            font-size: 11px;
+            height: 22px;
+            line-height: 1;
+        }
+
+        .row.g-4 {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 1.5rem;
+        }
+
+        .row.g-4>* {
+            margin-bottom: 1.5rem;
+        }
+
+        .table-responsive {
+            margin-bottom: -1px;
         }
     </style>
 @endsection
