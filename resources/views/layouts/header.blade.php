@@ -4,7 +4,7 @@
     <!-- Top Bar -->
     <div class="container-fluid bg-black text-light py-2">
         <div class="custom-container d-flex justify-content-between align-items-center">
-            <button class="inst-btn btn btn-outline-light">
+            <button class="inst-btn btn btn-outline-light" onclick="window.location.href='{{ route('fenceinstallation') }}'">
                 <i class="bi bi-pencil-square"></i>Request Installation Quote
             </button>
             <div>
@@ -77,7 +77,7 @@
                         <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
                     </div>
                 </div>
-                <button class="quote-btn btn btn-danger ms-3">GET A QUOTE</button>
+                <button class="quote-btn btn btn-danger ms-3" onclick="window.location.href='{{ route('getquote') }}'">GET A QUOTE</button>
             </div>
 
             <!-- Navigation Menu -->
@@ -98,7 +98,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href='{{ route('weldedwire') }}'>Welded Wire</a></li>
-                            <li><a class="dropdown-item" href="#">Option 2</a></li>
+                            <li><a class="dropdown-item" href="{{ route('categories.privacyslats') }}">Privacy Slats</a></li>
                             <li><a class="dropdown-item" href="#">Option 3</a></li>
                         </ul>
                     </div>

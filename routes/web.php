@@ -16,6 +16,7 @@ use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\PrivacySlatsController;
 
 
 Route::get('/resources/images/{filename}', function ($filename) {
@@ -64,11 +65,23 @@ Route::view('/product-cats', 'categories/products-cats');
 // Route::view('/woodfence', 'categories/woodfence');
 
 
+// Route for displaying a single product by ID
 Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('product.show');
+// Route for fetching additional product details by ID
 Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
+// Route for displaying welded wire products
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
+// Route for displaying products by mesh size
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+
+
+// Route for displaying privacy slats category page
+Route::get('/privacy-slats', [PrivacySlatsController::class, 'show'])->name('categories.privacyslats');
+
+// Route::get('/privacy_slats', [PrivacySlatsController::class, 'privacyslats'])->name('categories.privacyslats');
+
+
 
 Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
@@ -126,7 +139,12 @@ Route::get('/brochures', function () {
     ]);
 })->name('brochures');
 Route::view('/empty-cart', 'cart/empty')->name('empty-cart');
+
+// Installation
 Route::view('/fenceinstallation', 'pages.fenceinstallation')->name('fenceinstallation');
+
+// Get Quote
+Route::view('/getquote', 'pages.getquote')->name('getquote');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -14,8 +14,8 @@
     <a href="#" class="btn btn-light">YARD & GARDEN</a>
     <a href="#" class="btn btn-light">POPULAR</a>
     <a href="{{route('contact') }}" class="btn btn-light">CONTACT US</a>
-    <a href="#" class="btn btn-light">FENCE INSTALL</a>
-    <a href="#" class="btn btn-light">GET A QUOTE</a>
+    <a href='{{ route('fenceinstallation') }}' class="btn btn-light">FENCE INSTALL</a>
+    <a href="{{ route('getquote') }}" class="btn btn-light">GET A QUOTE</a>
     <a href="{{ route('customerservice') }}" class="btn btn-light">CUSTOMER SERVICE</a>
 </div>
 
@@ -82,18 +82,18 @@
                 <div class="d-flex h-100">
                     <!-- Image Section -->
                     <div class="product-image me-3">
-                        <img src="/resources/images/1.png" class="img-fluid rounded" alt="Welded Wire Fence">
+                        <img src="/resources/images/privacy_slats.jpg" class="img-fluid rounded" alt="Privacy Slats">
                     </div>
                     <!-- Content Section -->
                     <div class="product-details d-flex flex-column justify-content-between flex-grow-1">
                         <div>
-                            <h5 class="fw-bold">Welded Wire Fence Vinyl Coated</h5>
+                            <h5 class="fw-bold">Privacy Slats</h5>
                             <p class="text-muted">National Wholesale Warehouse Fencing. Very wide selection of mesh
                                 sizes,gauges, heights, roll lengths, weights and colors.</p>
                         </div>
                         <!-- Check if sizes are defined -->
                         <div class="mt-3">
-                            <a href="#" class="btn btn-danger text-white">View Product</a>
+                            <a href="{{ route('categories.privacyslats') }}" class="btn btn-danger text-white">View Product</a>
                         </div>
                     </div>
                 </div>
@@ -118,10 +118,10 @@
         <!-- First Row -->
         <div class="col-md-4 mb-4">
             <div class="product-card">
-                <img src="/resources/images/welded-wire.jpg" alt="Welded Wire Fence" class="img-fluid mb-3">
+                <img src="/resources/images/Vinyl-coated-fence-category 1.png" alt="Welded Wire Fence" class="img-fluid mb-3">
                 <h5>Welded Wire Fence Vinyl Coated</h5>
                 <p>National Wholesale Warehouse Fencing. Very wide selection of mesh sizes...</p>
-                <a href="#" class="btn btn-danger">VIEW PRODUCT</a>
+                <a href="#" class="btn btn-danger text-white">VIEW PRODUCT</a>
             </div>
         </div>
         <!-- Add more product cards following the same structure -->
@@ -147,7 +147,7 @@
                 <img src="/resources/images/speed-rail.jpg" alt="Hand Speed-Rail Fittings" class="img-fluid mb-3">
                 <h5>Hand Speed-Rail Fittings</h5>
                 <p>Essential fittings for your railing projects...</p>
-                <a href="#" class="btn btn-danger">VIEW PRODUCT</a>
+                <a href="#" class="btn btn-danger text-white">VIEW PRODUCT</a>
             </div>
         </div>
         <!-- Add remaining product cards -->
