@@ -457,7 +457,12 @@ class OrderController extends Controller
 
         // Get products if this category has any
         $products = Product::join('product_details', 'products.product_id', '=', 'product_details.product_id')
-            ->where('products.family_category_id', $category->family_category_id)
+            ->leftJoin('shipping_details', 'products.product_id', '=', 'shipping_details.product_id')
+            ->leftJoin('inventory_details', 'products.product_id', '=', 'inventory_details.product_id')
+            ->where(function($query) use ($category) {
+                $query->where('products.family_category_id', $category->family_category_id)
+                      ->orWhere('products.subcategory_id', $category->family_category_id);
+            })
             ->select([
                 'products.product_id',
                 'products.product_name',
@@ -468,7 +473,10 @@ class OrderController extends Controller
                 'product_details.size2',
                 'product_details.size3',
                 'product_details.coating',
-                'product_details.color'
+                'product_details.color',
+                'shipping_details.weight',
+                DB::raw('COALESCE(inventory_details.in_stock_warehouse, 0) as in_stock_warehouse'),
+                DB::raw('COALESCE(inventory_details.in_stock_hq, 0) as in_stock_hq')
             ])
             ->orderBy('product_details.size2')
             ->orderBy('product_details.coating')
@@ -486,9 +494,27 @@ class OrderController extends Controller
             return implode(' ', $parts) ?: 'Uncategorized';
         });
 
+        // Split into columns while preserving keys
+        $totalGroups = $groupedProducts->count();
+        $groupsPerColumn = ceil($totalGroups / 3);
+        
+        $columns = collect();
+        $currentColumn = collect();
+        $count = 0;
+        
+        foreach ($groupedProducts as $title => $products) {
+            $currentColumn->put($title, $products);
+            $count++;
+            
+            if ($count % $groupsPerColumn === 0 || $count === $totalGroups) {
+                $columns->push($currentColumn);
+                $currentColumn = collect();
+            }
+        }
+
         return view('ams.order.categories.show', [
             'category' => $category,
-            'groupedProducts' => $groupedProducts
+            'columns' => $columns
         ]);
     }
 }
