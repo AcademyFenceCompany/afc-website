@@ -21,6 +21,9 @@ class Customer extends Model
         'alt_phone', 'alt_phone_ext', 'fax'
     ];
 
+    /**
+     * Get the addresses for the customer.
+     */
     public function addresses()
     {
         return $this->hasMany(CustomerAddress::class, 'customer_id', 'customer_id');
@@ -31,4 +34,3 @@ class Customer extends Model
         return $this->hasMany(CustomerOrder::class, 'customer_id', 'customer_id');
     }
 }
-

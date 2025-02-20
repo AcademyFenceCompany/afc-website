@@ -18,6 +18,11 @@ use App\Models\CustomerAddress;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        DB::enableQueryLog(); // Enable query logging
+    }
+
     /**
      * Show the form for creating a new order.
      *
@@ -28,31 +33,17 @@ class OrderController extends Controller
     {
         $salesPersons = User::all();
         $customers = Customer::with(['addresses'])->get();
+        $categories = FamilyCategory::whereNull('parent_category_id')->get();
 
-        // Load categories with nested structure
-        $categories = FamilyCategory::select([
-            'family_category_id',
-            'parent_category_id',
-            'family_category_name',
-            DB::raw('(SELECT COUNT(*) FROM products WHERE products.family_category_id = family_categories.family_category_id) as products_count')
-        ])
-        ->with(['children' => function($query) {
-            $query->select([
-                'family_category_id',
-                'parent_category_id',
-                'family_category_name'
-            ])->withCount('products');
-        }])
-        ->whereNull('parent_category_id')
-        ->get();
+        // Create a new empty order with just the numeric fields
+        $order = CustomerOrder::create([
+            'subtotal' => 0,
+            'tax_amount' => 0,
+            'shipping' => 0,
+            'total' => 0
+        ]);
         
-        // If customer_id is provided, ensure it exists in the customers collection
-        $customer_id = $request->query('customer_id');
-        if ($customer_id && !$customers->contains('customer_id', $customer_id)) {
-            return redirect()->route('ams.orders.create')->with('error', 'Invalid customer selected.');
-        }
-        
-        return view('ams.order.create-order', compact('salesPersons', 'customers', 'categories'));
+        return view('ams.order.create-order', compact('salesPersons', 'customers', 'categories', 'order'));
     }
 
     /**
@@ -188,37 +179,26 @@ class OrderController extends Controller
         try {
             $addresses = $customer->addresses()
                 ->select([
-                    'customer_address_id',
+                    'customer_address_id as address_id',
                     'customer_id',
                     'address_1',
                     'address_2',
                     'city',
                     'state',
                     'zipcode',
-                    'shipping_flag',
-                    'billing_flag'
+                    'billing_flag',
+                    'shipping_flag'
                 ])
                 ->get();
-
-            Log::info('Found addresses', [
-                'count' => $addresses->count(),
-                'addresses' => $addresses->toArray()
-            ]);
 
             return response()->json([
                 'success' => true,
                 'addresses' => $addresses
             ]);
         } catch (\Exception $e) {
-            Log::error('Failed to load addresses', [
-                'customer_id' => $customer->customer_id,
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            
             return response()->json([
-                'error' => 'Failed to load addresses',
-                'message' => config('app.debug') ? $e->getMessage() : 'An error occurred while loading addresses'
+                'success' => false,
+                'message' => 'Error fetching addresses'
             ], 500);
         }
     }
@@ -514,7 +494,8 @@ class OrderController extends Controller
 
         return view('ams.order.categories.show', [
             'category' => $category,
-            'columns' => $columns
+            'columns' => $columns,
+            'products' => $products
         ]);
     }
 }

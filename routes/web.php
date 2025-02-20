@@ -14,7 +14,8 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\Ams\OrderController;
-
+use App\Models\Order;
+use App\Models\Customer;
 
 // AMS Routes
 Route::prefix('ams')->group(function () {

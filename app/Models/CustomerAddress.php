@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerAddress extends Model
 {
+    protected $table = 'customer_addresses';
+    
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = false;
     
     protected $primaryKey = 'customer_address_id';
@@ -22,6 +29,11 @@ class CustomerAddress extends Model
         'zipcode',
         'billing_flag',
         'shipping_flag',
+    ];
+
+    protected $casts = [
+        'billing_flag' => 'boolean',
+        'shipping_flag' => 'boolean'
     ];
 
     public function customer()
