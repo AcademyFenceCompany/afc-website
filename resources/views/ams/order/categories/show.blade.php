@@ -4,124 +4,142 @@
 
 @section('content')
     <div class="container-fluid py-2">
-        <div class="row">
-            <div class="col-12 mb-3">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item">
+                        <a href="{{ route('ams.orders.categories') }}">Categories</a>
+                    </li>
+                    @if ($category->parent)
                         <li class="breadcrumb-item">
-                            <a href="{{ route('ams.orders.categories') }}">Categories</a>
+                            <a href="{{ route('ams.orders.category.show', $category->parent->family_category_id) }}">
+                                {{ $category->parent->family_category_name }}
+                            </a>
                         </li>
-                        @if ($category->parent)
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('ams.orders.category.show', $category->parent->family_category_id) }}">
-                                    {{ $category->parent->family_category_name }}
-                                </a>
-                            </li>
-                        @endif
-                        <li class="breadcrumb-item active">{{ $category->family_category_name }}</li>
-                    </ol>
-                </nav>
-            </div>
+                    @endif
+                    <li class="breadcrumb-item active">{{ $category->family_category_name }}</li>
+                </ol>
+            </nav>
+            @if(request()->has('order_id'))
+                <a href="{{ route('ams.orders.create') }}?order_id={{ request()->get('order_id') }}" class="btn btn-primary">
+                    <i class="fas fa-shopping-cart"></i> Back to Order
+                </a>
+            @endif
+        </div>
 
-            @if ($category->children->count() > 0)
-                <!-- Show subcategories -->
-                <div class="col-12 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title mb-4">{{ $category->family_category_name }} Categories</h5>
-                            <div class="row row-cols-1 row-cols-md-4 g-4">
-                                @foreach ($category->children as $child)
-                                    <div class="col">
-                                        <a href="{{ route('ams.orders.category.show', $child->family_category_id) }}"
-                                            class="card h-100 text-decoration-none">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-primary">{{ $child->family_category_name }}</h5>
-                                                @if ($child->children_count > 0)
-                                                    <p class="card-text text-muted">
-                                                        {{ $child->children_count }} subcategories
-                                                    </p>
-                                                @endif
-                                                @if ($child->products_count > 0)
-                                                    <p class="card-text text-muted">
-                                                        {{ $child->products_count }} products
-                                                    </p>
-                                                @endif
-                                            </div>
-                                        </a>
-                                    </div>
-                                @endforeach
-                            </div>
+        <!-- Toast Container for Notifications -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" id="addToOrderToast">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        Product added to order successfully!
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+        @if ($category->children->count() > 0)
+            <!-- Show subcategories -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">{{ $category->family_category_name }} Categories</h5>
+                        <div class="row row-cols-1 row-cols-md-4 g-4">
+                            @foreach ($category->children as $child)
+                                <div class="col">
+                                    <a href="{{ route('ams.orders.category.show', $child->family_category_id) }}"
+                                        class="card h-100 text-decoration-none">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">{{ $child->family_category_name }}</h5>
+                                            @if ($child->children_count > 0)
+                                                <p class="card-text text-muted">
+                                                    {{ $child->children_count }} subcategories
+                                                </p>
+                                            @endif
+                                            @if ($child->products_count > 0)
+                                                <p class="card-text text-muted">
+                                                    {{ $child->products_count }} products
+                                                </p>
+                                            @endif
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
-            @endif
+            </div>
+        @endif
 
-            <!-- Products Section -->
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title mb-3">{{ $category->family_category_name }} Products</h5>
+        <!-- Products Section -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">{{ $category->family_category_name }} Products</h5>
 
-                        @if ($columns->isNotEmpty())
-                            <div class="row g-4">
-                                @foreach ($columns as $columnGroups)
-                                    <div class="col-md-4">
-                                        @foreach ($columnGroups as $title => $products)
-                                            <div class="product-group mb-4">
-                                                <div class="header bg-dark text-white py-2 px-3">{{ $title }}</div>
-                                                <div class="table-responsive">
-                                                    <table class="table table-sm mb-0">
-                                                        <thead>
-                                                            <tr class="bg-secondary text-white">
-                                                                <th class="px-2" style="width: 20%">Size</th>
-                                                                <th class="px-2" style="width: 12%">Price</th>
-                                                                <th class="px-2" style="width: 20%">Item #</th>
-                                                                <th class="px-2" style="width: 10%">WT</th>
-                                                                <th class="px-2" style="width: 8%">EO</th>
-                                                                <th class="px-2" style="width: 8%">HQ</th>
-                                                                <th class="px-2" style="width: 12%">Qty</th>
-                                                                <th class="px-2" style="width: 10%"></th>
+                    @if ($columns->isNotEmpty())
+                        <div class="row g-4">
+                            @foreach ($columns as $columnGroups)
+                                <div class="col-md-4">
+                                    @foreach ($columnGroups as $title => $products)
+                                        <div class="product-group mb-4">
+                                            <div class="header bg-dark text-white py-2 px-3">{{ $title }}</div>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm mb-0">
+                                                    <thead>
+                                                        <tr class="bg-secondary text-white">
+                                                            <th class="px-2" style="width: 20%">Size</th>
+                                                            <th class="px-2" style="width: 12%">Price</th>
+                                                            <th class="px-2" style="width: 20%">Item #</th>
+                                                            <th class="px-2" style="width: 10%">WT</th>
+                                                            <th class="px-2" style="width: 8%">EO</th>
+                                                            <th class="px-2" style="width: 8%">HQ</th>
+                                                            <th class="px-2" style="width: 12%">Qty</th>
+                                                            <th class="px-2" style="width: 10%"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($products as $product)
+                                                            <tr>
+                                                                <td class="px-2">{{ $product->size1 }}</td>
+                                                                <td class="px-2">${{ number_format($product->price_per_unit, 2) }}</td>
+                                                                <td class="px-2">{{ $product->item_no }}</td>
+                                                                <td class="px-2">{{ $product->weight }}</td>
+                                                                <td class="px-2">{{ $product->in_stock_warehouse }}</td>
+                                                                <td class="px-2">{{ $product->in_stock_hq }}</td>
+                                                                <td class="px-2">
+                                                                    <input type="number"
+                                                                        class="form-control form-control-sm product-quantity"
+                                                                        value="1" min="1">
+                                                                </td>
+                                                                <td class="px-2">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-primary add-single-product w-100"
+                                                                        data-product-id="{{ $product->product_id }}"
+                                                                        data-product-name="{{ $product->product_name }}"
+                                                                        data-product-price="{{ $product->price_per_unit }}"
+                                                                        data-item-no="{{ $product->item_no }}"
+                                                                        data-size="{{ $product->size1 }}"
+                                                                        data-weight="{{ $product->weight }}">
+                                                                        Add
+                                                                    </button>
+                                                                </td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($products as $product)
-                                                                <tr>
-                                                                    <td class="px-2">{{ $product->size1 }}</td>
-                                                                    <td class="px-2">${{ number_format($product->price_per_unit, 2) }}</td>
-                                                                    <td class="px-2">{{ $product->item_no }}</td>
-                                                                    <td class="px-2">{{ $product->weight }}</td>
-                                                                    <td class="px-2">{{ $product->in_stock_warehouse }}</td>
-                                                                    <td class="px-2">{{ $product->in_stock_hq }}</td>
-                                                                    <td class="px-2">
-                                                                        <input type="number"
-                                                                            class="form-control form-control-sm product-quantity"
-                                                                            value="1" min="1">
-                                                                    </td>
-                                                                    <td class="px-2">
-                                                                        <button type="button"
-                                                                            class="btn btn-sm btn-primary add-single-product w-100"
-                                                                            data-product-id="{{ $product->product_id }}"
-                                                                            data-product-name="{{ $product->product_name }}"
-                                                                            data-product-price="{{ $product->price_per_unit }}">
-                                                                            Add
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                        @endforeach
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="text-center py-5">
-                                <h6 class="text-muted">No products found in this category</h6>
-                            </div>
-                        @endif
-                    </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-5">
+                            <h6 class="text-muted">No products found in this category</h6>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -145,49 +163,6 @@
             </div>
         </div>
     </div>
-@endsection
-
-@section('scripts')
-    <script>
-        $(document).ready(function() {
-            // Add single product
-            $('.add-single-product').click(function() {
-                const row = $(this).closest('tr');
-                const productId = $(this).data('product-id');
-                const quantity = row.find('.product-quantity').val();
-
-                addProductsToOrder([{
-                    productId: productId,
-                    quantity: quantity
-                }]);
-            });
-
-            // Add products to order and store in localStorage
-            function addProductsToOrder(products) {
-                // Get existing order items from localStorage
-                let orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]');
-
-                // Add new products
-                products.forEach(product => {
-                    orderItems.push({
-                        productId: product.productId,
-                        quantity: product.quantity
-                    });
-                });
-
-                // Save back to localStorage
-                localStorage.setItem('orderItems', JSON.stringify(orderItems));
-
-                // Show return to order modal
-                $('#returnToOrderModal').modal('show');
-            }
-
-            // Handle return to order
-            $('#confirmReturn').click(function() {
-                window.location.href = '{{ route('ams.orders.create') }}';
-            });
-        });
-    </script>
 @endsection
 
 @section('styles')
@@ -251,4 +226,196 @@
             margin-bottom: -1px;
         }
     </style>
+@endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+            const toast = new bootstrap.Toast(document.getElementById('addToOrderToast'));
+            
+            // Function to update parent window's order table
+            function updateParentOrderTable() {
+                try {
+                    if (window.opener && typeof window.opener.updateOrderItemsTable === 'function') {
+                        window.opener.updateOrderItemsTable();
+                        return true;
+                    }
+                    return false;
+                } catch (e) {
+                    console.error('Error updating parent window:', e);
+                    return false;
+                }
+            }
+            
+            // Add single product
+            $('.add-single-product').click(function() {
+                const button = $(this);
+                const row = button.closest('tr');
+                const productId = button.data('product-id');
+                const productName = button.data('product-name');
+                const price = button.data('product-price');
+                const quantity = parseInt(row.find('.product-quantity').val()) || 1;
+                const itemNo = button.data('item-no');
+                const size = button.data('size');
+                const weight = button.data('weight');
+
+                console.log('Adding product:', {
+                    productId,
+                    productName,
+                    price,
+                    quantity,
+                    itemNo,
+                    size,
+                    weight
+                });
+
+                // Show loading state
+                button.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+                try {
+                    // Get existing order items from localStorage
+                    let orderItems = [];
+                    try {
+                        orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]');
+                        console.log('Current order items:', orderItems);
+                    } catch (e) {
+                        console.error('Error parsing orderItems from localStorage:', e);
+                    }
+
+                    // Add new product
+                    const newItem = {
+                        id: Date.now(),
+                        productId: productId,
+                        productName: productName,
+                        itemNo: itemNo,
+                        size: size,
+                        weight: weight,
+                        quantity: quantity,
+                        price: price
+                    };
+                    
+                    orderItems.push(newItem);
+                    console.log('Added new item:', newItem);
+                    console.log('Updated order items:', orderItems);
+
+                    // Save back to localStorage
+                    localStorage.setItem('orderItems', JSON.stringify(orderItems));
+                    console.log('Saved to localStorage');
+
+                    // Show success state
+                    button.html('<i class="fas fa-check"></i>')
+                        .removeClass('btn-primary')
+                        .addClass('btn-success');
+
+                    // Show toast
+                    toast.show();
+
+                    // Try to update parent window
+                    const updated = updateParentOrderTable();
+                    if (!updated) {
+                        console.log('Parent window update failed - opening new window');
+                        // If parent window update fails, redirect back to order page
+                        const orderId = new URLSearchParams(window.location.search).get('order_id');
+                        if (orderId) {
+                            window.location.href = "{{ route('ams.orders.create') }}?order_id=" + orderId;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error adding product:', error);
+                    button.html('<i class="fas fa-exclamation-triangle"></i>')
+                        .removeClass('btn-primary')
+                        .addClass('btn-danger');
+                }
+
+                // Reset button after delay
+                setTimeout(() => {
+                    button.prop('disabled', false)
+                        .html('Add')
+                        .removeClass('btn-success btn-danger')
+                        .addClass('btn-primary');
+                }, 1000);
+            });
+
+            // Add all products in a group
+            $('.add-group').click(function() {
+                const group = $(this).closest('.product-group');
+                const products = [];
+
+                group.find('tbody tr').each(function() {
+                    const row = $(this);
+                    const button = row.find('.add-single-product');
+                    const quantity = parseInt(row.find('.product-quantity').val()) || 1;
+
+                    products.push({
+                        id: Date.now() + Math.random(),
+                        productId: button.data('product-id'),
+                        productName: button.data('product-name'),
+                        itemNo: button.data('item-no'),
+                        size: button.data('size'),
+                        weight: button.data('weight'),
+                        quantity: quantity,
+                        price: button.data('product-price')
+                    });
+                });
+
+                console.log('Adding group of products:', products);
+
+                try {
+                    // Get existing order items
+                    let orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]');
+                    console.log('Current order items:', orderItems);
+                    
+                    // Add all products
+                    orderItems = orderItems.concat(products);
+                    console.log('Updated order items:', orderItems);
+                    
+                    // Save to localStorage
+                    localStorage.setItem('orderItems', JSON.stringify(orderItems));
+                    console.log('Saved to localStorage');
+
+                    // Update buttons to show success
+                    group.find('.add-single-product').each(function() {
+                        const button = $(this);
+                        button.prop('disabled', true)
+                            .html('<i class="fas fa-check"></i>')
+                            .removeClass('btn-primary')
+                            .addClass('btn-success');
+                    });
+
+                    // Show toast
+                    toast.show();
+
+                    // Try to update parent window
+                    const updated = updateParentOrderTable();
+                    if (!updated) {
+                        console.log('Parent window update failed - opening new window');
+                        // If parent window update fails, redirect back to order page
+                        const orderId = new URLSearchParams(window.location.search).get('order_id');
+                        if (orderId) {
+                            window.location.href = "{{ route('ams.orders.create') }}?order_id=" + orderId;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error adding products:', error);
+                    group.find('.add-single-product').each(function() {
+                        const button = $(this);
+                        button.html('<i class="fas fa-exclamation-triangle"></i>')
+                            .removeClass('btn-primary')
+                            .addClass('btn-danger');
+                    });
+                }
+
+                // Reset buttons after delay
+                setTimeout(() => {
+                    group.find('.add-single-product').each(function() {
+                        const button = $(this);
+                        button.prop('disabled', false)
+                            .html('Add')
+                            .removeClass('btn-success btn-danger')
+                            .addClass('btn-primary');
+                    });
+                }, 1000);
+            });
+        });
+    </script>
 @endsection

@@ -2,66 +2,60 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CustomerOrder extends Model
 {
+    use SoftDeletes;
+
+    protected $table = 'customer_orders';
+    protected $primaryKey = 'order_id';
+    public $timestamps = false;
     protected $fillable = [
+        'order_number',
         'customer_id',
-        'billing_address_id',
+        'sales_person_id',
+        'order_date',
+        'delivery_date',
+        'status',
         'shipping_address_id',
-        'order_origin',
-        'original_customer_id',
-        'original_order_id',
-        'payment_method',
-        'discount_amount',
+        'billing_address_id',
         'subtotal',
         'tax_amount',
-        'total'
+        'total',
+  
     ];
 
-    // Relationships
+    protected $dates = [
+        'order_date',
+        'delivery_date',
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     public function customer()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function salesPerson()
+    {
+        return $this->belongsTo(User::class, 'sales_person_id');
     }
 
     public function shippingAddress()
     {
-        return $this->hasOne(CustomerAddress::class, 'customer_id', 'customer_id')
-            ->where('shipping_flag', 1);
+        return $this->belongsTo(CustomerAddress::class, 'shipping_address_id');
     }
-    
+
     public function billingAddress()
     {
-        return $this->hasOne(CustomerAddress::class, 'customer_id', 'customer_id')
-            ->where('billing_flag', 1);
-    }
-    
-    public function order()
-    {
-        return $this->hasMany(OrderItem::class, 'original_order_id', 'original_order_id');
+        return $this->belongsTo(CustomerAddress::class, 'billing_address_id');
     }
 
-    public function products()
+    public function items()
     {
-        return $this->hasManyThrough(
-            Product::class,
-            OrderItem::class,
-            'original_order_id',         // Foreign key on order_items table
-            'product_id',                // Foreign key on products table
-            'original_order_id', // Local key on customer_orders table
-            'product_id'                 // Local key on order_items table
-        )->with('details'); // Eager load the ProductDetail relationship
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
-
-    public function status()
-    {
-        return $this->hasOne(OrderStatus::class, 'original_customer_order_id', 'original_order_id');
-    }
-
-    public function shippingDetails()
-    {
-        return $this->hasOne(OrderShippingDetail::class, 'original_order_id', 'original_order_id');
-    }
-
 }

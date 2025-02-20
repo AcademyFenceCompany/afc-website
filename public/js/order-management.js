@@ -25,14 +25,15 @@ $(document).ready(function () {
     function loadCustomerAddresses(customerId) {
         if (!customerId) {
             $("#shippingAddressList, #billingAddressList").empty();
-            $("#shipping-address, #billing-address-select").empty()
+            $("#shipping-address, #billing-address-select")
+                .empty()
                 .append('<option value="">Select Address</option>');
             return;
         }
 
         console.log("Loading addresses for customer:", customerId);
         $("#shippingAddressList, #billingAddressList").html(
-            '<div class="text-center">Loading addresses...</div>'
+            '<div class="text-center">Loading addresses...</div>',
         );
 
         $.ajax({
@@ -42,10 +43,14 @@ $(document).ready(function () {
                 console.log("Loaded addresses:", response);
                 if (response.success && response.addresses) {
                     const addresses = response.addresses;
-                    
+
                     // Split addresses based on flags
-                    const shippingAddresses = addresses.filter(addr => addr.shipping_flag === 1);
-                    const billingAddresses = addresses.filter(addr => addr.billing_flag === 1);
+                    const shippingAddresses = addresses.filter(
+                        (addr) => addr.shipping_flag === 1,
+                    );
+                    const billingAddresses = addresses.filter(
+                        (addr) => addr.billing_flag === 1,
+                    );
 
                     console.log("Shipping addresses:", shippingAddresses);
                     console.log("Billing addresses:", billingAddresses);
@@ -60,34 +65,38 @@ $(document).ready(function () {
                     // Store addresses in modal data for later use
                     $("#addressBookModal").data("addresses", addresses);
                 } else {
-                    console.error('Invalid response format:', response);
+                    console.error("Invalid response format:", response);
                     clearAddressLists();
                 }
             },
             error: function (xhr, status, error) {
                 console.error("AJAX error:", status, error);
                 clearAddressLists();
-            }
+            },
         });
     }
 
     // Clear address lists and selects
     function clearAddressLists() {
         $("#shippingAddressList, #billingAddressList").html(
-            '<div class="alert alert-danger">No addresses found</div>'
+            '<div class="alert alert-danger">No addresses found</div>',
         );
-        $("#shipping-address, #billing-address-select").empty()
+        $("#shipping-address, #billing-address-select")
+            .empty()
             .append('<option value="">Select Address</option>');
     }
 
     // Render address list
     function renderAddressList(addresses, type) {
-        const container = type === "shipping" ? $("#shippingAddressList") : $("#billingAddressList");
+        const container =
+            type === "shipping"
+                ? $("#shippingAddressList")
+                : $("#billingAddressList");
         container.empty();
 
         if (!addresses || addresses.length === 0) {
             container.html(
-                `<div class="alert alert-info">No ${type} addresses found.</div>`
+                `<div class="alert alert-info">No ${type} addresses found.</div>`,
             );
             return;
         }
@@ -117,8 +126,12 @@ $(document).ready(function () {
         const billingSelect = $("#billing-address-select");
 
         // Clear existing options
-        shippingSelect.empty().append('<option value="">Select Shipping Address</option>');
-        billingSelect.empty().append('<option value="">Select Billing Address</option>');
+        shippingSelect
+            .empty()
+            .append('<option value="">Select Shipping Address</option>');
+        billingSelect
+            .empty()
+            .append('<option value="">Select Billing Address</option>');
 
         if (!addresses || addresses.length === 0) {
             return;
@@ -142,7 +155,7 @@ $(document).ready(function () {
 
         console.log("Updated address selects:", {
             shippingAddresses: shippingSelect.find("option").length - 1,
-            billingAddresses: billingSelect.find("option").length - 1
+            billingAddresses: billingSelect.find("option").length - 1,
         });
     }
 
@@ -1086,7 +1099,93 @@ $(document).ready(function () {
         }
     }
 
-    // Save form state when changes are made
+    // Initialize order items table if it exists
+    if ($("#orderItemsTable").length) {
+        updateOrderItemsTable();
+    }
+
+    // Function to update order items table
+    function updateOrderItemsTable() {
+        if (!$('#orderItemsTable').length) return;
+
+        const orderId = $('input[name="order_id"]').val();
+        const orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]')
+            .filter(item => item.orderId === parseInt(orderId));
+
+        const tbody = $('#orderItemsTable tbody');
+        tbody.empty();
+
+        let totalWeight = 0;
+        let subtotal = 0;
+
+        if (orderItems.length === 0) {
+            tbody.append('<tr><td colspan="8" class="text-center">No items added yet</td></tr>');
+            $('#orderItemsJson').val('[]');
+            return;
+        }
+
+        orderItems.forEach((item, index) => {
+            const row = $('<tr>');
+            row.append($('<td>').text(item.itemNo));
+            row.append($('<td>').text(item.productName));
+            row.append($('<td>').text(item.size));
+            row.append($('<td>').text(item.weight));
+            row.append($('<td>').text('$' + parseFloat(item.price).toFixed(2)));
+            
+            // Quantity input
+            const quantityInput = $('<input>')
+                .attr('type', 'number')
+                .attr('min', '1')
+                .addClass('form-control form-control-sm quantity-input')
+                .val(item.quantity)
+                .data('index', index)
+                .css('width', '80px');
+            row.append($('<td>').append(quantityInput));
+            
+            // Calculate and show total
+            const total = item.price * item.quantity;
+            row.append($('<td>').text('$' + total.toFixed(2)));
+            
+            // Delete button
+            const deleteButton = $('<button>')
+                .addClass('btn btn-sm btn-danger delete-item')
+                .data('index', index)
+                .html('<i class="fas fa-trash"></i>');
+            row.append($('<td>').append(deleteButton));
+
+            tbody.append(row);
+
+            totalWeight += (parseFloat(item.weight) || 0) * item.quantity;
+            subtotal += total;
+        });
+
+        // Update totals
+        $('#totalWeight').text(totalWeight.toFixed(2) + ' lbs');
+        $('#subtotal').text('$' + subtotal.toFixed(2));
+
+        // Update hidden input for form submission
+        $('#orderItemsJson').val(JSON.stringify(orderItems.map(item => ({
+            order_id: item.orderId,
+            product_id: item.productId,
+            quantity: item.quantity,
+            price_at_time: item.price
+        }))));
+    }
+
+    // Handle form submission
+    $('#createOrderForm').on('submit', function(e) {
+        const orderId = $('input[name="order_id"]').val();
+        const orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]')
+            .filter(item => item.orderId === parseInt(orderId));
+
+        if (orderItems.length === 0) {
+            e.preventDefault();
+            alert('Please add at least one product to the order.');
+            return false;
+        }
+    });
+
+    // Setup form state tracking
     function setupFormStateTracking() {
         // Track all form inputs for changes
         const formElements = [
@@ -1169,4 +1268,130 @@ $(document).ready(function () {
         updateOrderTotals();
         saveFormState();
     });
+
+    // Category menu interactions
+    document.addEventListener("DOMContentLoaded", function () {
+        // Toggle chevron icon when collapsing/expanding
+        document
+            .querySelectorAll('[data-bs-toggle="collapse"]')
+            .forEach(function (element) {
+                element.addEventListener("click", function () {
+                    const chevron = this.querySelector(".fas.fa-chevron-down");
+                    if (chevron) {
+                        chevron.style.transform =
+                            this.getAttribute("aria-expanded") === "true"
+                                ? "rotate(0deg)"
+                                : "rotate(180deg)";
+                    }
+                });
+            });
+
+        // Add transition for chevron rotation
+        const style = document.createElement("style");
+        style.textContent = `
+            .fas.fa-chevron-down {
+                transition: transform 0.2s ease-in-out;
+            }
+        `;
+        document.head.appendChild(style);
+    });
+});
+
+// Make updateOrderItemsTable function available globally
+window.updateOrderItemsTable = function () {
+    if (!$("#orderItemsTable").length) return;
+
+    const orderId = $('input[name="order_id"]').val();
+    const orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]')
+        .filter(item => item.orderId === parseInt(orderId));
+
+    const tbody = $('#orderItemsTable tbody');
+    tbody.empty();
+
+    let totalWeight = 0;
+    let subtotal = 0;
+
+    if (orderItems.length === 0) {
+        tbody.append('<tr><td colspan="8" class="text-center">No items added yet</td></tr>');
+        $('#orderItemsJson').val('[]');
+        return;
+    }
+
+    orderItems.forEach((item, index) => {
+        const row = $('<tr>');
+        row.append($('<td>').text(item.itemNo));
+        row.append($('<td>').text(item.productName));
+        row.append($('<td>').text(item.size));
+        row.append($('<td>').text(item.weight));
+        row.append($('<td>').text('$' + parseFloat(item.price).toFixed(2)));
+        
+        // Quantity input
+        const quantityInput = $('<input>')
+            .attr('type', 'number')
+            .attr('min', '1')
+            .addClass('form-control form-control-sm quantity-input')
+            .val(item.quantity)
+            .data('index', index)
+            .css('width', '80px');
+        row.append($('<td>').append(quantityInput));
+        
+        // Calculate and show total
+        const total = item.price * item.quantity;
+        row.append($('<td>').text('$' + total.toFixed(2)));
+        
+        // Delete button
+        const deleteButton = $('<button>')
+            .addClass('btn btn-sm btn-danger delete-item')
+            .data('index', index)
+            .html('<i class="fas fa-trash"></i>');
+        row.append($('<td>').append(deleteButton));
+
+        tbody.append(row);
+
+        totalWeight += (parseFloat(item.weight) || 0) * item.quantity;
+        subtotal += total;
+    });
+
+    // Update totals
+    $('#totalWeight').text(totalWeight.toFixed(2) + ' lbs');
+    $('#subtotal').text('$' + subtotal.toFixed(2));
+
+    // Update hidden input for form submission
+    $('#orderItemsJson').val(JSON.stringify(orderItems.map(item => ({
+        order_id: item.orderId,
+        product_id: item.productId,
+        quantity: item.quantity,
+        price_at_time: item.price
+    }))));
+};
+
+// Handle quantity changes
+$('#orderItemsTable').on('change', '.quantity-input', function() {
+    const index = $(this).data('index');
+    const newQuantity = parseInt($(this).val()) || 1;
+    
+    let orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]');
+    if (newQuantity > 0) {
+        orderItems[index].quantity = newQuantity;
+        localStorage.setItem('orderItems', JSON.stringify(orderItems));
+    }
+    
+    updateOrderItemsTable();
+});
+
+// Handle item removal
+$('#orderItemsTable').on('click', '.delete-item', function() {
+    if (!confirm('Are you sure you want to remove this item?')) return;
+    
+    const index = $(this).data('index');
+    let orderItems = JSON.parse(localStorage.getItem('orderItems') || '[]');
+    orderItems.splice(index, 1);
+    localStorage.setItem('orderItems', JSON.stringify(orderItems));
+    
+    updateOrderItemsTable();
+});
+
+// Initialize table on page load
+$(document).ready(function() {
+    updateOrderItemsTable();
 });

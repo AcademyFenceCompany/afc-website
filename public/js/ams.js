@@ -121,39 +121,30 @@ function loadProductsByCategory(categoryId, page = 1) {
 }
 document.addEventListener("DOMContentLoaded", function () {
     // Handle both category clicks and toggle button clicks
-    document
-        .querySelector(".category-tree")
-        .addEventListener("click", function (e) {
+    const categoryTree = document.querySelector(".category-tree");
+    
+    if (categoryTree) {
+        categoryTree.addEventListener("click", function (e) {
             // Handle toggle button clicks
             if (
                 e.target.closest(".toggle-btn") ||
                 e.target.closest(".bi-chevron-right")
             ) {
+                const item = e.target.closest(".category-item");
+                item.classList.toggle("expanded");
+                return;
+            }
+
+            // Handle category clicks
+            const categoryLink = e.target.closest(".category-link");
+            if (categoryLink) {
                 e.preventDefault();
-                e.stopPropagation();
-
-                const btn =
-                    e.target.closest(".toggle-btn") ||
-                    e.target.closest(".bi-chevron-right").parentElement;
-                const categoryItem = btn.closest(".category-item");
-                const nestedList = categoryItem.querySelector(".nested");
-
-                if (nestedList) {
-                    nestedList.classList.toggle("show");
-                    btn.classList.toggle("active");
-
-                    // Toggle the chevron icon rotation
-                    const icon = btn.querySelector("i");
-                    if (icon) {
-                        icon.style.transform = nestedList.classList.contains(
-                            "show",
-                        )
-                            ? "rotate(90deg)"
-                            : "rotate(0)";
-                    }
-                }
+                const categoryId = categoryLink.dataset.categoryId;
+                loadProductsByCategory(categoryId);
             }
         });
+    }
+});
 
     // Auto-expand active category
     const activeLink = document.querySelector(".category-link.active");
