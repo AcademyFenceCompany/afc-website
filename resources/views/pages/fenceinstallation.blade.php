@@ -13,7 +13,7 @@
             <h2 class="text-center">Use Our Quote Sheet</h2>
             <p class="text-center text-muted">You can fill this form and upload it below</p>
             <div class="text-center mb-4">
-                <a href="#" class="btn btn-danger">Print Quote Sheet</a>
+                <a href="resources/office_sheets/customerquotefaxsheet.pdf" target="_blank" class="btn btn-danger">Print Quote Sheet</a>
             </div>
     
             <form action="#" method="POST" enctype="multipart/form-data">

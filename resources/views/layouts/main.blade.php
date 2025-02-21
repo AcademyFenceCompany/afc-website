@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <title>{{ $title ?? 'Academy Fence Company' }}</title>
+    <script src="{{ mix('js/states.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js'])
 </head>
 

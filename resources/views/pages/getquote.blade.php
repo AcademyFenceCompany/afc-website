@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Academy Fence Installation')
+@section('title', 'Get a Quote')
 
 @section('content')
 <main class="container">
@@ -13,7 +13,7 @@
             <h2 class="text-center">Use Our Quote Sheet</h2>
             <p class="text-center text-muted">You can fill this form and upload it below</p>
             <div class="text-center mb-4">
-                <a href="#" class="btn btn-danger">Print Quote Sheet</a>
+                <a href="resources/office_sheets/customerquotefaxsheet.pdf" target="_blank" class="btn btn-danger">Print Quote Sheet</a>
             </div>
 
             <form action="#" method="POST" enctype="multipart/form-data">
@@ -64,12 +64,12 @@
                         <label for="quote_file" class="form-label">Upload Quote Sheet Here*</label>
                         <input type="file" id="quote_file" name="quote_file" class="form-control" required>
                     </div>
-                    <div class="col-md-6 d-flex align-items-center">
+                    <!-- <div class="col-md-6 d-flex align-items-center">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="recaptcha" required>
                             <label for="recaptcha" class="form-check-label">I am not a robot</label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-danger">Submit</button>
@@ -80,3 +80,48 @@
 </main>
 @endsection
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const states = [
+        { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, { code: "AZ", name: "Arizona" },
+        { code: "AR", name: "Arkansas" }, { code: "CA", name: "California" }, { code: "CO", name: "Colorado" },
+        { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, { code: "FL", name: "Florida" },
+        { code: "GA", name: "Georgia" }, { code: "HI", name: "Hawaii" }, { code: "ID", name: "Idaho" },
+        { code: "IL", name: "Illinois" }, { code: "IN", name: "Indiana" }, { code: "IA", name: "Iowa" },
+        { code: "KS", name: "Kansas" }, { code: "KY", name: "Kentucky" }, { code: "LA", name: "Louisiana" },
+        { code: "ME", name: "Maine" }, { code: "MD", name: "Maryland" }, { code: "MA", name: "Massachusetts" },
+        { code: "MI", name: "Michigan" }, { code: "MN", name: "Minnesota" }, { code: "MS", name: "Mississippi" },
+        { code: "MO", name: "Missouri" }, { code: "MT", name: "Montana" }, { code: "NE", name: "Nebraska" },
+        { code: "NV", name: "Nevada" }, { code: "NH", name: "New Hampshire" }, { code: "NJ", name: "New Jersey" },
+        { code: "NM", name: "New Mexico" }, { code: "NY", name: "New York" }, { code: "NC", name: "North Carolina" },
+        { code: "ND", name: "North Dakota" }, { code: "OH", name: "Ohio" }, { code: "OK", name: "Oklahoma" },
+        { code: "OR", name: "Oregon" }, { code: "PA", name: "Pennsylvania" }, { code: "RI", name: "Rhode Island" },
+        { code: "SC", name: "South Carolina" }, { code: "SD", name: "South Dakota" }, { code: "TN", name: "Tennessee" },
+        { code: "TX", name: "Texas" }, { code: "UT", name: "Utah" }, { code: "VT", name: "Vermont" },
+        { code: "VA", name: "Virginia" }, { code: "WA", name: "Washington" }, { code: "WV", name: "West Virginia" },
+        { code: "WI", name: "Wisconsin" }, { code: "WY", name: "Wyoming" }
+    ];
+
+    const stateSelect = document.getElementById("state");
+    states.forEach(state => {
+        let option = document.createElement("option");
+        option.value = state.code;
+        option.textContent = state.name;
+        stateSelect.appendChild(option);
+    });
+
+    const inputField = document.getElementById("stateInput");
+    const resultDisplay = document.getElementById("stateName");
+    
+    inputField.addEventListener("input", function () {
+        let userInput = inputField.value.trim().toUpperCase();
+        let foundState = states.find(state => state.code === userInput);
+        resultDisplay.textContent = foundState ? foundState.name : "State not found";
+        
+        if (foundState) {
+            stateSelect.value = foundState.code;
+        }
+    });
+});
+
+</script>
