@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
     @yield('styles')
+    
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 
 <body>
@@ -83,25 +86,55 @@
                 <i class="fas fa-users-cog"></i>
                 <span>User Management</span>
             </a>
-        @endif <a href="#" class="menu-item">Inventory</a>
+        @endif 
+
+        <!-- CMS Menu -->
+        <a class="menu-item" data-bs-toggle="collapse" href="#cmsMenu" role="button" aria-expanded="false"
+            aria-controls="cmsMenu">
+            <i class="bi bi-pencil-square"></i>
+            <span>CMS</span>
+            <i class="bi bi-caret-down-fill"></i>
+        </a>
+        <div class="collapse submenu" id="cmsMenu">
+            <a href="{{ route('ams.cms.pages.index') }}" class="menu-item">
+                <i class="bi bi-file-text"></i> Category Pages
+            </a>
+            <a href="{{ route('ams.cms.pages.create') }}" class="menu-item">
+                <i class="bi bi-plus-circle"></i> Add New Page
+            </a>
+        </div>
+
+        <a href="#" class="menu-item">Inventory</a>
         <a href="#" class="menu-item">Office Sheets</a>
         <a href="#" class="menu-item">Sales Reports</a>
     </div>
 
     <!-- Main Content -->
     <div class="content">
-        <!-- Header Section -->
         <div class="header">
             <h2>@yield('title')</h2>
             <div class="header-buttons">
-                <p class="text-center">Welcome {{ auth()->user()->username }}</p>
-                <a href="{{ route('ams.orders.create') }}" class="btn btn-primary">New Order</a>
-                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
-                    @csrf
-                    <button type="submit" class="btn btn-danger">Log Out</button>
-                </form>
+                <a href="{{ route('ams.home') }}" class="btn btn-outline-light">
+                    <i class="bi bi-house-fill"></i> Home
+                </a>
+                <a href="{{ route('logout') }}" class="btn btn-outline-light">
+                    <i class="bi bi-box-arrow-right"></i> Log Out
+                </a>
             </div>
         </div>
+
+        @if(session('success'))
+            <div class="alert alert-success mt-3">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger mt-3">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @yield('content')
     </div>
 
@@ -114,6 +147,37 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+    </script>
+    <script>
+        // Global TinyMCE initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            tinymce.init({
+                selector: 'textarea.tinymce',
+                height: 300,
+                menubar: true,
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | ' +
+                    'bold italic backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+                images_upload_url: '/ams/upload-image',
+                automatic_uploads: true,
+                images_reuse_filename: true,
+                relative_urls: false,
+                remove_script_host: false,
+                convert_urls: true,
+                setup: function (editor) {
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
+            });
         });
     </script>
     <script src="{{ secure_asset('js/ams.js') }}"></script>

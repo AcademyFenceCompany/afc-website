@@ -91,6 +91,9 @@
                     <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
                     <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
                     <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
+                    @foreach(\App\Models\CategoryPage::with('category')->get() as $page)
+                        <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->category->family_category_name) }}</a>
+                    @endforeach
                     <a href='{{ route('contact') }}' class="nav-link btn nav-btn">CONTACT US</a>
                     <div class="dropdown">
                         <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
