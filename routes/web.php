@@ -16,6 +16,7 @@ use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\Ams\OrderController;
 use App\Models\Order;
 use App\Models\Customer;
+use App\Http\Controllers\CategoryPageController;
 
 // AMS Routes
 Route::prefix('ams')->group(function () {
@@ -90,16 +91,8 @@ Route::get('/wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
 
-// Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
-// Route::get('wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
-//     ->where('spacing', '.*')  // Allow any character in spacing
-//     ->name('woodfence.specs');
-// Route::get('wood-fence/specs/{subcategoryId}/{spacing}/{style}/all', 
-//     [WoodFenceController::class, 'getAllStyleProducts'])
-//     ->name('woodfence.specs.all');
-// Route::get('wood-fence/specs/{subcategoryId}', [WoodFenceController::class, 'getProductsGroupWoSpacing'])
-//     ->name('woodfence.specs');
-
+// Category Pages Routes
+Route::get('/category/{slug}', [CategoryPageController::class, 'show'])->name('category.show');
 
 Route::get('/customerservice', function () {
     return view('pages.customerservice', [
