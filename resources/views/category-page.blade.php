@@ -38,8 +38,8 @@
         <!-- Center Image -->
         <div class="col-md-4 text-center">
             @if ($page->product_image)
-                <img src="{{ secure_asset(Storage::url($page->product_image)) }}" alt="{{ $page->title }} Image"
-                    class="img-fluid rounded shadow-sm">
+                <img style="max-width: 357px;height: 270px;" src="{{ secure_asset(Storage::url($page->product_image)) }}"
+                    alt="{{ $page->title }} Image" class="img-fluid rounded shadow-sm">
             @endif
         </div>
 
@@ -74,8 +74,8 @@
                 <!-- Left Image Column -->
                 <div class="col-md-3">
                     @if ($group['image'])
-                        <img src="{{ secure_asset(Storage::url($group['image'])) }}" alt="{{ $style }}"
-                            class="img-fluid rounded">
+                        <img style="max-width: 357px;height: 270px;" src="{{ secure_asset(Storage::url($group['image'])) }}"
+                            alt="{{ $style }}" class="img-fluid rounded">
                     @endif
                 </div>
 
@@ -112,7 +112,7 @@
                                             <td>{{ $product->size1 }}'</td>
                                             <td class="mesh-size">{{ $firstVariant['size2'] }}</td>
                                             <td class="weight">{{ $firstVariant['weight'] ?? '-' }} lbs</td>
-                                            <td>${{ number_format($product->price_per_unit, 2) }}</td>
+                                            <td class="price">${{ number_format($product->price_per_unit, 2) }}</td>
                                             <td>
                                                 @php
                                                     $variantsJson = json_encode($product->color_variants);
@@ -126,16 +126,28 @@
                                             </td>
                                             <td>
                                                 <div class="input-group" style="width: 120px;">
-                                                    <button class="btn btn-outline-secondary" type="button">-</button>
-                                                    <input type="text" class="form-control text-center" value="1">
-                                                    <button class="btn btn-outline-secondary" type="button">+</button>
+                                                    <button class="btn btn-outline-secondary quantity-decrease"
+                                                        type="button">-</button>
+                                                    <input type="text" class="form-control text-center quantity-input"
+                                                        value="1" data-price="{{ $product->price_per_unit }}">
+                                                    <button class="btn btn-outline-secondary quantity-increase"
+                                                        type="button">+</button>
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger add-to-cart"
-                                                    data-product-id="{{ $product->product_id }}">
-                                                    Add
-                                                </button>
+                                                <div class="d-flex align-items-center">
+                                                    <span
+                                                        class="dynamic-price me-2">${{ number_format($product->price_per_unit, 2) }}</span>
+                                                    <button class="btn btn-danger add-to-cart-btn"
+                                                        data-item="{{ $firstVariant['item_no'] }}" {{-- data-name="{{ $product->title }}" --}}
+                                                        data-price="{{ $product->price_per_unit }}"
+                                                        data-size1="{{ $product->size1 }}"
+                                                        data-size2="{{ $firstVariant['size2'] }}"
+                                                        data-weight="{{ $firstVariant['weight'] }}" {{-- data-general_image="{{ $product->product_image }}" --}}
+                                                        data-family_category="{{ $product->family_category_id }}">
+                                                        Add to Cart
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -193,49 +205,34 @@
     <script src="{{ secure_asset('js/mini-cart.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize add to cart functionality
-            const addToCartButtons = document.querySelectorAll('.add-to-cart');
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const productId = this.dataset.productId;
-                    addToCart(productId, 1); // Add 1 quantity by default
-                });
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle quantity increment/decrement
-            document.querySelectorAll('.input-group .btn').forEach(button => {
+            // Handle quantity buttons
+            const quantityButtons = document.querySelectorAll('.quantity-decrease, .quantity-increase');
+            quantityButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const input = this.closest('.input-group').querySelector('input');
                     let value = parseInt(input.value);
 
-                    if (this.textContent === '+') {
-                        value++;
+                    if (this.classList.contains('quantity-increase')) {
+                        value = Math.min(value + 1, 99); // Max 99
                     } else {
-                        value = value > 1 ? value - 1 : 1;
+                        value = Math.max(value - 1, 1); // Min 1
                     }
 
                     input.value = value;
+                    updatePrice(input);
                 });
             });
 
             // Handle color selection
-            document.querySelectorAll('.color-select').forEach(select => {
+            const colorSelects = document.querySelectorAll('.color-select');
+            colorSelects.forEach(select => {
                 select.addEventListener('change', function() {
                     const row = this.closest('tr');
                     const selectedColor = this.value;
-
-                    // Get variants data from the select element
                     const variants = JSON.parse(this.getAttribute('data-variants'));
                     const selectedVariant = variants[selectedColor];
 
-                    console.log('Selected color:', selectedColor);
-                    console.log('Selected variant:', selectedVariant);
-
                     if (selectedVariant) {
-                        // Update product details in the row
                         row.querySelector('.item-no').textContent = selectedVariant.item_no || '';
                         row.querySelector('.mesh-size').textContent = selectedVariant.size2 || '';
                         row.querySelector('.weight').textContent = (selectedVariant.weight || '-') +
@@ -243,6 +240,126 @@
                     }
                 });
             });
+
+            // Handle add to cart
+            const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const quantity = parseInt(row.querySelector('.quantity-input').value);
+                    const color = row.querySelector('.color-select').value;
+                    const variants = JSON.parse(row.querySelector('.color-select').getAttribute(
+                        'data-variants'));
+                    const selectedVariant = variants[color];
+                    const size = row.querySelector('td:nth-child(2)').textContent.trim();
+
+                    const itemData = {
+                        item_no: selectedVariant.item_no,
+                        product_name: row.closest('.mt-5').querySelector('h4').textContent
+                            .trim(),
+                        price: parseFloat(row.querySelector('.price').textContent.replace('$',
+                            '')),
+                        color: color,
+                        size1: size,
+                        size2: selectedVariant.size2 || '',
+                        size3: '',
+                        specialty: '',
+                        material: '',
+                        spacing: '',
+                        coating: '',
+                        weight: selectedVariant.weight || 0,
+                        family_category: '',
+                        general_image: '',
+                        small_image: '',
+                        large_image: '',
+                        free_shipping: false,
+                        special_shipping: false,
+                        amount_per_box: null,
+                        quantity: quantity,
+                        description: '',
+                        subcategory_id: null,
+                        shipping_length: null,
+                        shipping_width: null,
+                        shipping_height: null,
+                        shipping_class: ''
+                    };
+
+                    fetch('/cart/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector(
+                                    'meta[name="csrf-token"]').content,
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify(itemData)
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(err => Promise.reject(err));
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Update the mini cart
+                                if (typeof updateMiniCart === 'function') {
+                                    updateMiniCart(data.cart);
+                                }
+
+                                // Show success toast
+                                const toastEl = document.getElementById('cartToast');
+                                toastEl.querySelector('.toast-header').classList.remove(
+                                    'bg-danger');
+                                toastEl.querySelector('.toast-header').classList.add(
+                                    'bg-success');
+                                toastEl.querySelector('.toast-body').textContent =
+                                    'Item added to cart successfully!';
+                                const toast = new bootstrap.Toast(toastEl);
+                                toast.show();
+                            } else {
+                                throw new Error(data.message || 'Failed to add item to cart');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Show error toast
+                            const toastEl = document.getElementById('cartToast');
+                            toastEl.querySelector('.toast-header').classList.remove(
+                                'bg-success');
+                            toastEl.querySelector('.toast-header').classList.add('bg-danger');
+                            toastEl.querySelector('.toast-body').textContent = error.message ||
+                                'Failed to add item to cart. Please try again.';
+                            const toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                        });
+                });
+            });
+
+            // Function to update price based on quantity
+            function updatePrice(input) {
+                const basePrice = parseFloat(input.dataset.price);
+                const quantity = parseInt(input.value);
+                const priceElement = input.closest('tr').querySelector('.dynamic-price');
+                if (priceElement) {
+                    const total = (basePrice * quantity).toFixed(2);
+                    priceElement.textContent = '$' + total;
+                }
+            }
         });
     </script>
 @endsection
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Item added to cart successfully!
+        </div>
+    </div>
+</div>

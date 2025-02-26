@@ -1,7 +1,7 @@
-@foreach ($categories as $category)
+@foreach($categories as $subcategory)
     <li class="category-item">
         <div class="d-flex align-items-center">
-            @if ($category->children->count() > 0)
+            @if(count($subcategory->children) > 0)
                 <button class="btn btn-sm btn-link toggle-btn" type="button">
                     <i class="bi bi-chevron-right"></i>
                 </button>
@@ -9,15 +9,16 @@
                 <span class="ps-3"></span>
             @endif
             <a href="javascript:void(0)" 
-                class="category-link {{ request('category') == $category->family_category_id ? 'active' : '' }}"
-                data-category-id="{{ $category->family_category_id }}" data-action="load-products">
-                {{ $category->family_category_name }}
-                <span class="badge bg-secondary float-end">{{ $category->products_count }}</span>
+               class="category-link {{ request('category') == $subcategory->family_category_id ? 'active' : '' }}"
+               data-category-id="{{ $subcategory->family_category_id }}"
+               onclick="loadProductsByCategory('{{ $subcategory->family_category_id }}')">
+                {{ $subcategory->family_category_name }}
+                <span class="badge bg-secondary float-end">{{ $subcategory->products_count ?? 0 }}</span>
             </a>
         </div>
-        @if ($category->children->count() > 0)
+        @if(count($subcategory->children) > 0)
             <ul class="nested">
-                @include('ams.partials.category-tree-items', ['categories' => $category->children])
+                @include('ams.partials.category-tree-items', ['categories' => $subcategory->children])
             </ul>
         @endif
     </li>
