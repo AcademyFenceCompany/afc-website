@@ -19,7 +19,17 @@ use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
 
 // AMS Routes
-Route::prefix('ams')->group(function () {
+Route::prefix('ams')->middleware('auth')->group(function () {
+    // Product Routes
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/by-category/{category}', [ProductController::class, 'getByCategory'])->name('products.by.category');
+    
+    // Other AMS routes...
     Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
     Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
@@ -90,6 +100,11 @@ Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 
 Route::get('/wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
+
+// Cart Routes
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::post('/cart/remove', [CartController::class, 'removeItem'])->name('cart.remove');
 
 // Category Pages Routes
 Route::get('/category/{slug}', [CategoryPageController::class, 'show'])->name('category.show');

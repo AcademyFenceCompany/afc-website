@@ -150,20 +150,39 @@
                                         <tr>
                                             <td>{{ $product->item_no }}</td>
                                             <td>{{ $product->product_name }}</td>
-                                            <td>{{ $product->familyCategory->family_category_name ?? 'N/A' }}</td>
+                                            <td>{{ $product->familyCategory->family_category_name ?? ($product->subcategory->family_category_name ?? 'N/A') }}
+                                            </td>
                                             <td>${{ number_format($product->price_per_unit, 2) }}</td>
-                                            <td>{{ $product->inventory->in_stock_hq ?? 0 }}</td>
-                                            <td>{{ $product->inventory->in_stock_warehouse ?? 0 }}</td>
                                             <td>
-                                                @if (auth()->user()->level === 'God' || auth()->user()->level === 'Admin')
+                                                <span
+                                                    class="badge {{ $product->inventory && $product->inventory->in_stock_hq > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $product->inventory->in_stock_hq ?? 0 }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="badge {{ $product->inventory && $product->inventory->in_stock_warehouse > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                    {{ $product->inventory->in_stock_warehouse ?? 0 }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
                                                     <a href="{{ route('products.edit', $product->product_id) }}"
-                                                        class="btn btn-sm btn-primary">Edit</a>
-                                                @endif
+                                                        class="btn btn-sm btn-primary">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
+                                                    @if (auth()->user()->level === 'God' || auth()->user()->level === 'Admin')
+                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                            onclick="deleteProduct({{ $product->product_id }})">
+                                                            <i class="bi bi-trash"></i>
+                                                        </button>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center py-4">No products found</td>
+                                            <td colspan="7" class="text-center">No products found</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -188,4 +207,228 @@
         </div>
     </div>
 
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle category tree toggle
+            document.querySelectorAll('.toggle-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const categoryItem = this.closest('.category-item');
+                    const nestedList = categoryItem.querySelector('.nested');
+                    const icon = this.querySelector('i');
+
+                    if (nestedList) {
+                        nestedList.classList.toggle('active');
+                        icon.classList.toggle('bi-chevron-right');
+                        icon.classList.toggle('bi-chevron-down');
+                    }
+                });
+            });
+
+            // Handle category click
+            document.querySelectorAll('.category-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const categoryId = this.getAttribute('data-category-id');
+                    loadProductsByCategory(categoryId);
+
+                    // Update active state
+                    document.querySelectorAll('.category-link').forEach(l => l.classList.remove(
+                        'active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+
+        function loadProductsByCategory(categoryId) {
+            // Show loading state
+            const productsTable = document.querySelector('.table-responsive');
+            if (productsTable) {
+                productsTable.style.opacity = '0.5';
+            }
+
+            // Update hidden category input
+            const categoryInput = document.querySelector('input[name="category"]');
+            if (categoryInput) {
+                categoryInput.value = categoryId;
+            }
+
+            // Make the AJAX request
+            fetch(`/ams/products?category=${categoryId}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.message || 'Failed to load products');
+                    }
+
+                    // Update the products table
+                    const tableBody = document.querySelector('.table tbody');
+                    if (tableBody && Array.isArray(data.products)) {
+                        if (data.products.length === 0) {
+                            tableBody.innerHTML =
+                                '<tr><td colspan="5" class="text-center">No products found in this category</td></tr>';
+                        } else {
+                            tableBody.innerHTML = data.products.map(product => `
+                    <tr>
+                        <td>${product.item_no || ''}</td>
+                        <td>${product.product_name || ''}</td>
+                        <td>${product.family_category?.name || 'N/A'}</td>
+                        <td>$${product.price || '0.00'}</td>
+                        <td>
+                            <span class="badge ${product.stock?.hq > 0 ? 'bg-success' : 'bg-danger'}">
+                                ${product.stock?.hq || '0'}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${product.stock?.warehouse > 0 ? 'bg-success' : 'bg-danger'}">
+                                ${product.stock?.warehouse || '0'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="/ams/products/${product.id}/edit" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Show error message in the table
+                    const tableBody = document.querySelector('.table tbody');
+                    if (tableBody) {
+                        tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-center text-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ${error.message || 'Failed to load products. Please try again.'}
+                    </td>
+                </tr>
+            `;
+                    }
+                })
+                .finally(() => {
+                    // Restore opacity
+                    if (productsTable) {
+                        productsTable.style.opacity = '1';
+                    }
+                });
+        }
+
+        // Delete product function
+        function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product?')) {
+                return;
+            }
+
+            fetch(`/ams/products/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => Promise.reject(err));
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Remove the row from the table
+                        const row = document.querySelector(`button[onclick="deleteProduct(${productId})"]`).closest(
+                            'tr');
+                        row.remove();
+
+                        // Show success message
+                        alert('Product deleted successfully');
+                    } else {
+                        throw new Error(data.message || 'Failed to delete product');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(error.message || 'Failed to delete product. Please try again.');
+                });
+        }
+
+        // Add some CSS for the nested categories
+        const style = document.createElement('style');
+        style.textContent = `
+    .category-tree {
+        list-style: none;
+        padding-left: 0;
+    }
+    .category-item {
+        padding: 5px 0;
+    }
+    .nested {
+        display: none;
+        list-style: none;
+        padding-left: 20px;
+    }
+    .nested.active {
+        display: block;
+    }
+    .category-link {
+        text-decoration: none;
+        color: #333;
+        flex-grow: 1;
+        padding: 5px;
+        cursor: pointer;
+    }
+    .category-link:hover {
+        background-color: #f8f9fa;
+    }
+    .category-link.active {
+        background-color: #e9ecef;
+        font-weight: 500;
+    }
+    .toggle-btn {
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+    }
+    .toggle-btn:hover {
+        background-color: #f8f9fa;
+        border-radius: 4px;
+    }
+    .btn-group {
+        display: flex;
+        gap: 5px;
+    }
+    .badge {
+        font-size: 0.85em;
+        padding: 0.35em 0.65em;
+    }
+`;
+        document.head.appendChild(style);
+    </script>
 @endsection
