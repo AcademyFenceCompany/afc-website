@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryPageController extends Controller
 {
+        /**
+         * Shows the category page for a given slug
+         *
+         * @param string $slug The slug of the category page to show
+         *
+         * @return \Illuminate\Contracts\View\View The category page view
+         */
     public function show($slug)
     {
         $page = CategoryPage::where('slug', $slug)->firstOrFail();

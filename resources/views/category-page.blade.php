@@ -1,3 +1,4 @@
+@dump($groupedProducts);
 @extends('layouts.main')
 
 @section('title', $page->title)
@@ -83,21 +84,20 @@
                 <div class="col-md-9">
                     <!-- Style Header -->
                     <div class="bg-danger text-white text-center py-2 rounded">
-                        <h4>{{ $style }} PVT Slats</h4>
+                        <h4>{{ $style }}</h4>
                     </div>
 
                     <div class="mt-4">
-                        <p class="text-danger">Note: call ahead for local pickup!</p>
+                        <!-- Products Table -->
                         <div class="table-responsive">
                             <table class="table table-bordered">
-                                <thead class="bg-dark text-white">
+                                <thead class="table-light">
                                     <tr>
-                                        <th>Item Number</th>
                                         <th>Height</th>
+                                        <th>Color</th>
                                         <th>Mesh Size</th>
                                         <th>Weight</th>
                                         <th>Price</th>
-                                        <th>Choose A Color</th>
                                         <th>Quantity</th>
                                         <th></th>
                                     </tr>
@@ -108,11 +108,7 @@
                                             $firstVariant = $product->color_variants->first();
                                         @endphp
                                         <tr data-product-row="{{ $product->product_id }}">
-                                            <td class="item-no">{{ $firstVariant['item_no'] }}</td>
                                             <td>{{ $product->size1 }}'</td>
-                                            <td class="mesh-size">{{ $firstVariant['size2'] }}</td>
-                                            <td class="weight">{{ $firstVariant['weight'] ?? '-' }} lbs</td>
-                                            <td class="price">${{ number_format($product->price_per_unit, 2) }}</td>
                                             <td>
                                                 @php
                                                     $variantsJson = json_encode($product->color_variants);
@@ -124,6 +120,9 @@
                                                     @endforeach
                                                 </select>
                                             </td>
+                                            <td class="mesh-size">{{ $firstVariant['size2'] }}</td>
+                                            <td class="weight">{{ $firstVariant['weight'] ?? '-' }} lbs</td>
+                                            <td class="price">${{ number_format($product->price_per_unit, 2) }}</td>
                                             <td>
                                                 <div class="input-group" style="width: 120px;">
                                                     <button class="btn btn-outline-secondary quantity-decrease"
@@ -135,19 +134,15 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <div class="d-flex align-items-center">
-                                                    <span
-                                                        class="dynamic-price me-2">${{ number_format($product->price_per_unit, 2) }}</span>
-                                                    <button class="btn btn-danger add-to-cart-btn"
-                                                        data-item="{{ $firstVariant['item_no'] }}" {{-- data-name="{{ $product->title }}" --}}
-                                                        data-price="{{ $product->price_per_unit }}"
-                                                        data-size1="{{ $product->size1 }}"
-                                                        data-size2="{{ $firstVariant['size2'] }}"
-                                                        data-weight="{{ $firstVariant['weight'] }}" {{-- data-general_image="{{ $product->product_image }}" --}}
-                                                        data-family_category="{{ $product->family_category_id }}">
-                                                        Add to Cart
-                                                    </button>
-                                                </div>
+                                                <button class="btn btn-danger add-to-cart-btn"
+                                                    data-item="{{ $firstVariant['item_no'] }}"
+                                                    data-price="{{ $product->price_per_unit }}"
+                                                    data-size1="{{ $product->size1 }}"
+                                                    data-size2="{{ $firstVariant['size2'] }}"
+                                                    data-weight="{{ $firstVariant['weight'] }}"
+                                                    data-family_category="{{ $product->family_category_id }}">
+                                                    Add to Cart
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -251,7 +246,7 @@
                     const variants = JSON.parse(row.querySelector('.color-select').getAttribute(
                         'data-variants'));
                     const selectedVariant = variants[color];
-                    const size = row.querySelector('td:nth-child(2)').textContent.trim();
+                    const size = row.querySelector('td:nth-child(1)').textContent.trim();
 
                     const itemData = {
                         item_no: selectedVariant.item_no,
