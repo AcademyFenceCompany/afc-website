@@ -1,4 +1,3 @@
-@dump($groupedProducts);
 @extends('layouts.main')
 
 @section('title', $page->title)
@@ -55,80 +54,109 @@
     </div>
 
     <!-- Products Section -->
-    @php
-        if (isset($subcategories)) {
-            Log::info('View Subcategories:', [
-                'count' => $subcategories->count(),
-                'names' => $subcategories->pluck('family_category_name'),
-            ]);
-        }
-        if (isset($products)) {
-            Log::info('View Products:', [
-                'count' => $products->count(),
-            ]);
-        }
-    @endphp
-
     @if (empty($groupedProducts['groups']))
         <div class="alert alert-info mt-5">
             No products found for this category.
         </div>
     @else
-        @foreach ($groupedProducts['groups'] as $group)
-            <div class="mt-5">
-                <div class="row">
-                    <!-- Left Image Column -->
-                    <div class="col-md-3">
-                        @if ($group['image'])
-                            <img style="max-width: 357px;height: 270px;"
-                                src="{{ secure_asset(Storage::url($group['image'])) }}" alt="{{ $group['title'] }}"
-                                class="img-fluid rounded">
-                        @endif
-                    </div>
-
-                    <!-- Right Content Column -->
-                    <div class="col-md-9">
-                        <!-- Group Header -->
-                        <div class="bg-danger text-white text-center py-2 rounded">
-                            <h4>{{ $group['title'] }}</h4>
+        @if ($isWeldedWire)
+            <!-- Welded Wire Products -->
+            @foreach ($groupedProducts['groups'] as $meshSizeGroup)
+                <div class="mt-5">
+                    <div class="row">
+                        <!-- Left Image Column -->
+                        <div class="col-md-3">
+                            @if ($meshSizeGroup['image'])
+                                <img style="max-width: 357px;height: 270px;"
+                                    src="{{ secure_asset(Storage::url($meshSizeGroup['image'])) }}"
+                                    alt="{{ $meshSizeGroup['title'] }}" class="img-fluid rounded">
+                            @endif
                         </div>
 
-                        @if (!empty($group['subgroups']))
-                            {{-- Handle nested groups --}}
-                            @foreach ($group['subgroups'] as $subgroup)
+                        <!-- Right Content Column -->
+                        <div class="col-md-9">
+                            <!-- Group Header -->
+                            <div class="bg-danger text-white text-center py-2 rounded">
+                                <h4>{{ $meshSizeGroup['title'] }} Mesh Size</h4>
+                            </div>
+
+                            @foreach ($meshSizeGroup['subgroups'] as $gaugeGroup)
                                 <div class="mt-4">
-                                    <div class="bg-secondary text-white text-center py-1 rounded">
-                                        <h5>{{ $subgroup['title'] }}</h5>
-                                    </div>
-                                    @if (!empty($subgroup['products']))
-                                        @include('partials.product-table', [
-                                            'products' => $subgroup['products'],
-                                        ])
-                                    @endif
-                                    @if (!empty($subgroup['subgroups']))
-                                        @foreach ($subgroup['subgroups'] as $nestedGroup)
-                                            <div class="mt-3">
-                                                <div class="bg-light text-dark text-center py-1 rounded border">
-                                                    <h6>{{ $nestedGroup['title'] }}</h6>
-                                                </div>
-                                                @include('partials.product-table', [
-                                                    'products' => $nestedGroup['products'],
-                                                ])
-                                            </div>
-                                        @endforeach
-                                    @endif
+                                    {{-- <div class="bg-secondary text-white text-center py-1 rounded">
+                                        <h5>{{ $gaugeGroup['title'] }} Gauge</h5>
+                                    </div> --}}
+                                    @foreach ($gaugeGroup['subgroups'] as $coatingGroup)
+                                        <div class="mt-3">
+                                            {{-- <div class="bg-light text-dark text-center py-1 rounded border">
+                                                <h6>{{ $coatingGroup['title'] }} Coating</h6>
+                                            </div> --}}
+                                            @include('partials.product-table', [
+                                                'products' => $coatingGroup['products'],
+                                            ])
+                                        </div>
+                                    @endforeach
                                 </div>
                             @endforeach
-                        @else
-                            {{-- Single level group --}}
-                            <div class="mt-4">
-                                @include('partials.product-table', ['products' => $group['products']])
-                            </div>
-                        @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        @else
+            <!-- Regular Products -->
+            @foreach ($groupedProducts['groups'] as $group)
+                <div class="mt-5">
+                    <div class="row">
+                        <!-- Left Image Column -->
+                        <div class="col-md-3">
+                            @if ($group['image'])
+                                <img style="max-width: 357px;height: 270px;"
+                                    src="{{ secure_asset(Storage::url($group['image'])) }}" alt="{{ $group['title'] }}"
+                                    class="img-fluid rounded">
+                            @endif
+                        </div>
+
+                        <!-- Right Content Column -->
+                        <div class="col-md-9">
+                            <!-- Group Header -->
+                            <div class="bg-danger text-white text-center py-2 rounded">
+                                <h4>{{ $group['title'] }}</h4>
+                            </div>
+
+                            @if (!empty($group['subgroups']))
+                                @foreach ($group['subgroups'] as $subgroup)
+                                    <div class="mt-4">
+                                        <div class="bg-secondary text-white text-center py-1 rounded">
+                                            <h5>{{ $subgroup['title'] }}</h5>
+                                        </div>
+                                        @if (!empty($subgroup['products']))
+                                            @include('partials.product-table', [
+                                                'products' => $subgroup['products'],
+                                            ])
+                                        @endif
+                                        @if (!empty($subgroup['subgroups']))
+                                            @foreach ($subgroup['subgroups'] as $nestedGroup)
+                                                <div class="mt-3">
+                                                    <div class="bg-light text-dark text-center py-1 rounded border">
+                                                        <h6>{{ $nestedGroup['title'] }}</h6>
+                                                    </div>
+                                                    @include('partials.product-table', [
+                                                        'products' => $nestedGroup['products'],
+                                                    ])
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="mt-4">
+                                    @include('partials.product-table', ['products' => $group['products']])
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     @endif
 
     <!-- Footer Section -->
@@ -198,7 +226,8 @@
 
             // Handle quantity buttons
             document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('quantity-decrease') || e.target.classList.contains('quantity-increase')) {
+                if (e.target.classList.contains('quantity-decrease') || e.target.classList.contains(
+                        'quantity-increase')) {
                     const input = e.target.closest('.input-group').querySelector('.quantity-input');
                     let value = parseInt(input.value);
 
@@ -254,83 +283,87 @@
 
                     // Add to cart
                     fetch('{{ secure_url(route('cart.add', [], false)) }}', {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json'
-                        },
-                        body: formData
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(err => Promise.reject(err));
-                        }
-                        return response.json();
-                    })
-                    .then(response => {
-                        if (response.success) {
-                            // Update cart count
-                            const cartCountElement = document.getElementById('cart-count');
-                            if (cartCountElement) {
-                                cartCountElement.textContent = response.cartCount;
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(err => Promise.reject(err));
                             }
+                            return response.json();
+                        })
+                        .then(response => {
+                            if (response.success) {
+                                // Update cart count
+                                const cartCountElement = document.getElementById('cart-count');
+                                if (cartCountElement) {
+                                    cartCountElement.textContent = response.cartCount;
+                                }
 
-                            // Show success message
-                            const toast = document.getElementById('cartToast');
-                            if (toast) {
-                                toast.querySelector('.toast-body').innerHTML = 'Item added to cart successfully!';
-                                const bsToast = new bootstrap.Toast(toast);
-                                bsToast.show();
-                            }
+                                // Show success message
+                                const toast = document.getElementById('cartToast');
+                                if (toast) {
+                                    toast.querySelector('.toast-body').innerHTML =
+                                        'Item added to cart successfully!';
+                                    const bsToast = new bootstrap.Toast(toast);
+                                    bsToast.show();
+                                }
 
-                            // Update mini cart if it exists
-                            const miniCartItems = document.getElementById('mini-cart-items');
-                            const emptyCartMessage = document.getElementById('empty-cart-message');
-                            
-                            if (miniCartItems && emptyCartMessage) {
-                                // Clear existing items
-                                miniCartItems.innerHTML = '';
-                                
-                                // Add new items
-                                Object.values(response.cart).forEach(item => {
-                                    const li = document.createElement('li');
-                                    li.className = 'd-flex justify-content-between align-items-start mb-2';
-                                    li.innerHTML = `
+                                // Update mini cart if it exists
+                                const miniCartItems = document.getElementById('mini-cart-items');
+                                const emptyCartMessage = document.getElementById('empty-cart-message');
+
+                                if (miniCartItems && emptyCartMessage) {
+                                    // Clear existing items
+                                    miniCartItems.innerHTML = '';
+
+                                    // Add new items
+                                    Object.values(response.cart).forEach(item => {
+                                        const li = document.createElement('li');
+                                        li.className =
+                                            'd-flex justify-content-between align-items-start mb-2';
+                                        li.innerHTML = `
                                         <div>
                                             <h6 class="mb-0" style="font-size: 14px;">${item.product_name}</h6>
                                             <small class="text-muted">Qty: ${item.quantity}</small>
                                         </div>
                                         <span class="fw-bold" style="font-size: 14px;">$${(item.total).toFixed(2)}</span>
                                     `;
-                                    miniCartItems.appendChild(li);
-                                    
-                                    // Add horizontal line
-                                    const hr = document.createElement('hr');
-                                    miniCartItems.appendChild(hr);
-                                });
+                                        miniCartItems.appendChild(li);
 
-                                // Toggle empty cart message
-                                emptyCartMessage.classList.toggle('d-none', Object.keys(response.cart).length > 0);
+                                        // Add horizontal line
+                                        const hr = document.createElement('hr');
+                                        miniCartItems.appendChild(hr);
+                                    });
+
+                                    // Toggle empty cart message
+                                    emptyCartMessage.classList.toggle('d-none', Object.keys(response
+                                            .cart)
+                                        .length > 0);
+                                }
+                            } else {
+                                throw new Error(response.message || 'Failed to add item to cart');
                             }
-                        } else {
-                            throw new Error(response.message || 'Failed to add item to cart');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        // Show error message
-                        const toast = document.getElementById('cartToast');
-                        if (toast) {
-                            let errorMessage = 'Error adding item to cart. Please try again.';
-                            if (error.errors) {
-                                errorMessage = Object.values(error.errors).flat().join('<br>');
-                            } else if (error.message) {
-                                errorMessage = error.message;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Show error message
+                            const toast = document.getElementById('cartToast');
+                            if (toast) {
+                                let errorMessage = 'Error adding item to cart. Please try again.';
+                                if (error.errors) {
+                                    errorMessage = Object.values(error.errors).flat().join('<br>');
+                                } else if (error.message) {
+                                    errorMessage = error.message;
+                                }
+                                toast.querySelector('.toast-body').innerHTML = errorMessage;
+                                const bsToast = new bootstrap.Toast(toast);
+                                bsToast.show();
                             }
-                            toast.querySelector('.toast-body').innerHTML = errorMessage;
-                            const bsToast = new bootstrap.Toast(toast);
-                            bsToast.show();
-                        }
-                    });
+                        });
                 }
             });
         });

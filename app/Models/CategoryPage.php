@@ -9,6 +9,7 @@ class CategoryPage extends Model
 {
     protected $fillable = [
         'family_category_id',
+        'template',
         'title',
         'subtitle',
         'bulletin_board',

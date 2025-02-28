@@ -51,116 +51,213 @@ class CategoryPageController extends Controller
             )
             ->get();
 
-        // Check which grouping fields have data
-        $groupingFields = [];
-        if ($products->whereNotNull('style')->count() > 0) {
-            $groupingFields[] = 'style';
-        }
-        if ($products->whereNotNull('specialty')->count() > 0) {
-            $groupingFields[] = 'specialty';
-        }
-        if ($products->whereNotNull('spacing')->count() > 0) {
-            $groupingFields[] = 'spacing';
-        }
-        if ($products->whereNotNull('coating')->count() > 0) {
-            $groupingFields[] = 'coating';
+        if ($page->template === 'welded_wire') {
+            // Welded wire template logic
+            $meshSize_products = [];
+            $groupedByMesh = $products->groupBy('size1');
+            
+            foreach ($groupedByMesh as $meshSize => $sameHeightProducts) {
+                $gaugeProducts = [];
+                $sameHeightProducts = $sameHeightProducts->groupBy('size2');
+                
+                foreach ($sameHeightProducts as $gauge => $sameGaugeProducts) {
+                    $coatingProducts = [];
+                    $sameGaugeProducts = $sameGaugeProducts->groupBy('coating');
+                    
+                    foreach ($sameGaugeProducts as $coating => $sameCoatingProducts) {
+                        // Group same products with different colors
+                        $colorGroups = $sameCoatingProducts->groupBy(function($product) {
+                            return $product->size1 . '-' . $product->size2 . '-' . $product->coating;
+                        })->map(function($group) {
+                            $baseProduct = $group->first();
+                            $colors = $group->pluck('color')->filter();
+                            $baseProduct->available_colors = $colors;
+                            $baseProduct->color_variants = $group->mapWithKeys(function($product) {
+                                return [$product->color => [
+                                    'color' => $product->color,
+                                    'item_no' => $product->item_no,
+                                    'size2' => $product->size2,
+                                    'weight' => $product->weight,
+                                    'product_id' => $product->product_id
+                                ]];
+                            });
+                            return $baseProduct;
+                        })->values();
+
+                        $coatingProducts[] = [
+                            'title' => $coating,
+                            'products' => $colorGroups
+                        ];
+                    }
+                    
+                    $gaugeProducts[] = [
+                        'title' => $gauge,
+                        'subgroups' => $coatingProducts
+                    ];
+                }
+                
+                $meshSize_products[] = [
+                    'title' => $meshSize,
+                    'subgroups' => $gaugeProducts,
+                    'image' => $sameHeightProducts->first()->first()->large_image ?? null
+                ];
+            }
+            
+            return view('category-page', [
+                'page' => $page,
+                'mainCategory' => $mainCategory,
+                'groupedProducts' => ['groups' => $meshSize_products],
+                'isWeldedWire' => true
+            ]);
         }
 
-        // If no grouping fields are available, return products as is
-        if (empty($groupingFields)) {
-            $groupedProducts = collect([
-                'groups' => [
-                    [
-                        'title' => $mainCategory->name,
-                        'products' => $this->processProducts($products),
-                        'image' => $products->first()->large_image ?? null
+        // Standard template logic
+        $groups = [];
+        $styleGroups = $products->whereNotNull('style')->groupBy('style');
+        
+        foreach ($styleGroups as $style => $styleProducts) {
+            $group = [
+                'title' => $style ?: 'Other',
+                'image' => $styleProducts->first()->large_image ?? null,
+                'subgroups' => []
+            ];
+
+            // Group by specialty within style
+            $specialtyGroups = $styleProducts->whereNotNull('specialty')->groupBy('specialty');
+            
+            foreach ($specialtyGroups as $specialty => $specialtyProducts) {
+                // Group same products with different colors within each specialty
+                $uniqueProducts = $specialtyProducts->groupBy(function($product) {
+                    return $product->style . '-' . $product->specialty . '-' . $product->size1 . '-' . $product->size2;
+                })->map(function($sameProducts) {
+                    $baseProduct = $sameProducts->first();
+                    $colors = $sameProducts->pluck('color')->filter();
+                    $baseProduct->available_colors = $colors;
+                    $baseProduct->color_variants = $sameProducts->mapWithKeys(function($product) {
+                        return [$product->color => [
+                            'color' => $product->color,
+                            'item_no' => $product->item_no,
+                            'size2' => $product->size2,
+                            'weight' => $product->weight,
+                            'product_id' => $product->product_id
+                        ]];
+                    });
+                    return $baseProduct;
+                })->values();
+
+                $group['subgroups'][] = [
+                    'title' => $specialty ?: 'Other',
+                    'products' => $uniqueProducts
+                ];
+            }
+
+            // Handle products without specialty
+            $noSpecialtyProducts = $styleProducts->whereNull('specialty');
+            if ($noSpecialtyProducts->isNotEmpty()) {
+                $uniqueProducts = $noSpecialtyProducts->groupBy(function($product) {
+                    return $product->style . '-' . $product->size1 . '-' . $product->size2;
+                })->map(function($sameProducts) {
+                    $baseProduct = $sameProducts->first();
+                    $colors = $sameProducts->pluck('color')->filter();
+                    $baseProduct->available_colors = $colors;
+                    $baseProduct->color_variants = $sameProducts->mapWithKeys(function($product) {
+                        return [$product->color => [
+                            'color' => $product->color,
+                            'item_no' => $product->item_no,
+                            'size2' => $product->size2,
+                            'weight' => $product->weight,
+                            'product_id' => $product->product_id
+                        ]];
+                    });
+                    return $baseProduct;
+                })->values();
+
+                $group['subgroups'][] = [
+                    'title' => 'Other',
+                    'products' => $uniqueProducts
+                ];
+            }
+
+            if (!empty($group['subgroups'])) {
+                $groups[] = $group;
+            }
+        }
+
+        // If no style groups, show all products grouped by specialty
+        if (empty($groups)) {
+            $specialtyGroups = $products->whereNotNull('specialty')->groupBy('specialty');
+            
+            if ($specialtyGroups->isNotEmpty()) {
+                $mainGroup = [
+                    'title' => $mainCategory->family_category_name,
+                    'image' => $products->first()->large_image ?? null,
+                    'subgroups' => []
+                ];
+
+                foreach ($specialtyGroups as $specialty => $specialtyProducts) {
+                    $uniqueProducts = $specialtyProducts->groupBy(function($product) {
+                        return $product->specialty . '-' . $product->size1 . '-' . $product->size2;
+                    })->map(function($sameProducts) {
+                        $baseProduct = $sameProducts->first();
+                        $colors = $sameProducts->pluck('color')->filter();
+                        $baseProduct->available_colors = $colors;
+                        $baseProduct->color_variants = $sameProducts->mapWithKeys(function($product) {
+                            return [$product->color => [
+                                'color' => $product->color,
+                                'item_no' => $product->item_no,
+                                'size2' => $product->size2,
+                                'weight' => $product->weight,
+                                'product_id' => $product->product_id
+                            ]];
+                        });
+                        return $baseProduct;
+                    })->values();
+
+                    $mainGroup['subgroups'][] = [
+                        'title' => $specialty ?: 'Other',
+                        'products' => $uniqueProducts
+                    ];
+                }
+
+                $groups[] = $mainGroup;
+            } else {
+                // No specialties, show all products together
+                $uniqueProducts = $products->groupBy(function($product) {
+                    return $product->size1 . '-' . $product->size2;
+                })->map(function($sameProducts) {
+                    $baseProduct = $sameProducts->first();
+                    $colors = $sameProducts->pluck('color')->filter();
+                    $baseProduct->available_colors = $colors;
+                    $baseProduct->color_variants = $sameProducts->mapWithKeys(function($product) {
+                        return [$product->color => [
+                            'color' => $product->color,
+                            'item_no' => $product->item_no,
+                            'size2' => $product->size2,
+                            'weight' => $product->weight,
+                            'product_id' => $product->product_id
+                        ]];
+                    });
+                    return $baseProduct;
+                })->values();
+
+                $groups[] = [
+                    'title' => $mainCategory->family_category_name,
+                    'image' => $products->first()->large_image ?? null,
+                    'subgroups' => [
+                        [
+                            'title' => 'All Products',
+                            'products' => $uniqueProducts
+                        ]
                     ]
-                ]
-            ]);
-        } else {
-            // Group products by the available fields
-            $groupedProducts = $this->groupProductsByFields($products, $groupingFields);
+                ];
+            }
         }
 
         return view('category-page', [
             'page' => $page,
             'mainCategory' => $mainCategory,
-            'groupedProducts' => $groupedProducts,
-            'groupingFields' => $groupingFields
+            'groupedProducts' => ['groups' => $groups],
+            'isWeldedWire' => false
         ]);
-    }
-
-    private function groupProductsByFields($products, $fields) {
-        $result = [];
-        
-        // Start with the first level of grouping
-        $currentGroups = $products->groupBy($fields[0]);
-        
-        foreach ($currentGroups as $firstKey => $firstGroup) {
-            $group = [
-                'title' => $firstKey,
-                'products' => collect(),
-                'subgroups' => [],
-                'image' => $firstGroup->first()->large_image ?? null
-            ];
-            
-            if (count($fields) > 1) {
-                // Handle nested grouping
-                foreach ($fields as $index => $field) {
-                    if ($index === 0) continue; // Skip the first field as we already used it
-                    
-                    $subGroups = $firstGroup->groupBy($field);
-                    foreach ($subGroups as $key => $subGroup) {
-                        if ($index === count($fields) - 1) {
-                            // Last level, process the products
-                            $group['subgroups'][] = [
-                                'title' => "$firstKey - $key",
-                                'products' => $this->processProducts($subGroup),
-                                'image' => $subGroup->first()->large_image ?? null
-                            ];
-                        } else {
-                            // More levels to go
-                            $group['subgroups'][] = [
-                                'title' => "$firstKey - $key",
-                                'products' => collect(),
-                                'subgroups' => $this->groupProductsByFields($subGroup, array_slice($fields, $index + 1))['groups'],
-                                'image' => $subGroup->first()->large_image ?? null
-                            ];
-                        }
-                    }
-                }
-            } else {
-                // Single level grouping
-                $group['products'] = $this->processProducts($firstGroup);
-            }
-            
-            $result[] = $group;
-        }
-        
-        return ['groups' => $result];
-    }
-
-    private function processProducts($products) {
-        return $products->groupBy('size1')->map(function($sameHeightProducts) {
-            // Get all colors available for this height
-            $colors = $sameHeightProducts->pluck('color')->filter()->unique();
-            
-            // Take the first product as base and attach all available colors
-            $baseProduct = $sameHeightProducts->first();
-            $baseProduct->available_colors = $colors;
-            
-            // Store color variants with all necessary data
-            $baseProduct->color_variants = $sameHeightProducts->map(function($product) {
-                return [
-                    'color' => $product->color,
-                    'item_no' => $product->item_no,
-                    'size2' => $product->size2,
-                    'weight' => $product->weight,
-                    'product_id' => $product->product_id
-                ];
-            })->keyBy('color');
-            
-            return $baseProduct;
-        })->sortBy('size1');
     }
 }
