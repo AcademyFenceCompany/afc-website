@@ -109,6 +109,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="template" class="form-label">Template</label>
+                            <select name="template" id="template" class="form-control" required>
+                                <option value="standard" {{ (isset($page) && $page->template == 'standard') ? 'selected' : '' }}>Standard Template</option>
+                                <option value="welded_wire" {{ (isset($page) && $page->template == 'welded_wire') ? 'selected' : '' }}>Welded Wire Template</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a template.
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Header Section -->
