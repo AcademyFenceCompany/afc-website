@@ -1,3 +1,4 @@
+{{-- @dd($page); --}}
 @extends('layouts.main')
 
 @section('title', $page->title)
@@ -63,7 +64,7 @@
             <!-- Razor Wire Products -->
             <div class="mt-4">
                 <h2 class="text-center mb-4">18" Razor Wire Pricing</h2>
-                
+
                 <!-- Main Product Table -->
                 <div class="table-responsive">
                     <table class="table table-bordered">
@@ -85,23 +86,19 @@
                                     <td>{{ $product->weight }} lbs</td>
                                     <td>${{ number_format($product->price_per_unit, 2) }}</td>
                                     <td>
-                                        <input type="number" 
-                                               class="form-control quantity-input" 
-                                               min="1" 
-                                               max="{{ $quantityLimits[$product->product_id] }}"
-                                               value="1"
-                                               data-product-id="{{ $product->product_id }}"
-                                               onchange="validateQuantity(this, {{ $quantityLimits[$product->product_id] }})">
+                                        <input type="number" class="form-control quantity-input" min="1"
+                                            max="{{ $quantityLimits[$product->product_id] }}" value="1"
+                                            data-product-id="{{ $product->product_id }}"
+                                            onchange="validateQuantity(this, {{ $quantityLimits[$product->product_id] }})">
                                     </td>
                                     <td>
                                         <button class="btn btn-danger add-to-cart-btn"
-                                                data-product-id="{{ $product->product_id }}"
-                                                data-price="{{ $product->price_per_unit }}"
-                                                data-item="{{ $product->item_no }}"
-                                                data-product-name="{{ $product->product_name }}"
-                                                data-size1="{{ $product->size1 }}"
-                                                data-weight="{{ $product->weight }}"
-                                                data-family-category="{{ $mainCategory->family_category_id }}">
+                                            data-product-id="{{ $product->product_id }}"
+                                            data-price="{{ $product->price_per_unit }}"
+                                            data-item="{{ $product->item_no }}"
+                                            data-product-name="{{ $product->product_name }}"
+                                            data-size1="{{ $product->size1 }}" data-weight="{{ $product->weight }}"
+                                            data-family-category="{{ $mainCategory->family_category_id }}">
                                             Add to Cart
                                         </button>
                                     </td>
@@ -110,37 +107,67 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- Footer Section -->
+                @if ($page->footer_subtitle || $page->footer_bulletin_board || $page->footer_product_image || $page->footer_product_text)
+                    <div class="mt-5">
+                        @if ($page->footer_subtitle)
+                            <div class="text-center mb-4">
+                                <h3>{!! $page->footer_subtitle !!}</h3>
+                            </div>
+                        @endif
 
+                        @if ($page->footer_bulletin_board)
+                            <div class="alert alert-danger text-center">
+                                {!! $page->footer_bulletin_board !!}
+                            </div>
+                        @endif
+
+                        <div class="row align-items-center">
+                            @if ($page->footer_product_image)
+                                <div class="col-md-6 text-center">
+                                    <img src="{{ Storage::url($page->footer_product_image) }}" alt="Footer Product Image"
+                                        class="img-fluid rounded shadow-sm">
+                                </div>
+                            @endif
+
+                            @if ($page->footer_product_text)
+                                <div class="col-md-{{ $page->footer_product_image ? '6' : '12' }}">
+                                    <div class="footer-product-text">
+                                        {!! $page->footer_product_text !!}
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
                 <!-- Other Products -->
                 @if ($otherProducts->count() > 0)
                     <h3 class="text-center mt-5 mb-4">Other Available Products</h3>
                     <div class="row">
                         @foreach ($otherProducts as $product)
-                            <div class="col-md-4 mb-4">
+                            <div class="col-md-3 mb-4">
                                 <div class="card h-100">
                                     <div class="card-header bg-danger text-white">
-                                        <h5 class="card-title mb-0">{{ $product->size1 }}</h5>
+                                        <p class="mb-0">{{ $product->product_name }}</p>
                                     </div>
                                     <div class="card-body">
+                                        <img style="max-width: 150px;height: 125px;"
+                                            src="{{ Storage::url($product->large_image) }}"
+                                            alt="{{ $product->product_name }}" class="img-fluid rounded shadow-sm">
                                         <p class="card-text">
                                             <strong>Item No:</strong> {{ $product->item_no }}<br>
                                             <strong>Weight:</strong> {{ $product->weight }} lbs<br>
                                             <strong>Price:</strong> ${{ number_format($product->price_per_unit, 2) }}
                                         </p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <input type="number" 
-                                                   class="form-control quantity-input" 
-                                                   style="width: 100px"
-                                                   min="1" 
-                                                   value="1"
-                                                   data-product-id="{{ $product->product_id }}">
+                                            <input type="number" class="form-control quantity-input" style="width: 100px"
+                                                min="1" value="1" data-product-id="{{ $product->product_id }}">
                                             <button class="btn btn-danger add-to-cart-btn"
-                                                    data-item="{{ $product->item_no }}"
-                                                    data-price="{{ $product->price_per_unit }}"
-                                                    data-product-name="{{ $product->product_name }}"
-                                                    data-size1="{{ $product->size1 }}"
-                                                    data-weight="{{ $product->weight }}"
-                                                    data-family-category="{{ $mainCategory->family_category_id }}">
+                                                data-item="{{ $product->item_no }}"
+                                                data-price="{{ $product->price_per_unit }}"
+                                                data-product-name="{{ $product->product_name }}"
+                                                data-size1="{{ $product->size1 }}" data-weight="{{ $product->weight }}"
+                                                data-family-category="{{ $mainCategory->family_category_id }}">
                                                 Add to Cart
                                             </button>
                                         </div>
@@ -294,7 +321,8 @@
 
             // Handle quantity buttons
             document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('quantity-decrease') || e.target.classList.contains('quantity-increase')) {
+                if (e.target.classList.contains('quantity-decrease') || e.target.classList.contains(
+                        'quantity-increase')) {
                     const input = e.target.closest('.input-group').querySelector('.quantity-input');
                     let value = parseInt(input.value) || 1;
 
@@ -399,34 +427,39 @@
                     if (button.dataset.material) formData.append('material', button.dataset.material);
                     if (button.dataset.spacing) formData.append('spacing', button.dataset.spacing);
                     if (button.dataset.coating) formData.append('coating', button.dataset.coating);
-                    if (button.dataset.shippingLength) formData.append('shipping_length', button.dataset.shippingLength);
-                    if (button.dataset.shippingWidth) formData.append('shipping_width', button.dataset.shippingWidth);
-                    if (button.dataset.shippingHeight) formData.append('shipping_height', button.dataset.shippingHeight);
-                    if (button.dataset.shippingClass) formData.append('shipping_class', button.dataset.shippingClass);
+                    if (button.dataset.shippingLength) formData.append('shipping_length', button.dataset
+                        .shippingLength);
+                    if (button.dataset.shippingWidth) formData.append('shipping_width', button.dataset
+                        .shippingWidth);
+                    if (button.dataset.shippingHeight) formData.append('shipping_height', button.dataset
+                        .shippingHeight);
+                    if (button.dataset.shippingClass) formData.append('shipping_class', button.dataset
+                        .shippingClass);
 
                     // Send request to add to cart
                     fetch('/cart/add', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Show success message
-                            const toast = new bootstrap.Toast(document.getElementById('cartToast'));
-                            document.querySelector('#cartToast .toast-body').textContent = 'Item added to cart successfully!';
-                            toast.show();
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Show success message
+                                const toast = new bootstrap.Toast(document.getElementById('cartToast'));
+                                document.querySelector('#cartToast .toast-body').textContent =
+                                    'Item added to cart successfully!';
+                                toast.show();
 
-                            // Update cart UI
-                            updateCartUI(data);
-                        } else {
-                            alert(data.message || 'Failed to add item to cart');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred while adding to cart');
-                    });
+                                // Update cart UI
+                                updateCartUI(data);
+                            } else {
+                                alert(data.message || 'Failed to add item to cart');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while adding to cart');
+                        });
                 }
             });
         }
