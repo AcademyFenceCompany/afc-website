@@ -59,6 +59,7 @@
                             <select name="template" id="template" class="form-control" required>
                                 <option value="standard" {{ $page->template == 'standard' ? 'selected' : '' }}>Standard Template</option>
                                 <option value="welded_wire" {{ $page->template == 'welded_wire' ? 'selected' : '' }}>Welded Wire Template</option>
+                                <option value="razor_wire" {{ $page->template == 'razor_wire' ? 'selected' : '' }}>Razor Wire Template</option>
                             </select>
                         </div>
                     </div>

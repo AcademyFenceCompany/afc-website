@@ -38,7 +38,7 @@
         <!-- Center Image -->
         <div class="col-md-4 text-center">
             @if ($page->product_image)
-                <img style="max-width: 357px;height: 270px;" src="{{ secure_asset(Storage::url($page->product_image)) }}"
+                <img style="max-width: 357px;height: 270px;" src="{{ Storage::url($page->product_image) }}"
                     alt="{{ $page->title }} Image" class="img-fluid rounded shadow-sm">
             @endif
         </div>
@@ -54,49 +54,132 @@
     </div>
 
     <!-- Products Section -->
-    @if (empty($groupedProducts['groups']))
+    @if (empty($groupedProducts['groups']) && empty($meshSize_products) && empty($mainTableProducts))
         <div class="alert alert-info mt-5">
             No products found for this category.
         </div>
     @else
-        @if ($isWeldedWire)
-            <!-- Welded Wire Products -->
-            @foreach ($groupedProducts['groups'] as $meshSizeGroup)
-                <div class="mt-5">
+        @if ($isRazorWire ?? false)
+            <!-- Razor Wire Products -->
+            <div class="mt-4">
+                <h2 class="text-center mb-4">18" Razor Wire Pricing</h2>
+                
+                <!-- Main Product Table -->
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="bg-danger text-white">
+                            <tr>
+                                <th>Item No.</th>
+                                <th>Description</th>
+                                <th>Weight</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($mainTableProducts as $product)
+                                <tr>
+                                    <td>{{ $product->item_no }}</td>
+                                    <td>{{ $product->size1 }}</td>
+                                    <td>{{ $product->weight }} lbs</td>
+                                    <td>${{ number_format($product->price_per_unit, 2) }}</td>
+                                    <td>
+                                        <input type="number" 
+                                               class="form-control quantity-input" 
+                                               min="1" 
+                                               max="{{ $quantityLimits[$product->product_id] }}"
+                                               value="1"
+                                               data-product-id="{{ $product->product_id }}"
+                                               onchange="validateQuantity(this, {{ $quantityLimits[$product->product_id] }})">
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger add-to-cart-btn"
+                                                data-product-id="{{ $product->product_id }}"
+                                                data-price="{{ $product->price_per_unit }}"
+                                                data-item="{{ $product->item_no }}"
+                                                data-product-name="{{ $product->product_name }}"
+                                                data-size1="{{ $product->size1 }}"
+                                                data-weight="{{ $product->weight }}"
+                                                data-family-category="{{ $mainCategory->family_category_id }}">
+                                            Add to Cart
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Other Products -->
+                @if ($otherProducts->count() > 0)
+                    <h3 class="text-center mt-5 mb-4">Other Available Products</h3>
                     <div class="row">
-                        <!-- Left Image Column -->
-                        <div class="col-md-3">
-                            @if ($meshSizeGroup['image'])
-                                <img style="max-width: 357px;height: 270px;"
-                                    src="{{ secure_asset(Storage::url($meshSizeGroup['image'])) }}"
-                                    alt="{{ $meshSizeGroup['title'] }}" class="img-fluid rounded">
-                            @endif
+                        @foreach ($otherProducts as $product)
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5 class="card-title mb-0">{{ $product->size1 }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <strong>Item No:</strong> {{ $product->item_no }}<br>
+                                            <strong>Weight:</strong> {{ $product->weight }} lbs<br>
+                                            <strong>Price:</strong> ${{ number_format($product->price_per_unit, 2) }}
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <input type="number" 
+                                                   class="form-control quantity-input" 
+                                                   style="width: 100px"
+                                                   min="1" 
+                                                   value="1"
+                                                   data-product-id="{{ $product->product_id }}">
+                                            <button class="btn btn-danger add-to-cart-btn"
+                                                    data-item="{{ $product->item_no }}"
+                                                    data-price="{{ $product->price_per_unit }}"
+                                                    data-product-name="{{ $product->product_name }}"
+                                                    data-size1="{{ $product->size1 }}"
+                                                    data-weight="{{ $product->weight }}"
+                                                    data-family-category="{{ $mainCategory->family_category_id }}">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        @elseif ($isWeldedWire)
+            <!-- Welded Wire Products by Gauge -->
+            @foreach ($meshSize_products->groupBy('size3') as $gauge => $products)
+                <!-- Gauge Section -->
+                <div class="mt-5">
+                    <div class="bg-danger text-white text-center py-2 rounded">
+                        <h4>{{ $gauge }} Gauge</h4>
+                    </div>
+                    <div class="row mt-3">
+                        <!-- Left Image -->
+                        <div class="col-md-3 text-center">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-danger text-white fw-bold py-2">
+                                    {{ $products->first()->size2 ?? 'Mesh Size' }},
+                                    {{ $gauge ?? 'Gauge' }}
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ $products->first()->large_image ? Storage::url($products->first()->large_image) : asset('images/default.png') }}"
+                                        alt="{{ $products->first()->product_name }}" class="img-fluid rounded">
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Right Content Column -->
+                        <!-- Right Content -->
                         <div class="col-md-9">
-                            <!-- Group Header -->
-                            <div class="bg-danger text-white text-center py-2 rounded">
-                                <h4>{{ $meshSizeGroup['title'] }} Mesh Size</h4>
-                            </div>
-
-                            @foreach ($meshSizeGroup['subgroups'] as $gaugeGroup)
-                                <div class="mt-4">
-                                    {{-- <div class="bg-secondary text-white text-center py-1 rounded">
-                                        <h5>{{ $gaugeGroup['title'] }} Gauge</h5>
-                                    </div> --}}
-                                    @foreach ($gaugeGroup['subgroups'] as $coatingGroup)
-                                        <div class="mt-3">
-                                            {{-- <div class="bg-light text-dark text-center py-1 rounded border">
-                                                <h6>{{ $coatingGroup['title'] }} Coating</h6>
-                                            </div> --}}
-                                            @include('partials.product-table', [
-                                                'products' => $coatingGroup['products'],
-                                            ])
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endforeach
+                            <p class="text-danger"><strong>Note:</strong> call ahead for local pickup!</p>
+                            @include('partials.product-table', [
+                                'products' => $products,
+                            ])
                         </div>
                     </div>
                 </div>
@@ -109,9 +192,8 @@
                         <!-- Left Image Column -->
                         <div class="col-md-3">
                             @if ($group['image'])
-                                <img style="max-width: 357px;height: 270px;"
-                                    src="{{ secure_asset(Storage::url($group['image'])) }}" alt="{{ $group['title'] }}"
-                                    class="img-fluid rounded">
+                                <img style="max-width: 357px;height: 270px;" src="{{ Storage::url($group['image']) }}"
+                                    alt="{{ $group['title'] }}" class="img-fluid rounded">
                             @endif
                         </div>
 
@@ -123,34 +205,28 @@
                             </div>
 
                             @if (!empty($group['subgroups']))
-                                @foreach ($group['subgroups'] as $subgroup)
-                                    <div class="mt-4">
-                                        <div class="bg-secondary text-white text-center py-1 rounded">
-                                            <h5>{{ $subgroup['title'] }}</h5>
-                                        </div>
-                                        @if (!empty($subgroup['products']))
-                                            @include('partials.product-table', [
-                                                'products' => $subgroup['products'],
-                                            ])
-                                        @endif
-                                        @if (!empty($subgroup['subgroups']))
-                                            @foreach ($subgroup['subgroups'] as $nestedGroup)
-                                                <div class="mt-3">
-                                                    <div class="bg-light text-dark text-center py-1 rounded border">
-                                                        <h6>{{ $nestedGroup['title'] }}</h6>
-                                                    </div>
-                                                    @include('partials.product-table', [
-                                                        'products' => $nestedGroup['products'],
-                                                    ])
-                                                </div>
-                                            @endforeach
-                                        @endif
+                                <!-- Navigation Buttons -->
+                                <div class="mt-3 text-center">
+                                    @foreach ($group['subgroups'] as $index => $subgroup)
+                                        <button class="btn btn-outline-primary mb-2 me-2 specialty-btn"
+                                            data-target="specialty-{{ $loop->parent->index }}-{{ $index }}">
+                                            {{ $subgroup['title'] }}
+                                        </button>
+                                    @endforeach
+                                </div>
+
+                                <!-- Specialty Groups -->
+                                @foreach ($group['subgroups'] as $index => $subgroup)
+                                    <div class="specialty-group mt-4"
+                                        id="specialty-{{ $loop->parent->index }}-{{ $index }}"
+                                        style="{{ $loop->first ? '' : 'display: none;' }}">
+                                        @include('partials.product-table', [
+                                            'products' => $subgroup['products'],
+                                        ])
                                     </div>
                                 @endforeach
                             @else
-                                <div class="mt-4">
-                                    @include('partials.product-table', ['products' => $group['products']])
-                                </div>
+                                @include('partials.product-table', ['products' => $group['products']])
                             @endif
                         </div>
                     </div>
@@ -177,7 +253,7 @@
             <div class="row align-items-center">
                 @if ($page->footer_product_image)
                     <div class="col-md-6 text-center">
-                        <img src="{{ secure_asset(Storage::url($page->footer_product_image)) }}" alt="Footer Product Image"
+                        <img src="{{ Storage::url($page->footer_product_image) }}" alt="Footer Product Image"
                             class="img-fluid rounded shadow-sm">
                     </div>
                 @endif
@@ -196,40 +272,31 @@
 
 @section('scripts')
     <script>
-        function updateProductDetails(selectElement) {
-            const row = selectElement.closest('tr');
-            const variants = JSON.parse(selectElement.dataset.variants);
-            const selectedColor = selectElement.value;
-            const variant = variants[selectedColor];
-
-            // Update item number
-            row.querySelector('.item-no').textContent = variant.item_no;
-
-            // Update mesh size
-            row.querySelector('.mesh-size').textContent = variant.size2;
-
-            // Update weight
-            row.querySelector('.weight').textContent = variant.weight ? variant.weight + ' lbs' : '-';
-
-            // Update add to cart button data attributes
-            const addToCartBtn = row.querySelector('.add-to-cart-btn');
-            addToCartBtn.dataset.item = variant.item_no;
-            addToCartBtn.dataset.size2 = variant.size2;
-            addToCartBtn.dataset.weight = variant.weight;
-        }
-
-        // Initialize the first selected color for each product
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.color-select').forEach(select => {
-                updateProductDetails(select);
+            // Handle specialty button clicks
+            const specialtyBtns = document.querySelectorAll('.specialty-btn');
+            specialtyBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const parentGroup = this.closest('.mt-5');
+                    const allGroups = parentGroup.querySelectorAll('.specialty-group');
+                    const allBtns = parentGroup.querySelectorAll('.specialty-btn');
+
+                    // Hide all groups
+                    allGroups.forEach(group => group.style.display = 'none');
+                    // Show target group
+                    document.getElementById(targetId).style.display = 'block';
+                    // Update button states
+                    allBtns.forEach(btn => btn.classList.remove('btn-primary', 'text-white'));
+                    this.classList.add('btn-primary', 'text-white');
+                });
             });
 
             // Handle quantity buttons
             document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('quantity-decrease') || e.target.classList.contains(
-                        'quantity-increase')) {
+                if (e.target.classList.contains('quantity-decrease') || e.target.classList.contains('quantity-increase')) {
                     const input = e.target.closest('.input-group').querySelector('.quantity-input');
-                    let value = parseInt(input.value);
+                    let value = parseInt(input.value) || 1;
 
                     if (e.target.classList.contains('quantity-increase')) {
                         value = Math.min(value + 1, 99); // Max 99
@@ -241,13 +308,71 @@
                 }
             });
 
-            // Handle add to cart
+            // Initialize cart functionality
+            initializeCart();
+        });
+
+        function updateProductDetails(selectElement) {
+            const row = selectElement.closest('tr');
+            const variants = JSON.parse(selectElement.dataset.variants);
+            const selectedColor = selectElement.value;
+            const variant = variants[selectedColor];
+
+            // Update item number
+            row.querySelector('.item-no').textContent = variant.item_no;
+
+            // Update mesh size
+            const meshSize = row.querySelector('.mesh-size');
+            if (meshSize) {
+                meshSize.textContent = variant.size2;
+            }
+
+            // Update weight
+            const weight = row.querySelector('.weight');
+            if (weight) {
+                weight.textContent = variant.weight ? variant.weight + ' lbs' : '-';
+            }
+
+            // Update add to cart button data attributes
+            const addToCartBtn = row.querySelector('.add-to-cart-btn');
+            if (addToCartBtn) {
+                addToCartBtn.dataset.item = variant.item_no;
+                addToCartBtn.dataset.size2 = variant.size2;
+                addToCartBtn.dataset.weight = variant.weight;
+            }
+        }
+
+        function initializeCart() {
+            const cartIcon = document.getElementById('cart-icon');
+            const miniCart = document.getElementById('mini-cart');
+
+            if (cartIcon && miniCart) {
+                // Toggle mini cart on icon click
+                cartIcon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    miniCart.classList.toggle('show');
+                });
+
+                // Close mini cart when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (miniCart && !miniCart.contains(e.target) && e.target !== cartIcon) {
+                        miniCart.classList.remove('show');
+                    }
+                });
+            }
+
+            // Initialize color selects
+            document.querySelectorAll('.color-select').forEach(select => {
+                updateProductDetails(select);
+            });
+
+            // Add to cart functionality
             document.addEventListener('click', function(e) {
                 if (e.target.classList.contains('add-to-cart-btn')) {
                     e.preventDefault();
                     const button = e.target;
-                    const row = button.closest('tr');
-                    const quantity = parseInt(row.querySelector('.quantity-input').value) || 1;
+                    const container = button.closest('tr') || button.closest('.card-body');
+                    const quantity = parseInt(container.querySelector('.quantity-input').value) || 1;
                     const price = parseFloat(button.dataset.price);
 
                     // Create FormData
@@ -256,130 +381,117 @@
                     formData.append('item_no', button.dataset.item || '');
                     formData.append('product_name', button.dataset.productName || '');
                     formData.append('price', price.toString());
-                    formData.append('color', row.querySelector('.color-select').value || '');
+                    formData.append('quantity', quantity.toString());
                     formData.append('size1', button.dataset.size1 || '');
-                    formData.append('size2', button.dataset.size2 || '');
-                    formData.append('size3', '');
-                    formData.append('specialty', '');
-                    formData.append('material', '');
-                    formData.append('spacing', '');
-                    formData.append('coating', '');
                     formData.append('weight', button.dataset.weight || '0');
                     formData.append('family_category', button.dataset.familyCategory || '');
-                    formData.append('general_image', '');
-                    formData.append('small_image', '');
-                    formData.append('large_image', '');
-                    formData.append('free_shipping', '0');
-                    formData.append('special_shipping', '0');
-                    formData.append('amount_per_box', '0');
-                    formData.append('quantity', quantity.toString());
-                    formData.append('total', (price * quantity).toString());
-                    formData.append('description', '');
-                    formData.append('subcategory_id', '0');
-                    formData.append('shipping_length', button.dataset.shippingLength || '0');
-                    formData.append('shipping_width', button.dataset.shippingWidth || '0');
-                    formData.append('shipping_height', button.dataset.shippingHeight || '0');
-                    formData.append('shipping_class', button.dataset.shippingClass || '');
 
-                    // Add to cart
-                    fetch('{{ secure_url(route('cart.add', [], false)) }}', {
-                            method: 'POST',
-                            headers: {
-                                'Accept': 'application/json'
-                            },
-                            body: formData
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(err => Promise.reject(err));
-                            }
-                            return response.json();
-                        })
-                        .then(response => {
-                            if (response.success) {
-                                // Update cart count
-                                const cartCountElement = document.getElementById('cart-count');
-                                if (cartCountElement) {
-                                    cartCountElement.textContent = response.cartCount;
-                                }
+                    // Add color if color select exists
+                    const colorSelect = container.querySelector('.color-select');
+                    if (colorSelect) {
+                        formData.append('color', colorSelect.value);
+                    }
 
-                                // Show success message
-                                const toast = document.getElementById('cartToast');
-                                if (toast) {
-                                    toast.querySelector('.toast-body').innerHTML =
-                                        'Item added to cart successfully!';
-                                    const bsToast = new bootstrap.Toast(toast);
-                                    bsToast.show();
-                                }
+                    // Add other fields if they exist
+                    if (button.dataset.size2) formData.append('size2', button.dataset.size2);
+                    if (button.dataset.size3) formData.append('size3', button.dataset.size3);
+                    if (button.dataset.specialty) formData.append('specialty', button.dataset.specialty);
+                    if (button.dataset.material) formData.append('material', button.dataset.material);
+                    if (button.dataset.spacing) formData.append('spacing', button.dataset.spacing);
+                    if (button.dataset.coating) formData.append('coating', button.dataset.coating);
+                    if (button.dataset.shippingLength) formData.append('shipping_length', button.dataset.shippingLength);
+                    if (button.dataset.shippingWidth) formData.append('shipping_width', button.dataset.shippingWidth);
+                    if (button.dataset.shippingHeight) formData.append('shipping_height', button.dataset.shippingHeight);
+                    if (button.dataset.shippingClass) formData.append('shipping_class', button.dataset.shippingClass);
 
-                                // Update mini cart if it exists
-                                const miniCartItems = document.getElementById('mini-cart-items');
-                                const emptyCartMessage = document.getElementById('empty-cart-message');
+                    // Send request to add to cart
+                    fetch('/cart/add', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success message
+                            const toast = new bootstrap.Toast(document.getElementById('cartToast'));
+                            document.querySelector('#cartToast .toast-body').textContent = 'Item added to cart successfully!';
+                            toast.show();
 
-                                if (miniCartItems && emptyCartMessage) {
-                                    // Clear existing items
-                                    miniCartItems.innerHTML = '';
-
-                                    // Add new items
-                                    Object.values(response.cart).forEach(item => {
-                                        const li = document.createElement('li');
-                                        li.className =
-                                            'd-flex justify-content-between align-items-start mb-2';
-                                        li.innerHTML = `
-                                        <div>
-                                            <h6 class="mb-0" style="font-size: 14px;">${item.product_name}</h6>
-                                            <small class="text-muted">Qty: ${item.quantity}</small>
-                                        </div>
-                                        <span class="fw-bold" style="font-size: 14px;">$${(item.total).toFixed(2)}</span>
-                                    `;
-                                        miniCartItems.appendChild(li);
-
-                                        // Add horizontal line
-                                        const hr = document.createElement('hr');
-                                        miniCartItems.appendChild(hr);
-                                    });
-
-                                    // Toggle empty cart message
-                                    emptyCartMessage.classList.toggle('d-none', Object.keys(response
-                                            .cart)
-                                        .length > 0);
-                                }
-                            } else {
-                                throw new Error(response.message || 'Failed to add item to cart');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            // Show error message
-                            const toast = document.getElementById('cartToast');
-                            if (toast) {
-                                let errorMessage = 'Error adding item to cart. Please try again.';
-                                if (error.errors) {
-                                    errorMessage = Object.values(error.errors).flat().join('<br>');
-                                } else if (error.message) {
-                                    errorMessage = error.message;
-                                }
-                                toast.querySelector('.toast-body').innerHTML = errorMessage;
-                                const bsToast = new bootstrap.Toast(toast);
-                                bsToast.show();
-                            }
-                        });
+                            // Update cart UI
+                            updateCartUI(data);
+                        } else {
+                            alert(data.message || 'Failed to add item to cart');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while adding to cart');
+                    });
                 }
             });
-        });
-    </script>
-@endsection
+        }
 
-<!-- Toast Container -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-success text-white">
-            <strong class="me-auto">Success</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
-                aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Item added to cart successfully!
+        function updateCartUI(response) {
+            const cartCount = document.getElementById('cart-count');
+            const cartItemsList = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+
+            if (response.cart) {
+                // Update cart count
+                if (cartCount) {
+                    cartCount.textContent = response.cartCount;
+                    cartCount.style.display = response.cartCount > 0 ? 'inline' : 'none';
+                }
+
+                // Update cart items
+                if (cartItemsList) {
+                    cartItemsList.innerHTML = Object.values(response.cart).map(item => `
+                        <li class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h6 class="mb-0" style="font-size: 14px;">${item.product_name}</h6>
+                                <small class="text-muted">Qty: ${item.quantity}</small>
+                            </div>
+                            <span class="fw-bold" style="font-size: 14px;">$${(item.total).toFixed(2)}</span>
+                        </li>
+                        <hr>
+                    `).join('');
+                }
+
+                // Update cart total
+                if (cartTotal && response.total) {
+                    cartTotal.textContent = `$${response.total}`;
+                }
+
+                // Toggle empty cart message
+                if (emptyCartMessage) {
+                    emptyCartMessage.classList.toggle('d-none', Object.keys(response.cart).length > 0);
+                }
+            }
+        }
+    </script>
+
+    @push('scripts')
+        <script>
+            function validateQuantity(input, maxLimit) {
+                const value = parseInt(input.value);
+                if (value > maxLimit) {
+                    input.value = maxLimit;
+                    alert('Maximum quantity for this product is ' + maxLimit);
+                }
+            }
+        </script>
+    @endpush
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Cart Update</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
         </div>
     </div>
-</div>
+@endsection
