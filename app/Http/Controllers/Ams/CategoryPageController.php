@@ -29,7 +29,7 @@ class CategoryPageController extends Controller
     {
         $validated = $request->validate([
             'family_category_id' => 'required|exists:family_categories,family_category_id',
-            'template' => 'required|string|in:standard,welded_wire',
+            'template' => 'required|string|in:standard,welded_wire,razor_wire',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
             'bulletin_board' => 'nullable|string',
@@ -70,7 +70,7 @@ class CategoryPageController extends Controller
     {
         $validated = $request->validate([
             'family_category_id' => 'required|exists:family_categories,family_category_id',
-            'template' => 'required|string|in:standard,welded_wire',
+            'template' => 'required|string|in:standard,welded_wire,razor_wire',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
             'bulletin_board' => 'nullable|string',

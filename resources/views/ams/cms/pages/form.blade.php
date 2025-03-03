@@ -115,6 +115,7 @@
                             <select name="template" id="template" class="form-control" required>
                                 <option value="standard" {{ (isset($page) && $page->template == 'standard') ? 'selected' : '' }}>Standard Template</option>
                                 <option value="welded_wire" {{ (isset($page) && $page->template == 'welded_wire') ? 'selected' : '' }}>Welded Wire Template</option>
+                                <option value="razor_wire" {{ (isset($page) && $page->template == 'razor_wire') ? 'selected' : '' }}>Razor Wire Template</option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a template.

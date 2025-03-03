@@ -16,7 +16,7 @@
             @foreach ($products as $product)
                 @php
                     $firstVariant = $product->color_variants->first();
-                    $productName = $product->name ?? 'Top-Lock';
+                    $productName = $product->product_name;
                 @endphp
                 <tr data-product-row="{{ $product->product_id }}">
                     <td class="item-no">{{ $firstVariant['item_no'] }}</td>
@@ -25,8 +25,7 @@
                         @php
                             $variantsJson = json_encode($product->color_variants);
                         @endphp
-                        <select class="form-select color-select"
-                            data-variants='{{ $variantsJson }}'
+                        <select class="form-select color-select" data-variants='{{ $variantsJson }}'
                             onchange="updateProductDetails(this)">
                             @foreach ($product->available_colors as $color)
                                 <option value="{{ $color }}">{{ $color }}</option>
@@ -38,21 +37,16 @@
                     <td class="price">${{ number_format($product->price_per_unit, 2) }}</td>
                     <td>
                         <div class="input-group" style="width: 120px;">
-                            <button class="btn btn-outline-secondary quantity-decrease"
-                                type="button">-</button>
-                            <input type="text" class="form-control text-center quantity-input"
-                                value="1" data-price="{{ $product->price_per_unit }}">
-                            <button class="btn btn-outline-secondary quantity-increase"
-                                type="button">+</button>
+                            <button class="btn btn-outline-secondary quantity-decrease" type="button">-</button>
+                            <input type="text" class="form-control text-center quantity-input" value="1"
+                                data-price="{{ $product->price_per_unit }}">
+                            <button class="btn btn-outline-secondary quantity-increase" type="button">+</button>
                         </div>
                     </td>
                     <td>
-                        <button class="btn btn-danger add-to-cart-btn"
-                            data-item="{{ $firstVariant['item_no'] }}"
-                            data-price="{{ $product->price_per_unit }}"
-                            data-product-name="{{ $productName }}"
-                            data-size1="{{ $product->size1 }}"
-                            data-size2="{{ $firstVariant['size2'] }}"
+                        <button class="btn btn-danger add-to-cart-btn" data-item="{{ $firstVariant['item_no'] }}"
+                            data-price="{{ $product->price_per_unit }}" data-product-name="{{ $productName }}"
+                            data-size1="{{ $product->size1 }}" data-size2="{{ $firstVariant['size2'] }}"
                             data-weight="{{ $firstVariant['weight'] }}"
                             data-family-category="{{ $product->family_category_id }}"
                             data-shipping-length="{{ $product->shipping_length }}"
