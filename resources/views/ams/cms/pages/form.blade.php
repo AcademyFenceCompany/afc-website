@@ -124,6 +124,29 @@
                     </div>
                 </div>
 
+                <!-- Menu Settings -->
+                <h4>Menu Settings</h4>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="menu_type" class="form-label">Menu Location</label>
+                            <select name="menu_type" id="menu_type" class="form-control">
+                                <option value="">Not in Menu</option>
+                                <option value="main_menu" {{ (isset($page) && $page->menu_type == 'main_menu') ? 'selected' : '' }}>Main Menu</option>
+                                <option value="quick_menu" {{ (isset($page) && $page->menu_type == 'quick_menu') ? 'selected' : '' }}>Quick Menu</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="menu_order" class="form-label">Menu Order</label>
+                            <input type="number" name="menu_order" id="menu_order" class="form-control"
+                                value="{{ isset($page) ? $page->menu_order : old('menu_order', 0) }}"
+                                min="0" placeholder="Enter menu order (0 = first)">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Header Section -->
                 <h4>Header Section</h4>
                 <div class="row mb-4">
