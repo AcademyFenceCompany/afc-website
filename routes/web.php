@@ -97,7 +97,7 @@ Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizePro
 
 Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
-Route::get('/wood-fence/specs/{subcategoryId}/{spacing}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
+Route::get('/wood-fence/specs/{subcategoryId}/{spacing?}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
 

@@ -94,36 +94,26 @@
 
                                 <!-- Spacing Options -->
                                 @if ($category['spacing'])
-                                    <div class="mt-3 ">
+                                    <div class="mt-3">
+                                        <p class="mb-2">Select Spacing:</p>
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
                                                 <a href="{{ route('woodfence.specs', [
                                                     'subcategoryId' => $category['family_category_id'],
                                                     'spacing' => $spacing,
-                                                    // 'categoryName' => $category['family_category_name'],
                                                 ]) }}"
-                                                    class="btn btn-danger text-white me-2">
-                                                    {{ $spacing }}
+                                                    class="btn btn-danger text-white me-2 mb-2">
+                                                    {{ $spacing }} Spacing
                                                 </a>
                                             @endif
                                         @endforeach
                                     </div>
+                                @else
+                                    <div class="mt-3">
+                                        <a href="{{ route('woodfence.specs', ['subcategoryId' => $category['family_category_id']]) }}"
+                                            class="btn btn-danger text-white">View Products</a>
+                                    </div>
                                 @endif
-                                <!-- Style -->
-                                {{-- @if ($category['style'])
-                        <div class="mt-3 ">
-                            @foreach ($category['style'] as $style)
-                            @if ($spacing)
-                            <a href="{{ route('woodfence.specs', [
-                                    'subcategoryId' => $category['family_category_id'],
-                                    'style' => $style
-                            ]) }}" class="btn btn-danger text-white me-2">
-                        {{ $style }}
-                        </a>
-                        @endif
-                        @endforeach
-                    </div>
-                    @endif --}}
                             </div>
                         </div>
                     </div>
