@@ -22,6 +22,8 @@ class CategoryPage extends Model
         'footer_bulletin_board',
         'footer_product_image',
         'footer_product_text',
+        'menu_type',
+        'menu_order'
     ];
 
     protected static function boot()
