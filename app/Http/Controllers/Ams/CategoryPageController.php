@@ -42,6 +42,8 @@ class CategoryPageController extends Controller
             'footer_bulletin_board' => 'nullable|string',
             'footer_product_image' => 'nullable|image|max:2048',
             'footer_product_text' => 'nullable|string',
+            'menu_type' => 'nullable|string|in:main_menu,quick_menu',
+            'menu_order' => 'nullable|integer|min:0'
         ]);
 
         if ($request->hasFile('product_image')) {
@@ -83,6 +85,8 @@ class CategoryPageController extends Controller
             'footer_bulletin_board' => 'nullable|string',
             'footer_product_image' => 'nullable|image|max:2048',
             'footer_product_text' => 'nullable|string',
+            'menu_type' => 'nullable|string|in:main_menu,quick_menu',
+            'menu_order' => 'nullable|integer|min:0'
         ]);
 
         if ($request->hasFile('product_image')) {

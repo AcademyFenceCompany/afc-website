@@ -91,18 +91,22 @@
                     <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
                     <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
                     <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
-                    @foreach(\App\Models\CategoryPage::with('category')->get() as $page)
-                        <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->category->family_category_name) }}</a>
+                    @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
+                        <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
                     @endforeach
                     <a href='{{ route('contact') }}' class="nav-link btn nav-btn">CONTACT US</a>
                     <div class="dropdown">
                         <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-list"></i> Menu
+                            <i class="bi bi-list"></i> Quick Menu
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Option 1</a></li>
-                            <li><a class="dropdown-item" href="#">Option 2</a></li>
-                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                            @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
+                                        {{ $page->title ?: $page->category->family_category_name }}
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </nav>
