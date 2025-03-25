@@ -9,7 +9,7 @@
             </button>
             <div>
                 <a href={{ url('/customerservice') }} class="text-light">
-                    <i class="bi bi-headset"></i>Customer Service
+                    <i class="bi bi-headset"></i><span class="custm__serv">Customer Service</span>
                 </a>
             </div>
             <div class="d-flex">
@@ -62,7 +62,7 @@
         <div class="custom-container">
             <!-- Logo and Search -->
             <div class="d-flex justify-content-center align-items-center mb-3">
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center logo">
                     <a href={{ url('/') }}>
                         <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="me-3">
                     </a>
