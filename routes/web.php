@@ -17,6 +17,8 @@ use App\Http\Controllers\Ams\OrderController;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
+use App\Http\Controllers\Ams\ProductQueryController;
+use Illuminate\Support\Facades\DB;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -28,6 +30,9 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/by-category/{category}', [ProductController::class, 'getByCategory'])->name('products.by.category');
+    
+    // Product Query routes for demodb testing
+    Route::get('/product-query', [ProductQueryController::class, 'index'])->name('ams.product-query.index');
     
     // Other AMS routes...
     Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
@@ -55,6 +60,50 @@ Route::prefix('ams')->middleware('auth')->group(function () {
             'sample' => $products->first()
         ]);
     });
+
+    // Temporary debug route for demodb inspection
+    Route::get('/debug/demodb', function() {
+        // Get all tables in demodb
+        $tables = DB::connection('mysql_second')->select('SHOW TABLES');
+        
+        // Get the structure of productsqry view if it exists
+        $productsqryColumns = [];
+        try {
+            $productsqryColumns = DB::connection('mysql_second')
+                ->select('DESCRIBE productsqry');
+        } catch (\Exception $e) {
+            $productsqryColumns = ['error' => $e->getMessage()];
+        }
+        
+        // Get sample data from productsqry
+        $sampleData = [];
+        try {
+            $sampleData = DB::connection('mysql_second')
+                ->select('SELECT * FROM productsqry LIMIT 1');
+        } catch (\Exception $e) {
+            $sampleData = ['error' => $e->getMessage()];
+        }
+        
+        // Show all tables and views in the database
+        $allViews = [];
+        try {
+            $allViews = DB::connection('mysql_second')
+                ->select("SHOW FULL TABLES WHERE TABLE_TYPE LIKE 'VIEW'");
+        } catch (\Exception $e) {
+            $allViews = ['error' => $e->getMessage()];
+        }
+        
+        return response()->json([
+            'tables' => $tables,
+            'views' => $allViews,
+            'productsqry_structure' => $productsqryColumns,
+            'sample_data' => $sampleData
+        ]);
+    });
+});
+
+Route::get('/', function () {
+    return redirect()->route('woodfence');
 });
 
 Route::get('/resources/images/{filename}', function ($filename) {
@@ -82,7 +131,6 @@ Route::get('/resources/brochures/{filename}', function ($filename) {
 
     return Response::make($file, 200)->header("Content-Type", $type);
 });
-Route::view('/', 'index');
 Route::view('/contact', 'pages/contact')->name('contact');
 Route::view('/product-cat', 'categories/products-cat');
 Route::view('/product-cats', 'categories/products-cats');
