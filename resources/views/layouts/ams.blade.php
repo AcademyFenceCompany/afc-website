@@ -40,6 +40,7 @@
             <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
             <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
             <a href="{{ route('categories.display') }}" class="menu-item">Category Management</a>
+            <a href="{{ route('ams.product-query.index') }}" class="menu-item">Product Query</a>
         </div>
 
         <!-- Customers -->
