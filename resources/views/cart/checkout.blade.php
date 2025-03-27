@@ -295,5 +295,5 @@
             }
         });
     </script>
-    <script src="{{ secure_asset('js/checkout.js') }}"></script>
+    <script src="{{ asset('js/checkout.js') }}"></script>
 @endsection
