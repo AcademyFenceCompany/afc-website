@@ -181,9 +181,9 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ secure_asset('js/mini-cart.js') }}"></script>
-    <script src="{{ secure_asset('js/cart.js') }}"></script>
-    <script src="{{ secure_asset('js/single-product.js') }}"></script>
+    <script src="{{ asset('js/mini-cart.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/single-product.js') }}"></script>
 @endsection
 <!-- Toast Container -->
 <div class="toast-container position-fixed top-0 end-0 p-3">

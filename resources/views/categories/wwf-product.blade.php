@@ -353,8 +353,8 @@
 
 
 @section('scripts')
-    <script src="{{ secure_asset('js/mini-cart.js') }}"></script>
-    <script src="{{ secure_asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/mini-cart.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
 @endsection
 
 <!-- Toast Container -->
