@@ -9,39 +9,49 @@
             </button>
             <div>
                 <a href={{ url('/customerservice') }} class="text-light">
-                    <i class="bi bi-headset"></i><span class="custm__serv">Customer Service</span>
+                    <i class="bi bi-headset fs-2 fs-md-4"></i><span class="custm__serv">Customer Service</span>
                 </a>
+
             </div>
             <div class="d-flex">
                 <div>
+                    <div class="d-flex d-md-none align-items-center mt-3">
+                        <span class="me-2" onclick="toggleVisibility('mobile-address')">
+                            <i class="bi bi-geo-alt"></i>
+                        </span>
+                        <span id="mobile-address" class="d-none">119 N Day Street, Orange, NJ</span>
+                        <span>
+                            <i class="bi bi-telephone" onclick="toggleVisibility('mobile-phone')"></i>
+                        </span>
+                        <span id="mobile-phone" class="d-none">(973) 674-0600</span>
+                    </div>
                     {{-- @auth
-                        <a href="#" class="text-light dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    Profile
-                                </a>
-                            </li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button class="dropdown-item">
-                                        Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
+                    <a href="#" class="text-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                Profile
+                            </a>
+                        </li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button class="dropdown-item">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                     @else
-                        <a href={{ url('/login') }} class="text-light">
-                            <i class="bi bi-person-circle"></i>Login
-                        </a>
+                    <a href={{ url('/login') }} class="text-light">
+                        <i class="bi bi-person-circle"></i>Login
+                    </a>
                     @endauth --}}
                 </div>
                 {{-- <div>
-                    <a href="{{ url('/cart') }}"
-                        class="d-flex align-items-center text-decoration-none text-light ms-3">
+                    <a href="{{ url('/cart') }}" class="d-flex align-items-center text-decoration-none text-light ms-3">
                         <i class="bi bi-cart fs-5"></i>
                         <span id="cart-count" class="badge rounded-pill bg-danger ms-2">
                             {{ session('cart') ? count(session('cart')) : 0 }}
@@ -49,9 +59,12 @@
                     </a>
                 </div> --}}
                 <!-- Navbar Mini Cart -->
+
+
                 @include('layouts.partials.mini-cart')
                 {{-- <a href="{{ url('/cart') }}" class="text-light ms-3"><i class="bi bi-cart"></i>Cart</a> --}}
-                {{-- <a href="{{ url('/cart') }}" class="text-light ms-3">{{ session('cart') ? count(session('cart')) : 0 }}
+                {{-- <a href="{{ url('/cart') }}" class="text-light ms-3">{{ session('cart') ? count(session('cart')) :
+                    0 }}
                     <i class="bi bi-cart"></i></a> <span id="cart-count" class="badge bg-danger"></span> --}}
             </div>
         </div>
@@ -73,11 +86,12 @@
                         <button class="btn btn-dark">Search</button>
                     </div>
                     <div class="d-none d-md-flex align-items-center ms-4">
-                        <span class="me-2"><i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ</span>
+                        <span class="me-2"><i class="bi bi-geo-alt"></i>Headquarters:<br> 119 N Day Street, Orange,
+                            NJ</span>
                         <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
                     </div>
                 </div>
-                <button class="quote-btn btn btn-danger ms-3">GET A QUOTE</button>
+                <button class="quote-btn btn ms-3">GET A QUOTE</button>
             </div>
 
             <!-- Navigation Menu -->
@@ -86,18 +100,42 @@
                     <h3 class="tagline">The Original Fence Superstore</h3>
                 </div>
                 <nav class="nav mb-3">
-                    <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn">WOOD FENCE</a>
-                    <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
-                    <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
-                    <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
-                    <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
+                    <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn">
+                        <span class="d-inline d-md-none">WOOD<br>FENCE</span>
+                        <span class="d-none d-md-inline">WOOD FENCE</span>
+                    </a>
+                    <a href="#" class="nav-link btn nav-btn">
+                        <span class="d-inline d-md-none">VINYL<br>FENCE</span>
+                        <span class="d-none d-md-inline">VINYL FENCE</span>
+                    </a>
+
+                    <a href="#" class="nav-link btn nav-btn">
+                        <span class="d-inline d-md-none">CHAIN<br>LINK</span>
+                        <span class="d-none d-md-inline">CHAIN LINK</span>
+                    </a>
+
+                    <a href="#" class="nav-link btn nav-btn">
+                        <span class="d-inline d-md-none">ALUM<br>FENCE</span>
+                        <span class="d-none d-md-inline">ALUMINUM FENCE</span>
+                    </a>
+
+                    <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">
+                        <span class="d-inline d-md-none">WELDED<br>WIRE</span>
+                        <span class="d-none d-md-inline">WELDED WIRE</span>
+                    </a>
+
                     @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
-                        <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
+                        <a href='{{ route('category.show', ['slug' => $page->slug]) }}'
+                            class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
                     @endforeach
-                    <a href='{{ route('contact') }}' class="nav-link btn nav-btn">CONTACT US</a>
+                    <a href='{{ route('contact') }}' class="nav-link btn nav-btn d-none d-md-inline">
+                        <span>CONTACT US</span>
+                    </a>
+
                     <div class="dropdown">
                         <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-list"></i> Quick Menu
+                            <i class="bi bi-list fs-2 fs-md-4"></i>
+                            <span class="d-none d-md-inline"> Quick Menu</span>
                         </a>
                         <ul class="dropdown-menu">
                             @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
@@ -118,8 +156,9 @@
                     <x-breadcrumbs />
                 </div>
                 <div class="dropdown njfig-btn">
-                    <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
-                        NJ Fence INSTALLATION Guide
+                    <a href="#" class="quote-btn btn dropdown-toggle" data-bs-toggle="dropdown">
+                        <span class="d-inline d-md-none">NJ Fence INSALL</span>
+                        <span class="d-none d-md-inline">NJ Fence INSTALLATION Guide</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Option 1</a></li>
@@ -131,3 +170,10 @@
         </div>
     </div>
 </header>
+
+<script>
+    function toggleVisibility(id) {
+        const el = document.getElementById(id);
+        el.classList.toggle('d-none');
+    }
+</script>
