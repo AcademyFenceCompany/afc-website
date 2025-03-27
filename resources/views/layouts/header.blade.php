@@ -1,6 +1,4 @@
 <header>
-    @include('layouts.ticker')
-
     <!-- Top Bar -->
     <div class="container-fluid bg-black text-light py-2">
         <div class="custom-container d-flex justify-content-between align-items-center flex-wrap">
@@ -54,20 +52,28 @@
                     <a href={{ url('/') }}>
                         <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="img-fluid" style="max-height: 80px;">
                     </a>
+                    <p class="mb-0 logoline">The Original Fence Superstore</p>
                 </div>
-                <div class="col-12 col-md-6 mb-3 mb-md-0">
-                    <div class="d-flex flex-column flex-md-row align-items-center">
-                        <div class="search-section d-flex w-100 mb-2 mb-md-0">
-                            <input type="text" class="form-control search-input me-2" placeholder="Search for...">
-                            <button class="btn btn-dark">Search</button>
+                <div class="col-12 col-md-9 mb-3 mb-md-0">
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                        <div class="search-section d-flex me-md-3" style="max-width: 250px;">
+                            <input type="text" class="form-control search-input me-2" placeholder="Search...">
+                            <button class="btn btn-dark btn-sm">Search</button>
                         </div>
-                        <div class="d-none d-md-flex align-items-center ms-md-4 mt-2 mt-md-0">
-                            <span class="me-2"><i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ</span>
-                            <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
+                        <div class="d-flex flex-column flex-md-row align-items-md-center mt-2 mt-md-0">
+                            <div class="me-md-3 text-nowrap mb-1 mb-md-0">
+                                <i class="bi bi-geo-alt"></i> <span class="fw-bold">Headquarters:</span> 119 N Day Street, Orange, NJ, 07050
+                            </div>
+                            <div class="text-nowrap">
+                                <i class="bi bi-telephone"></i> (973) 674-0600
+                            </div>
+                        </div>
+                        <div class="d-none d-md-block text-md-end">
+                            <button class="quote-btn btn btn-danger">GET A QUOTE</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-3 text-center text-md-end">
+                <div class="col-12 col-md-3 text-center text-md-end d-md-none">
                     <button class="quote-btn btn btn-danger">GET A QUOTE</button>
                 </div>
             </div>
