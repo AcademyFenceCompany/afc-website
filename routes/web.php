@@ -103,7 +103,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
 });
 
 Route::get('/', function () {
-    return redirect()->route('woodfence');
+    return view('index');
 });
 
 Route::get('/resources/images/{filename}', function ($filename) {

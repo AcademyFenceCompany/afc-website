@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\Paginator; 
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
 use App\Services\UPSService;
 
 
@@ -31,7 +32,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (config('app.env') !== 'local') {
+        if (config('app.env') === 'local') {
+            URL::forceScheme('http');
+        } else {
             URL::forceScheme('https');
         }
         DB::listen(function ($query) {

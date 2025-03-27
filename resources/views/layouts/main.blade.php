@@ -11,7 +11,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <title>{{ $title ?? 'Academy Fence Company' }}</title>
-    @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js'])
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 
 <body style="font-family: 'Inter', sans-serif;">
@@ -49,8 +51,8 @@
             }, 60000); // 60 seconds
         });
     </script>
-    {{-- <script src="{{ secure_asset('js/cart.js') }}"></script> --}}
-    {{-- <script src="{{ secure_asset('js/cart-item.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/cart.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/cart-item.js') }}"></script> --}}
 
 </body>
 
