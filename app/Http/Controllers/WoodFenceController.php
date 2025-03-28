@@ -103,6 +103,9 @@ class WoodFenceController extends Controller
 
     public function getProductsGroupedByStyle($subcategoryId, $spacing = null)
     {
+        // Get styleTitle from the request if it exists
+        $styleTitle = request()->query('styleTitle');
+        
         $query = DB::table('products')
             ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
             ->join('product_media', 'product_media.product_id', '=', 'products.product_id')
@@ -157,7 +160,9 @@ class WoodFenceController extends Controller
 
             return view('categories.woodfence-specs', [
                 'styleGroups' => $grouped,
-                'groupBy' => 'style'
+                'groupBy' => 'style',
+                'styleTitle' => $styleTitle,
+                'spacing' => $spacing
             ]);
         }
         // If no style, try to group by specialty
@@ -190,7 +195,9 @@ class WoodFenceController extends Controller
 
             return view('categories.woodfence-specs', [
                 'specialtyGroups' => $grouped,
-                'groupBy' => 'specialty'
+                'groupBy' => 'specialty',
+                'styleTitle' => $styleTitle,
+                'spacing' => $spacing
             ]);
         }
         // If no grouping is possible, show products in a grid
@@ -199,6 +206,8 @@ class WoodFenceController extends Controller
                 return collect([
                     'product_id' => $this->productBySubcatID($product->subcategory_id),
                     'subcategory_id' => $product->subcategory_id,
+                    'style' => $product->style,
+                    'specialty' => $product->specialty,
                     'spacing' => $product->spacing,
                     'material' => $product->material,
                     'general_image' => $product->general_image,
@@ -208,7 +217,9 @@ class WoodFenceController extends Controller
 
             return view('categories.woodfence-specs', [
                 'products' => $products,
-                'groupBy' => 'none'
+                'groupBy' => 'none',
+                'styleTitle' => $styleTitle,
+                'spacing' => $spacing
             ]);
         }
     }

@@ -10,6 +10,16 @@
                     <i class="bi bi-headset"></i><span class="d-none d-sm-inline"> Customer Service</span>
                 </a>
             </div>
+            <div class="dropdown njfig-btn">
+                <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
+                    NJ Fence INSTALLATION Guide
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Option 1</a></li>
+                    <li><a class="dropdown-item" href="#">Option 2</a></li>
+                    <li><a class="dropdown-item" href="#">Option 3</a></li>
+                </ul>
+            </div>
             <div class="d-flex my-1">
                 <div>
                     {{-- @auth
@@ -52,8 +62,9 @@
                     <a href={{ url('/') }}>
                         <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="img-fluid" style="max-height: 80px;">
                     </a>
-                    <p class="mb-0 logoline">The Original Fence Superstore</p>
+                    <p class="mb-0 logoline">'The Original Fence Superstore'</p>
                 </div>
+                
                 <div class="col-12 col-md-9 mb-3 mb-md-0">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
                         <div class="search-section d-flex me-md-3" style="max-width: 250px;">
@@ -62,7 +73,7 @@
                         </div>
                         <div class="d-flex flex-column flex-md-row align-items-md-center mt-2 mt-md-0">
                             <div class="me-md-3 text-nowrap mb-1 mb-md-0">
-                                <i class="bi bi-geo-alt"></i> <span class="fw-bold">Headquarters:</span> 119 N Day Street, Orange, NJ, 07050
+                                <i class="bi bi-geo-alt"></i> <span class="fw-bold">Headquarters</br></span> <span style="font-size: 13px;">119 N Day Street, Orange, NJ, 07050</span>
                             </div>
                             <div class="text-nowrap">
                                 <i class="bi bi-telephone"></i> (973) 674-0600
@@ -71,6 +82,7 @@
                         <div class="d-none d-md-block text-md-end">
                             <button class="quote-btn btn btn-danger">GET A QUOTE</button>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="col-12 col-md-3 text-center text-md-end d-md-none">
@@ -80,10 +92,10 @@
 
             <!-- Navigation Menu -->
             <div class="container-fluid">
-                <div class="tagline-box text-center my-2">
+                {{-- <div class="tagline-box text-center my-2">
                     <h3 class="tagline">The Original Fence Superstore</h3>
-                </div>
-                
+                </div> --}}
+             
                 <!-- Mobile Menu Toggle Button -->
                 <button class="btn nav-btn d-md-none w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavMenu" aria-expanded="false" aria-controls="mobileNavMenu">
                     <i class="bi bi-list"></i> Menu
@@ -152,16 +164,6 @@
                 <!-- Breadcrumb -->
                 <div class="breadcrumb mb-2 mb-md-0">
                     <x-breadcrumbs />
-                </div>
-                <div class="dropdown njfig-btn">
-                    <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
-                        NJ Fence INSTALLATION Guide
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
-                    </ul>
                 </div>
             </div>
         </div>
