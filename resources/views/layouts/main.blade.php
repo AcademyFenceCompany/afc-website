@@ -13,6 +13,7 @@
     <title>{{ $title ?? 'Academy Fence Company' }}</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @yield('styles')
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 

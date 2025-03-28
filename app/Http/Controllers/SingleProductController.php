@@ -67,6 +67,30 @@ class SingleProductController extends Controller
             ->select('products.product_id', 'products.product_name', 'products.price_per_unit')
             ->get();
 
+        // Fetch French Gothic Posts from demodb
+        $frenchGothicPosts = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('parent', 'like', 'AFCGWP')
+            ->where('size', 'like', '4in x 4in%')
+            ->select('item_no', 'product_name', 'size', 'color', 'price')
+            ->get();
+
+        // Fetch Flat Posts from demodb
+        $flatPosts = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('parent', 'like', 'AFCFWP')
+            ->where('size', 'like', '4in x 4in%')
+            ->select('item_no', 'product_name', 'size', 'color', 'price')
+            ->get();
+
+        // Fetch Flat Posts 5x5 from demodb
+        $flatPosts5x5 = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('item_no', 'like', 'PSFL5%')
+            ->where('size', 'like', '5in x 5in%')
+            ->select('item_no', 'product_name', 'size', 'color', 'price')
+            ->get();
+
         $inventoryDetails = DB::table('inventory_details')
             ->where('product_id', $id)
             ->select('in_stock_hq', 'in_stock_warehouse', 'inventory_ordered', 'inventory_expected_date')
@@ -76,6 +100,9 @@ class SingleProductController extends Controller
             'productDetails' => $productDetails,
             'productOptions' => $productOptions,
             'associatedProducts' => $associatedProducts,
+            'frenchGothicPosts' => $frenchGothicPosts,
+            'flatPosts' => $flatPosts,
+            'flatPosts5x5' => $flatPosts5x5,
             'inventoryDetails' => $inventoryDetails,
             'productVariations' => $productVariations
         ]);
