@@ -120,17 +120,17 @@ textarea {
 }
 
 /* Quote Button Styling */
-/* #btn-quote {
+#btn-quote {
     background-color: var(--secondary-color);
     color: var(--light-color);
     font-weight: var(--font-weight-bold);
     border: none;
-} */
+}
 
-/* #btn-quote:hover {
+#btn-quote:hover {
     background-color: var(--hover-color);
     color: var(--secondary-color);
-} */
+}
 
 /* Wood Fence Button Styling */
 .btn-wood-fence {
@@ -337,7 +337,7 @@ textarea {
     color: #999;
 }
 
-/* .btn-danger {
+.btn-danger {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
 }
@@ -346,7 +346,7 @@ textarea {
     background-color: var(--hover-color);
     border-color: var(--hover-color);
     color: var(--secondary-color);
-} */
+}
 
 input[type="file"] {
     border: 1px solid var(--input-border-color);
