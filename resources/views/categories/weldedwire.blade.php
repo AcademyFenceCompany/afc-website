@@ -54,7 +54,14 @@
             width: 190px;
         }
 
+        .gal {
+            background-color: #b5b7bb;
+            border-color: #b5b7bb;
+            color: #fff;
+        }
+
         .gal:hover {
+            opacity: 0.8;
             background-color: #b5b7bb;
             border-color: #b5b7bb;
         }
@@ -105,7 +112,7 @@
 
     <!-- Header Section -->
     <div class="rounded bg-brown">
-        <h1 class="page-title text-center py-2 mb-0">WELDED WIRE</h1>
+        <h1 class="page-title text-center py-2 mb-0">WELDED WIRE FENCE</h1>
     </div>
     <div class="text-center py-2 mb-4 border-bottom">
         <p class="mb-0">Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded
@@ -176,30 +183,501 @@
     <div class="bg-light py-0">
         <div class="custom-container">
             <div class="bg-black text-white text-center py-2 rounded">
-                <h3 class="mb-0">Welded Wire Mesh Sizes</h3>
+                <h3 class="mb-0">Welded Wire</h3>
             </div>
             <div class="row justify-content-center g-2 mt-2">
-                @foreach ($general_ww_mesh_size_imgs as $mesh_size)
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">4 in. x 4 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/4x4.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">3 in. x 3 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/3x3.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">2 in. x 4 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/2x4.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">2 in. x 2 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/2x2.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                                                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                                                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                                                        <div class="card-header bg-danger text-white fw-bold py-1">
+                                                            <h6 class="mesh-size__title">1 3/4 in. x 1 3/4 in.</h6>
+                                                        </div>
+                                                        <div class="card-body p-2">
+                                                            <img src="#" alt="Wire Image"
+                                                                style="height:120px; " class="img-fluid mb-1 rounded">
+                                                            <div class="d-grid gap-1">
+
+                                                                <div class="d-flex justify-content-center gap-2"> -->
+                <!-- Vinyl Coated Button -->
+                <!-- <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                                                        Vinyl
+                                                                    </a> -->
+
+                <!-- Galvanized Button -->
+                <!-- <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                                                        style="font-size: 12px; padding: 5px 20px;">
+                                                                        Galv
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">1 1/2 in. x 1 1/2 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="#" alt="Wire Image" style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">1 1/2 in. x 4 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/1.5x4.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">3 in. x 2 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://www.academyfence.com/images/weldedwire/Linedrawings/thumb/3x2x16BK.gif"
+                                alt="Wire Image" style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">1 in. x 3 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/1x3.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">1 in. x 2 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/1x2.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">1 in. x 1 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/1x1.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">1/2 in. x 1 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/0.5x1.jpg" alt="Wire Image"
+                                style="height:120px; " class="img-fluid mb-1 rounded">
+                            <div class="d-grid gap-1">
+
+                                <div class="d-flex justify-content-center gap-2">
+                                    <!-- Vinyl Coated Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC"
+                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                        Vinyl
+                                    </a>
+
+                                    <!-- Galvanized Button -->
+                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Galvanized"
+                                        class="btn btn-outline-dark btn-sm fw-bold gal"
+                                        style="font-size: 12px; padding: 5px 20px;">
+                                        Galv
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- @foreach ($general_ww_mesh_size_imgs as $mesh_size)
+                                                                                    <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                                                                                        <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                                                                                            <div class="card-header bg-danger text-white fw-bold py-1">
+                                                                                                <h6 class="mesh-size__title">{{ $mesh_size->size2 }}</h6>
+                                                                                            </div>
+                                                                                            <div class="card-body p-2">
+                                                                                                <img src="{{ $mesh_size->image ?? '/resources/images/4x4.jpg' }}" alt="Wire Image"
+                                                                                                    style="height:120px; " class="img-fluid mb-1 rounded">
+                                                                                                <div class="d-grid gap-1">
+
+                                                                                                    <div class="d-flex justify-content-center gap-2"> -->
+            <!-- Vinyl Coated Button -->
+            <!-- <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Vinyl PVC']) }}"
+                                                                                                            class="btn btn-dark btn-sm fw-bold"
+                                                                                                            style="font-size: 12px; padding: 5px 20px;">
+                                                                                                            Vinyl
+                                                                                                        </a> -->
+
+            <!-- Galvanized Button -->
+            <!-- <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Galvanized']) }}"
+                                                                                                            class="btn btn-outline-dark btn-sm fw-bold gal"
+                                                                                                            style="font-size: 12px; padding: 5px 20px;">
+                                                                                                            Galv
+                                                                                                        </a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endforeach -->
+
+
+            <!-- </div> -->
+        </div>
+    </div>
+
+    <!-- Main Row -->
+    <div class="row mt-4">
+        <!-- Hardware Cloth Wire -->
+        <div class="col-lg-7">
+            <div class="bg-black text-white text-center py-1 rounded">
+                <h5 class="mb-0">Hardware Cloth Wire</h5>
+            </div>
+
+            <!-- Hardware Cloth Wire Cards -->
+            <div class="col-12 mt-2">
+                <div class="row justify-content-center">
+                    <!-- @foreach (["1/2\"", "1/4\"", "1/8\""] as $size)
+                                                            <div class="col-4 mb-1 d-flex justify-content-center">
+                                                                <div class="card text-center shadow-sm h-100" style="width:120px; border: none;">
+                                                                    <div class="card-header bg-danger text-white fw-bold py-1 prd-sm-text">
+                                                                        {{ $size }}
+                                                                    </div>
+                                                                    <div class="card-body p-2">
+                                                                        <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid mb-3 rounded">
+                                                                        <div class="d-grid gap-2">
+                                                                            <div class="d-flex justify-content-center gap-2">
+                                                                                <button class="btn btn-dark btn-sm fw-bold"
+                                                                                    style="font-size: 12px; padding: 5px 10px;">Vinyl</button>
+
+                                                                                <button class="btn btn-outline-dark btn-sm fw-bold gal"
+                                                                                    style="font-size: 12px; padding: 5px 10px;">Galv</button>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach -->
+
+                    <!-- Hardware Cloth Wire Cards -->
+
+                    <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                        <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                            <!-- <div class="card-header bg-danger text-white fw-bold py-1">
+                            <h6 class="mesh-size__title">Brochures</h6>
+                        </div> -->
+                            <div class="card-body p-2">
+                                <img src="/resources/images/image 91.png" alt="Wire Image" style="height:180px; "
+                                    class="img-fluid mb-1 rounded">
+                                <div class="d-grid gap-1">
+
+                                    <!-- <div class="d-flex justify-content-center gap-2">
+                                <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
+                                <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
+                                </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="col-2">
+                                    <img src="/resources/images/image 91.png" alt="Hardware Cloth"
+                                        class="img-fluid mb-3 rounded shadow-sm">
+                                </div> -->
+
+                    <!-- <div class="col-2 prd-sm-text"> -->
+                    <!-- <h6>Brochures</h6> -->
+                    <!-- <div class="d-flex gap-1 flex-wrap mb-1">
+                                    <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
+                                    <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
+                                </div> -->
+                    <!-- <p>Our 1/2in Hardware Cloth is a welded steel wire mesh. It’s zinc coating provides maximum
+                                    protection
+                                    and extra durability. Hardware cloth has an unlimited number of applications around the home,
+                                    business, or farm.</p> -->
+                    <!-- </div> -->
                     <div class="col-8 col-md-2 d-flex justify-content-center cards">
                         <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                             <div class="card-header bg-danger text-white fw-bold py-1">
-                                <h6 class="mesh-size__title">{{ $mesh_size->size2 }}</h6>
+                                <h6 class="mesh-size__title">1/2 in. x 1/2 in.</h6>
                             </div>
                             <div class="card-body p-2">
-                                <img src="{{ $mesh_size->image ?? '/resources/images/4x4.jpg' }}" alt="Wire Image"
-                                    style="height:120px; " class="img-fluid mb-1 rounded">
+                                <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/0.5x0.5.jpg"
+                                    alt="Wire Image" style="height:120px; " class="img-fluid mb-1 rounded">
                                 <div class="d-grid gap-1">
 
                                     <div class="d-flex justify-content-center gap-2">
                                         <!-- Vinyl Coated Button -->
-                                        <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Vinyl PVC']) }}"
-                                            class="btn btn-outline-dark btn-sm fw-bold"
-                                            style="font-size: 12px; padding: 5px 20px;">
+                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Vinyl%20PVC"
+                                            class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                             Vinyl
                                         </a>
 
                                         <!-- Galvanized Button -->
-                                        <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Galvanized']) }}"
+                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Galvanized"
                                             class="btn btn-outline-dark btn-sm fw-bold gal"
                                             style="font-size: 12px; padding: 5px 20px;">
                                             Galv
@@ -209,184 +687,262 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-    <!-- Main Row -->
-    <div class="row mt-4">
-        <!-- Hardware Cloth Wire -->
-        <div class="col-lg-4 mb-4">
-            <div class="bg-black text-white text-center py-1 rounded">
-                <h5 class="mb-0">Hardware Cloth Wire</h5>
-            </div>
 
-            <!-- Hardware Cloth Wire Cards -->
-            <div class="col-12 mt-2">
-                <div class="row justify-content-center">
-                    @foreach (["1/2\"", "1/4\"", "1/8\""] as $size)
-                        <div class="col-4 mb-1 d-flex justify-content-center">
-                            <div class="card text-center shadow-sm h-100" style="width:120px; border: none;">
-                                <div class="card-header bg-danger text-white fw-bold py-1 prd-sm-text">
-                                    {{ $size }}
-                                </div>
-                                <div class="card-body p-2">
-                                    <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid mb-3 rounded">
-                                    <div class="d-grid gap-2">
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <button class="btn btn-outline-dark btn-sm fw-bold"
-                                                style="font-size: 12px; padding: 5px 10px;">Vinyl</button>
 
-                                            <button class="btn btn-outline-dark btn-sm fw-bold gal"
-                                                style="font-size: 12px; padding: 5px 10px;">Galv</button>
-                                        </div>
 
+                    <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                        <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                            <div class="card-header bg-danger text-white fw-bold py-1">
+                                <h6 class="mesh-size__title">1/4 in. x 1/4 in.</h6>
+                            </div>
+                            <div class="card-body p-2">
+                                <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/0.25x0.25.jpg"
+                                    alt="Wire Image" style="height:120px; " class="img-fluid mb-1 rounded">
+                                <div class="d-grid gap-1">
+
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <!-- Vinyl Coated Button -->
+                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Vinyl%20PVC"
+                                            class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                            Vinyl
+                                        </a>
+
+                                        <!-- Galvanized Button -->
+                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Galvanized"
+                                            class="btn btn-outline-dark btn-sm fw-bold gal"
+                                            style="font-size: 12px; padding: 5px 20px;">
+                                            Galv
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-4">
-                    <img src="/resources/images/image 91.png" alt="Hardware Cloth" class="img-fluid mb-3 rounded shadow-sm">
-                </div>
-                <div class="col-8 prd-sm-text">
-                    <h6>Brochures</h6>
-                    <div class="d-flex gap-1 flex-wrap mb-1">
-                        <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
-                        <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
                     </div>
-                    <p>Our 1/2in Hardware Cloth is a welded steel wire mesh. It’s zinc coating provides maximum
-                        protection
-                        and extra durability. Hardware cloth has an unlimited number of applications around the home,
-                        business, or farm.</p>
-                </div>
-                <div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chicken Wire -->
-        <div class="col-lg-4 mb-4">
-            <div class="bg-black text-white text-center py-3 rounded">
-                <h5 class="mb-0">Chicken Wire</h5>
-            </div>
-            <div class="row mt-3">
-                <div class="col-4">
-                    <img src="/resources/images/image 94.png" alt="Chicken Wire" class="img-fluid mb-3 rounded shadow-sm">
-                </div>
-                <div class="col-8 prd-sm-text">
-                    <p>Vinyl Coated Hex Netting (aka chicken wire) is a cost-effective means of building wire cages,
-                        enclosures, traps, etc. Our protective vinyl PVC coating makes PVC wire last many years longer
-                        than
-                        an uncoated wire.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Silt Fence -->
-        <div class="col-lg-2 mb-4">
-            <div class="bg-black text-white text-center py-3 rounded">
-                <h5 class="mb-0">Silt Fence</h5>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12 prd-sm-text">
-                    <p>Erosion control fencing, Silt Fence, is made of vinyl fabric with posts pre-attached at 10 ft
-                        intervals.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Snow Fence -->
-        <div class="col-lg-2 mb-4">
-            <div class="bg-black text-white text-center py-3 rounded">
-                <h5 class="mb-0">Snow Fence</h5>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12 prd-sm-text">
-                    <p>A snow fence is a structure, similar to a sand fence, that forces drifting snow to accumulate in a
-                        desired place.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cards Row -->
-    <div class="row mt-4">
 
 
-        <!-- Chicken Wire Cards -->
-        <div class="col-lg-3">
-            <div class="row justify-content-center">
-                @foreach (["1\" Hex", "2\" Hex"] as $size)
-                    <div class="col-6 mb-3 d-flex justify-content-center">
-                        <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                            <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">
-                                {{ $size }}
+                    <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                        <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                            <div class="card-header bg-danger text-white fw-bold py-1">
+                                <h6 class="mesh-size__title">1/8 in. x 1/8 in.</h6>
                             </div>
                             <div class="card-body p-2">
-                                <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid mb-3 rounded">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-dark btn-sm fw-bold"
-                                        style="font-size: 12px;">Galvanized</button>
-                                    <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                        Coated</button>
+                                <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/0.125x0.125.jpg"
+                                    alt="Wire Image" style="height:120px; " class="img-fluid mb-1 rounded">
+                                <div class="d-grid gap-1">
+
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <!-- Vinyl Coated Button -->
+                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Vinyl%20PVC"
+                                            class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                            Vinyl
+                                        </a>
+
+                                        <!-- Galvanized Button -->
+                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Galvanized"
+                                            class="btn btn-outline-dark btn-sm fw-bold gal"
+                                            style="font-size: 12px; padding: 5px 20px;">
+                                            Galv
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            </div>
+
+            <!-- Hardware Cloth Wire Description -->
+            <!-- <div class="row mt-2"> -->
+            <!-- <div class="col-4">
+                                    <img src="/resources/images/image 91.png" alt="Hardware Cloth" class="img-fluid mb-3 rounded shadow-sm">
+                                </div> -->
+            <!-- <div class="col-8 prd-sm-text">
+                                <h6>Brochures</h6>
+                                <div class="d-flex gap-1 flex-wrap mb-1">
+                                    <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
+                                    <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
+                                </div>
+                                <p>Our 1/2in Hardware Cloth is a welded steel wire mesh. It’s zinc coating provides maximum
+                                    protection
+                                    and extra durability. Hardware cloth has an unlimited number of applications around the home,
+                                    business, or farm.</p>
+                            </div>
+                            <div>
+                            </div>
+                        </div> -->
+        </div>
+
+        
+
+<!-- Chicken Wire -->
+<div class="col-lg-5 mb-1">
+    <div class="bg-black text-white text-center py-1 rounded mb-2">
+        <h5 class="mb-0">Hex Netting/Chicken Wire</h5>
+    </div>
+
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <!-- Image Card -->
+        <div class="card text-center shadow-sm h-100" style="width: 180px; border: none;">
+            <div class="card-body p-2">
+                <img src="/resources/images/image 94.png" alt="Wire Image" style="height:180px;" class="img-fluid mb-1 rounded">
             </div>
         </div>
 
-        <!-- Silt Fence Cards -->
-        <div class="col-lg-2">
-            <div class="row justify-content-center">
-                <div class="col-12 mb-3 d-flex justify-content-center">
-                    <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                        <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">Silt & Wired Back</div>
-                        <div class="card-body p-2">
-                            <img src="/resources/images/4x4.jpg" alt="Silt Fence" class="img-fluid mb-3 rounded">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-dark btn-sm fw-bold"
-                                    style="font-size: 12px;">Galvanized</button>
-                                <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                    Coated</button>
-                            </div>
-                        </div>
+        <!-- Card 1 -->
+        <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
+            <div class="card-header bg-danger text-white fw-bold py-1">
+                <h6 class="mesh-size__title">1 in. x 1 in.</h6>
+            </div>
+            <div class="card-body p-2">
+                <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/1hex.jpg" alt="Wire Image"
+                    style="height:120px;" class="img-fluid mb-1 rounded">
+                <div class="d-grid gap-1">
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Vinyl%20PVC"
+                            class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                            Vinyl
+                        </a>
+                        <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Galvanized"
+                            class="btn btn-outline-dark btn-sm fw-bold gal"
+                            style="font-size: 12px; padding: 5px 20px;">
+                            Galv
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Snow Fence Cards -->
-        <div class="col-lg-2">
-            <div class="row justify-content-center">
-                <div class="col-12 mb-3 d-flex justify-content-center">
-                    <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                        <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">Various Sizes</div>
-                        <div class="card-body p-2">
-                            <img src="/resources/images/4x4.jpg" alt="Silt Fence" class="img-fluid mb-3 rounded">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Natural
-                                    Wood</button>
-                            </div>
-                        </div>
+        <!-- Card 2 -->
+        <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
+            <div class="card-header bg-danger text-white fw-bold py-1">
+                <h6 class="mesh-size__title">2 in. x 2 in.</h6>
+            </div>
+            <div class="card-body p-2">
+                <img src="#" alt="Wire Image" style="height:120px; width:150px;" class="img-fluid mb-1 rounded">
+                <div class="d-grid gap-1">
+                    <div class="d-flex justify-content-center gap-2">
+                        <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Vinyl%20PVC"
+                            class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                            Vinyl
+                        </a>
+                        <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Galvanized"
+                            class="btn btn-outline-dark btn-sm fw-bold gal"
+                            style="font-size: 12px; padding: 5px 20px;">
+                            Galv
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
+
+
+
+
+    <!-- Silt Fence -->
+    <!-- <div class="col-lg-2 mb-4">
+                                            <div class="bg-black text-white text-center py-3 rounded">
+                                                <h5 class="mb-0">Silt Fence</h5>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12 prd-sm-text">
+                                                    <p>Erosion control fencing, Silt Fence, is made of vinyl fabric with posts pre-attached at 10 ft
+                                                        intervals.</p>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+    <!-- Snow Fence -->
+    <!-- <div class="col-lg-2 mb-4">
+                                            <div class="bg-black text-white text-center py-3 rounded">
+                                                <h5 class="mb-0">Snow Fence</h5>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-12 prd-sm-text">
+                                                    <p>A snow fence is a structure, similar to a sand fence, that forces drifting snow to accumulate in a
+                                                        desired place.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+    <!-- Cards Row -->
+    <!-- <div class="row mt-4"> -->
+
+
+
+
+    <!-- @foreach (["1\" Hex", "2\" Hex"] as $size)
+                                                <div class="col-6 mb-3 d-flex justify-content-center">
+                                                    <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                                                        <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">
+                                                            {{ $size }}
+                                                        </div>
+                                                        <div class="card-body p-2">
+                                                            <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid mb-3 rounded">
+                                                            <div class="d-grid gap-2">
+                                                                <button class="btn btn-outline-dark btn-sm fw-bold"
+                                                                    style="font-size: 12px;">Galvanized</button>
+                                                                <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
+                                                                    Coated</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach -->
+    <!-- </div>
+                                </div> -->
+
+    <!-- Silt Fence Cards -->
+    <!-- <div class="col-lg-2">
+                                    <div class="row justify-content-center">
+                                        <div class="col-12 mb-3 d-flex justify-content-center">
+                                            <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                                                <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">Silt & Wired Back</div>
+                                                <div class="card-body p-2">
+                                                    <img src="/resources/images/4x4.jpg" alt="Silt Fence" class="img-fluid mb-3 rounded">
+                                                    <div class="d-grid gap-2">
+                                                        <button class="btn btn-outline-dark btn-sm fw-bold"
+                                                            style="font-size: 12px;">Galvanized</button>
+                                                        <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
+                                                            Coated</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> -->
+
+    <!-- Snow Fence Cards -->
+    <!-- <div class="col-lg-2">
+                                    <div class="row justify-content-center">
+                                        <div class="col-12 mb-3 d-flex justify-content-center">
+                                            <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                                                <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">Various Sizes</div>
+                                                <div class="card-body p-2">
+                                                    <img src="/resources/images/4x4.jpg" alt="Silt Fence" class="img-fluid mb-3 rounded">
+                                                    <div class="d-grid gap-2">
+                                                        <button class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Natural
+                                                            Wood</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
     <!-- Deer Fence and Gate Kits for Welded Wire Section -->
-    <div class="row g-4 mt-5">
+    <div class="row g-1 mt-0">
         <!-- Deer Fence -->
         <div class="col-12 col-lg-6">
-            <div class="bg-black text-white text-center py-3 rounded">
-                <h2>Deer Fence</h2>
+            <div class="bg-black text-white text-center py-1 rounded">
+                <h5>Deer Fence</h5>
             </div>
-            <div class="p-4 bg-light rounded shadow-sm mt-3">
+            <div class="p-1 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-4">
@@ -398,13 +954,16 @@
                     <!-- Content -->
                     <div class="col-md-8">
                         <h5 class="fw-bold">Academy Deer Fence</h5>
-                        <p class="prd-sm-text">Long Lasting, Galvanized Steel Core Wire, then black vinyl PVC coated. Deer
+                        <p class="prd-sm-text">Long Lasting, Galvanized Steel Core Wire, then black vinyl PVC coated.
+                            Deer
                             fence 8 foot 2 x 4
-                            black, deer fence 1 1/2 x 4 black, deer fence graduated fixed knot. We offer cost-effective ways
+                            black, deer fence 1 1/2 x 4 black, deer fence graduated fixed knot. We offer cost-effective
+                            ways
                             to provide protection from deer damage.</p>
                         <div class="mt-3">
                             <h6>Brochures</h6>
-                            <a href="#" class="btn btn-secondary btn-sm me-2"><i class="bi bi-file-earmark-text"></i> Welded
+                            <a href="#" class="btn btn-secondary btn-sm me-2"><i class="bi bi-file-earmark-text"></i>
+                                Welded
                                 Wire Brochure</a>
                             <a href="#" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Print Order
                                 Sheet</a>
@@ -435,8 +994,8 @@
 
         <!-- Gate Kits for Welded Wire -->
         <div class="col-12 col-lg-6">
-            <div class="bg-black text-white text-center py-3 rounded">
-                <h2>Gate Kits for Welded Wire</h2>
+            <div class="bg-black text-white text-center py-1 rounded">
+                <h5>Gate Kits for Welded Wire</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
@@ -450,14 +1009,16 @@
                     <!-- Content -->
                     <div class="col-md-8">
                         <h5 class="fw-bold">Gate Kits for Welded Wire</h5>
-                        <p class="prd-sm-text">Academy Fence offers gate frame kits which include welded pipe gate frame(s)
+                        <p class="prd-sm-text">Academy Fence offers gate frame kits which include welded pipe gate
+                            frame(s)
                             and all necessary
                             hardware to attach your wire to the gate frame.We offer cost-effective ways to provide
                             protection from deer damage. We offer cost-effective ways to provide
                             protection damage.</p>
                         <div class="mt-3">
                             <h6>Brochures</h6>
-                            <a href="#" class="btn btn-secondary btn-sm me-2"><i class="bi bi-file-earmark-text"></i> Welded
+                            <a href="#" class="btn btn-secondary btn-sm me-2"><i class="bi bi-file-earmark-text"></i>
+                                Welded
                                 Wire Brochure</a>
                             <a href="#" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Print Order
                                 Sheet</a>
@@ -512,7 +1073,8 @@
                     <div class="col-md-7">
                         <div class="card shadow-sm h-100">
                             <div class="card-body prd-sm-text">
-                                <p>Field & Game Fence manufactured by SolidLock with Fixed Knot mesh. Offers the benefits of
+                                <p>Field & Game Fence manufactured by SolidLock with Fixed Knot mesh. Offers the
+                                    benefits of
                                     high
                                     tensile fencing over traditional soft products used over the last century.</p>
                             </div>
@@ -585,7 +1147,8 @@
                     <div class="col-md-7">
                         <div class="card shadow-sm h-100">
                             <div class="card-body prd-sm-text">
-                                <p>A quick ship fence pen kit will enable you to build a welded wire fence enclosure with an
+                                <p>A quick ship fence pen kit will enable you to build a welded wire fence enclosure
+                                    with an
                                     all-inclusive fence pen kit.</p>
                             </div>
                         </div>
