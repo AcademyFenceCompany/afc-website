@@ -1,0 +1,701 @@
+:root {
+    /* Colors */
+    --primary-color: #005580;
+    --secondary-color: #882905;
+    --light-color: #fff;
+    --dark-color: #000;
+    --bg-color: #f8f7f2;
+    --hover-color: #f6b453;
+    --footer-bg-color: #000;
+    --footer-text-color: #ffffff;
+    --input-border-color: #ddd;
+
+    /* Font Sizes */
+    --font-size-base: 16px;
+    --font-size-small: 12px;
+    --font-size-large: 20px;
+    --font-size-xlarge: 35px;
+
+    /* Font Families */
+    --font-family-primary: "Inter", sans-serif;
+
+    /* Spacing */
+    --padding-base: 1rem;
+    --padding-small: 0.5rem;
+    --padding-large: 2rem;
+
+    /* Border Radius */
+    --border-radius-small: 0.25rem;
+    --border-radius-large: 16px;
+
+    /* Font Weights */
+    --font-weight-bold: bold;
+    --font-weight-normal: normal;
+}
+
+.custom-container {
+    max-width: 1450px; /* Adjust as needed */
+    margin: 0 auto; /* Center the container */
+}
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+input,
+select,
+textarea {
+    font-family: var(--font-family-primary);
+}
+
+.navbar,
+.btn,
+.breadcrumb,
+.card,
+.modal,
+.dropdown-menu,
+.alert,
+.table,
+.form-control {
+    font-family: var(--font-family-primary);
+}
+
+/* General Header Styling */
+.header {
+    background-color: var(--dark-color);
+}
+
+.bg-light-custom {
+    background-color: var(--light-color);
+}
+
+.btn-outline-light {
+    background: var(--light-color);
+    color: var(--dark-color);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+}
+.bi {
+    margin-right: 10px;
+}
+.bi-pencil-square::before {
+    content: "\f4ca";
+    font-size: var(--font-size-large);
+    margin-right: 10px;
+}
+
+/* Tagline Styling */
+.tagline {
+    font-weight: var(--font-weight-bold);
+    color: var(--dark-color);
+    font-size: var(--font-size-xlarge);
+    padding: 25px 0px;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+    margin-bottom: 0;
+    font-size: var(--font-size-small);
+}
+
+.breadcrumb-item a {
+    color: var(--dark-color);
+    text-decoration: none;
+}
+
+/* Quote Button Styling */
+#btn-quote {
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+    font-weight: var(--font-weight-bold);
+    border: none;
+}
+
+#btn-quote:hover {
+    background-color: var(--hover-color);
+    color: var(--secondary-color);
+}
+
+/* Wood Fence Button Styling */
+.btn-wood-fence {
+    background-color: var(--hover-color);
+    color: var(--dark-color);
+    font-weight: var(--font-weight-bold);
+    border: none;
+}
+
+.btn-wood-fence:hover {
+    background-color: #f9cd82;
+    color: var(--dark-color);
+}
+
+.quote-btn {
+    background: var(--secondary-color);
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    margin-right: 30px;
+    transition: all 0.3s ease;
+    color: #fff;
+    font-weight: 500;
+}
+
+.quote-btn:hover {
+    background: var(--hover-color); 
+    color: #ffffff;
+    transform: scale(1.05);
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Custom styles for navigation buttons */
+.nav-btn {
+    background-color: var(--hover-color);
+    color: var(--dark-color);
+    font-weight: var(--font-weight-bold);
+    border-radius: 5px;
+    margin: 0 5px;
+    padding: 15px 35px;
+    text-align: center;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    background-color: #e68a00;
+    color: var(--light-color);
+    text-decoration: none;
+}
+
+/* Dropdown button styling */
+.dropdown-toggle::after {
+    margin-left: 5px;
+}
+
+.dropdown-menu {
+    min-width: 150px;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f4a261;
+    color: var(--dark-color);
+}
+
+/* Additional styling for button text alignment */
+.nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.nav-btn i {
+    margin-right: 5px;
+    color: var(--dark-color);
+    font-size: var(--font-size-large);
+}
+
+.text-light {
+    text-decoration: none;
+}
+
+.text-light i {
+    font-size: var(--font-size-large);
+    margin-left: 5px;
+}
+
+.bi-person-circle::before,
+.bi-cart::before {
+    margin-right: 10px !important;
+}
+
+.bi-geo-alt::before,
+.bi-telephone::before {
+    background: var(--footer-bg-color);
+    color: var(--light-color);
+    padding: 6px;
+    border-radius: var(--border-radius-large);
+    font-size: var(--font-size-large);
+}
+
+/* Footer Styling */
+.footer {
+    background-color: var(--footer-bg-color) !important;
+    color: var(--footer-text-color);
+}
+
+.footer h5 {
+    font-weight: var(--font-weight-bold);
+}
+
+.footer-logo {
+    width: 180px;
+}
+
+.footer ul {
+    padding-left: 0;
+}
+
+.footer ul li a,
+.footer a {
+    text-decoration: none;
+    color: var(--footer-text-color);
+}
+
+.footer ul li a:hover,
+.footer a:hover {
+    color: var(--hover-color);
+}
+
+.office-hours p {
+    margin: 0;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.btn-direction a {
+    text-decoration: none;
+    margin-left: 2px;
+}
+
+/* Scrolling Info Styling */
+.scrolling-info {
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+    padding: 10px 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    font-size: 12px;
+    font-weight: var(--font-weight-bold);
+}
+
+.scrolling-info p {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll-left 15s linear infinite;
+    margin: 0;
+}
+
+/* Keyframes for left-to-right scrolling text */
+@keyframes scroll-left {
+    from {
+        transform: translateX(-50%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+/* Contact Page Styling */
+.card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: var(--secondary-color) !important;
+    color: var(--light-color);
+    padding: var(--padding-base);
+    text-transform: uppercase;
+}
+
+.card-body {
+    padding: var(--padding-large);
+}
+
+.form-label {
+    font-weight: var(--font-weight-bold);
+}
+.form-control {
+    background-color: #f7f7f7;
+    padding: 0.8rem 0.75rem;
+}
+.form-control::placeholder {
+    color: #999;
+}
+
+.btn-danger {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-danger:hover {
+    background-color: var(--hover-color);
+    border-color: var(--hover-color);
+    color: var(--secondary-color);
+}
+
+input[type="file"] {
+    border: 1px solid var(--input-border-color);
+    padding: 5px;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+.card-body .bi-envelope::before {
+    background: var(--footer-bg-color);
+    color: var(--light-color);
+    padding: 6px;
+    border-radius: var(--border-radius-large);
+    font-size: var(--font-size-large);
+}
+.shadow-image {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.shadow-image:hover {
+    transform: scale(1.05); /* Slightly scales up the image on hover */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* Adds a stronger shadow on hover */
+}
+.product-card {
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Slight upward movement on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow on hover */
+}
+
+.product-image img {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Image shadow */
+    border-radius: 8px; /* Match card rounding */
+    max-width: 100%; /* Ensure responsive image */
+}
+
+.product-details h5 {
+    font-size: 1.1rem; /* Slightly larger title */
+    color: var(--secondary-color);
+}
+
+.product-details p {
+    font-size: 0.9rem; /* Slightly smaller text for description */
+    color: #6c757d; /* Muted text color */
+}
+
+.product-details .btn-danger {
+    background-color: #882905; /* Custom button color */
+    border: none;
+}
+
+.product-details .btn-danger:hover {
+    background-color: #f6b453; /* Hover color */
+    color: #882905; /* Text color on hover */
+}
+
+/* Header Background */
+.card-header {
+    background-color: #333; /* Black header background */
+}
+
+/* Navigation Tabs */
+.btn-warning {
+    background-color: #f6b453;
+    color: #000;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #dc9a38;
+    color: #fff;
+}
+
+/* About Section */
+.card {
+    border: none;
+    border-radius: 8px;
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Features Section */
+.card i {
+    transition: color 0.3s ease;
+}
+
+.card i:hover {
+    color: #dc3545; /* Red hover for icons */
+}
+
+/* Product Card Styling */
+.product-card img {
+    max-width: 120px;
+    margin: 0 auto;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+.about-sec {
+    padding: 50px 100px !important;
+}
+.box-sec {
+    background-color: #f2f2f2ad;
+}
+.box-sec-full {
+    padding: 0 25px !important;
+}
+.text-danger {
+    color: var(--secondary-color) !important;
+}
+.policy-box {
+    padding: 20px;
+    font-size: 14px;
+}
+.bg-warning {
+    background-color: rgb(229 176 16) !important;
+}
+.prd-sm-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+.prd-details {
+    font-size: 14px;
+    font-weight: 500;
+}
+.bg-danger {
+    background-color: var(--secondary-color) !important;
+}
+.galvanized {
+    background-color: #c0c0c0 !important;
+    color: #000 !important;
+}
+.black {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+.brown {
+    background-color: #964b00 !important;
+    color: #fff !important;
+}
+.green {
+    background-color: green !important;
+    color: #fff !important;
+}
+.white {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+.quantity-input {
+    width: 60px; /* Fixed width */
+    text-align: center; /* Center align text */
+    padding: 2px; /* Add some padding for better appearance */
+    font-size: 14px; /* Match font size */
+}
+/* Table Header */
+table th {
+    font-size: 16px; /* Font size for headers */
+    text-align: center; /* Center align headers */
+    padding: 8px; /* Add padding for better spacing */
+}
+
+/* Table Body */
+table td {
+    font-size: 14px; /* Font size for table values */
+    text-align: center; /* Center align values */
+    padding: 6px; /* Adjust padding for compactness */
+}
+
+/* Quantity Input */
+.quantity-input {
+    width: 50px; /* Adjust width for compact look */
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Adjust Buttons */
+button {
+    font-size: 14px;
+    padding: 4px 6px; /* Add padding for consistency */
+}
+.toast-container {
+    z-index: 1055;
+}
+
+.toast-header {
+    color: white;
+}
+/* Sidebar Cart Hidden Initially */
+#mini-cart-sidebar {
+    right: -300px; /* Hidden */
+    transition: right 0.3s ease-in-out; /* Smooth slide transition */
+    z-index: 1050; /* Ensure it stays above other content */
+}
+
+/* Sidebar Cart Visible When 'show' Class is Added */
+#mini-cart-sidebar.show {
+    right: 0; /* Slide into view */
+}
+
+.product-options-container {
+    z-index: 1000; /* Ensure dropdown appears above other content */
+}
+
+.product-options-container select {
+    width: 100%;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem; /* Bootstrap-like padding */
+    font-size: 0.875rem; /* Slightly smaller font size */
+    line-height: 1.5;
+}
+
+/* Style the dropdown options */
+.product-options-container select option {
+    padding: 8px;
+    font-size: 0.875rem;
+}
+
+/* Ensure dropdown opens below */
+.product-options-container select:focus {
+    position: relative;
+}
+
+/* Optional: Style the selected option */
+.product-options-container select option:checked {
+    background-color: #f8f9fa;
+}
+.text-brown {
+    color: #8b4513;
+}
+.btn-light {
+    font-size: 12px !important;
+}
+
+/* Ipad Style */
+@media (min-width: 627px) and (max-width: 991.98px) and (orientation: portrait) {
+    .logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .tagline {
+        font-size: 24px;
+        padding: 4px;
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-link {
+        font-size: 14px;
+        padding: 20px;
+        margin:2px;
+    }
+
+    .custm__serv {
+        font-size: 0;
+    }
+
+  }
+
+
+/* Mobile Styles */
+@media screen and (max-width: 627px) { 
+    .inst-btn {
+        font-size: 0;
+    }
+
+    .bi {
+        margin: 0;
+    }
+
+    .logo img {
+        width: 120px; /* Adjust width */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    .custm__serv {
+        font-size: 0;
+    }
+
+    .tagline {
+        font-size: 18px;
+        padding: 2px;
+    }
+
+    .quote-btn {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .nav-link {
+        font-size: 14px;
+        padding: 10px 18px;
+        margin:2px;
+    }
+
+    .nav-btn.dropdown-toggle::after {
+        display: none !important;
+      }
+
+    .bi-list {
+        height: 42px;
+    }
+
+    .footer-logo {
+        width: 140px;
+        height: auto;
+    }
+
+    .tagline__footer {
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .footer__header {
+        margin-bottom: 20px;
+    }
+}
