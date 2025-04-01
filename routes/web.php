@@ -151,7 +151,9 @@ Route::get('/wood-fence/specs/{subcategoryId}/{spacing?}', [WoodFenceController:
     ->name('woodfence.specs');
 
 Route::get('/wood-fence-mysql2', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence.mysql2');
-Route::get('/wood-fence-mysql2/specs', [WoodFenceMysql2Controller::class, 'specs'])->name('woodfence.mysql2.specs');
+Route::get('/wood-fence-mysql2/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
+    ->where('spacing', '.*') // Allow special characters in spacing
+    ->name('woodfence.mysql2.specs');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
