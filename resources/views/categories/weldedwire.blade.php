@@ -1053,17 +1053,17 @@
         <!-- Game & Horse -->
         <div class="col-lg-4">
             <div class="bg-black text-white text-center py-3 rounded">
-                <h5>Game & Horse</h5>
+                <h5 class="mb-0">Game & Horse</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-5 text-center">
                         <div class="card-header bg-danger text-white fw-bold py-2">
-                            Various Sizes
+                            <h6 class="mb-0">Various Sizes</h6>
                         </div>
-                        <img src="/resources/images/Group 294 (1).png" alt="Game & Horse" class="img-fluid rounded"
-                            style="max-height: 150px;">
+                        <img src="/resources/images/Group 294 (1).png" alt="Game & Horse" class="img-fluid rounded my-3"
+                            style="height: 120px; object-fit: cover;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
                             <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
@@ -1087,17 +1087,17 @@
         <!-- Knock In Posts -->
         <div class="col-lg-4">
             <div class="bg-black text-white text-center py-3 rounded">
-                <h5>Knock In Posts</h5>
+                <h5 class="mb-0">Knock In Posts</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-5 text-center">
                         <div class="card-header bg-danger text-white fw-bold py-2">
-                            U-Channel
+                            <h6 class="mb-0">U-Channel</h6>
                         </div>
-                        <img src="/resources/images/Group 294 (2).png" alt="Knock In Posts" class="img-fluid rounded"
-                            style="max-height: 150px;">
+                        <img src="/resources/images/Group 294 (2).png" alt="Knock In Posts" class="img-fluid rounded my-3"
+                            style="height: 120px; object-fit: cover;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-dark btn-sm fw-bold">Green</button>
                             <button class="btn btn-outline-secondary btn-sm fw-bold">Black</button>
@@ -1106,7 +1106,6 @@
                     <!-- Content -->
                     <div class="col-md-7">
                         <div class="card text-center shadow-sm h-100">
-
                             <div class="card-body">
                                 <p>Heavy Knock-In U</p>
                                 <ul class="text-start prd-sm-text">
@@ -1127,17 +1126,17 @@
         <!-- Fence Pen Kits -->
         <div class="col-lg-4">
             <div class="bg-black text-white text-center py-3 rounded">
-                <h5>Fence Pen Kits</h5>
+                <h5 class="mb-0">Fence Pen Kits</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-5 text-center">
                         <div class="card-header bg-danger text-white fw-bold py-2">
-                            Various Sizes
+                            <h6 class="mb-0">Various Sizes</h6>
                         </div>
-                        <img src="/resources/images/Group 294 (3).png" alt="Fence Pen Kits" class="img-fluid rounded"
-                            style="max-height: 150px;">
+                        <img src="/resources/images/Group 294 (3).png" alt="Fence Pen Kits" class="img-fluid rounded my-3"
+                            style="height: 120px; object-fit: cover;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-dark btn-sm fw-bold">Vinyl Coated</button>
                             <button class="btn btn-outline-secondary btn-sm fw-bold">Galvanized</button>
