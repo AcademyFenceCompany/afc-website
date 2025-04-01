@@ -106,7 +106,7 @@
     </main>
 @endsection
 @section('scripts')
-    <script src="{{ secure_asset('js/cart-index.js') }}"></script>
+    <script src="{{ asset('js/cart-index.js') }}"></script>
 @endsection
 <!-- Bootstrap Toast Notification -->
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
