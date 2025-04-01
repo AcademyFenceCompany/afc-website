@@ -20,14 +20,26 @@ class WoodFenceMysql2Controller extends Controller
         $categoriesWithDetails = [];
         foreach ($woodFenceCategories as $category) {
             // Get unique spacing options from productsqry for this category
-            $spacingValues = DB::connection('mysql_second')
-                ->table('productsqry')
-                ->where('categories_id', $category->id)
-                ->whereNotNull('spacing')
-                ->whereRaw("spacing != ''")
-                ->distinct()
-                ->pluck('spacing')
-                ->toArray();
+            try {
+                $spacingValues = DB::connection('mysql_second')
+                    ->table('productsqry')
+                    ->where('categories_id', $category->id)
+                    ->whereNotNull('spacing')
+                    ->whereRaw("spacing != ''")
+                    ->distinct()
+                    ->pluck('spacing')
+                    ->toArray();
+            } catch (\Exception $e) {
+                // If productsqry view doesn't exist, fall back to products table
+                $spacingValues = DB::connection('mysql_second')
+                    ->table('products')
+                    ->where('categories_id', $category->id)
+                    ->whereNotNull('spacing')
+                    ->whereRaw("spacing != ''")
+                    ->distinct()
+                    ->pluck('spacing')
+                    ->toArray();
+            }
                 
             // Filter and clean spacing values
             $spacingOptions = collect($spacingValues)
@@ -35,18 +47,31 @@ class WoodFenceMysql2Controller extends Controller
                     return !empty($spacing);
                 })
                 ->unique()
-                ->values();
+                ->values()
+                ->toArray();
 
             // If no spacing options found, check size field for potential spacing info
-            if ($spacingOptions->isEmpty()) {
-                $sizes = DB::connection('mysql_second')
-                    ->table('productsqry')
-                    ->where('categories_id', $category->id)
-                    ->whereNotNull('size')
-                    ->whereRaw("size != ''")
-                    ->distinct()
-                    ->pluck('size')
-                    ->toArray();
+            if (empty($spacingOptions)) {
+                try {
+                    $sizes = DB::connection('mysql_second')
+                        ->table('productsqry')
+                        ->where('categories_id', $category->id)
+                        ->whereNotNull('size')
+                        ->whereRaw("size != ''")
+                        ->distinct()
+                        ->pluck('size')
+                        ->toArray();
+                } catch (\Exception $e) {
+                    // If productsqry view doesn't exist, fall back to products table
+                    $sizes = DB::connection('mysql_second')
+                        ->table('products')
+                        ->where('categories_id', $category->id)
+                        ->whereNotNull('size')
+                        ->whereRaw("size != ''")
+                        ->distinct()
+                        ->pluck('size')
+                        ->toArray();
+                }
                 
                 // Some basic processing to extract potential spacing values from sizes
                 $spacingOptions = collect($sizes)
@@ -58,7 +83,8 @@ class WoodFenceMysql2Controller extends Controller
                     })
                     ->filter()
                     ->unique()
-                    ->values();
+                    ->values()
+                    ->toArray();
             }
 
             // Determine if this is a "custom cedar" category based on name or description
@@ -102,11 +128,10 @@ class WoodFenceMysql2Controller extends Controller
     /**
      * Display products specs for a specific category
      */
-    public function specs(Request $request)
+    public function specs(Request $request, $id, $spacing = null)
     {
-        $categoryId = $request->input('id');
-        $spacing = $request->input('spacing');
-        $styleTitle = $request->input('style_title', '');
+        $categoryId = $id;
+        $styleTitle = $request->input('styleTitle', '');
         $groupBy = $request->input('group_by', 'style');
 
         // Find the category
@@ -122,9 +147,16 @@ class WoodFenceMysql2Controller extends Controller
         }
 
         // Base query
-        $query = DB::connection('mysql_second')
-            ->table('productsqry')
-            ->where('categories_id', $categoryId);
+        try {
+            $query = DB::connection('mysql_second')
+                ->table('productsqry')
+                ->where('categories_id', $categoryId);
+        } catch (\Exception $e) {
+            // If productsqry view doesn't exist, fall back to products table
+            $query = DB::connection('mysql_second')
+                ->table('products')
+                ->where('categories_id', $categoryId);
+        }
 
         // Apply spacing filter if provided
         if ($spacing) {
@@ -145,8 +177,19 @@ class WoodFenceMysql2Controller extends Controller
             'price',
             'size',
             'color',
-            'style'
+            'style',
+            'speciality',  // Use the correct field from the database
+            'material',    // Use the material field from the database
+            'spacing',     // Use the spacing field directly
+            'img_small',   // Include image fields
+            'img_large'
         )->get();
+
+        // Join the products with category data manually since we don't have the view
+        $category = DB::connection('mysql_second')
+            ->table('categories')
+            ->where('id', $categoryId)
+            ->first();
 
         // Convert the database result to a proper array to avoid type issues
         $productsArray = [];
@@ -161,22 +204,73 @@ class WoodFenceMysql2Controller extends Controller
                 'size' => $product->size,
                 'color' => $product->color,
                 'style' => $product->style ?? 'Standard',
-                'specialty' => 'Standard', // We don't have specialty column in the database
-                'general_image' => '/default-product.png', // Default product image
-                'spacing' => $spacing ?? null,
+                'specialty' => $product->speciality ?? 'Standard', // Use the speciality field (note spelling)
+                'general_image' => $product->img_large ? '/' . $product->img_large : '/default-product.png', // Use image from DB if available
+                'spacing' => $product->spacing ?? $spacing ?? null, // Use DB spacing first, then param spacing
+                'family_category_id' => $categoryId, // Add this for compatibility
+                'material' => $product->material ?? 'Wood', // Use material from DB if available
             ];
         }
 
-        $formattedProducts = collect($productsArray);
+        $formattedProducts = $productsArray;
 
         // Group products according to groupBy parameter
         if ($groupBy === 'style') {
-            $styleGroups = $formattedProducts->groupBy('style')->map(function($group, $style) {
-                return [
+            // First group products by style (Section Top Style)
+            $styleGroups = [];
+
+            // Define common fence styles to ensure they're all represented
+            $commonStyles = ['Straight On Top', 'Concave', 'Convex'];
+            
+            // First, categorize products by style and specialty
+            foreach ($formattedProducts as $product) {
+                $style = $product['style'] ?? 'Standard';
+                
+                // Map common style variations to standard names
+                if (stripos($style, 'straight') !== false) {
+                    $style = 'Straight On Top';
+                } elseif (stripos($style, 'concave') !== false) {
+                    $style = 'Concave';
+                } elseif (stripos($style, 'convex') !== false) {
+                    $style = 'Convex';
+                }
+                
+                if (!isset($styleGroups[$style])) {
+                    $styleGroups[$style] = [];
+                }
+                
+                // Then within each style, group by specialty (Picket Style)
+                $specialty = $product['specialty'] ?? 'Standard';
+                if (!isset($styleGroups[$style][$specialty])) {
+                    $styleGroups[$style][$specialty] = [];
+                }
+                
+                $styleGroups[$style][$specialty][] = $product;
+            }
+            
+            // Ensure all common styles exist even if no products
+            foreach ($commonStyles as $style) {
+                if (!isset($styleGroups[$style])) {
+                    $styleGroups[$style] = [];
+                }
+            }
+            
+            // Format for the blade template
+            $formattedStyleGroups = [];
+            foreach ($styleGroups as $style => $specialties) {
+                $specialtyArray = [];
+                foreach ($specialties as $specialty => $products) {
+                    $specialtyArray[] = [
+                        'specialty' => $specialty,
+                        'products' => $products
+                    ];
+                }
+                
+                $formattedStyleGroups[] = [
                     'style' => $style,
-                    'combos' => $group
+                    'specialties' => $specialtyArray
                 ];
-            })->values();
+            }
 
             return view('categories.woodfence-specs', [
                 'category' => [
@@ -186,19 +280,20 @@ class WoodFenceMysql2Controller extends Controller
                     'seo_name' => $category->seo_name,
                 ],
                 'groupBy' => 'style',
-                'styleGroups' => $styleGroups,
-                'styles' => [], // For backward compatibility
+                'styleGroups' => $formattedStyleGroups,
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
             ]);
         } else {
             // Since we don't have a specialty column, we'll just use style as the grouping
-            $specialtyGroups = $formattedProducts->groupBy('style')->map(function($group, $style) {
-                return [
-                    'specialty' => $style, // Using style as specialty
-                    'products' => $group
-                ];
-            })->values();
+            $specialtyGroups = array_reduce($formattedProducts, function($carry, $product) {
+                $style = $product['style'];
+                if (!isset($carry[$style])) {
+                    $carry[$style] = [];
+                }
+                $carry[$style][] = $product;
+                return $carry;
+            }, []);
 
             return view('categories.woodfence-specs', [
                 'category' => [
@@ -208,7 +303,12 @@ class WoodFenceMysql2Controller extends Controller
                     'seo_name' => $category->seo_name,
                 ],
                 'groupBy' => 'specialty',
-                'specialtyGroups' => $specialtyGroups,
+                'specialtyGroups' => array_map(function($group, $style) {
+                    return [
+                        'specialty' => $style, // Using style as specialty
+                        'products' => $group
+                    ];
+                }, $specialtyGroups, array_keys($specialtyGroups)),
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
             ]);
