@@ -10,6 +10,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SingleProductController;
 use App\Http\Controllers\WoodFenceController;
+use App\Http\Controllers\WoodFenceMysql2Controller;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StateMarkupController;
@@ -148,6 +149,9 @@ Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 
 Route::get('/wood-fence/specs/{subcategoryId}/{spacing?}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
+
+Route::get('/wood-fence-mysql2', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence.mysql2');
+Route::get('/wood-fence-mysql2/specs', [WoodFenceMysql2Controller::class, 'specs'])->name('woodfence.mysql2.specs');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
