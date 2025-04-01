@@ -4,105 +4,66 @@
 @section('title', 'Welded Wire')
 
 @section('content')
-    <!-- Header Section -->
-    <div class="bg-black text-white text-center py-3 rounded">
-        <h1 class="mb-0">Welded Wire</h1>
-    </div>
-    <div class="text-center mt-2">
-        <p>Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded wire prices
-            from different companies, one of the most important factors of Strength and Quality can be determined by
-            comparing the specifications and weight of the roll.</p>
-        <p class="text-danger fw-bold">CALL AHEAD FOR LOCAL PICKUP!</p>
-    </div>
 
-    <!-- Main Section -->
-    <div class="row mt-4 align-items-center">
-        <!-- Left Column -->
-        <div class="col-md-4 mb-4 mb-md-0">
-            <div class="bg-warning text-dark p-4 rounded shadow-sm">
-                <h4 class="fw-bold">The Original online Fence Superstore</h4>
-                <p class="mb-0"><em>Family owned operated since 1968</em></p>
-                <h5 class="mt-3">Welded Wire Manufacturer</h5>
-                <ul class="mt-3">
-                    <li>Widest variety of mesh size and gauges</li>
-                    <li>Direct Ship from our warehouse</li>
-                    <li>Our manufacture specifications:
-                        <ul>
-                            <li>Full gauge steel core</li>
-                            <li>Hot dip galvanized</li>
-                            <li>Then quality PVC coated</li>
-                        </ul>
-                    </li>
-                    <li>Pick up available in NJ</li>
-                </ul>
-            </div>
-        </div>
 
-        <!-- Center Image -->
-        <div class="col-md-4 text-center mb-4 mb-md-0">
-            <img src='/resources/images/image 103.png' alt="Welded Wire Diagram" class="img-fluid rounded shadow-sm">
-        </div>
+<style>
+   .ww_title {
+    font-size: 24px !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    padding: 10px 0 !important;
+   }
 
-        <!-- Right Column -->
-        <div class="col-md-4">
-            <h5 class="text-danger fw-bold">Vinyl PVC Coated Welded Wire Fence</h5>
-            <p><strong>In stock warehouse - Quick Shipping!</strong></p>
-            <p><strong>4in x 4in Vinyl PVC Coated Mesh</strong></p>
-            <div class="row">
-                <div class="col-6">
-                    <h6>Benefits:</h6>
-                    <ul>
-                        <li>Easy to Install</li>
-                        <li>Weather Proof</li>
-                        <li>Attractive Durable</li>
-                        <li>Rust-Resistant</li>
-                        <li>Long Lasting</li>
-                    </ul>
-                </div>
-                <div class="col-6">
-                    <h6>Attach to:</h6>
-                    <ul>
-                        <li>Post and Rail Fence</li>
-                        <li>Stakes</li>
-                        <li>Trees and Shrubs</li>
-                    </ul>
-                </div>
-            </div>
-            <a href="#" class="btn btn-danger text-white mt-3">WELDED WIRE SAMPLE</a>
-            <div class="mt-4">
-                <h6>Brochures</h6>
-                <a href="#" class="btn btn-secondary btn-sm me-2 mb-2"><i class="bi bi-file-earmark-text"></i> Welded Wire
-                    Brochure</a>
-                <a href="#" class="btn btn-secondary btn-sm mb-2"><i class="bi bi-printer"></i> Print Order Sheet</a>
-            </div>
-        </div>
-    </div>
+   .border-bottom {
+            font-size: 12px;
+        }
+
+        .call__ahead {
+            font-size: 14px;;
+        }
+
+        .mesh__title {
+            font-size: 20px;
+        }
+
+        .card-header {
+            font-size: 14px;
+            background-color: #f7f9fa !important;
+            color: #000 !important;
+            font-weight: 700 !important;
+        }
+</style>
+    
+
+    
 
     <!-- Welded Wire Products by Gauge -->
     @foreach ($meshSize_products->groupBy('size3') as $gauge => $products)
         <!-- Gauge Section -->
-        <div class="mt-5">
+        <div class="mt-0">
             <div class="bg-danger text-white text-center py-2 rounded">
-                <h4>{{ $gauge }} Gauge</h4>
+                <h4 class="m-0 mesh__title">{{ $gauge }} Gauge</h4>
             </div>
-            <div class="row mt-3">
+            <div class="row mt-1">
                 <!-- Left Image -->
-                <div class="col-md-3 text-center mb-4 mb-md-0">
+                <div class="col-md-2 text-center mb-4 mb-md-0">
                     <div class="card shadow-sm">
-                        <div class="card-header bg-danger text-white fw-bold py-2">
-                            {{ $products->first()->size2 ?? 'Mesh Size' }},
-                            {{ $gauge ?? 'Gauge' }}
-                        </div>
-                        <div class="card-body">
+                        <div class="card-header bg-danger text-white fw-bold py-1 rounded">
                             <img src="{{ $products->first()->large_image ?? '/resources/images/default.png' }}"
                                 alt="{{ $products->first()->product_name }}" class="img-fluid rounded">
+<div class="mt-1">{{ $products->first()->size2 ?? 'Mesh Size' }}
+{{ $gauge ?? 'Gauge' }}</div>
+                                
                         </div>
+                        <!-- <div class="card-body">
+                            
+                        </div> -->
                     </div>
                 </div>
 
                 <!-- Product Table -->
                 <div class="col-md-9">
-                    <p class="text-danger"><strong>Note:</strong> call ahead for local pickup!</p>
+                    <p class="text-danger mb-1"><strong>Note:</strong> call ahead for local pickup!</p>
                     
                     <!-- Desktop Table (Hidden on Mobile) -->
                     <div class="d-none d-md-block">
@@ -243,29 +204,35 @@
         </div>
     @endforeach
 
+
+
+
     <!-- Knock-In Posts Section -->
-    <div class="mt-5">
+    <div class="mt-0">
         <!-- Section Title -->
         <div class="bg-danger text-white text-center py-2 rounded">
-            <h4>Knock-In Posts U-Channel with fastening clips</h4>
-        </div>
+        <h4 class="m-0 mesh__title">Knock-In Posts U-Channel with fastening clips</h4>
+    </div>
         <!-- Content -->
-        <div class="row align-items-center mt-3">
+        <div class="row mt-1">
             <!-- Left Image -->
-            <div class="col-md-3 text-center mb-4 mb-md-0">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-danger text-white fw-bold py-2">
-                        Knock-In Posts
-                    </div>
-                    <div class="card-body">
-                        <img src="/resources/images/image 104.png" alt="Knock-In Posts" class="img-fluid rounded">
-                    </div>
+            <div class="col-md-2 text-center mb-4 mb-md-0">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white fw-bold py-1 rounded">
+                    <img src="/resources/images/image 104.png" alt="Knock-In Posts" class="img-fluid rounded">
+                    <div class="mt-1">U-Channel</div>
                 </div>
+                <!-- <div class="card-body">
+                    
+                </div> -->
             </div>
+        </div>
 
+            
+            
             <!-- Right Table -->
             <div class="col-md-9">
-                <p class="text-danger"><strong>Note:</strong> call ahead for local pickup!</p>
+                <p class="text-danger mb-1"><strong>Note:</strong> call ahead for local pickup!</p>
                 
                 <!-- Desktop Table (Hidden on Mobile) -->
                 <div class="d-none d-md-block">
@@ -345,6 +312,80 @@
                         </div>
                     @endforeach
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Header Section -->
+    <div class="bg-black rounded">
+        <h1 class="ww_title text-center py-0 mb-0">Welded Wire</h1>
+    </div>
+    <div class="text-center py-2 mb-4 border-bottom">
+        <p class="mb-0">Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded wire prices
+            from different companies, one of the most important factors of Strength and Quality can be determined by
+            comparing the specifications and weight of the roll.</p>
+        <p class="text-danger fw-bold call__ahead">CALL AHEAD FOR LOCAL PICKUP!</p>
+    </div>
+    <!-- Main Section -->
+    <div class="row mt-4 align-items-center">
+        <!-- Left Column -->
+        <div class="col-md-4 mb-4 mb-md-0">
+            <div class="bg-warning text-dark p-4 rounded shadow-sm">
+                <h4 class="fw-bold">The Original online Fence Superstore</h4>
+                <p class="mb-0"><em>Family owned operated since 1968</em></p>
+                <h5 class="mt-3">Welded Wire Manufacturer</h5>
+                <ul class="mt-3">
+                    <li>Widest variety of mesh size and gauges</li>
+                    <li>Direct Ship from our warehouse</li>
+                    <li>Our manufacture specifications:
+                        <ul>
+                            <li>Full gauge steel core</li>
+                            <li>Hot dip galvanized</li>
+                            <li>Then quality PVC coated</li>
+                        </ul>
+                    </li>
+                    <li>Pick up available in NJ</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Center Image -->
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+            <img src='/resources/images/image 103.png' alt="Welded Wire Diagram" class="img-fluid rounded shadow-sm">
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-4">
+            <h5 class="text-danger fw-bold">Vinyl PVC Coated Welded Wire Fence</h5>
+            <p><strong>In stock warehouse - Quick Shipping!</strong></p>
+            <p><strong>4in x 4in Vinyl PVC Coated Mesh</strong></p>
+            <div class="row">
+                <div class="col-6">
+                    <h6>Benefits:</h6>
+                    <ul>
+                        <li>Easy to Install</li>
+                        <li>Weather Proof</li>
+                        <li>Attractive Durable</li>
+                        <li>Rust-Resistant</li>
+                        <li>Long Lasting</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <h6>Attach to:</h6>
+                    <ul>
+                        <li>Post and Rail Fence</li>
+                        <li>Stakes</li>
+                        <li>Trees and Shrubs</li>
+                    </ul>
+                </div>
+            </div>
+            <a href="#" class="btn btn-danger text-white mt-3">WELDED WIRE SAMPLE</a>
+            <div class="mt-4">
+                <h6>Brochures</h6>
+                <a href="#" class="btn btn-secondary btn-sm me-2 mb-2"><i class="bi bi-file-earmark-text"></i> Welded Wire
+                    Brochure</a>
+                <a href="#" class="btn btn-secondary btn-sm mb-2"><i class="bi bi-printer"></i> Print Order Sheet</a>
             </div>
         </div>
     </div>
