@@ -148,23 +148,18 @@ textarea {
 .quote-btn {
     background: var(--secondary-color);
     border: none;
-    font-size: 16px;
+    font-size: 14px;
     padding: 10px 20px;
     text-transform: uppercase;
     margin-right: 30px;
-    transition: all 0.3s ease;
-    color: #fff;
-    font-weight: 500;
 }
 
 .quote-btn:hover {
-    background: var(--hover-color); 
-    color: #ffffff;
-    transform: scale(1.05);
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: var(--hover-color);
+    opacity: 80%;
+    color: red;
+    font-weight: var(--font-weight-bold);
 }
-
 
 /* Custom styles for navigation buttons */
 .nav-btn {
@@ -598,104 +593,131 @@ button {
     background-color: #f8f9fa;
 }
 .text-brown {
-    color: #8b4513;
+    color: #8b4513 !important;
 }
 .btn-light {
     font-size: 12px !important;
 }
+.logoline {
+    color: #600;
+    font-size: 13px;
+    font-style: italic;
+}
 
-/* Ipad Style */
-@media (min-width: 627px) and (max-width: 991.98px) and (orientation: portrait) {
-    .logo img {
-        width: 150px;
-        height: auto;
+.wf-about h4 {
+    font-size: 16px !important;
+    font-weight: bold !important;
+}
+main p.page-description {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+}
+/* Page title styles with extremely high specificity */
+html body main .page-title,
+.page-title,
+h1.page-title,
+.container h1.page-title,
+.container .page-title,
+main .rounded .page-title,
+.rounded .page-title {
+    font-size: 24px !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    padding: 10px 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.page-description {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Wood fence page styles - with higher specificity */
+.bg-brown, 
+div.bg-brown,
+.container .bg-brown,
+main .bg-brown {
+    background-color: #8B4513 !important;
+}
+
+.text-brown,
+h1.text-brown,
+h2.text-brown,
+h3.text-brown,
+h4.text-brown,
+h5.text-brown,
+h6.text-brown,
+p.text-brown,
+span.text-brown {
+    color: #8B4513 !important;
+}
+
+.btn.btn-brown,
+button.btn-brown,
+a.btn-brown,
+.container .btn.btn-brown,
+main .btn.btn-brown,
+.card .btn.btn-brown {
+    background-color: #8B4513 !important;
+    color: white !important;
+    border-color: #8B4513 !important;
+}
+
+.btn.btn-brown:hover,
+button.btn-brown:hover,
+a.btn-brown:hover,
+.container .btn.btn-brown:hover,
+main .btn.btn-brown:hover,
+.card .btn.btn-brown:hover {
+    background-color: #6B3100 !important;
+    color: white !important;
+}
+
+/* Custom 4-column layout */
+.col-lg-3 {
+    width: 25% !important;
+}
+@media (max-width: 992px) {
+    .col-lg-3 {
+        width: 33.333% !important;
     }
-
-    .tagline {
-        font-size: 24px;
-        padding: 4px;
+}
+@media (max-width: 768px) {
+    .col-lg-3 {
+        width: 50% !important;
     }
-
-    .nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+}
+@media (max-width: 576px) {
+    .col-lg-3 {
+        width: 100% !important;
     }
+}
 
-    .nav-link {
-        font-size: 14px;
-        padding: 20px;
-        margin:2px;
-    }
+/* Additional woodfence styles */
+.bg-light-yellow {
+    background-color: #FFFFD4 !important;
+}
 
-    .custm__serv {
-        font-size: 0;
-    }
+.small-font {
+    font-size: 14px !important;
+}
 
-  }
+.product-image {
+    width: 250px !important;
+    height: 130px !important;
+    object-fit: cover !important;
+}
 
+.btn-small-text {
+    font-size: 0.7rem !important;
+}
 
-/* Mobile Styles */
-@media screen and (max-width: 627px) { 
-    .inst-btn {
-        font-size: 0;
-    }
-
-    .bi {
-        margin: 0;
-    }
-
-    .logo img {
-        width: 120px; /* Adjust width */
-        height: auto; /* Maintain aspect ratio */
-    }
-
-    .custm__serv {
-        font-size: 0;
-    }
-
-    .tagline {
-        font-size: 18px;
-        padding: 2px;
-    }
-
-    .quote-btn {
-        padding: 8px;
-        font-size: 12px;
-    }
-
-    .nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .nav-link {
-        font-size: 14px;
-        padding: 10px 18px;
-        margin:2px;
-    }
-
-    .nav-btn.dropdown-toggle::after {
-        display: none !important;
-      }
-
-    .bi-list {
-        height: 42px;
-    }
-
-    .footer-logo {
-        width: 140px;
-        height: auto;
-    }
-
-    .tagline__footer {
-        color: #fff;
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .footer__header {
-        margin-bottom: 20px;
-    }
+.about-image {
+    width: 180px !important;
+    height: 180px !important;
+    object-fit: cover !important;
 }

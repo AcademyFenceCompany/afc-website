@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ secure_asset('css/ams.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
     @yield('styles')
     
     <!-- TinyMCE -->
@@ -40,6 +40,7 @@
             <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
             <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
             <a href="{{ route('categories.display') }}" class="menu-item">Category Management</a>
+            <a href="{{ route('ams.product-query.index') }}" class="menu-item">Product Query</a>
         </div>
 
         <!-- Customers -->
@@ -180,7 +181,7 @@
             });
         });
     </script>
-    <script src="{{ secure_asset('js/ams.js') }}"></script>
+    <script src="{{ asset('js/ams.js') }}"></script>
     @yield('scripts')
 </body>
 
