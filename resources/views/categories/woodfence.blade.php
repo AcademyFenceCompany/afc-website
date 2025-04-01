@@ -144,8 +144,8 @@
             <div class="row g-4 mb-4">
                 @php
                     $customCedarProducts = $wood_categories->filter(function($item) {
-                        return (!isset($item['category_group']) || $item['category_group'] === 'custom_cedar') 
-                            && !in_array($item['family_category_id'], [25, 337,24]);
+                        return ($item['category_group'] === 'custom_cedar') 
+                            && $item['family_category_id'] != 25;
                     });
                 @endphp
 
