@@ -164,8 +164,8 @@
                                     <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
-                                                <a href="{{ route('woodfence.specs', [
-                                                    'subcategoryId' => $category['family_category_id'],
+                                                <a href="{{ route('woodfence.mysql2.specs', [
+                                                    'id' => $category['family_category_id'],
                                                     'spacing' => $spacing,
                                                 ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
                                                     {{ $spacing }}
@@ -174,8 +174,8 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    <a href="{{ route('woodfence.specs', [
-                                        'subcategoryId' => $category['family_category_id'],
+                                    <a href="{{ route('woodfence.mysql2.specs', [
+                                        'id' => $category['family_category_id'],
                                     ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
                                 @endif
                             </div>
@@ -206,8 +206,8 @@
                                     <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
-                                                <a href="{{ route('woodfence.specs', [
-                                                    'subcategoryId' => $category['family_category_id'],
+                                                <a href="{{ route('woodfence.mysql2.specs', [
+                                                    'id' => $category['family_category_id'],
                                                     'spacing' => $spacing,
                                                 ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
                                                     {{ $spacing }}
@@ -216,8 +216,8 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    <a href="{{ route('woodfence.specs', [
-                                        'subcategoryId' => $category['family_category_id'],
+                                    <a href="{{ route('woodfence.mysql2.specs', [
+                                        'id' => $category['family_category_id'],
                                     ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
                                 @endif
                             </div>
@@ -257,8 +257,8 @@
                                     <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
-                                                <a href="{{ route('woodfence.specs', [
-                                                    'subcategoryId' => $category['family_category_id'],
+                                                <a href="{{ route('woodfence.mysql2.specs', [
+                                                    'id' => $category['family_category_id'],
                                                     'spacing' => $spacing,
                                                 ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
                                                     {{ $spacing }}
@@ -267,8 +267,8 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    <a href="{{ route('woodfence.specs', [
-                                        'subcategoryId' => $category['family_category_id'],
+                                    <a href="{{ route('woodfence.mysql2.specs', [
+                                        'id' => $category['family_category_id'],
                                     ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
                                 @endif
                             </div>
