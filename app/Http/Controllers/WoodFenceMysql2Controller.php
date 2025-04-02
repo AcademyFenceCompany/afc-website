@@ -204,7 +204,7 @@ class WoodFenceMysql2Controller extends Controller
                 'size' => $product->size,
                 'color' => $product->color,
                 'style' => $product->style ?? 'Standard',
-                'specialty' => $product->speciality ?? 'Standard', // Use the speciality field (note spelling)
+                'speciality' => $product->speciality ?? null, // Use the speciality field
                 'general_image' => $product->img_large ? '/' . $product->img_large : '/default-product.png', // Use image from DB if available
                 'spacing' => $product->spacing ?? $spacing ?? null, // Use DB spacing first, then param spacing
                 'family_category_id' => $categoryId, // Add this for compatibility
@@ -222,7 +222,7 @@ class WoodFenceMysql2Controller extends Controller
             // Define common fence styles to ensure they're all represented
             $commonStyles = ['Straight On Top', 'Concave', 'Convex'];
             
-            // First, categorize products by style and specialty
+            // First, categorize products by style and speciality
             foreach ($formattedProducts as $product) {
                 $style = $product['style'] ?? 'Standard';
                 
@@ -239,13 +239,16 @@ class WoodFenceMysql2Controller extends Controller
                     $styleGroups[$style] = [];
                 }
                 
-                // Then within each style, group by specialty (Picket Style)
-                $specialty = $product['specialty'] ?? 'Standard';
-                if (!isset($styleGroups[$style][$specialty])) {
-                    $styleGroups[$style][$specialty] = [];
+                // Then within each style, group by speciality (Picket Style)
+                $speciality = $product['speciality'] ?? null;
+                if ($speciality === null || trim($speciality) === '') {
+                    $speciality = 'Standard';
+                }
+                if (!isset($styleGroups[$style][$speciality])) {
+                    $styleGroups[$style][$speciality] = [];
                 }
                 
-                $styleGroups[$style][$specialty][] = $product;
+                $styleGroups[$style][$speciality][] = $product;
             }
             
             // Ensure all common styles exist even if no products
@@ -257,18 +260,17 @@ class WoodFenceMysql2Controller extends Controller
             
             // Format for the blade template
             $formattedStyleGroups = [];
-            foreach ($styleGroups as $style => $specialties) {
-                $specialtyArray = [];
-                foreach ($specialties as $specialty => $products) {
-                    $specialtyArray[] = [
-                        'specialty' => $specialty,
-                        'products' => $products
-                    ];
+            foreach ($styleGroups as $style => $specialities) {
+                $combos = [];
+                foreach ($specialities as $speciality => $products) {
+                    foreach ($products as $product) {
+                        $combos[] = $product;
+                    }
                 }
                 
                 $formattedStyleGroups[] = [
                     'style' => $style,
-                    'specialties' => $specialtyArray
+                    'combos' => collect($combos)
                 ];
             }
 
@@ -284,9 +286,34 @@ class WoodFenceMysql2Controller extends Controller
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
             ]);
+        } elseif ($groupBy === 'speciality') {
+            // First group products by speciality
+            $specialityGroups = [];
+            
+            foreach ($formattedProducts as $product) {
+                $speciality = $product['speciality'] ?? 'Standard';
+                
+                if (!isset($specialityGroups[$speciality])) {
+                    $specialityGroups[$speciality] = [
+                        'speciality' => $speciality,
+                        'products' => []
+                    ];
+                }
+                
+                $specialityGroups[$speciality]['products'][] = $product;
+            }
+            
+            return view('categories.woodfence-specs', [
+                'specialityGroups' => $specialityGroups,
+                'spacing' => $spacing,
+                'styleTitle' => $category->cat_name,
+                'categoryId' => $categoryId,
+                'groupBy' => $groupBy,
+                'products' => $formattedProducts
+            ]);
         } else {
-            // Since we don't have a specialty column, we'll just use style as the grouping
-            $specialtyGroups = array_reduce($formattedProducts, function($carry, $product) {
+            // Since we don't have a speciality column, we'll just use style as the grouping
+            $specialityGroups = array_reduce($formattedProducts, function($carry, $product) {
                 $style = $product['style'];
                 if (!isset($carry[$style])) {
                     $carry[$style] = [];
@@ -302,13 +329,13 @@ class WoodFenceMysql2Controller extends Controller
                     'description' => $category->cat_desc_long ?? 'No description available',
                     'seo_name' => $category->seo_name,
                 ],
-                'groupBy' => 'specialty',
-                'specialtyGroups' => array_map(function($group, $style) {
+                'groupBy' => 'speciality',
+                'specialityGroups' => array_map(function($group, $style) {
                     return [
-                        'specialty' => $style, // Using style as specialty
+                        'speciality' => $style, // Using style as speciality
                         'products' => $group
                     ];
-                }, $specialtyGroups, array_keys($specialtyGroups)),
+                }, $specialityGroups, array_keys($specialityGroups)),
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
             ]);
