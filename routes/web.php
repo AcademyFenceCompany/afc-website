@@ -34,6 +34,10 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     // Product Query routes for demodb testing
     Route::get('/product-query', [ProductQueryController::class, 'index'])->name('ams.product-query.index');
     
+    // MySQL Category Management
+    Route::resource('mysql-categories', \App\Http\Controllers\Ams\CategoryController::class)->names('ams.mysql-categories');
+    Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
+    
     // Other AMS routes...
     Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
