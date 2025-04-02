@@ -186,6 +186,53 @@
             </div>
         </div>
         @endif
+         <!-- French Gothic Posts Section -->
+         @if(isset($frenchGothicPosts) && count($frenchGothicPosts) > 0)
+         <div class="mt-5">
+             <h4 class="bg-danger text-white py-2 px-3 rounded" style="
+             font-size: 15px;
+             text-align: center;
+         ">FRENCH GOTHIC POSTS - 4in x 4in</h4>
+             <div class="table-responsive mt-3">
+                 <table class="table table-bordered text-center">
+                     <thead class="bg-dark text-white">
+                         <tr>
+                             <th>Item Number</th>
+                             <th>Name</th>
+                             <th>Size</th>
+                             <th>Color</th>
+                             <th>Quantity</th>
+                             <th>Price / Add to Cart</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         @foreach ($frenchGothicPosts as $post)
+                             <tr>
+                                 <td>{{ $post->item_no }}</td>
+                                 <td>{{ $post->product_name }}</td>
+                                 <td>{{ $post->size }}</td>
+                                 <td>{{ $post->color }}</td>
+                                 <td>
+                                     <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
+                                     <input type="number" class="quantity-input text-center" value="1" min="1"
+                                         data-price="{{ $post->price }}">
+                                     <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
+                                 </td>
+                                 <td>
+                                     <span>${{ number_format($post->price, 2) }}</span>
+                                     <button class="btn btn-danger btn-sm add-to-cart-btn"
+                                         data-item="{{ $post->item_no }}" data-name="{{ $post->product_name }}"
+                                         data-price="{{ $post->price }}">
+                                         Add to Cart
+                                     </button>
+                                 </td>
+                             </tr>
+                         @endforeach
+                     </tbody>
+                 </table>
+             </div>
+         </div>
+         @endif
 
         <!-- Flat Posts 5x5 Section -->
         @if(isset($flatPosts5x5) && count($flatPosts5x5) > 0)
@@ -235,53 +282,7 @@
         </div>
         @endif
 
-        <!-- French Gothic Posts Section -->
-        @if(isset($frenchGothicPosts) && count($frenchGothicPosts) > 0)
-        <div class="mt-5">
-            <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-            font-size: 15px;
-            text-align: center;
-        ">FRENCH GOTHIC POSTS - 4in x 4in</h4>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered text-center">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Item Number</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price / Add to Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($frenchGothicPosts as $post)
-                            <tr>
-                                <td>{{ $post->item_no }}</td>
-                                <td>{{ $post->product_name }}</td>
-                                <td>{{ $post->size }}</td>
-                                <td>{{ $post->color }}</td>
-                                <td>
-                                    <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
-                                    <input type="number" class="quantity-input text-center" value="1" min="1"
-                                        data-price="{{ $post->price }}">
-                                    <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
-                                </td>
-                                <td>
-                                    <span>${{ number_format($post->price, 2) }}</span>
-                                    <button class="btn btn-danger btn-sm add-to-cart-btn"
-                                        data-item="{{ $post->item_no }}" data-name="{{ $post->product_name }}"
-                                        data-price="{{ $post->price }}">
-                                        Add to Cart
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        @endif
+       
 
         <!-- Flat Caps 4in Section -->
         <div class="mt-5">
