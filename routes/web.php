@@ -9,7 +9,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SingleProductController;
-use App\Http\Controllers\WoodFenceController;
 use App\Http\Controllers\WoodFenceMysql2Controller;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
@@ -20,6 +19,7 @@ use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\Ams\ProductQueryController;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Ams\CategoryController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -38,7 +38,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     // MySQL Category Management
     Route::resource('mysql-categories', \App\Http\Controllers\Ams\CategoryController::class)->names('ams.mysql-categories');
     Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
-    
+ 
     // Other AMS routes...
     Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
@@ -109,7 +109,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
 Route::get('/resources/images/{filename}', function ($filename) {
     $path = resource_path('images/' . $filename);
@@ -148,16 +148,12 @@ Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProdu
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
 
-Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
-Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
-Route::get('/wood-fence/specs/{subcategoryId}/{spacing?}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
+Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
+Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
-
-Route::get('/wood-fence-mysql2', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence.mysql2');
-Route::get('/wood-fence-mysql2/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
-    ->where('spacing', '.*') // Allow special characters in spacing
-    ->name('woodfence.mysql2.specs');
+Route::get('/wood-fence/specs', [WoodFenceMysql2Controller::class, 'specsAll'])
+    ->name('woodfence.specs.all');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -248,6 +244,8 @@ Route::put('/user/{id}', [UserManagementController::class, 'update']);
 // Family Category Tree - AMS
 Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
 Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
+
+
 
 //Shipping API's 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');

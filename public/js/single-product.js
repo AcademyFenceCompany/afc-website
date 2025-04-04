@@ -17,17 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
     function updateProductDetails(data) {
         // Update common fields
         document.getElementById("product-name").innerHTML = `
-            ${data.product_name}<br>${data.size1 ?? ""}<br>${data.size2 ?? data.style} ${data.size3 ?? data.speciality} ${data.spacing ?? ""}
+            ${data.product_name}<br>${data.size ?? ""}<br>${data.size2 ?? data.style} ${data.size3 ?? data.speciality} ${data.spacing ?? ""}
         `;
         document.getElementById("item-number").textContent =
             data.item_no ?? "N/A";
 
-        if (data.weight) {
-            document.getElementById("weight").textContent = data.weight;
+        if (data.weight_lbs) {
+            document.getElementById("weight").textContent = data.weight_lbs;
         }
 
-        if (data.price_per_unit) {
-            document.getElementById("product-price").textContent = `$${parseFloat(data.price_per_unit).toFixed(2)}`;
+        if (data.price) {
+            document.getElementById("product-price").textContent = `$${parseFloat(data.price).toFixed(2)}`;
         }
 
         if (data.general_image || data.small_image || data.large_image) {
@@ -35,12 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Special handling for Wood Fence
-        if (data.family_category_id === 16) {
+        if (data.majorcategories_id === 1) {
             // Assuming 16 is the Wood Fence family_category_id
             // Hide size2 and size3-related fields as they are null for Wood Fence
             if (!data.size2 && !data.size3) {
                 document.getElementById("product-name").innerHTML = `
-                    ${data.product_name}<br>${data.size1 ?? ""}
+                    ${data.product_name}<br>${data.size ?? ""}
                 `;
             }
 

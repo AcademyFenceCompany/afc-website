@@ -14,7 +14,8 @@ class WoodFenceMysql2Controller extends Controller
         $woodFenceCategories = DB::connection('mysql_second')
             ->table('categories')
             ->where('majorcategories_id', 1)
-            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name')
+            ->where('web_enabled', 1) // Only show web-enabled categories
+            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name', 'img', 'web_enabled')
             ->get();
 
         $categoriesWithDetails = [];
@@ -105,18 +106,24 @@ class WoodFenceMysql2Controller extends Controller
             
             // Category grouping for filtering in template
             $categoryGroup = $isCustomCedar ? 'custom_cedar' : ($isOtherFencing ? 'other_fencing' : 'other');
+            
+            // Force specific categories to be put in accessories group regardless of content
+            if (in_array($category->id, [82, 147, 791])) {
+                $categoryGroup = 'accessories';
+            }
 
             $categoriesWithDetails[] = [
                 'id' => $category->id,
                 'name' => $category->cat_name,
                 'description' => $category->cat_desc_long ?? 'No description available',
-                'image' => '/default.png', // Default image as categoryimages table doesn't exist
+                'image' => $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png'),
                 'spacing_options' => $spacingOptions,
                 'seo_name' => $category->seo_name,
                 'category_group' => $categoryGroup,
                 'family_category_id' => $category->id, // Use the actual category ID
                 'family_category_name' => $category->cat_name, // Use the actual category name
                 'spacing' => $spacingOptions, // For backward compatibility with template
+                'web_enabled' => $category->web_enabled,
             ];
         }
 
@@ -139,7 +146,7 @@ class WoodFenceMysql2Controller extends Controller
             ->table('categories')
             ->where('id', $categoryId)
             ->where('majorcategories_id', 1)
-            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name')
+            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name', 'img', 'web_enabled')
             ->first();
 
         if (!$category) {
@@ -178,10 +185,10 @@ class WoodFenceMysql2Controller extends Controller
             'size',
             'color',
             'style',
-            'speciality',  // Use the correct field from the database
-            'material',    // Use the material field from the database
-            'spacing',     // Use the spacing field directly
-            'img_small',   // Include image fields
+            'speciality',  // Use speciality as the column name
+            'material',    
+            'spacing',     
+            'img_small',   
             'img_large'
         )->get();
 
@@ -204,15 +211,18 @@ class WoodFenceMysql2Controller extends Controller
                 'size' => $product->size,
                 'color' => $product->color,
                 'style' => $product->style ?? 'Standard',
-                'speciality' => $product->speciality ?? null, // Use the speciality field
-                'general_image' => $product->img_large ? '/' . $product->img_large : '/default-product.png', // Use image from DB if available
-                'spacing' => $product->spacing ?? $spacing ?? null, // Use DB spacing first, then param spacing
-                'family_category_id' => $categoryId, // Add this for compatibility
-                'material' => $product->material ?? 'Wood', // Use material from DB if available
+                'speciality' => $product->speciality ?? null, 
+                'general_image' => $product->img_large ? url('storage/products/' . $product->img_large) : url('storage/products/default.png'),
+                'spacing' => $product->spacing ?? $spacing ?? null, 
+                'family_category_id' => $categoryId, 
+                'material' => $product->material ?? 'Wood', 
             ];
         }
 
         $formattedProducts = $productsArray;
+
+        // Add the image to the category object
+        $category->image = $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png');
 
         // Group products according to groupBy parameter
         if ($groupBy === 'style') {
@@ -280,6 +290,7 @@ class WoodFenceMysql2Controller extends Controller
                     'name' => $category->cat_name,
                     'description' => $category->cat_desc_long ?? 'No description available',
                     'seo_name' => $category->seo_name,
+                    'image' => $category->image,
                 ],
                 'groupBy' => 'style',
                 'styleGroups' => $formattedStyleGroups,
@@ -328,6 +339,7 @@ class WoodFenceMysql2Controller extends Controller
                     'name' => $category->cat_name,
                     'description' => $category->cat_desc_long ?? 'No description available',
                     'seo_name' => $category->seo_name,
+                    'image' => $category->image,
                 ],
                 'groupBy' => 'speciality',
                 'specialityGroups' => array_map(function($group, $style) {
@@ -338,6 +350,176 @@ class WoodFenceMysql2Controller extends Controller
                 }, $specialityGroups, array_keys($specialityGroups)),
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
+            ]);
+        }
+    }
+
+    /**
+     * Display all wood fence products with grouping options
+     */
+    public function specsAll(Request $request)
+    {
+        $groupBy = $request->input('groupBy', 'style');
+
+        // Get all wood fence products
+        try {
+            $query = DB::connection('mysql_second')
+                ->table('productsqry')
+                ->whereIn('categories_id', function($query) {
+                    $query->select('id')
+                        ->from('categories')
+                        ->where('majorcategories_id', 1)
+                        ->where('web_enabled', 1);
+                });
+        } catch (\Exception $e) {
+            // If productsqry view doesn't exist, fall back to products table
+            $query = DB::connection('mysql_second')
+                ->table('products')
+                ->whereIn('categories_id', function($query) {
+                    $query->select('id')
+                        ->from('categories')
+                        ->where('majorcategories_id', 1)
+                        ->where('web_enabled', 1);
+                });
+        }
+
+        // Get all products for wood fence categories
+        $products = $query->select(
+            'id as product_id',
+            'item_no',
+            'categories_id',
+            'parent',
+            'product_name',
+            'price',
+            'size',
+            'color',
+            'style',
+            'speciality', // Use speciality as the column name
+            'material',
+            'spacing',
+            'img_small',
+            'img_large'
+        )->get();
+
+        // Convert the database result to a proper array to avoid type issues
+        $productsArray = [];
+        foreach ($products as $product) {
+            $productsArray[] = [
+                'product_id' => $product->product_id,
+                'item_no' => $product->item_no,
+                'categories_id' => $product->categories_id,
+                'parent' => $product->parent,
+                'title' => $product->product_name, // Add title field for compatibility
+                'product_name' => $product->product_name,
+                'price' => $product->price,
+                'size' => $product->size,
+                'color' => $product->color,
+                'style' => $product->style ?? 'Standard',
+                'speciality' => $product->speciality ?? null, 
+                'general_image' => $product->img_large ? '/' . $product->img_large : '/default-product.png',
+                'spacing' => $product->spacing ?? null,
+                'material' => $product->material ?? 'Wood',
+            ];
+        }
+
+        $formattedProducts = $productsArray;
+
+        // Group products according to groupBy parameter
+        if ($groupBy === 'style') {
+            // First group products by style (Section Top Style)
+            $styleGroups = [];
+
+            // Define common fence styles to ensure they're all represented
+            $commonStyles = ['Straight On Top', 'Concave', 'Convex'];
+            
+            // First, categorize products by style and speciality
+            foreach ($formattedProducts as $product) {
+                $style = $product['style'] ?? 'Standard';
+                
+                // Map common style variations to standard names
+                if (stripos($style, 'straight') !== false) {
+                    $style = 'Straight On Top';
+                } elseif (stripos($style, 'concave') !== false) {
+                    $style = 'Concave';
+                } elseif (stripos($style, 'convex') !== false) {
+                    $style = 'Convex';
+                }
+                
+                if (!isset($styleGroups[$style])) {
+                    $styleGroups[$style] = [];
+                }
+                
+                // Then within each style, group by speciality (Picket Style)
+                $speciality = $product['speciality'] ?? null;
+                if ($speciality === null || trim($speciality) === '') {
+                    $speciality = 'Standard';
+                }
+                if (!isset($styleGroups[$style][$speciality])) {
+                    $styleGroups[$style][$speciality] = [];
+                }
+                
+                $styleGroups[$style][$speciality][] = $product;
+            }
+            
+            // Ensure all common styles exist even if no products
+            foreach ($commonStyles as $style) {
+                if (!isset($styleGroups[$style])) {
+                    $styleGroups[$style] = [];
+                }
+            }
+            
+            // Format for the blade template
+            $formattedStyleGroups = [];
+            foreach ($styleGroups as $style => $specialities) {
+                $combos = [];
+                foreach ($specialities as $speciality => $products) {
+                    foreach ($products as $product) {
+                        $combos[] = $product;
+                    }
+                }
+                
+                $formattedStyleGroups[] = [
+                    'style' => $style,
+                    'combos' => collect($combos)
+                ];
+            }
+
+            return view('categories.woodfence-specs', [
+                'groupBy' => 'style',
+                'styleGroups' => $formattedStyleGroups,
+                'spacing' => null,
+                'styleTitle' => 'Wood Fence Specifications',
+            ]);
+        } elseif ($groupBy === 'speciality') {
+            // First group products by speciality
+            $specialityGroups = [];
+            
+            foreach ($formattedProducts as $product) {
+                $speciality = $product['speciality'] ?? 'Standard';
+                
+                if (!isset($specialityGroups[$speciality])) {
+                    $specialityGroups[$speciality] = [
+                        'speciality' => $speciality,
+                        'products' => []
+                    ];
+                }
+                
+                $specialityGroups[$speciality]['products'][] = $product;
+            }
+            
+            return view('categories.woodfence-specs', [
+                'specialityGroups' => $specialityGroups,
+                'spacing' => null,
+                'styleTitle' => 'Wood Fence Specifications',
+                'groupBy' => $groupBy,
+                'products' => $formattedProducts
+            ]);
+        } else {
+            return view('categories.woodfence-specs', [
+                'groupBy' => null,
+                'products' => $formattedProducts,
+                'spacing' => null,
+                'styleTitle' => 'Wood Fence Specifications'
             ]);
         }
     }
