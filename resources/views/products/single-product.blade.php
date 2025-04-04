@@ -1,4 +1,4 @@
-{{-- @dd($productDetails); --}}
+@dump($productVariations);
 @extends('layouts.main')
 
 @section('title', $productDetails->product_name)
@@ -10,7 +10,7 @@
             <!-- Product Image Section -->
             <div class="col-md-4">
                 <div class="card shadow-sm text-center">
-                    <img id="product-image" src="{{ $productDetails->large_image ?? $productDetails->general_image }} "
+                    <img id="product-image" src="{{ $productDetails->img_large ?? $productDetails->img_large }} "
                         alt="{{ $productDetails->product_name }}" class="img-fluid p-3">
                 </div>
             </div>
@@ -22,9 +22,9 @@
                         <h1 id="product-name" style="font-size: 1.7rem">
                             {{ $productDetails->product_name }}
                             </br>
-                            {{ $productDetails->size1 }}
+                            {{ $productDetails->size}}
                             </br>
-                            @if ($productDetails->family_category_id === 16)
+                            @if ($productDetails->majorcategories_id === 1)
                                 <!-- Check if it's Wood Fence -->
                                 @if ($productDetails->style)
                                     {{ $productDetails->style }}
@@ -33,7 +33,7 @@
                                     </br>{{ $productDetails->speciality }}
                                 @endif
                                 @if ($productDetails->spacing)
-                                    </br>{{ $productDetails->spacing }}
+                                    {{-- </br>{{ $productDetails->spacing }} --}}
                                 @endif
                             @else
                                 <!-- For non-Wood Fence categories -->
@@ -42,8 +42,8 @@
                         </h1>
                         <p class="text-success fw-bold">In Stock</p>
                         <p><strong>Item Number:</strong> <span id="item-number">{{ $productDetails->item_no }}</span></p>
-                        @if (!is_null($productDetails->weight))
-                            <p><strong>Weight:</strong> <span id="weight">{{ $productDetails->weight }} lbs</span></p>
+                        @if (!is_null($productDetails->weight_lbs))
+                            <p><strong>weight</strong> <span id="weight">{{ $productDetails->weight_lbs }} lbs</span></p>
                         @endif
                         <div class="product-options-container" style="position: relative; width: 250px;">
                             <!-- Constrain width -->
@@ -51,11 +51,11 @@
                             <select id="product-option" class="form-select bg-white mb-2"
                                 style="max-height: 38px; max-width:fit-content;">
                                 @foreach ($productVariations as $option)
-                                    <option value="{{ $option->product_id }}">
-                                        @if ($option->size3)
-                                            {{ $option->size1 }} ---- {{ $option->color }} --- {{ $option->size3 }}
+                                    <option value="{{ $option->id }}">
+                                        @if ($option->size)
+                                            {{ $option->size }} ---- {{ $option->color }} --- {{ $option->size2 }}
                                         @else
-                                            {{ $option->size1 }} ---- {{ $option->color }}
+                                            {{ $option->size }} ---- {{ $option->color }}
                                         @endif
                                     </option>
                                 @endforeach
@@ -70,9 +70,9 @@
                                 {{-- <label for="height" class="form-label fw-bold">Height:</label>
                                 <select id="height" class="form-select bg-white mb-2">
                                     @foreach ($heightVariations as $variation)
-                                        <option value="{{ $variation->product_id }}"
-                                            {{ $variation->product_id == $productDetails->product_id ? 'selected' : '' }}>
-                                            {{ $variation->size1 }}
+                                        <option value="{{ $variation->id }}"
+                                            {{ $variation->id == $productDetails->id ? 'selected' : '' }}>
+                                            {{ $variation->size2 }}
                                         </option>
                                     @endforeach
                                 </select> --}}
@@ -80,39 +80,39 @@
                                     <label for="quantity" class="me-3 fw-bold">Quantity:</label>
                                     <button class="btn btn-outline-secondary btn-sm me-2 quantity-decrease">-</button>
                                     <input type="number" class="quantity-input text-center" value="1" min="1"
-                                        data-price="{{ $productDetails->price_per_unit }}" />
+                                        data-price="{{ $productDetails->price }}" />
                                     <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                 </div>
                                 {{-- <p><strong>Price:</strong> <span id="product-price" class="dynamic-price">
-                                        ${{ number_format($productDetails->price_per_unit, 2) }}</span>
+                                        ${{ number_format($productDetails->price, 2) }}</span>
                                 </p> --}}
                                 <h5>Price:</h5>
-                                <p id="product-price">${{ number_format($productDetails->price_per_unit, 2) }}</p>
+                                <p id="product-price">${{ number_format($productDetails->price, 2) }}</p>
 
                                 <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                     data-item="{{ $productDetails->item_no }}"
                                     data-name="{{ $productDetails->product_name }}"
-                                    data-price="{{ $productDetails->price_per_unit }}"
-                                    data-color="{{ $productDetails->color }}" data-size1="{{ $productDetails->size1 }}"
+                                    data-price="{{ $productDetails->price }}"
+                                    data-color="{{ $productDetails->color }}" data-size="{{ $productDetails->size }}"
                                     data-size2="{{ $productDetails->size2 }}" data-size3="{{ $productDetails->size3 }}"
-                                    data-specialty="{{ $productDetails->specialty }}"
+                                    data-speciality="{{ $productDetails->speciality }}"
                                     data-material="{{ $productDetails->material }}"
                                     data-spacing="{{ $productDetails->spacing }}"
                                     data-coating="{{ $productDetails->coating }}"
-                                    data-weight="{{ $productDetails->weight }}"
-                                    data-family_category="{{ $productDetails->family_category_id }}"
-                                    data-general_image="{{ $productDetails->general_image }}"
-                                    data-small_image="{{ $productDetails->small_image }}"
-                                    data-large_image="{{ $productDetails->large_image }}"
+                                    data-weight="{{ $productDetails->weight_lbs }}"
+                                    data-family_category="{{ $productDetails->majorcategories_id }}"
+                                    data-img_large="{{ $productDetails->img_large }}"
+                                    data-img_small="{{ $productDetails->img_small }}"
+                                    data-img_large="{{ $productDetails->img_large }}"
                                     data-free_shipping="{{ $productDetails->free_shipping }}"
                                     data-special_shipping="{{ $productDetails->special_shipping }}"
                                     data-amount_per_box="{{ $productDetails->amount_per_box }}"
-                                    data-description="{{ $productDetails->description }}"
-                                    data-subcategory_id="{{ $productDetails->subcategory_id }}"
-                                    data-shipping_length="{{ $productDetails->shipping_length }}"
-                                    data-shipping_width="{{ $productDetails->shipping_width }}"
-                                    data-shipping_height="{{ $productDetails->shipping_height }}"
-                                    data-shipping_class="{{ $productDetails->shipping_class }}">
+                                    data-desc_short="{{ $productDetails->desc_short }}"
+                                    data-id="{{ $productDetails->id }}"
+                                    data-ship_length="{{ $productDetails->ship_length }}"
+                                    data-ship_width="{{ $productDetails->ship_width }}"
+                                    data-ship_height="{{ $productDetails->ship_height }}">
+                                    {{-- data-shipping_class="{{ $productDetails->shipping_class }}"> --}}
                                     Add to Cart
                                 </button>
 
@@ -122,7 +122,7 @@
                     <div class="col-6">
                         <div class="p-3 bg-white shadow rounded">
                             <h5 class="text-center">About this item</h5>
-                            <p>{{ $productDetails->description }}</p>
+                            <p>{{ $productDetails->desc_short }}</p>
                         </div>
                         <div class="p-3 bg-white shadow rounded mt-4">
                             <h5 class="text-center">To Place Order - Get Quick Quote/Price</h5>
@@ -364,6 +364,54 @@
                 </table>
             </div>
         </div>
+
+            <!-- Flat Posts 5x5 Section -->
+            @if(isset($flatPosts5x5) && count($flatPosts5x5) > 0)
+            <div class="mt-5">
+                <h4 class="bg-danger text-white py-2 px-3 rounded" style="
+                font-size: 15px;
+                text-align: center;
+            ">SINGLE GATE - (includes hardware)</h4>
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered text-center">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>Item Number</th>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Color</th>
+                                <th>Quantity</th>
+                                <th>Price / Add to Cart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($singleGate as $gate)
+                                <tr>
+                                    <td>{{ $gate->item_no }}</td>
+                                    <td>{{ $gate->product_name }}</td>
+                                    <td>{{ $gate->size }}</td>
+                                    <td>{{ $gate->color }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
+                                        <input type="number" class="quantity-input text-center" value="1" min="1"
+                                            data-price="{{ $gate->price }}">
+                                        <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
+                                    </td>
+                                    <td>
+                                        <span>${{ number_format($gate->price, 2) }}</span>
+                                        <button class="btn btn-danger btn-sm add-to-cart-btn"
+                                            data-item="{{ $gate->item_no }}" data-name="{{ $gate->product_name }}"
+                                            data-price="{{ $gate->price }}">
+                                            Add to Cart
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
     </div>
 @endsection
 @section('scripts')

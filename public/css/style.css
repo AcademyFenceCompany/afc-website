@@ -707,7 +707,7 @@ main .btn.btn-brown:hover,
 }
 
 .product-image {
-    width: 250px !important;
+    width: 370px !important;
     height: 130px !important;
     object-fit: cover !important;
 }

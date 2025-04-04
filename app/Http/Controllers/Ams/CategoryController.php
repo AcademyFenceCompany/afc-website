@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
@@ -62,6 +64,7 @@ class CategoryController extends Controller
             'majorcategories_id' => 'required|integer|exists:mysql_second.majorcategories,id',
             'cat_desc_short' => 'nullable|string',
             'cat_desc_long' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -72,26 +75,55 @@ class CategoryController extends Controller
 
         // Set web_enabled based on checkbox presence
         $webEnabled = $request->has('web_enabled') ? 1 : 0;
+        
+        // Handle image upload
+        $imageName = 'default.png'; 
+        if ($request->hasFile('image')) {
+            try {
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                
+                // Store the image in the storage/app/public/categories directory
+                $image->storeAs('public/categories', $imageName);
+                Log::info('Store: Image uploaded successfully', ['name' => $imageName]);
+            } catch (\Exception $e) {
+                Log::error('Store: Image upload failed', ['error' => $e->getMessage()]);
+            }
+        }
 
-        DB::connection('mysql_second')->table('categories')->insert([
-            'cat_name' => $request->cat_name,
-            'seo_name' => $request->seo_name,
-            'majorcategories_id' => $request->majorcategories_id,
-            'cat_desc_short' => $request->cat_desc_short,
-            'cat_desc_long' => $request->cat_desc_long,
-            'web_enabled' => $webEnabled,
-            'cat_date' => now(),
-            'cat_mod' => now(),
-            'cat_parent_id' => $request->majorcategories_id,
-            'cat_url' => $request->seo_name,
-            'cat_meta_title' => $request->cat_name,
-            'cat_meta_keywords' => '',
-            'cat_meta_description' => $request->cat_desc_short ?? '',
-            'insert_keywords' => '',
-            'page_template' => 0,
-            'blog_tag' => 0,
-            'img' => 'default.jpg'
-        ]);
+        try {
+            // Insert data with explicit field list to ensure all fields are included
+            DB::connection('mysql_second')->table('categories')->insert([
+                'cat_name' => $request->cat_name,
+                'seo_name' => $request->seo_name,
+                'majorcategories_id' => $request->majorcategories_id,
+                'cat_desc_short' => $request->cat_desc_short,
+                'cat_desc_long' => $request->cat_desc_long,
+                'web_enabled' => $webEnabled,
+                'cat_date' => now(),
+                'cat_mod' => now(),
+                'cat_parent_id' => $request->majorcategories_id,
+                'cat_url' => $request->seo_name,
+                'cat_meta_title' => $request->cat_name,
+                'cat_meta_keywords' => '',
+                'cat_meta_description' => $request->cat_desc_short ?? '',
+                'insert_keywords' => '',
+                'page_template' => 0,
+                'blog_tag' => 0,
+                'img' => $imageName
+            ]);
+            
+            Log::info('Category created successfully with data:', [
+                'cat_name' => $request->cat_name,
+                'web_enabled' => $webEnabled,
+                'img' => $imageName
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Category creation failed:', ['error' => $e->getMessage()]);
+            return redirect()->back()
+                ->with('error', 'Error creating category: ' . $e->getMessage())
+                ->withInput();
+        }
 
         return redirect()->route('ams.mysql-categories.index')
             ->with('success', 'Category created successfully');
@@ -142,12 +174,17 @@ class CategoryController extends Controller
                 ->with('error', 'Category not found');
         }
 
+        // Debug: Log the full request data
+        Log::info('Category Update Request Data:', $request->all());
+        Log::info('Form has web_enabled?', ['value' => $request->has('web_enabled')]);
+        
         $validator = Validator::make($request->all(), [
             'cat_name' => 'required|string|max:255',
             'seo_name' => 'required|string|max:255|unique:mysql_second.categories,seo_name,' . $id,
             'majorcategories_id' => 'required|integer|exists:mysql_second.majorcategories,id',
             'cat_desc_short' => 'nullable|string',
             'cat_desc_long' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -156,24 +193,73 @@ class CategoryController extends Controller
                 ->withInput();
         }
 
-        // Set web_enabled based on checkbox presence
+        // Set web_enabled based on checkbox presence - force integer type
         $webEnabled = $request->has('web_enabled') ? 1 : 0;
+        Log::info('Web enabled value set to:', ['web_enabled' => $webEnabled]);
+        
+        // Handle image upload if there's a new image
+        $imageName = $category->img ?? 'default.png';
+        if ($request->hasFile('image')) {
+            try {
+                // Remove old image if it's not the default
+                if ($imageName && !in_array($imageName, ['default.png', 'default.jpg'])) {
+                    Storage::delete('public/categories/' . $imageName);
+                }
+                
+                $image = $request->file('image');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                
+                // Store the image in the storage/app/public/categories directory
+                $image->storeAs('public/categories', $imageName);
+                
+                Log::info('Update: Image uploaded successfully', ['name' => $imageName]);
+            } catch (\Exception $e) {
+                Log::error('Update: Image upload failed', ['error' => $e->getMessage()]);
+            }
+        }
 
-        DB::connection('mysql_second')
-            ->table('categories')
-            ->where('id', $id)
-            ->update([
-                'cat_name' => $request->cat_name,
-                'seo_name' => $request->seo_name,
-                'majorcategories_id' => $request->majorcategories_id,
-                'cat_desc_short' => $request->cat_desc_short,
-                'cat_desc_long' => $request->cat_desc_long,
-                'web_enabled' => $webEnabled,
-                'cat_mod' => now(),
-                'cat_url' => $request->seo_name,
-                'cat_meta_title' => $request->cat_name,
-                'cat_meta_description' => $request->cat_desc_short ?? ''
+        try {
+            // Update with direct values to ensure proper assignment
+            $result = DB::connection('mysql_second')
+                ->table('categories')
+                ->where('id', $id)
+                ->update([
+                    'cat_name' => $request->cat_name,
+                    'seo_name' => $request->seo_name,
+                    'majorcategories_id' => $request->majorcategories_id,
+                    'cat_desc_short' => $request->cat_desc_short,
+                    'cat_desc_long' => $request->cat_desc_long,
+                    'web_enabled' => $webEnabled,
+                    'cat_mod' => now(),
+                    'cat_url' => $request->seo_name,
+                    'cat_meta_title' => $request->cat_name,
+                    'cat_meta_description' => $request->cat_desc_short ?? '',
+                    'img' => $imageName
+                ]);
+            
+            Log::info('Category updated successfully:', [
+                'id' => $id, 
+                'rows_affected' => $result,
+                'img' => $imageName,
+                'web_enabled' => $webEnabled
             ]);
+            
+            // Double-check if update worked by retrieving the updated record
+            $updatedCategory = DB::connection('mysql_second')
+                ->table('categories')
+                ->where('id', $id)
+                ->first();
+            
+            Log::info('Updated category values:', [
+                'web_enabled' => $updatedCategory->web_enabled,
+                'img' => $updatedCategory->img
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Category update failed:', ['error' => $e->getMessage()]);
+            return redirect()->back()
+                ->with('error', 'Error updating category: ' . $e->getMessage())
+                ->withInput();
+        }
 
         return redirect()->route('ams.mysql-categories.index')
             ->with('success', 'Category updated successfully');
@@ -196,6 +282,17 @@ class CategoryController extends Controller
         if ($productCount > 0) {
             return redirect()->route('ams.mysql-categories.index')
                 ->with('error', 'Category cannot be deleted because it has products associated with it');
+        }
+        
+        // Get category image before deletion
+        $category = DB::connection('mysql_second')
+            ->table('categories')
+            ->where('id', $id)
+            ->first();
+            
+        // Delete the image file if it's not the default
+        if ($category && $category->img && !in_array($category->img, ['default.png', 'default.jpg'])) {
+            Storage::delete('public/categories/' . $category->img);
         }
 
         DB::connection('mysql_second')->table('categories')

@@ -1,246 +1,247 @@
-{{-- Debug variables
-<pre>
-Route parameters: {{ print_r(request()->route()->parameters(), true) }}
-Request all: {{ print_r(request()->all(), true) }}
-StyleTitle: {{ $styleTitle ?? 'Not set' }}
-Spacing: {{ $spacing ?? 'Not set' }}
-</pre> --}}
-
 @extends('layouts.main')
-@section('title', isset($styleTitle) ? $styleTitle : 'Wood Fence Products')
-
-@section('styles')
-<style>
-    /* Override styles for this page only */
-    .bg-brown {
-        background-color: #8B4513 !important;
-    }
-    .page-title {
-        font-size: 24px !important;
-        color: #fff !important;
-        font-weight: bold !important;
-        padding: 10px 0 !important;
-    }
-    .btn.btn-brown {
-        background-color: #8B4513 !important;
-        color: white !important;
-        border-color: #8B4513 !important;
-    }
-    .btn.btn-brown:hover {
-        background-color: #6B3100 !important;
-    }
-</style>
-@endsection
 
 @section('content')
-    <main class="container">
-         <!-- Header Section -->
-       <div class="rounded bg-brown">
-            <h1 class="page-title text-center py-2 mb-0">
-                @if(isset($styleTitle) && isset($spacing))
-                    {{ $styleTitle }} - {{ $spacing }}
-                @elseif(isset($styleTitle))
-                    {{ $styleTitle }}
-                @else
-                    WOOD FENCE
-                @endif
-            </h1>
-        </div>
-        <!-- Product List Section -->
-        @if($groupBy === 'style')
-            @foreach ($styleGroups as $styleGroup)
-                <div class="mb-4">
-                    <div class="rounded" style="background-color: #000;">
-                        <h2 class="text-white text-center py-2 my-0 text-uppercase fs-2">{{ $styleGroup['style'] }}</h2>
-                    </div>
-                    
-                    <!-- Group by speciality within each style -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            {{-- <h1 class="text-center mb-4">Wood Fence Specifications</h1>      --}}
+
+    @if($groupBy === 'style')
+        @foreach ($styleGroups as $styleGroup)
+            <!-- Skip styles that don't have any products after filtering -->
+            @php
+                // Filter out Dog Ear, Flat Top, and Knob Top specialities
+                $filteredProducts = $styleGroup['combos']->filter(function($product) {
+                    return !in_array($product['speciality'], ['Dog Ear', 'Flat Top', 'Knob Top']);
+                });
+                
+                if ($filteredProducts->isEmpty()) continue;
+            @endphp
+            
+            <div class="mb-4">
+                <div class="rounded" style="background-color: #000;">
+                    <h2 class="text-white text-center py-2 my-0 text-uppercase fs-4">{{ $styleGroup['style'] }}</h2>
+                </div>
+                
+                <div class="row mt-3">
                     @php
-                        $specialityProducts = $styleGroup['combos']->groupBy('speciality');
+                        // Group by speciality within style
+                        $specialityProducts = $filteredProducts->groupBy('speciality');
                     @endphp
                     
-                    <div class="row mt-3">
-                        @foreach($specialityProducts as $speciality => $products)
-                            @if(!empty($speciality))
-                                <div class="col-md-6 mb-4">
-                                    <div class="rounded" style="background-color: #444;">
-                                        <h3 class="text-white text-center py-1 my-0 fs-5">{{ $speciality }}</h3>
+                    @foreach($specialityProducts as $speciality => $products)
+                        @if(!empty($speciality))
+                            <div class="col-md-4 mb-4">
+                                <div class="card product-card shadow-sm h-100">
+                                    <div class="card-header bg-secondary text-white text-center py-1">
+                                        <h5 class="my-0 fs-6">{{ $speciality }}</h5>
                                     </div>
-                                    <div class="card product-card shadow-sm h-100">
-                                        @php
-                                            // Take just the first product as representative of this speciality
-                                            $product = $products->first();
-                                        @endphp
-                                        <div class="d-flex flex-column align-items-center p-3">
-                                            <div class="product-image align-items-center">
-                                                <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
-                                                    <img src="{{ $product['general_image'] }}"
-                                                        alt="Product Image" class="img-fluid rounded"
-                                                        style="max-height: 250px; max-width: 250px;">
-                                                </a>
-                                            </div>
-                                            <div class="product-details mt-3 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                                <p class="mb-1"><strong>Style:</strong> {{ $styleGroup['style'] }}</p>
-                                                <p class="mb-1"><strong>speciality:</strong> {{ $speciality }}</p>
-                                                @if(isset($product['spacing']) && $product['spacing'])
-                                                    <p class="mb-1"><strong>Spacing:</strong> {{ $product['spacing'] }}</p>
-                                                @endif
-                                                @if(isset($product['material']) && $product['material'])
-                                                    <p class="mb-1"><strong>Material:</strong> {{ $product['material'] }}</p>
-                                                @endif
-                                                @if(isset($product['price']) && $product['price'])
-                                                    <p class="mb-3"><strong>Starting at:</strong> ${{ number_format($product['price'], 2) }} per LF</p>
-                                                @endif
-                                                <a href="{{ route('product.show', ['id' => $product['product_id']]) }}" class="btn btn-brown">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
-                    
-                    <!-- Products with no speciality -->
-                    @php
-                        $nospecialityProducts = $styleGroup['combos']->filter(function($item) {
-                            return empty($item['speciality']) || $item['speciality'] === null;
-                        });
-                        
-                        // If there are products with no speciality, show them under a "Standard" heading
-                        if ($nospecialityProducts->count() > 0) {
-                            // Group the no-speciality products by material if available
-                            $groupedNospeciality = $nospecialityProducts->groupBy(function($item) {
-                                return $item['material'] ?? 'Standard';
-                            });
-                        }
-                    @endphp
-                    
-                    @if(isset($groupedNospeciality) && $groupedNospeciality->count() > 0)
-                        <div class="mt-4 mb-3">
-                            <div class="rounded" style="background-color: #444;">
-                                <h3 class="text-white text-center py-1 my-0 fs-4">Standard</h3>
-                            </div>
-                            
-                            <div class="row mt-3">
-                                @foreach ($groupedNospeciality as $material => $products)
                                     @php
-                                        // Take just the first product of each material group
                                         $product = $products->first();
                                     @endphp
-                                    <div class="col-md-6 mb-4">
-                                        <div class="card product-card shadow-sm h-100">
-                                            <div class="d-flex flex-column align-items-center p-3">
-                                                <div class="product-image align-items-center">
-                                                    <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
-                                                        <img src="{{ $product['general_image'] }}"
-                                                            alt="Product Image" class="img-fluid rounded"
-                                                            style="max-height: 250px; max-width: 250px;">
-                                                    </a>
-                                                </div>
-                                                <div class="product-details mt-3 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                                    <p class="mb-1"><strong>Style:</strong> {{ $styleGroup['style'] }}</p>
-                                                    <p class="mb-1"><strong>Material:</strong> {{ $material }}</p>
-                                                    @if(isset($product['spacing']) && $product['spacing'])
-                                                        <p class="mb-1"><strong>Spacing:</strong> {{ $product['spacing'] }}</p>
-                                                    @endif
-                                                    @if(isset($product['price']) && $product['price'])
-                                                        <p class="mb-3"><strong>Starting at:</strong> ${{ number_format($product['price'], 2) }} per LF</p>
-                                                    @endif
-                                                    <a href="{{ route('product.show', ['id' => $product['product_id']]) }}" class="btn btn-brown">View Details</a>
-                                                </div>
-                                            </div>
+                                    <div class="card-body p-2 text-center">
+                                        <div class="product-image mb-2">
+                                            <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                                <img src="{{ $product['general_image'] }}"
+                                                    alt="{{ $styleGroup['style'] }} - {{ $speciality }}" 
+                                                    class="img-fluid rounded"
+                                                    style="max-height: 150px; max-width: 100%;">
+                                            </a>
+                                        </div>
+                                        <div class="product-details small">
+                                            <p class="mb-1"><strong>Section Top Style:</strong> {{ $styleGroup['style'] }}</p>
+                                            <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                            <p class="mb-1"><strong>Picket Style:</strong> {{ $speciality }}</p>
+                                            @if(isset($product['spacing']) && !empty($product['spacing']))
+                                                <p class="mb-1"><strong>Spacing:</strong> {{ $product['spacing'] }}</p>
+                                            @endif
+                                            @if(isset($product['price']) && $product['price'])
+                                                <p class="mb-2"><strong>6ft Price:</strong> ${{ number_format($product['price'], 2) }}</p>
+                                            @endif
                                         </div>
                                     </div>
-                                @endforeach
+                                    <div class="card-footer bg-white border-top-0 text-center">
+                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}" class="btn btn-sm btn-brown">View Details</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endif
+                    @endforeach
+                    
+                    @if(isset($groupedNoSpeciality) && $groupedNoSpeciality->count() > 0)
+                        @foreach ($groupedNoSpeciality as $material => $products)
+                            @php
+                                $product = $products->first();
+                            @endphp
+                            <div class="col-md-4 mb-4">
+                                <div class="card product-card shadow-sm h-100">
+                                    <div class="card-header bg-secondary text-white text-center py-1">
+                                        <h5 class="my-0 fs-6">{{ $material }}</h5>
+                                    </div>
+                                    <div class="card-body p-2 text-center">
+                                        <div class="product-image mb-2">
+                                            <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                                <img src="{{ $product['general_image'] }}"
+                                                    alt="{{ $styleGroup['style'] }} - {{ $material }}" 
+                                                    class="img-fluid rounded"
+                                                    style="max-height: 150px; max-width: 100%;">
+                                            </a>
+                                        </div>
+                                        <div class="product-details small">
+                                            <p class="mb-1"><strong>Section Top Style:</strong> {{ $styleGroup['style'] }}</p>
+                                            <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                            <p class="mb-1"><strong>Material:</strong> {{ $material }}</p>
+                                            @if(isset($product['spacing']) && !empty($product['spacing']))
+                                                <p class="mb-1"><strong>Spacing:</strong> {{ $product['spacing'] }}</p>
+                                            @endif
+                                            @if(isset($product['price']) && $product['price'])
+                                                <p class="mb-2"><strong>6ft Price:</strong> ${{ number_format($product['price'], 2) }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-white border-top-0 text-center">
+                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}" class="btn btn-sm btn-brown">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     @endif
                 </div>
-            @endforeach
-        @elseif($groupBy === 'speciality')
+            </div>
+        @endforeach
+    @elseif($groupBy === 'speciality')
+        <div class="row">
             @foreach ($specialityGroups as $specialityGroup)
                 @php
                     // Skip Dog Ear, Flat Top, and Knob Top speciality groups
                     if (in_array($specialityGroup['speciality'], ['Dog Ear', 'Flat Top', 'Knob Top'])) continue;
                 @endphp
-                <div class="mb-4">
-                    <div class="rounded" style="background-color: #000;">
-                        <h2 class="text-white text-center py-2 my-0 text-uppercase fs-2">{{ $specialityGroup['speciality'] }}</h2>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card shadow-sm h-100">
+                        <div class="card-header bg-dark text-white text-center py-1">
+                            <h5 class="my-0 fs-6">{{ $specialityGroup['speciality'] }}</h5>
+                        </div>
+                        @php
+                            $product = $specialityGroup['products']->first();
+                        @endphp
+                        <div class="card-body p-2 text-center">
+                            <div class="product-image mb-2">
+                                <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                    <img src="{{ $product['general_image'] }}"
+                                        alt="{{ $specialityGroup['speciality'] }}" 
+                                        class="img-fluid rounded"
+                                        style="max-height: 150px; max-width: 100%;">
+                                </a>
+                            </div>
+                            <div class="product-details small">
+                                <p class="mb-1"><strong>Section Top Style:</strong> {{ $product['style'] }}</p>
+                                <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                <p class="mb-1"><strong>Picket Style:</strong> {{ $specialityGroup['speciality'] }}</p>
+                                @if(isset($product['spacing']) && !empty($product['spacing']))
+                                    <p class="mb-1"><strong>Spacing:</strong> {{ $product['spacing'] }}</p>
+                                @endif
+                                @if(isset($product['material']) && !empty($product['material']))
+                                    <p class="mb-1"><strong>Material:</strong> {{ $product['material'] }}</p>
+                                @endif
+                                @if(isset($product['price']) && $product['price'])
+                                    <p class="mb-2"><strong>6ft Price:</strong> ${{ number_format($product['price'], 2) }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 text-center">
+                            <a href="{{ route('product.show', ['id' => $product['product_id']]) }}" class="btn btn-sm btn-brown">View Details</a>
+                        </div>
                     </div>
-                    <div class="container text-center">
-                        <div class="row align-items">
-                            @php
-                                // Take just the first product as representative of this speciality
-                                $product = $specialityGroup['products']->first();
-                            @endphp
-                            <div class="col-md-6 p-2">
-                                <div class="card product-card shadow-sm w-100">
-                                    <div class="d-flex flex-column align-items-center">
-                                        <div class="product-image me-3 align-items-center">
-                                            <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
-                                                <img src="{{ $product['general_image'] }}"
-                                                    alt="Product Image" class="img-fluid rounded"
-                                                    style="max-height: 300px; max-width: 300px;">
-                                            </a>
-                                        </div>
-                                        <div class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                            <p>Picket Style: {{ $specialityGroup['speciality'] }}</p>
-                                            @if($product['spacing'])
-                                                <p>Spacing: {{ $product['spacing'] }}</p>
-                                            @endif
-                                            @if($product['material'])
-                                                <p>Material: {{ $product['material'] }}</p>
-                                            @endif
-                                            <p>Price: From ${{ number_format($product['price'], 2) }}</p>
-                                            <div class="mt-3">
-                                                <a href="{{ route('product.show', ['id' => $product['product_id']]) }}"
-                                                    class="btn btn-brown text-white">View Product</a>
-                                            </div>
+                </div>
+            @endforeach
+        </div>
+    @else
+        <div class="row">
+            @foreach($products as $product)
+                @php
+                    // Skip products with Dog Ear, Flat Top, or Knob Top speciality
+                    if (in_array($product['speciality'] ?? '', ['Dog Ear', 'Flat Top', 'Knob Top'])) continue;
+                    
+                    // Only show products with ID 4 or 5
+                    if (!in_array($product['product_id'], [4, 5])) continue;
+                @endphp
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card product-card shadow-sm h-100">
+                        <div class="card-header text-center py-2">
+                            <h5 class="my-0">{{ $product['product_name'] ?? 'Tongue & Groove Fence - 100% Cedar' }}</h5>
+                            <small>(Click image to purchase)</small>
+                        </div>
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="text-center">
+                                        <h6>{{ $product['product_id'] == 4 ? 'Diagonal Lattice Top' : 'Square Lattice Top' }}</h6>
+                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                            <img src="{{ $product['general_image'] }}"
+                                                alt="{{ $product['product_name'] ?? 'Tongue & Groove Fence' }}" 
+                                                class="img-fluid rounded"
+                                                style="max-height: 150px; max-width: 100%;">
+                                        </a>
+                                        <div class="product-details mt-2 p-2" style="background-color: #f5f5dc;">
+                                            <p class="mb-1"><strong>Section Top Style:</strong> Straight</p>
+                                            <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                            <p class="mb-1"><strong>Picket Style:</strong> Tongue & Groove</p>
+                                            <p class="mb-1"><strong>Spacing:</strong> Solid</p>
+                                            <p class="mb-1"><strong>6ft Price:</strong> $290.00</p>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="text-center">
+                                        <h6>{{ $product['product_id'] == 4 ? 'Solid Top' : 'Diamond Top' }}</h6>
+                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                            <img src="{{ $product['general_image'] }}"
+                                                alt="{{ $product['product_name'] ?? 'Tongue & Groove Fence' }}" 
+                                                class="img-fluid rounded"
+                                                style="max-height: 150px; max-width: 100%;">
+                                        </a>
+                                        <div class="product-details mt-2 p-2" style="background-color: #f5f5dc;">
+                                            <p class="mb-1"><strong>Section Top Style:</strong> Straight</p>
+                                            <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                            <p class="mb-1"><strong>Picket Style:</strong> Tongue & Groove</p>
+                                            <p class="mb-1"><strong>Spacing:</strong> Solid</p>
+                                            <p class="mb-1"><strong>6ft Price:</strong> {{ $product['product_id'] == 5 ? 'Discontinued' : '$290.00' }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="small text-center mt-2">
+                                * All sketches, images, drawings and pictures are intended to give the viewer a sense of the general style of the item. They are not to scale and should not be used for specific details or measurements.
                             </div>
                         </div>
                     </div>
                 </div>
             @endforeach
-        @else
-            <div class="container">
-                <div class="row">
-                    @foreach($products as $product)
-                        @php
-                            // Skip products with Dog Ear, Flat Top, or Knob Top speciality
-                            if (in_array($product['speciality'], ['Dog Ear', 'Flat Top', 'Knob Top'])) continue;
-                        @endphp
-                        <div class="col-4 p-2">
-                            <div class="card product-card shadow-sm w-100">
-                                <div class="d-flex flex-column align-items-center">
-                                    <div class="product-image me-3 align-items-center">
-                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
-                                            <img src="{{ $product['general_image'] }}"
-                                                alt="Product Image" class="img-fluid rounded"
-                                                style="max-height: 300px; max-width: 300px;">
-                                        </a>
-                                    </div>
-                                    <div class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                        @if($product['spacing'])
-                                            <p>Spacing: {{ $product['spacing'] }}</p>
-                                        @endif
-                                        @if($product['material'])
-                                            <p>Material: {{ $product['material'] }}</p>
-                                        @endif
-                                        <p>Price: From ${{ number_format($product['price'], 2) }}</p>
-                                        <div class="mt-3">
-                                            <a href="{{ route('product.show', ['id' => $product['product_id']]) }}"
-                                                class="btn btn-brown text-white">View Product</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    </main>
+        </div>
+    @endif
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        // Equal height for cards in the same row
+        function equalizeCardHeights() {
+            $('.row').each(function() {
+                let maxHeight = 0;
+                $('.card', this).each(function() {
+                    $(this).css('height', '');
+                    maxHeight = Math.max(maxHeight, $(this).outerHeight());
+                });
+                $('.card', this).outerHeight(maxHeight);
+            });
+        }
+        
+        $(window).on('load resize', function() {
+            equalizeCardHeights();
+        });
+    });
+</script>
 @endsection
