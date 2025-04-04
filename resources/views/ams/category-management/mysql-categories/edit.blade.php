@@ -11,7 +11,7 @@
 
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('ams.mysql-categories.update', $category->id) }}" method="POST">
+            <form action="{{ route('ams.mysql-categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 
@@ -55,7 +55,7 @@
                     @enderror
                 </div>
                 
-                {{-- <div class="mb-3">
+                <div class="mb-3">
                     <label for="cat_desc_long" class="form-label">Long Description</label>
                     <textarea class="form-control @error('cat_desc_long') is-invalid @enderror" id="cat_desc_long" name="cat_desc_long" rows="5">{{ old('cat_desc_long', $category->cat_desc_long) }}</textarea>
                     @error('cat_desc_long')
@@ -63,10 +63,25 @@
                     @enderror
                 </div>
                 
+                <div class="mb-3">
+                    <label for="image" class="form-label">Category Image</label>
+                    <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">
+                    @if(!empty($category->img))
+                        <div class="mt-2">
+                            <img src="{{ url('storage/categories/' . $category->img) }}" alt="{{ $category->cat_name }}" class="img-thumbnail" style="max-height: 150px;">
+                            <p class="small text-muted">Current image: {{ $category->img }}</p>
+                        </div>
+                    @endif
+                    @error('image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="text-muted">Upload a new image to replace the current one (if any)</small>
+                </div>
+                
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="web_enabled" name="web_enabled" value="1" {{ old('web_enabled', $category->web_enabled) ? 'checked' : '' }}>
                     <label class="form-check-label" for="web_enabled">Show on Website</label>
-                </div> --}}
+                </div>
                 
                 <div class="d-flex justify-content-between">
                     <a href="{{ route('ams.mysql-categories.index') }}" class="btn btn-secondary">Cancel</a>
