@@ -33,8 +33,14 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/products/by-category/{category}', [ProductController::class, 'getByCategory'])->name('products.by.category');
     
     // Product Query routes for demodb testing
-    Route::get('/product-query', [ProductQueryController::class, 'index'])->name('ams.product-query.index');
-    
+    Route::prefix('product-query')->name('ams.product-query.')->group(function () {
+        Route::get('/', [ProductQueryController::class, 'index'])->name('index');
+        Route::get('/search', [ProductQueryController::class, 'search'])->name('search');
+        Route::get('/category/{id}', [ProductQueryController::class, 'loadCategory'])->name('category');
+        Route::get('/{id}/edit', [ProductQueryController::class, 'edit'])->name('edit');
+        Route::post('/{id}/update', [ProductQueryController::class, 'update'])->name('update');
+    });
+
     // MySQL Category Management
     Route::resource('mysql-categories', \App\Http\Controllers\Ams\CategoryController::class)->names('ams.mysql-categories');
     Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');

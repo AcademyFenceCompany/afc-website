@@ -1,4 +1,3 @@
-@dump($productVariations);
 @extends('layouts.main')
 
 @section('title', $productDetails->product_name)
@@ -10,11 +9,10 @@
             <!-- Product Image Section -->
             <div class="col-md-4">
                 <div class="card shadow-sm text-center">
-                    <img id="product-image" src="{{ $productDetails->img_large ?? $productDetails->img_large }} "
-                        alt="{{ $productDetails->product_name }}" class="img-fluid p-3">
+                    <img id="product-image" src="{{ asset('storage/products/' . $productDetails->img_large ?? $productDetails->img_large) }}" alt="{{ $productDetails->product_name }}" class="img-fluid p-3">
                 </div>
             </div>
-
+            
             <!-- Product Information Section -->
             <div class="col-md-8">
                 <div class="row">
@@ -134,294 +132,102 @@
             </div>
         </div>
 
-        <!-- Associated Products Section -->
-        <div class="mt-5">
+      
+        <!-- Dynamically Generated Associated Products Sections -->
+        @if(isset($associatedSections) && count($associatedSections) > 0)
+          <!-- Associated Products Section -->
+          <div class="mt-5">
             <h4 class="text-black px-3 rounded">Necessary Associated Products</h4>
         </div>
 
-        <!-- Flat Posts Section -->
-        @if(isset($flatPosts) && count($flatPosts) > 0)
-        <div class="mt-5">
-            <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-            font-size: 15px;
-            text-align: center;
-        ">FLAT POSTS - 4in x 4in</h4>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered text-center">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Item Number</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price / Add to Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($flatPosts as $post)
-                            <tr>
-                                <td>{{ $post->item_no }}</td>
-                                <td>{{ $post->product_name }}</td>
-                                <td>{{ $post->size }}</td>
-                                <td>{{ $post->color }}</td>
-                                <td>
-                                    <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
-                                    <input type="number" class="quantity-input text-center" value="1" min="1"
-                                        data-price="{{ $post->price }}">
-                                    <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
-                                </td>
-                                <td>
-                                    <span>${{ number_format($post->price, 2) }}</span>
-                                    <button class="btn btn-danger btn-sm add-to-cart-btn"
-                                        data-item="{{ $post->item_no }}" data-name="{{ $post->product_name }}"
-                                        data-price="{{ $post->price }}">
-                                        Add to Cart
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        @endif
-         <!-- French Gothic Posts Section -->
-         @if(isset($frenchGothicPosts) && count($frenchGothicPosts) > 0)
-         <div class="mt-5">
-             <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-             font-size: 15px;
-             text-align: center;
-         ">FRENCH GOTHIC POSTS - 4in x 4in</h4>
-             <div class="table-responsive mt-3">
-                 <table class="table table-bordered text-center">
-                     <thead class="bg-dark text-white">
-                         <tr>
-                             <th>Item Number</th>
-                             <th>Name</th>
-                             <th>Size</th>
-                             <th>Color</th>
-                             <th>Quantity</th>
-                             <th>Price / Add to Cart</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         @foreach ($frenchGothicPosts as $post)
-                             <tr>
-                                 <td>{{ $post->item_no }}</td>
-                                 <td>{{ $post->product_name }}</td>
-                                 <td>{{ $post->size }}</td>
-                                 <td>{{ $post->color }}</td>
-                                 <td>
-                                     <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
-                                     <input type="number" class="quantity-input text-center" value="1" min="1"
-                                         data-price="{{ $post->price }}">
-                                     <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
-                                 </td>
-                                 <td>
-                                     <span>${{ number_format($post->price, 2) }}</span>
-                                     <button class="btn btn-danger btn-sm add-to-cart-btn"
-                                         data-item="{{ $post->item_no }}" data-name="{{ $post->product_name }}"
-                                         data-price="{{ $post->price }}">
-                                         Add to Cart
-                                     </button>
-                                 </td>
-                             </tr>
-                         @endforeach
-                     </tbody>
-                 </table>
-             </div>
-         </div>
-         @endif
-
-        <!-- Flat Posts 5x5 Section -->
-        @if(isset($flatPosts5x5) && count($flatPosts5x5) > 0)
-        <div class="mt-5">
-            <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-            font-size: 15px;
-            text-align: center;
-        ">FLAT POSTS - 5in x 5in</h4>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered text-center">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Item Number</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price / Add to Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($flatPosts5x5 as $post)
-                            <tr>
-                                <td>{{ $post->item_no }}</td>
-                                <td>{{ $post->product_name }}</td>
-                                <td>{{ $post->size }}</td>
-                                <td>{{ $post->color }}</td>
-                                <td>
-                                    <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
-                                    <input type="number" class="quantity-input text-center" value="1" min="1"
-                                        data-price="{{ $post->price }}">
-                                    <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
-                                </td>
-                                <td>
-                                    <span>${{ number_format($post->price, 2) }}</span>
-                                    <button class="btn btn-danger btn-sm add-to-cart-btn"
-                                        data-item="{{ $post->item_no }}" data-name="{{ $post->product_name }}"
-                                        data-price="{{ $post->price }}">
-                                        Add to Cart
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        @endif
-
-       
-
-        <!-- Flat Caps 4in Section -->
-        <div class="mt-5">
-            <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-            font-size: 15px;
-            text-align: center;
-        ">FLAT CAPS - 4in</h4>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered text-center">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Item Number</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price / Add to Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="6" class="text-center py-3">No products available at this time.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Ball Caps 4in Section -->
-        <div class="mt-5">
-            <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-            font-size: 15px;
-            text-align: center;
-        ">BALL CAPS - 4in</h4>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered text-center">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Item Number</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price / Add to Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="6" class="text-center py-3">No products available at this time.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Pyramid Caps 4in Section -->
-        <div class="mt-5">
-            <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-            font-size: 15px;
-            text-align: center;
-        ">PYRAMID CAPS - 4in</h4>
-            <div class="table-responsive mt-3">
-                <table class="table table-bordered text-center">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Item Number</th>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Color</th>
-                            <th>Quantity</th>
-                            <th>Price / Add to Cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="6" class="text-center py-3">No products available at this time.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-            <!-- Flat Posts 5x5 Section -->
-            @if(isset($flatPosts5x5) && count($flatPosts5x5) > 0)
-            <div class="mt-5">
-                <h4 class="bg-danger text-white py-2 px-3 rounded" style="
-                font-size: 15px;
-                text-align: center;
-            ">SINGLE GATE - (includes hardware)</h4>
-                <div class="table-responsive mt-3">
-                    <table class="table table-bordered text-center">
-                        <thead class="bg-dark text-white">
-                            <tr>
-                                <th>Item Number</th>
-                                <th>Name</th>
-                                <th>Size</th>
-                                <th>Color</th>
-                                <th>Quantity</th>
-                                <th>Price / Add to Cart</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($singleGate as $gate)
+            @foreach($associatedSections as $section)
+                <div class="mt-5">
+                    <h4 class="bg-danger text-white py-2 px-3 rounded" style="
+                    font-size: 15px;
+                    text-align: center;
+                ">{{ $section['title'] }}</h4>
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered text-center">
+                            <thead class="bg-dark text-white">
                                 <tr>
-                                    <td>{{ $gate->item_no }}</td>
-                                    <td>{{ $gate->product_name }}</td>
-                                    <td>{{ $gate->size }}</td>
-                                    <td>{{ $gate->color }}</td>
-                                    <td>
-                                        <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
-                                        <input type="number" class="quantity-input text-center" value="1" min="1"
-                                            data-price="{{ $gate->price }}">
-                                        <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
-                                    </td>
-                                    <td>
-                                        <span>${{ number_format($gate->price, 2) }}</span>
-                                        <button class="btn btn-danger btn-sm add-to-cart-btn"
-                                            data-item="{{ $gate->item_no }}" data-name="{{ $gate->product_name }}"
-                                            data-price="{{ $gate->price }}">
-                                            Add to Cart
-                                        </button>
-                                    </td>
+                                    <th>Item Number</th>
+                                    <th>Name</th>
+                                    <th>Size</th>
+                                    <th>Color</th>
+                                    <th>Quantity</th>
+                                    <th>Price / Add to Cart</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @foreach($section['products'] as $product)
+                                    <tr>
+                                        <td>{{ $product->item_no }}</td>
+                                        <td>{{ $product->product_name }}</td>
+                                        <td>{{ $product->size }}</td>
+                                        <td>{{ $product->color }}</td>
+                                        <td>
+                                            <button class="btn btn-outline-secondary btn-sm decrease-qty">-</button>
+                                            <input type="number" class="quantity-input text-center" value="1" min="1"
+                                                data-price="{{ $product->price }}" data-product-id="{{ $product->id ?? '' }}">
+                                            <button class="btn btn-outline-secondary btn-sm increase-qty">+</button>
+                                        </td>
+                                        <td>
+                                            <span>${{ number_format($product->price, 2) }}</span>
+                                            <button class="btn btn-danger btn-sm add-to-cart-btn"
+                                                data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
+                                                data-price="{{ $product->price }}" data-product-id="{{ $product->id ?? '' }}">
+                                                Add to Cart
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endforeach
+        @endif
+        <!-- Related Products Section -->
+        @if(isset($relatedProducts) && count($relatedProducts) > 0)
+            <div class="mt-5">
+                <h4 class="text-black px-3 rounded">Related Products</h4>
+                <div class="row mt-3">
+                    @foreach($relatedProducts as $product)
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <a href="{{ route('products.show', $product->id) }}">
+                                    <img src="{{ asset('storage/products/' . ($product->img_small ?? 'placeholder.jpg')) }}" 
+                                         class="card-img-top p-2" 
+                                         alt="{{ $product->product_name }}"
+                                         style="height: 150px; object-fit: contain;">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">{{ $product->product_name }}</h6>
+                                    <p class="card-text">${{ number_format($product->price, 2) }}</p>
+                                    <button class="btn btn-danger btn-sm add-to-cart-btn"
+                                        data-item="{{ $product->item_no }}" 
+                                        data-name="{{ $product->product_name }}"
+                                        data-price="{{ $product->price }}">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-            @endif
+        @endif
     </div>
 @endsection
 @section('scripts')
     <script src="{{ asset('js/mini-cart.js') }}"></script>
     <script src="{{ asset('js/cart.js') }}"></script>
     <script src="{{ asset('js/single-product.js') }}"></script>
+    <script src="{{ asset('js/associated-products.js') }}"></script>
 @endsection
 <!-- Toast Container -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+<div class="toast-container position-fixed bottom-0 start-0 p-3">
+    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="1500">
         <div class="toast-header bg-success">
             <strong class="me-auto">Cart Notification</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>

@@ -153,20 +153,28 @@ class WoodFenceMysql2Controller extends Controller
             return redirect()->back()->with('error', 'Category not found');
         }
 
+        // Special handling for category ID 6 (Spaced Picket)
+        $isSpacedPicket = ($categoryId == 6);
+        
+        // Special handling for category ID 7 (Board On Board)
+        $isBoardOnBoard = ($categoryId == 7);
+        
         // Base query
         try {
             $query = DB::connection('mysql_second')
                 ->table('productsqry')
-                ->where('categories_id', $categoryId);
+                ->where('categories_id', $categoryId)
+                ->where('enabled', 1);
         } catch (\Exception $e) {
             // If productsqry view doesn't exist, fall back to products table
             $query = DB::connection('mysql_second')
                 ->table('products')
-                ->where('categories_id', $categoryId);
+                ->where('categories_id', $categoryId)
+                ->where('enabled', 1);
         }
 
-        // Apply spacing filter if provided
-        if ($spacing) {
+        // Apply spacing filter if provided and not category 7
+        if ($spacing && !$isBoardOnBoard) {
             // Try direct spacing match first
             $query->where(function($q) use ($spacing) {
                 $q->where('spacing', $spacing)
@@ -189,7 +197,10 @@ class WoodFenceMysql2Controller extends Controller
             'material',    
             'spacing',     
             'img_small',   
-            'img_large'
+            'img_large',
+            'desc_short',
+            'product_assoc',
+            'enabled as web_enabled' // Map enabled to web_enabled
         )->get();
 
         // Join the products with category data manually since we don't have the view
@@ -201,6 +212,42 @@ class WoodFenceMysql2Controller extends Controller
         // Convert the database result to a proper array to avoid type issues
         $productsArray = [];
         foreach ($products as $product) {
+            // Extract pickets per section from product name or description
+            $picketsPerSection = '17 (16 + 1 Cover Picket)'; // Default value
+            $productName = $product->product_name ?? '';
+            $description = $product->desc_short ?? '';
+            
+            if (preg_match('/(\d+)\s*pickets?/i', $productName, $matches) || 
+                preg_match('/(\d+)\s*pickets?/i', $description, $matches)) {
+                $picketsPerSection = $matches[1] . ' Pickets';
+            }
+            
+            // Standardize style names for category ID 6 and 7
+            $style = $product->style ?? 'Standard';
+            if ($isSpacedPicket || $isBoardOnBoard) {
+                if (stripos($style, 'straight') !== false) {
+                    $style = 'Straight On Top';
+                } elseif (stripos($style, 'concave') !== false) {
+                    $style = 'Concave';
+                } elseif (stripos($style, 'convex') !== false) {
+                    $style = 'Convex';
+                }
+            }
+            
+            // Standardize speciality names for category ID 6 and 7
+            $speciality = $product->speciality ?? null;
+            if (($isSpacedPicket || $isBoardOnBoard) && $speciality) {
+                if (stripos($speciality, 'slant') !== false || stripos($speciality, 'ear') !== false) {
+                    $speciality = 'Slant Ear';
+                } elseif (stripos($speciality, 'gothic') !== false && stripos($speciality, 'french') !== false) {
+                    $speciality = 'French Gothic';
+                } elseif (stripos($speciality, 'gothic') !== false) {
+                    $speciality = 'Gothic Point';
+                } elseif (stripos($speciality, 'flat') !== false) {
+                    $speciality = 'Flat Picket';
+                }
+            }
+            
             $productsArray[] = [
                 'product_id' => $product->product_id,
                 'item_no' => $product->item_no,
@@ -210,12 +257,16 @@ class WoodFenceMysql2Controller extends Controller
                 'price' => $product->price,
                 'size' => $product->size,
                 'color' => $product->color,
-                'style' => $product->style ?? 'Standard',
-                'speciality' => $product->speciality ?? null, 
+                'style' => $style,
+                'speciality' => $speciality, 
                 'general_image' => $product->img_large ? url('storage/products/' . $product->img_large) : url('storage/products/default.png'),
                 'spacing' => $product->spacing ?? $spacing ?? null, 
                 'family_category_id' => $categoryId, 
                 'material' => $product->material ?? 'Wood', 
+                'web_enabled' => $product->web_enabled,
+                'picketsPerSection' => $picketsPerSection,
+                'description' => $product->desc_short ?? '',
+                'product_assoc' => $product->product_assoc ?? null,
             ];
         }
 
@@ -235,15 +286,6 @@ class WoodFenceMysql2Controller extends Controller
             // First, categorize products by style and speciality
             foreach ($formattedProducts as $product) {
                 $style = $product['style'] ?? 'Standard';
-                
-                // Map common style variations to standard names
-                if (stripos($style, 'straight') !== false) {
-                    $style = 'Straight On Top';
-                } elseif (stripos($style, 'concave') !== false) {
-                    $style = 'Concave';
-                } elseif (stripos($style, 'convex') !== false) {
-                    $style = 'Convex';
-                }
                 
                 if (!isset($styleGroups[$style])) {
                     $styleGroups[$style] = [];
@@ -265,6 +307,44 @@ class WoodFenceMysql2Controller extends Controller
             foreach ($commonStyles as $style) {
                 if (!isset($styleGroups[$style])) {
                     $styleGroups[$style] = [];
+                }
+            }
+            
+            // For category ID 6 (Spaced Picket) or 7 (Board On Board), ensure specific speciality order
+            if ($isSpacedPicket || $isBoardOnBoard) {
+                // Define the speciality order for each style
+                $specialityOrderMap = [
+                    'Straight On Top' => ['Slant Ear', 'Gothic Point', 'French Gothic'],
+                    'Concave' => ['Flat Picket', 'Gothic Point', 'French Gothic'],
+                    'Convex' => ['Flat Picket', 'Gothic Point', 'French Gothic']
+                ];
+                
+                // Reorder specialities within each style
+                foreach ($commonStyles as $style) {
+                    if (isset($styleGroups[$style]) && !empty($styleGroups[$style])) {
+                        $orderedSpecialities = [];
+                        $specialityOrder = $specialityOrderMap[$style] ?? [];
+                        
+                        // First add specialities in the preferred order
+                        foreach ($specialityOrder as $specialityName) {
+                            if (isset($styleGroups[$style][$specialityName])) {
+                                $orderedSpecialities[$specialityName] = $styleGroups[$style][$specialityName];
+                            } else {
+                                // Create empty placeholder to maintain order
+                                $orderedSpecialities[$specialityName] = [];
+                            }
+                        }
+                        
+                        // Then add any remaining specialities
+                        foreach ($styleGroups[$style] as $speciality => $products) {
+                            if (!in_array($speciality, $specialityOrder)) {
+                                $orderedSpecialities[$speciality] = $products;
+                            }
+                        }
+                        
+                        // Replace with ordered specialities
+                        $styleGroups[$style] = $orderedSpecialities;
+                    }
                 }
             }
             
@@ -398,7 +478,8 @@ class WoodFenceMysql2Controller extends Controller
             'material',
             'spacing',
             'img_small',
-            'img_large'
+            'img_large',
+            'enabled as web_enabled' // Map enabled to web_enabled
         )->get();
 
         // Convert the database result to a proper array to avoid type issues
@@ -419,6 +500,7 @@ class WoodFenceMysql2Controller extends Controller
                 'general_image' => $product->img_large ? '/' . $product->img_large : '/default-product.png',
                 'spacing' => $product->spacing ?? null,
                 'material' => $product->material ?? 'Wood',
+                'web_enabled' => $product->web_enabled,
             ];
         }
 
