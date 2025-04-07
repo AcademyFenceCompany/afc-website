@@ -6,6 +6,9 @@
     <title>Academy Fence Company</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <style>
         body {
             padding: 2rem;
@@ -44,30 +47,31 @@
     </style>
 </head>
 <body>
-    <div class="welcome-container">
-        <h1>Academy Fence Company</h1>
-        
-        @if(isset($message))
-            <div class="alert alert-info">
-                {{ $message }}
-            </div>
-        @endif
-        
-        <div class="links-container">
-            <h4>Quick Links</h4>
+    <div class="container">
+        <div class="welcome-container">
+            <h1>Academy Fence Company</h1>
             
-            @if(isset($links) && count($links) > 0)
-                @foreach($links as $title => $url)
-                    <a href="{{ $url }}" class="link-card">
-                        <strong>{{ $title }}</strong>
-                    </a>
-                @endforeach
-            @else
-                <p>No links available.</p>
+            @if(isset($message))
+                <div class="alert alert-info">
+                    {{ $message }}
+                </div>
             @endif
+            
+            <div class="links-container">
+                <h4>Quick Links</h4>
+                
+                @if(isset($links) && count($links) > 0)
+                    @foreach($links as $title => $url)
+                        <a href="{{ $url }}" class="link-card">
+                            <strong>{{ $title }}</strong>
+                        </a>
+                    @endforeach
+                @else
+                    <p>No links available.</p>
+                @endif
+            </div>
         </div>
     </div>
-    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

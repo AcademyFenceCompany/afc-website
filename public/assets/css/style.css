@@ -1,0 +1,147 @@
+:root {
+  --bs-bg-danger: rgb(242, 105, 66);
+  /* Colors */
+  --bs-body-color:#282828;
+  --primary-color: $primary-color;
+  --secondary-color: $secondary-color;
+  --light-color: #fff;
+  --dark-color: #000;
+  --bg-color: #f8f7f2;
+  --hover-color: #f6b453;
+  --footer-bg-color: #000;
+}
+
+.bg-danger {
+  background-color: var(--bs-bg-danger) !important;
+}
+
+body {
+  color: #5e5e5e;
+  --bs-body-color: #222;
+}
+
+header .nav-link {
+  background-color: #f5b149;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem !important;
+  text-align: center;
+  font-weight: bold;
+  line-height: 2;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  align-content: center;
+}
+header .filter-categories {
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem !important;
+  text-align: center;
+}
+header .img-fluid {
+  height: 70px;
+}
+header .big-menu {
+  position: relative;
+  height: auto;
+}
+header .dropdown-menu {
+  width: 20vw;
+  margin-left: -1px;
+}
+header .dropdown-menu .dropdown-item {
+  color: rgb(43, 43, 43);
+}
+header .dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
+}
+header .dropdown-submenu {
+  --bs-dropdown-bg: #eee;
+  left: 100%;
+  top: 0;
+  height: 100%;
+}
+
+nav.top-bar {
+  background-color: rgb(56, 56, 56);
+}
+nav.top-bar .nav-link {
+  color: white;
+  font-weight: normal;
+  background-color: transparent;
+  font-size: 0.9rem;
+}
+
+.banner-blocks .banner-ad {
+  background-image: url("https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/11/IMG_1225-1.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.banner-blocks .banner-ad .sw-bg {
+  height: 100%;
+}
+
+.bg-secondary-subtle {
+  background-color: #ececec;
+}
+
+.swiper-wrapper .category-item {
+  border: 1px solid #E1E1E1;
+  box-shadow: none;
+}
+
+.logo-caption {
+  font-style: italic;
+}
+
+.card-text {
+  line-height: 1;
+  font-size: 0.9rem;
+}
+
+.sub-category .card {
+  --bs-card-border-color: rgba(0, 0, 0, 0.06);
+}
+.sub-category .card-body {
+  background-color: #F2ECC5;
+}
+.sub-category .card-body p {
+  border-bottom: 1px solid rgb(146, 146, 146);
+}
+
+.table {
+  border-color: lightgray;
+}
+
+.main-nav {
+  border: 1px solid #E1E1E1;
+}
+
+.search-bar {
+  border: 2px solid gray;
+}
+.search-bar select {
+  width: auto;
+}
+
+.hero-banner {
+  background-color: #e8e8e8;
+  background-position: center;
+  background-size: cover;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion .form-check-input {
+  border-color: #5e5e5e;
+}
+
+.btn-primary {
+  background-color: #882905;
+  border-color: #f5b149;
+}
+.btn-primary:hover {
+  background-color: #ca9237;
+  border-color: #ca9237;
+}/*# sourceMappingURL=style.css.map */

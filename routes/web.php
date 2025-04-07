@@ -247,6 +247,8 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
-
+Route::get('/academytest', function () {
+    return view('academy');
+});
 
 require __DIR__ . '/auth.php';
