@@ -9,7 +9,6 @@ class SingleProductController extends Controller
 {
     public function show($id)
     {
-       
         $productDetails = DB::connection('mysql_second')
             ->table('productsqry')
             ->where('id', $id)
@@ -18,7 +17,8 @@ class SingleProductController extends Controller
             'size3', 'color', 'style', 'speciality', 'spacing', 'coating', 
             'weight_lbs','material', 'free_shipping', 'special_shipping', 
             'amount_per_box', 'img_large', 'img_small', 'weight_lbs','maj_cat_name', 
-            'majorcategories_id','categories_id','ship_length', 'ship_width', 'ship_height' )
+            'majorcategories_id','categories_id','ship_length', 'ship_width', 'ship_height',
+            'product_assoc', 'product_relatives')
             ->first();
             
     
@@ -48,6 +48,74 @@ class SingleProductController extends Controller
                     'selected' => $option->id == $id
                 ];
             });
+
+        // Process associated products from product_assoc field
+        $associatedSections = [];
+        if (!empty($productDetails->product_assoc)) {
+            $assocData = $productDetails->product_assoc;
+            $sections = [];
+            $currentTitle = null;
+            $currentItems = [];
+            
+            // Split the string using comma as delimiter
+            $parts = explode(',', $assocData);
+            
+            foreach ($parts as $part) {
+                // Check if it's a section title (enclosed in --)
+                if (preg_match('/--(.+?)--/', $part, $matches)) {
+                    // If we already have a title and items, save them
+                    if ($currentTitle !== null && count($currentItems) > 0) {
+                        $sections[] = [
+                            'title' => $currentTitle,
+                            'items' => $currentItems
+                        ];
+                        $currentItems = []; // Reset items array
+                    }
+                    $currentTitle = $matches[1]; // Save the new title
+                } else {
+                    // It's an item number, add to current section
+                    $currentItems[] = trim($part);
+                }
+            }
+            
+            // Add the last section if it exists
+            if ($currentTitle !== null && count($currentItems) > 0) {
+                $sections[] = [
+                    'title' => $currentTitle,
+                    'items' => $currentItems
+                ];
+            }
+            
+            // Now fetch all these products from database
+            foreach ($sections as $section) {
+                $sectionProducts = DB::connection('mysql_second')
+                    ->table('productsqry')
+                    ->whereIn('item_no', $section['items'])
+                    ->select('id', 'item_no', 'product_name', 'size', 'color', 'price', 'img_small')
+                    ->get();
+                
+                if ($sectionProducts->count() > 0) {
+                    $associatedSections[] = [
+                        'title' => $section['title'],
+                        'products' => $sectionProducts
+                    ];
+                }
+            }
+        }
+        
+        // Process related products from product_relatives field
+        $relatedProducts = [];
+        if (!empty($productDetails->product_relatives)) {
+            $relItemNos = explode(',', $productDetails->product_relatives);
+            $relItemNos = array_map('trim', $relItemNos);
+            
+            $relatedProducts = DB::connection('mysql_second')
+                ->table('productsqry')
+                ->whereIn('item_no', $relItemNos)
+                ->select('id', 'item_no', 'product_name', 'price', 'img_small')
+                ->get();
+        }
+
         // Fetch French Gothic Posts from demodb
         $frenchGothicPosts = DB::connection('mysql_second')
             ->table('productsqry')
@@ -94,7 +162,9 @@ class SingleProductController extends Controller
             'flatPosts5x5' => $flatPosts5x5,
             'inventoryDetails' => $inventoryDetails,
             'productVariations' => $productVariations,
-            'singleGate' => $singleGate
+            'singleGate' => $singleGate,
+            'associatedSections' => $associatedSections,
+            'relatedProducts' => $relatedProducts
         ]);
     }
 
@@ -129,7 +199,9 @@ class SingleProductController extends Controller
                 'material',
                 'ship_length',
                 'ship_width',
-                'ship_height'
+                'ship_height',
+                'product_assoc',
+                'product_relatives'
                 )
             ->first();
         return response()->json($productDetails);
