@@ -7,7 +7,6 @@
         $categoryId = isset($category['id']) ? $category['id'] : 0;
         $categoryName = isset($category['cat_name']) ? $category['cat_name'] : 'Wood Fence';
         $isSpacedPicket = ($categoryId == 6);
-        $isBoardOnBoard = ($categoryId == 7);
         $spacing = isset($spacing) ? $spacing : '';
     @endphp
     
@@ -16,9 +15,10 @@
             {{-- <h1 class="text-center mb-4">Wood Fence Specifications</h1>      --}}
 
     @if($isSpacedPicket)
-        <x-woodfence.spaced-picket :styleGroups="$styleGroups" :category="$category" />
-    @elseif($isBoardOnBoard)
-        <x-woodfence.board-on-board :styleGroups="$styleGroups" :category="$category" />
+        <x-woodfence.spaced-picket 
+            :styleGroups="$styleGroups" 
+            :category="$category"
+        />
     @elseif($groupBy === 'style')
         <h3 class="text-center mt-4 mb-4">Wood Fence Specifications</h3>
         
@@ -93,15 +93,15 @@
                     // Filter out products that don't have web_enabled set to true
                     // For Straight On Top, hide Flat Picket
                     // For Concave and Convex, hide Slant Ear
-                    $filteredProducts = $specialityGroup['products']->filter(function($product) use ($specialityGroup, $isSpacedPicket, $isBoardOnBoard) {
+                    $filteredProducts = $specialityGroup['products']->filter(function($product) use ($specialityGroup, $isSpacedPicket) {
                         // Base filtering for all products
                         $baseFilter = isset($product['web_enabled']) && $product['web_enabled'] == 1;
                         
                         // Get the style from the product
                         $style = $product['style'] ?? '';
                         
-                        // Apply style-specific filtering only for categories 6 and 7
-                        if ($isSpacedPicket || $isBoardOnBoard) {
+                        // Apply style-specific filtering only for categories 6
+                        if ($isSpacedPicket) {
                             // Style-specific filtering
                             if ($style === 'Straight On Top') {
                                 // For Straight On Top, hide Flat Picket
@@ -176,8 +176,8 @@
                     // Get the style from the product
                     $style = $product['style'] ?? '';
                     
-                    // Apply style-specific filtering only for categories 6 and 7
-                    if ($isSpacedPicket || $isBoardOnBoard) {
+                    // Apply style-specific filtering only for categories 6
+                    if ($isSpacedPicket) {
                         // Style-specific filtering
                         if ($style === 'Straight On Top') {
                             // For Straight On Top, hide Flat Picket

@@ -141,23 +141,50 @@ class WoodFenceMysql2Controller extends Controller
         $styleTitle = $request->input('styleTitle', '');
         $groupBy = $request->input('group_by', 'style');
 
-        // Find the category
+        // Check if the category exists
         $category = DB::connection('mysql_second')
             ->table('categories')
             ->where('id', $categoryId)
-            ->where('majorcategories_id', 1)
-            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name', 'img', 'web_enabled')
             ->first();
-
+        
         if (!$category) {
-            return redirect()->back()->with('error', 'Category not found');
+            return redirect()->route('woodfence.mysql2.index')->with('error', 'Category not found');
         }
-
+        
+        // If this is category ID 7 (Board On Board), redirect to the dedicated controller
+        if ($categoryId == 7) {
+            return redirect()->route('solidboard');
+        }
+        
         // Special handling for category ID 6 (Spaced Picket)
         $isSpacedPicket = ($categoryId == 6);
         
         // Special handling for category ID 7 (Board On Board)
         $isBoardOnBoard = ($categoryId == 7);
+        
+        // Create a product ID map for specific styles and specialities
+        $productIdMap = [];
+        
+        // Set up product ID mapping for Solid Board (Board On Board)
+        if ($isBoardOnBoard) {
+            $productIdMap = [
+                'Straight On Top' => [
+                    'Slant Ear' => 'product/3028',
+                    'Gothic Point' => 'product/3150',
+                    'French Gothic' => 'product/3220'
+                ],
+                'Concave' => [
+                    'Flat Picket' => 'product/3118',
+                    'Gothic Point' => 'product/3167',
+                    'French Gothic' => 'product/3236'
+                ],
+                'Convex' => [
+                    'Flat Picket' => 'product/3135',
+                    'Gothic Point' => 'product/3176',
+                    'French Gothic' => 'product/3253'
+                ]
+            ];
+        }
         
         // Base query
         try {
@@ -376,6 +403,8 @@ class WoodFenceMysql2Controller extends Controller
                 'styleGroups' => $formattedStyleGroups,
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
+                'isSpacedPicket' => $isSpacedPicket,
+                'productIdMap' => $productIdMap
             ]);
         } elseif ($groupBy === 'speciality') {
             // First group products by speciality
@@ -399,8 +428,8 @@ class WoodFenceMysql2Controller extends Controller
                 'spacing' => $spacing,
                 'styleTitle' => $category->cat_name,
                 'categoryId' => $categoryId,
-                'groupBy' => $groupBy,
-                'products' => $formattedProducts
+                'isSpacedPicket' => $isSpacedPicket,
+                'productIdMap' => $productIdMap
             ]);
         } else {
             // Since we don't have a speciality column, we'll just use style as the grouping
@@ -430,6 +459,8 @@ class WoodFenceMysql2Controller extends Controller
                 }, $specialityGroups, array_keys($specialityGroups)),
                 'spacing' => $spacing,
                 'styleTitle' => $styleTitle,
+                'isSpacedPicket' => $isSpacedPicket,
+                'productIdMap' => $productIdMap
             ]);
         }
     }
@@ -571,6 +602,7 @@ class WoodFenceMysql2Controller extends Controller
                 'styleGroups' => $formattedStyleGroups,
                 'spacing' => null,
                 'styleTitle' => 'Wood Fence Specifications',
+                'productIdMap' => []
             ]);
         } elseif ($groupBy === 'speciality') {
             // First group products by speciality
@@ -594,14 +626,16 @@ class WoodFenceMysql2Controller extends Controller
                 'spacing' => null,
                 'styleTitle' => 'Wood Fence Specifications',
                 'groupBy' => $groupBy,
-                'products' => $formattedProducts
+                'products' => $formattedProducts,
+                'productIdMap' => []
             ]);
         } else {
             return view('categories.woodfence-specs', [
                 'groupBy' => null,
                 'products' => $formattedProducts,
                 'spacing' => null,
-                'styleTitle' => 'Wood Fence Specifications'
+                'styleTitle' => 'Wood Fence Specifications',
+                'productIdMap' => []
             ]);
         }
     }

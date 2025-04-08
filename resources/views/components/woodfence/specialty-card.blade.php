@@ -60,19 +60,25 @@
             <div class="card-footer bg-white border-top-0 text-center">
                 <a href="{{ route('product.show', ['id' => $firstProduct['product_id']]) }}" class="btn btn-sm btn-brown">View Details</a>
             </div>
-        @elseif ($isBoardOnBoard && isset($productIdMap[$styleGroup['style']][$specialityName]))
+        @elseif ($isBoardOnBoard)
             <div class="card-footer bg-white border-top-0 text-center">
-                @php
-                    $productLink = $productIdMap[$styleGroup['style']][$specialityName];
-                    $linkParts = explode('/', $productLink);
-                    $linkType = $linkParts[0];
-                    $linkId = $linkParts[1];
-                @endphp
-                
-                @if ($linkType === 'product')
-                    <a href="{{ route('product.show', ['id' => $linkId]) }}" class="btn btn-sm btn-brown">View Details</a>
-                @elseif ($linkType === 'category')
-                    <a href="{{ route('category.show', ['slug' => $linkId]) }}" class="btn btn-sm btn-brown">View Details</a>
+                @if (isset($productIdMap[$styleGroup['style']][$specialityName]))
+                    @php
+                        $link = $productIdMap[$styleGroup['style']][$specialityName];
+                        $linkParts = explode('/', $link);
+                        $linkType = $linkParts[0];
+                        $linkId = $linkParts[1];
+                    @endphp
+                    
+                    @if ($linkType === 'product')
+                        <a href="{{ route('product.show', ['id' => $linkId]) }}" class="btn btn-sm btn-brown">View Details</a>
+                    @elseif ($linkType === 'category')
+                        <a href="{{ route('category.show', ['slug' => $linkId]) }}" class="btn btn-sm btn-brown">View Details</a>
+                    @endif
+                @elseif (isset($firstProduct['product_id']))
+                    <a href="{{ route('product.show', ['id' => $firstProduct['product_id']]) }}" class="btn btn-sm btn-brown">View Details</a>
+                @else
+                    <a href="#" class="btn btn-sm btn-brown">View Details</a>
                 @endif
             </div>
         @endif
@@ -89,26 +95,9 @@
                 <p class="mb-1"><strong>Section Top Style:</strong> {{ $styleGroup['style'] }}</p>
                 <p class="mb-1"><strong>Heights:</strong> 3ft, 42in, 4ft, 5ft, 6ft, 7ft, 8ft</p>
                 <p class="mb-1"><strong>Picket Style:</strong> {{ $specialityName }}</p>
-                <p class="mb-1"><strong>Spacing:</strong> No Spacing</p>
-                <p class="mb-1"><strong>Pickets Per Section:</strong> 27</p>
+                <p class="mb-1"><strong>Spacing:</strong> {{ $spacing }}</p>
+                <p class="mb-1"><strong>Pickets Per Section:</strong> {{ $picketsPerSection }}</p>
             </div>
         </div>
-        
-        @if ($isBoardOnBoard && isset($productIdMap[$styleGroup['style']][$specialityName]))
-            <div class="card-footer bg-white border-top-0 text-center">
-                @php
-                    $productLink = $productIdMap[$styleGroup['style']][$specialityName];
-                    $linkParts = explode('/', $productLink);
-                    $linkType = $linkParts[0];
-                    $linkId = $linkParts[1];
-                @endphp
-                
-                @if ($linkType === 'product')
-                    <a href="{{ route('product.show', ['id' => $linkId]) }}" class="btn btn-sm btn-brown">View Details</a>
-                @elseif ($linkType === 'category')
-                    <a href="{{ route('category.show', ['slug' => $linkId]) }}" class="btn btn-sm btn-brown">View Details</a>
-                @endif
-            </div>
-        @endif
     @endif
 </div>
