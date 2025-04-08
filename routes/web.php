@@ -20,6 +20,9 @@ use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\Ams\ProductQueryController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Ams\CategoryController;
+use App\Http\Controllers\SolidBoardController;
+use App\Http\Controllers\BoardonBoardController;
+use App\Http\Controllers\TongueGrooveController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -160,6 +163,12 @@ Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::clas
     ->name('woodfence.specs');
 Route::get('/wood-fence/specs', [WoodFenceMysql2Controller::class, 'specsAll'])
     ->name('woodfence.specs.all');
+Route::get('/wood-fence/solid-board', [SolidBoardController::class, 'index'])
+    ->name('solid-board');
+Route::get('/wood-fence/board-on-board/{spacing?}', [BoardonBoardController::class, 'index'])
+    ->where('spacing', '.*') // Allow special characters in spacing
+    ->name('board-on-board');
+Route::get('/wood-fence/tongue-groove', [TongueGrooveController::class, 'index'])->name('tongue-groove');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
