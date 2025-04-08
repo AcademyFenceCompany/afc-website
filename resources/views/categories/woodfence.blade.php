@@ -160,7 +160,25 @@
                                 <div class="text-center pt-2">
                                     <h6 class="card-title text-brown fw-bold">{{ $category['family_category_name'] }}</h6>
                                 </div>
-                                @if (isset($category['spacing']) && !empty($category['spacing']))
+                                @if ($category['family_category_id'] == 7)
+                                    <a href="{{ route('solid-board') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                @elseif ($category['family_category_id'] == 8)
+                                    @if (isset($category['spacing']) && !empty($category['spacing']))
+                                        <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
+                                            @foreach ($category['spacing'] as $spacing)
+                                                @if ($spacing)
+                                                    <a href="{{ route('board-on-board', ['spacing' => $spacing]) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
+                                                        {{ $spacing }}
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <a href="{{ route('board-on-board') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @endif
+                                @elseif ($category['family_category_id'] == 4)
+                                    <a href="{{ route('tongue-groove') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                @elseif (isset($category['spacing']) && !empty($category['spacing']))
                                     <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
