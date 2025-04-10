@@ -175,7 +175,7 @@
                                             <span>${{ number_format($product->price, 2) }}</span>
                                             <button class="btn btn-danger btn-sm add-to-cart-btn"
                                                 data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
-                                                data-price="{{ $product->price }}" data-product-id="{{ $product->id ?? '' }}">
+                                                data-price="{{ $product->price }}" data-product-id="{{ $product->id ?? '' }}" style="padding: 1px 5px;font-size: 12px;">
                                                 Add to Cart
                                             </button>
                                         </td>
@@ -195,19 +195,17 @@
                     @foreach($relatedProducts as $product)
                         <div class="col-md-3 col-sm-6 mb-4">
                             <div class="card h-100 shadow-sm">
-                                <a href="{{ route('products.show', $product->id) }}">
-                                    <img src="{{ asset('storage/products/' . ($product->img_small ?? 'placeholder.jpg')) }}" 
-                                         class="card-img-top p-2" 
-                                         alt="{{ $product->product_name }}"
-                                         style="height: 150px; object-fit: contain;">
-                                </a>
+                                <img src="{{ asset('storage/products/' . ($product->img_large ?? 'placeholder.jpg')) }}" 
+                                        class="card-img-top p-2" 
+                                        alt="{{ $product->product_name }}"
+                                        style="height: 150px; object-fit: contain;">
                                 <div class="card-body text-center">
                                     <h6 class="card-title">{{ $product->product_name }}</h6>
                                     <p class="card-text">${{ number_format($product->price, 2) }}</p>
                                     <button class="btn btn-danger btn-sm add-to-cart-btn"
                                         data-item="{{ $product->item_no }}" 
                                         data-name="{{ $product->product_name }}"
-                                        data-price="{{ $product->price }}">
+                                        data-price="{{ $product->price }}" style="padding: 1px 5px;font-size: 12px;">
                                         Add to Cart
                                     </button>
                                 </div>

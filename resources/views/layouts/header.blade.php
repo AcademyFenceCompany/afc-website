@@ -106,7 +106,7 @@
                     <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn">WOOD FENCE</a>
                     <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
                     <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
-                    <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
+                    <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
                     <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
                     @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                         <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
@@ -134,7 +134,7 @@
                         <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn mb-2">WOOD FENCE</a>
                         <a href="#" class="nav-link btn nav-btn mb-2">VINYL FENCE</a>
                         <a href="#" class="nav-link btn nav-btn mb-2">CHAIN LINK</a>
-                        <a href="#" class="nav-link btn nav-btn mb-2">ALUMINUM FENCE</a>
+                        <a href="{{ route('aluminumfence.index') }}" class="nav-link btn nav-btn mb-2">ALUMINUM FENCE</a>
                         <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn mb-2">WELDED WIRE</a>
                         @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                             <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn mb-2">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
