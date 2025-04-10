@@ -248,5 +248,9 @@ Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'upda
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
 
+Route::get('/post-caps', function () {
+    return view('post-caps');
+})->name('post-caps');
+
 
 require __DIR__ . '/auth.php';
