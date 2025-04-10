@@ -14,7 +14,6 @@
     padding: 10px 0 !important;
    }
 
-
    .border-bottom {
             font-size: 12px;
         }
@@ -76,9 +75,6 @@
         
 </style>
     
-
-    
-
     <!-- Welded Wire Products by Gauge -->
     @foreach ($meshSize_products->groupBy('size3') as $gauge => $products)
         <!-- Gauge Section -->

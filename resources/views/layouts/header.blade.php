@@ -144,6 +144,8 @@
                                     </a>
                                 </li>
                             @endforeach
+                            <li><a class="dropdown-item" href="{{ route('post-caps') }}">Post Caps</a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
