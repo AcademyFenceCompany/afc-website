@@ -87,6 +87,7 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Toggle category tree items
         document.querySelectorAll('.toggle-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const nested = btn.closest('li').querySelector('.nested');
@@ -97,10 +98,26 @@
             });
         });
 
+        // Load category products
         document.querySelectorAll('.subcategory-link').forEach(link => {
             link.addEventListener('click', () => {
                 const catId = link.getAttribute('data-cat-id');
-                fetch(`/ams/product-query/category/${catId}`)
+                loadCategoryProducts(catId);
+            });
+        });
+        
+        // Handle pagination clicks using event delegation
+        document.getElementById('product-panel').addEventListener('click', function(e) {
+            // Check if the clicked element is a pagination link
+            if (e.target.tagName === 'A' && e.target.closest('.pagination')) {
+                e.preventDefault();
+                
+                // Get the URL from the pagination link
+                const url = e.target.getAttribute('href');
+                if (!url) return;
+                
+                // Fetch the content via AJAX
+                fetch(url)
                     .then(res => res.text())
                     .then(html => {
                         document.getElementById('product-panel').innerHTML = html;
@@ -109,8 +126,22 @@
                         console.error(err);
                         alert("Failed to load products.");
                     });
-            });
+            }
         });
+        
+        // Function to load category products
+        function loadCategoryProducts(catId, page = 1) {
+            const url = `/ams/product-query/category/${catId}${page > 1 ? '?page=' + page : ''}`;
+            fetch(url)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById('product-panel').innerHTML = html;
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Failed to load products.");
+                });
+        }
     });
 </script>
 @endsection

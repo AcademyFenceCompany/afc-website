@@ -31,7 +31,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="m-3">
+        <div class="m-3 pagination-container">
             {{ $products->links() }}
         </div>
     </div>
