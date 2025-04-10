@@ -23,6 +23,10 @@ use App\Http\Controllers\Ams\CategoryController;
 use App\Http\Controllers\SolidBoardController;
 use App\Http\Controllers\BoardonBoardController;
 use App\Http\Controllers\TongueGrooveController;
+use App\Http\Controllers\PostRailController;
+use App\Http\Controllers\StockadeFenceController;
+use App\Http\Controllers\WoodPostCapsController;
+use App\Http\Controllers\AluminumFenceController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -169,6 +173,16 @@ Route::get('/wood-fence/board-on-board/{spacing?}', [BoardonBoardController::cla
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('board-on-board');
 Route::get('/wood-fence/tongue-groove', [TongueGrooveController::class, 'index'])->name('tongue-groove');
+Route::get('/wood-fence/post-rail', [PostRailController::class, 'index'])->name('postrail.index');
+Route::get('/wood-fence/post-rail/{style?}', [PostRailController::class, 'index'])->name('postrail.style');
+Route::get('/wood-fence/stockade', [StockadeFenceController::class, 'index'])->name('stockade.index');
+Route::get('/wood-fence/wood-post-caps', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.index');
+Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.style');
+
+// Aluminum Fence Routes
+Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
+Route::get('/aluminum-fence/onguard', [AluminumFenceController::class, 'index'])->name('aluminumfence.index');
+Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence.style');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');

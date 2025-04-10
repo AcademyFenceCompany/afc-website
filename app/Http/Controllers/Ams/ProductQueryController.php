@@ -84,9 +84,20 @@ class ProductQueryController extends Controller
         ->select('products.*', 'categories.cat_name')
         ->where('categories.id', $id);
 
-    $products = $productsQuery->paginate(10);
-
-    return view('ams.product-query._products', compact('products'));
+    // Get the page from the request
+    $page = request()->input('page', 1);
+    
+    // Paginate with 10 items per page
+    $products = $productsQuery->paginate(10, ['*'], 'page', $page);
+    
+    // Make sure we don't duplicate the category_id parameter in pagination links
+    $products->appends(request()->except(['page', 'category_id']));
+    
+    // Pass the category ID to the view for proper link generation
+    return view('ams.product-query._products', [
+        'products' => $products,
+        'categoryId' => $id
+    ]);
 }
 
 public function edit($id)

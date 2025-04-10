@@ -112,7 +112,7 @@ class SingleProductController extends Controller
             $relatedProducts = DB::connection('mysql_second')
                 ->table('productsqry')
                 ->whereIn('item_no', $relItemNos)
-                ->select('id', 'item_no', 'product_name', 'price', 'img_small')
+                ->select('id', 'item_no', 'product_name', 'price', 'img_small', 'img_large')
                 ->get();
         }
 
@@ -190,7 +190,6 @@ class SingleProductController extends Controller
                 'free_shipping',
                 'special_shipping',
                 'amount_per_box',
-                'img_large',
                 'img_large',
                 'img_small',
                 'weight_lbs',

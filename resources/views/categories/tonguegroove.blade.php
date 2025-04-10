@@ -112,9 +112,8 @@
                             <div class="product-details small">
                                 <p class="mb-1"><strong>Section Top Style:</strong> Straight On Top</p>
                                 <p class="mb-1"><strong>Heights:</strong> 4ft, 5ft, 6ft</p>
-                                <p class="mb-1"><strong>Picket Style:</strong> {{ $specialityName }}</p>
-                                <p class="mb-1"><strong>Spacing:</strong> No Spacing</p>
-                                <p class="mb-1"><strong>Pickets Per Section:</strong> 27</p>
+                                <p class="mb-1"><strong>Picket Style:</strong> Tongue & Groove</p>
+                                <p class="mb-1"><strong>Spacing:</strong> Solid</p>
                                 <p class="mb-1"><strong>Price:</strong> ${{ number_format($price, 2) }}</p>
                             </div>
                             <div class="mt-3">
