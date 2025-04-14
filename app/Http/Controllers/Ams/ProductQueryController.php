@@ -129,10 +129,18 @@ public function update(Request $request, $id)
         $data['enabled'] = $request->input('web_enabled');
     }
 
+    // Handle small image upload
+    if ($request->hasFile('img_small')) {
+        $smallFilename = time() . '_small.' . $request->img_small->extension();
+        $request->img_small->storeAs('public/products', $smallFilename);
+        $data['img_small'] = $smallFilename;
+    }
+
+    // Handle large image upload
     if ($request->hasFile('img_large')) {
-        $filename = time() . '.' . $request->img_large->extension();
-        $request->img_large->storeAs('public/products', $filename);
-        $data['img_large'] = $filename;
+        $largeFilename = time() . '_large.' . $request->img_large->extension();
+        $request->img_large->storeAs('public/products', $largeFilename);
+        $data['img_large'] = $largeFilename;
     }
     
     DB::connection('mysql_second')
