@@ -144,6 +144,7 @@
                             <i class="bi bi-list"></i> Quick Menu
                         </a>
                         <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('woodpostcaps.index') }}">Wood Post Caps</a></li>
                             @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
                                 <li>
                                     <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
@@ -193,6 +194,7 @@
                                 <i class="bi bi-list"></i> Quick Menu
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('woodpostcaps.index') }}">Wood Post Caps</a></li>
                                 @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
                                     <li>
                                         <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
