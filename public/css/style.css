@@ -193,6 +193,33 @@ textarea {
     color: var(--dark-color);
 }
 
+.dropdown-toggle-split {
+    background-color: var(--hover-color);
+    color: var(--dark-color);
+    padding-left: 0;
+    padding-right: 10px;
+    margin-left: -5px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.dropdown-toggle-split:hover,
+.dropdown-toggle-split:focus,
+.dropdown-toggle-split:active {
+    background-color: #e68a00;
+    color: var(--light-color);
+}
+
+.dropdown .nav-btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Fix for dropdown hover behavior */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
 /* Additional styling for button text alignment */
 .nav-link {
     text-decoration: none;
@@ -707,7 +734,7 @@ main .btn.btn-brown:hover,
 }
 
 .product-image {
-    width: 250px !important;
+    width: 370px !important;
     height: 130px !important;
     object-fit: cover !important;
 }

@@ -9,63 +9,112 @@ class SingleProductController extends Controller
 {
     public function show($id)
     {
-        $productDetails = DB::table('products')
-            ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-            ->join('product_media', 'products.product_id', '=', 'product_media.product_id')
-            ->leftJoin('shipping_details', 'products.product_id', '=', 'shipping_details.product_id') // Changed to leftJoin
-            ->where('products.product_id', $id)
-            ->select(
-                'products.product_name',
-                'products.item_no',
-                'products.description',
-                'products.price_per_unit',
-                'products.subcategory_id',
-                'product_details.*',
-                'product_media.general_image',
-                'product_media.large_image',
-                'product_media.small_image',
-                'shipping_details.*'
-            )
+        $productDetails = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('id', $id)
+            ->select
+            ('product_name','item_no', 'desc_short', 'price', 'id', 'size', 'size2', 
+            'size3', 'color', 'style', 'speciality', 'spacing', 'coating', 
+            'weight_lbs','material', 'free_shipping', 'special_shipping', 
+            'amount_per_box', 'img_large', 'img_small', 'weight_lbs','maj_cat_name', 
+            'majorcategories_id','categories_id','ship_length', 'ship_width', 'ship_height',
+            'product_assoc', 'product_relatives')
             ->first();
-
-        $productVariations = DB::table('products')
-            ->join('product_details', 'product_details.product_id', '=', 'products.product_id')
-            ->where('products.subcategory_id', $productDetails->subcategory_id)
-            ->select(
-                'product_details.size1',
-                'product_details.size2',
-                'product_details.size3',
-                'product_details.color',
-                'products.product_id',
-            )
+            
+    
+        $productVariations = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('categories_id', $productDetails->categories_id)
+            ->where('style', $productDetails->style)
+            ->where('speciality', $productDetails->speciality)
+            ->where('spacing', $productDetails->spacing)
+            ->where('coating', $productDetails->coating)
+            ->select('size', 'size2', 'size3', 'color', 'id')
             ->get();
-
-
-        // Dynamically fetch options based on style, speciality, and category
-        $productOptions = DB::table('products as p')
-            ->join('family_categories as fc', 'p.subcategory_id', '=', 'fc.family_category_id')
-            ->join('product_details as pd', 'p.product_id', '=', 'pd.product_id')
-            // ->where('pd.style', $productDetails->style)
-            // ->where('pd.speciality', $productDetails->speciality)
-            ->where('pd.size2', $productDetails->size2)
-            ->where('pd.size3', $productDetails->size3)
-            ->where('p.subcategory_id', $productDetails->family_category_id)
-            ->select('p.product_id', 'pd.size1', 'pd.color')
-            ->distinct()
-            ->get()
+    
+        $productOptions = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('categories_id', $productDetails->categories_id)
+            ->where('style', $productDetails->style)
+            ->where('speciality', $productDetails->speciality)
+            ->where('spacing', $productDetails->spacing)
+            ->where('coating', $productDetails->coating)
+            ->select('size', 'size2', 'size3', 'color', 'id')
+            ->get() 
             ->map(function ($option) use ($id) {
                 return [
-                    'value' => $option->product_id,
-                    'text' => $option->size1 . ' - ' . ucfirst($option->color),
-                    'selected' => $option->product_id == $id
+                    'value' => $option->id,
+                    'text' => $option->size . ' - ' . ucfirst($option->color),
+                    'selected' => $option->id == $id
                 ];
             });
 
-        $associatedProducts = DB::table('product_associations')
-            ->join('products', 'product_associations.associated_product', '=', 'products.product_id')
-            ->where('product_associations.product_id', $id)
-            ->select('products.product_id', 'products.product_name', 'products.price_per_unit')
-            ->get();
+        // Process associated products from product_assoc field
+        $associatedSections = [];
+        if (!empty($productDetails->product_assoc)) {
+            $assocData = $productDetails->product_assoc;
+            $sections = [];
+            $currentTitle = null;
+            $currentItems = [];
+            
+            // Split the string using comma as delimiter
+            $parts = explode(',', $assocData);
+            
+            foreach ($parts as $part) {
+                // Check if it's a section title (enclosed in --)
+                if (preg_match('/--(.+?)--/', $part, $matches)) {
+                    // If we already have a title and items, save them
+                    if ($currentTitle !== null && count($currentItems) > 0) {
+                        $sections[] = [
+                            'title' => $currentTitle,
+                            'items' => $currentItems
+                        ];
+                        $currentItems = []; // Reset items array
+                    }
+                    $currentTitle = $matches[1]; // Save the new title
+                } else {
+                    // It's an item number, add to current section
+                    $currentItems[] = trim($part);
+                }
+            }
+            
+            // Add the last section if it exists
+            if ($currentTitle !== null && count($currentItems) > 0) {
+                $sections[] = [
+                    'title' => $currentTitle,
+                    'items' => $currentItems
+                ];
+            }
+            
+            // Now fetch all these products from database
+            foreach ($sections as $section) {
+                $sectionProducts = DB::connection('mysql_second')
+                    ->table('productsqry')
+                    ->whereIn('item_no', $section['items'])
+                    ->select('id', 'item_no', 'product_name', 'size', 'color', 'price', 'img_small')
+                    ->get();
+                
+                if ($sectionProducts->count() > 0) {
+                    $associatedSections[] = [
+                        'title' => $section['title'],
+                        'products' => $sectionProducts
+                    ];
+                }
+            }
+        }
+        
+        // Process related products from product_relatives field
+        $relatedProducts = [];
+        if (!empty($productDetails->product_relatives)) {
+            $relItemNos = explode(',', $productDetails->product_relatives);
+            $relItemNos = array_map('trim', $relItemNos);
+            
+            $relatedProducts = DB::connection('mysql_second')
+                ->table('productsqry')
+                ->whereIn('item_no', $relItemNos)
+                ->select('id', 'item_no', 'product_name', 'price', 'img_small', 'img_large')
+                ->get();
+        }
 
         // Fetch French Gothic Posts from demodb
         $frenchGothicPosts = DB::connection('mysql_second')
@@ -91,6 +140,15 @@ class SingleProductController extends Controller
             ->select('item_no', 'product_name', 'size', 'color', 'price')
             ->get();
 
+        // Fetch Single Gate from demodb
+        $singleGate = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('spacing', $productDetails->spacing)
+            ->where('style', $productDetails->style)
+            ->where('speciality', $productDetails->speciality)
+            ->select('item_no', 'product_name', 'size', 'color', 'price')
+            ->get();
+
         $inventoryDetails = DB::table('inventory_details')
             ->where('product_id', $id)
             ->select('in_stock_hq', 'in_stock_warehouse', 'inventory_ordered', 'inventory_expected_date')
@@ -99,38 +157,52 @@ class SingleProductController extends Controller
         return view('products.single-product', [
             'productDetails' => $productDetails,
             'productOptions' => $productOptions,
-            'associatedProducts' => $associatedProducts,
             'frenchGothicPosts' => $frenchGothicPosts,
             'flatPosts' => $flatPosts,
             'flatPosts5x5' => $flatPosts5x5,
             'inventoryDetails' => $inventoryDetails,
-            'productVariations' => $productVariations
+            'productVariations' => $productVariations,
+            'singleGate' => $singleGate,
+            'associatedSections' => $associatedSections,
+            'relatedProducts' => $relatedProducts
         ]);
     }
 
     public function fetchProductDetails($id)
     {
-        $productDetails = DB::table('products')
-            ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-            ->join('product_media', 'products.product_id', '=', 'product_media.product_id')
-            ->leftJoin('shipping_details', 'products.product_id', '=', 'shipping_details.product_id') // Changed to leftJoin
-            ->where('products.product_id', $id)
+        $productDetails = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('id', $id)
             ->select(
-                'products.product_name',
-                'products.item_no',
-                'products.description',
-                'products.price_per_unit',
-                'product_details.*',
-                'product_media.general_image',
-                'product_media.large_image',
-                'product_media.small_image',
-                'shipping_details.weight',
-                'shipping_details.free_shipping',
-                'shipping_details.special_shipping',
-                'shipping_details.amount_per_box'
-            )
+                'product_name',
+                'item_no',
+                'desc_short',
+                'price',
+                'id',
+                'size',
+                'size2',
+                'size3',
+                'color',
+                'style',
+                'speciality',
+                'spacing',
+                'coating',
+                'free_shipping',
+                'special_shipping',
+                'amount_per_box',
+                'img_large',
+                'img_small',
+                'weight_lbs',
+                'majorcategories_id',
+                'maj_cat_name',
+                'material',
+                'ship_length',
+                'ship_width',
+                'ship_height',
+                'product_assoc',
+                'product_relatives'
+                )
             ->first();
-
         return response()->json($productDetails);
     }
 }

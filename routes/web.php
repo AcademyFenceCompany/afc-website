@@ -9,7 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SingleProductController;
-use App\Http\Controllers\WoodFenceController;
+use App\Http\Controllers\WoodFenceMysql2Controller;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StateMarkupController;
@@ -19,6 +19,14 @@ use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\Ams\ProductQueryController;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Ams\CategoryController;
+use App\Http\Controllers\SolidBoardController;
+use App\Http\Controllers\BoardonBoardController;
+use App\Http\Controllers\TongueGrooveController;
+use App\Http\Controllers\PostRailController;
+use App\Http\Controllers\StockadeFenceController;
+use App\Http\Controllers\WoodPostCapsController;
+use App\Http\Controllers\AluminumFenceController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -32,8 +40,18 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/products/by-category/{category}', [ProductController::class, 'getByCategory'])->name('products.by.category');
     
     // Product Query routes for demodb testing
-    Route::get('/product-query', [ProductQueryController::class, 'index'])->name('ams.product-query.index');
-    
+    Route::prefix('product-query')->name('ams.product-query.')->group(function () {
+        Route::get('/', [ProductQueryController::class, 'index'])->name('index');
+        Route::get('/search', [ProductQueryController::class, 'search'])->name('search');
+        Route::get('/category/{id}', [ProductQueryController::class, 'loadCategory'])->name('category');
+        Route::get('/{id}/edit', [ProductQueryController::class, 'edit'])->name('edit');
+        Route::post('/{id}/update', [ProductQueryController::class, 'update'])->name('update');
+    });
+
+    // MySQL Category Management
+    Route::resource('mysql-categories', \App\Http\Controllers\Ams\CategoryController::class)->names('ams.mysql-categories');
+    Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
+ 
     // Other AMS routes...
     Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
     Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
@@ -104,7 +122,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
 Route::get('/resources/images/{filename}', function ($filename) {
     $path = resource_path('images/' . $filename);
@@ -143,11 +161,31 @@ Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProdu
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
 
-Route::get('/wood-fence', [WoodFenceController::class, 'index'])->name('woodfence');
-Route::get('/wood-fence/{subcategoryId}/children', [WoodFenceController::class, 'getSubcategoryChildren'])->name('woodfence.children');
-Route::get('/wood-fence/specs/{subcategoryId}/{spacing?}', [WoodFenceController::class, 'getProductsGroupedByStyle'])
+Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
+Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
     ->where('spacing', '.*') // Allow special characters in spacing
     ->name('woodfence.specs');
+Route::get('/wood-fence/specs', [WoodFenceMysql2Controller::class, 'specsAll'])
+    ->name('woodfence.specs.all');
+Route::get('/wood-fence/solid-board', [SolidBoardController::class, 'index'])
+    ->name('solid-board');
+Route::get('/wood-fence/board-on-board/{spacing?}', [BoardonBoardController::class, 'index'])
+    ->where('spacing', '.*') // Allow special characters in spacing
+    ->name('board-on-board');
+Route::get('/wood-fence/tongue-groove', [TongueGrooveController::class, 'index'])->name('tongue-groove');
+Route::get('/wood-fence/post-rail', [PostRailController::class, 'index'])->name('postrail.index');
+Route::get('/wood-fence/post-rail/{style?}', [PostRailController::class, 'index'])->name('postrail.style');
+Route::get('/wood-fence/stockade', [StockadeFenceController::class, 'index'])->name('stockade.index');
+Route::get('/wood-fence/wood-post-caps', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.index');
+Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.style');
+
+// Aluminum Fence Routes
+Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
+Route::get('/aluminum-fence/onguard', [AluminumFenceController::class, 'index'])->name('aluminumfence.index');
+Route::get('/aluminum-fence/onguard/pickup', [AluminumFenceController::class, 'pickup'])->name('aluminumfence.pickup');
+Route::get('/aluminum-fence/onguard/{type}/{model}', [AluminumFenceController::class, 'productDetails'])->name('aluminumfence.product');
+Route::get('/aluminum-fence/filter', [AluminumFenceController::class, 'filterProducts'])->name('aluminumfence.filter');
+Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence.style');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -238,6 +276,8 @@ Route::put('/user/{id}', [UserManagementController::class, 'update']);
 // Family Category Tree - AMS
 Route::get('/categories', [CategoriesController::class, 'showTree'])->name('categories.display');
 Route::get('/categories/{category}/products', [CategoriesController::class, 'getProducts']);
+
+
 
 //Shipping API's 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
