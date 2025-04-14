@@ -42,7 +42,52 @@
         border-color: #001755;
     }
     
-
+    /* OnGuard Info Box Styles */
+    .onguard-info-box {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+    
+    .info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .info-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .info-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #f0f8f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        color: #4a7c59;
+        font-size: 20px;
+    }
+    
+    .info-content {
+        flex: 1;
+    }
+    
+    .info-title {
+        font-weight: bold;
+        margin-bottom: 2px;
+        color: #333;
+    }
+    
+    .info-description {
+        font-size: 14px;
+        color: #555;
+    }
     
     .model-grid {
         display: flex;
@@ -160,34 +205,33 @@
         <div class="col-12">
             <div class="main-header">
                 <div class="row align-items-center">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <img src="{{ url('storage/products/Onguard-FenceTown-400x400.jpg') }}" alt="OnGuard Logo" class="img-fluid" style="max-width: 250px;">
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-5">
                         <h2 class="mb-0">OnGuard Fence Systems</h2>
                         <div class="mt-2">
-                            <p>OnGuard extrudes and manufactures high-quality aluminum fence components for residential and commercial applications where long-lasting durability and beauty are required. OnGuard products are easy to install, come in classic colors and are offered in a wide array of beautiful designs and classic finish options.</p>
-                            <a href="/aluminum-fence/onguard/pickup" class="btn btn-danger mt-2">See what's available for pickup</a>
+                            <p>OnGuard extrudes and manufactures high-quality aluminum fence components for residential and commercial applications where
+                                 long-lasting durability and beauty are required. OnGuard products are 
+                                 easy to install, come in classic colors and are offered in a wide array of
+                                beautiful designs and classic finish options.</p>
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="list-unstyled">
+                            <li><i class="bi bi-currency-dollar text-white me-2"></i>LOWEST PRICE</li>
+                            <li><i class="bi bi-truck text-white me-2"></i>SHIPS IN 2-6 WEEKS</li>
+                            <li><i class="bi bi-plus-circle text-white me-2"></i>PUPPY PICKET OPTION</li>
+                            <li><i class="bi bi-star text-white me-2"></i>BEVELED RAIL DESIGN</li>
+                            <li><i class="bi bi-check-circle text-white me-2"></i>LIFETIME WARRANTY</li>
+                        </ul>
+                        <a href="{{ route('aluminumfence.pickup') }}" class="btn btn-danger mt-2">See what's available for pickup</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    {{-- <!-- OnGuard Description -->
-    <div class="row">
-        <div class="col-12">
-            <div class="onguard-description">
-                <p>The OnGuard Difference - Unlike some other brands, all OnGuard Fence Systems rails and posts are powder coated after punching and notching, re-sealing all exposed surfaces with a protective powder coat finish for long-lasting quality.</p>
-                
-                <p>OnGuard offers single and double gates to match all fence styles and colors. Constructed of heavy-walled frames and welded with the newest aluminum welding technology, our gates are one of the strongest in the industry, resistant to sagging.</p>
-                
-                <p>All gates are available in u-frame construction with or without diagonal braces. To personalize your design, OnGuard offers arched and scalloped gates along with a full line of accessories, including a variety of self-closing latches and adjustable hinges.</p>
-            </div>
-        </div>
-    </div> --}}
-    
+   
     <!-- Type Selector Buttons -->
     <div class="row">
         <div class="col-12">
@@ -226,16 +270,19 @@
                 <div class="model-grid">
                     @foreach($typeData['models'] as $modelName => $model)
                         <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                            <div class="model-image">
-                                <img src="{{ $representativeImages[$typeName][$modelName] ?? url('storage/products/default.png') }}" 
-                                     alt="{{ $modelName }} {{ $typeName }}" 
-                                     onerror="this.src='{{ url('storage/products/default.png') }}'">
-                            </div>
-                            <div class="model-info">
-                                <div class="model-name text-center ">{{ $modelName }}</div>
-                                {{-- <div class="model-count">{{ $model['total'] }} items available</div>
-                                <button class="btn btn-sm btn-danger mt-2 view-products-btn">View Products</button> --}}
-                            </div>
+                            <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
+                                <div class="model-image">
+                                    <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName] ?? url('storage/products/default.png') }}" 
+                                         alt="{{ $modelName }} {{ $typeName }}" 
+                                         onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                </div>
+                                <div class="model-info">
+                                    <div class="model-name text-center ">{{ $modelName }}</div>
+                                    <div class="text-center mt-2">
+                                        <button class="btn btn-sm btn-danger">View Products</button>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     @endforeach
                 </div>

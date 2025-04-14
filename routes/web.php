@@ -182,6 +182,9 @@ Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class
 // Aluminum Fence Routes
 Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
 Route::get('/aluminum-fence/onguard', [AluminumFenceController::class, 'index'])->name('aluminumfence.index');
+Route::get('/aluminum-fence/onguard/pickup', [AluminumFenceController::class, 'pickup'])->name('aluminumfence.pickup');
+Route::get('/aluminum-fence/onguard/{type}/{model}', [AluminumFenceController::class, 'productDetails'])->name('aluminumfence.product');
+Route::get('/aluminum-fence/filter', [AluminumFenceController::class, 'filterProducts'])->name('aluminumfence.filter');
 Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence.style');
 
 // Cart Routes

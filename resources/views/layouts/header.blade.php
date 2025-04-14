@@ -103,10 +103,37 @@
                 
                 <!-- Desktop Navigation -->
                 <nav class="nav mb-3 d-none d-md-flex flex-wrap">
-                    <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn">WOOD FENCE</a>
+                    <!-- Wood Fence Dropdown -->
+                    <div class="dropdown">
+                        <a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WOOD FENCE</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('woodfence') }}">All Wood Fence</a></li>
+                            <li><a class="dropdown-item" href="/wood-fence/specs/6/2%201/2%20in.?styleTitle=Spaced+Picket">Spaced Picket Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('solid-board') }}">Solid Board Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Shadow Box Board On Board</a></li>
+                            <li><a class="dropdown-item" href="{{ route('stockade.index') }}">Stockade Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Board Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tongue-groove') }}">Tongue Groove Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('postrail.index') }}">Posts & Rails</a></li>
+                            <li><a class="dropdown-item" href="{{ route('woodpostcaps.index') }}">Woodpost Caps</a></li>
+                            <li><a class="dropdown-item" href="">Loose Wood Fence</a></li>
+
+                        </ul>
+                    </div>
+                    
                     <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
                     <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
-                    <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
+                    
+                    <!-- Aluminum Fence Dropdown -->
+                    <div class="dropdown">
+                        <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
+                        </ul>
+                    </div>
+                    
                     <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
                     @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                         <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
@@ -131,16 +158,36 @@
                 <!-- Mobile Navigation -->
                 <div class="collapse mb-3" id="mobileNavMenu">
                     <div class="d-flex flex-column">
-                        <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn mb-2">WOOD FENCE</a>
+                        <!-- Wood Fence Dropdown -->
+                        <div class="dropdown mb-2">
+                            <a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WOOD FENCE</a>
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('woodfence') }}">All Wood Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('stockade.index') }}">Stockade Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Board Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tongue-groove') }}">Tongue Groove Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('postrail.index') }}">Posts & Rails</a></li>
+                            </ul>
+                        </div>
+                        
                         <a href="#" class="nav-link btn nav-btn mb-2">VINYL FENCE</a>
                         <a href="#" class="nav-link btn nav-btn mb-2">CHAIN LINK</a>
-                        <a href="{{ route('aluminumfence.index') }}" class="nav-link btn nav-btn mb-2">ALUMINUM FENCE</a>
+                        
+                        <!-- Aluminum Fence Dropdown -->
+                        <div class="dropdown mb-2">
+                            <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
+                            </ul>
+                        </div>
+                        
                         <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn mb-2">WELDED WIRE</a>
                         @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                             <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn mb-2">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
                         @endforeach
                         <a href='{{ route('contact') }}' class="nav-link btn nav-btn mb-2">CONTACT US</a>
-                        
                         <div class="dropdown">
                             <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="bi bi-list"></i> Quick Menu
