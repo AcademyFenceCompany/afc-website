@@ -126,7 +126,10 @@ class WoodFenceMysql2Controller extends Controller
                 'web_enabled' => $category->web_enabled,
             ];
         }
-
+        
+        // Group categories by category_group
+        $groupedCategories = collect($categoriesWithDetails)->groupBy('category_group');
+        
         return view('categories.woodfence', [
             'wood_categories' => collect($categoriesWithDetails)
         ]);

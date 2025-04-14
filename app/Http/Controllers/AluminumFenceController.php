@@ -106,17 +106,20 @@ class AluminumFenceController extends Controller
             // Add Puppy Picket models
             $fenceType['models']['Puppy Picket 1*'] = [
                 'name' => 'Puppy Picket 1*',
-                'total' => 1
+                'total' => 1,
+                'image' => url('storage/products/puppy1.jpg')
             ];
             
             $fenceType['models']['Puppy Picket 2*'] = [
                 'name' => 'Puppy Picket 2*',
-                'total' => 1
+                'total' => 1,
+                'image' => url('storage/products/puppy2.jpg')
             ];
             
             $fenceType['models']['Puppy Picket 3*'] = [
                 'name' => 'Puppy Picket 3*',
-                'total' => 1
+                'total' => 1,
+                'image' => url('storage/products/puppy3.jpg')
             ];
         }
         
@@ -152,7 +155,8 @@ class AluminumFenceController extends Controller
                 
                 if ($representativeProduct && $representativeProduct->img_large) {
                     $representativeImages[$typeName][$modelName] = url('storage/products/' . $representativeProduct->img_large);
-                } else {
+                }
+                else {
                     // Fallback to default image
                     $representativeImages[$typeName][$modelName] = url('storage/products/default.png');
                 }
@@ -168,6 +172,295 @@ class AluminumFenceController extends Controller
             'selectedFenceType' => $selectedFenceType ?? null,
             'selectedModel' => $selectedModel ?? null
         ]);
+    }
+    
+    /**
+     * Display the product details for a specific OnGuard aluminum fence product
+     * 
+     * @param Request $request
+     * @param string $type
+     * @param string $model
+     * @return \Illuminate\View\View
+     */
+    public function productDetails(Request $request, $type, $model)
+    {
+        // Get the product details from the database
+        $baseQuery = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where(function($query) {
+                $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
+                      ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
+                      ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
+            })
+            ->where('enabled', 1);
+        
+        // Get products based on selected type and model
+        $products = $baseQuery
+            ->where('product_name', 'LIKE', '%' . $type . '%')
+            ->where('product_name', 'LIKE', '%' . $model . '%')
+            ->get();
+        
+        // Select a representative product for display
+        $selectedProduct = $products->first();
+        
+        // Get available colors
+        $colors = $baseQuery
+            ->where('product_name', 'LIKE', '%' . $type . '%')
+            ->where('product_name', 'LIKE', '%' . $model . '%')
+            ->select('color')
+            ->distinct()
+            ->pluck('color')
+            ->filter()
+            ->toArray();
+        
+        // Get available sizes
+        $sizes = $baseQuery
+            ->where('product_name', 'LIKE', '%' . $type . '%')
+            ->where('product_name', 'LIKE', '%' . $model . '%')
+            ->select('size')
+            ->distinct()
+            ->pluck('size')
+            ->filter()
+            ->toArray();
+        
+        // Get representative image for the model
+        $representativeImage = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('product_name', 'LIKE', '%' . $type . '%')
+            ->where('product_name', 'LIKE', '%' . $model . '%')
+            ->whereNotNull('img_large')
+            ->value('img_large');
+        
+        // If no image found, use default
+        $modelImage = $representativeImage 
+            ? url('storage/products/' . $representativeImage) 
+            : url('storage/products/default.png');
+        
+        // Get model description
+        $modelDescription = $this->getModelDescription($model);
+        
+        // Process associated products from product_assoc field
+        $associatedSections = [];
+        if ($selectedProduct && !empty($selectedProduct->product_assoc)) {
+            $assocData = $selectedProduct->product_assoc;
+            $sections = [];
+            $currentTitle = null;
+            $currentItems = [];
+            
+            // Split the string using comma as delimiter
+            $parts = explode(',', $assocData);
+            
+            foreach ($parts as $part) {
+                // Check if it's a section title (enclosed in --)
+                if (preg_match('/--(.+?)--/', $part, $matches)) {
+                    // If we already have a title and items, save them
+                    if ($currentTitle !== null && count($currentItems) > 0) {
+                        $sections[] = [
+                            'title' => $currentTitle,
+                            'items' => $currentItems
+                        ];
+                        $currentItems = []; // Reset items array
+                    }
+                    $currentTitle = $matches[1]; // Save the new title
+                } else {
+                    // It's an item number, add to current section
+                    $currentItems[] = trim($part);
+                }
+            }
+            
+            // Add the last section if it exists
+            if ($currentTitle !== null && count($currentItems) > 0) {
+                $sections[] = [
+                    'title' => $currentTitle,
+                    'items' => $currentItems
+                ];
+            }
+            
+            // Now fetch all these products from database
+            foreach ($sections as $section) {
+                $sectionProducts = DB::connection('mysql_second')
+                    ->table('productsqry')
+                    ->whereIn('item_no', $section['items'])
+                    ->where('enabled', 1)
+                    ->get();
+                
+                if ($sectionProducts->count() > 0) {
+                    $associatedSections[] = [
+                        'title' => $section['title'],
+                        'products' => $sectionProducts
+                    ];
+                }
+            }
+        }
+        
+        // Get all available models for the sidebar
+        $allModels = DB::connection('mysql_second')
+            ->select("
+                SELECT 
+                    CASE 
+                        WHEN product_name LIKE '%Residential%' THEN 'Residential'
+                        WHEN product_name LIKE '%Commercial%' THEN 'Commercial'
+                        WHEN product_name LIKE '%Industrial%' THEN 'Industrial'
+                        ELSE 'Unknown'
+                    END AS fence_type,
+                    TRIM(SUBSTRING_INDEX(product_name, '-', -1)) AS model_name,
+                    COUNT(*) AS total
+                FROM productsqry
+                WHERE (product_name LIKE 'OnGuard Aluminum Fence%'
+                   OR product_name LIKE 'OnGuard Ornamental Aluminum Fence%'
+                   OR product_name LIKE 'On Guard Ornamental Aluminum Fence%')
+                   AND enabled = 1
+                GROUP BY fence_type, model_name
+                ORDER BY fence_type, model_name
+            ");
+        
+        // Organize models by type
+        $fenceTypes = [
+            'Residential' => [
+                'title' => 'Residential',
+                'models' => [],
+            ],
+            'Commercial' => [
+                'title' => 'Commercial',
+                'models' => [],
+            ],
+            'Industrial' => [
+                'title' => 'Industrial',
+                'models' => [],
+            ]
+        ];
+        
+        foreach ($allModels as $item) {
+            if (isset($fenceTypes[$item->fence_type])) {
+                $fenceTypes[$item->fence_type]['models'][$item->model_name] = [
+                    'name' => $item->model_name,
+                    'total' => $item->total
+                ];
+            }
+        }
+        
+        return view('categories.aluminumfence-product', [
+            'products' => $products,
+            'selectedProduct' => $selectedProduct,
+            'type' => $type,
+            'model' => $model,
+            'colors' => $colors,
+            'sizes' => $sizes,
+            'modelImage' => $modelImage,
+            'modelDescription' => $modelDescription,
+            'associatedSections' => $associatedSections,
+            'fenceTypes' => $fenceTypes
+        ]);
+    }
+    
+    /**
+     * Filter products by size for AJAX requests
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function filterProducts(Request $request)
+    {
+        $type = $request->input('type');
+        $model = $request->input('model');
+        $size = $request->input('size');
+        
+        // Get the product details from the database
+        $baseQuery = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where(function($query) {
+                $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
+                      ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
+                      ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
+            })
+            ->where('enabled', 1);
+        
+        // Get product based on selected type, model and size
+        $product = $baseQuery
+            ->where('product_name', 'LIKE', '%' . $type . '%')
+            ->where('product_name', 'LIKE', '%' . $model . '%')
+            ->where('size', $size)
+            ->first();
+        
+        // Process associated products from product_assoc field
+        $associatedSections = [];
+        if ($product && !empty($product->product_assoc)) {
+            $assocData = $product->product_assoc;
+            $sections = [];
+            $currentTitle = null;
+            $currentItems = [];
+            
+            // Split the string using comma as delimiter
+            $parts = explode(',', $assocData);
+            
+            foreach ($parts as $part) {
+                // Check if it's a section title (enclosed in --)
+                if (preg_match('/--(.+?)--/', $part, $matches)) {
+                    // If we already have a title and items, save them
+                    if ($currentTitle !== null && count($currentItems) > 0) {
+                        $sections[] = [
+                            'title' => $currentTitle,
+                            'items' => $currentItems
+                        ];
+                        $currentItems = []; // Reset items array
+                    }
+                    $currentTitle = $matches[1]; // Save the new title
+                } else {
+                    // It's an item number, add to current section
+                    $currentItems[] = trim($part);
+                }
+            }
+            
+            // Add the last section if it exists
+            if ($currentTitle !== null && count($currentItems) > 0) {
+                $sections[] = [
+                    'title' => $currentTitle,
+                    'items' => $currentItems
+                ];
+            }
+            
+            // Now fetch all these products from database
+            foreach ($sections as $section) {
+                $sectionProducts = DB::connection('mysql_second')
+                    ->table('productsqry')
+                    ->whereIn('item_no', $section['items'])
+                    ->where('enabled', 1)
+                    ->get();
+                
+                if ($sectionProducts->count() > 0) {
+                    $associatedSections[] = [
+                        'title' => $section['title'],
+                        'products' => $sectionProducts
+                    ];
+                }
+            }
+        }
+        
+        return response()->json([
+            'product' => $product,
+            'associatedSections' => $associatedSections
+        ]);
+    }
+    
+    /**
+     * Get description for a specific model
+     * 
+     * @param string $model
+     * @return string
+     */
+    private function getModelDescription($model)
+    {
+        $descriptions = [
+            'Heron' => 'The Heron style features a classic design with straight pickets and a clean, timeless appearance. Perfect for residential properties seeking a traditional look.',
+            'Falcon' => 'The Falcon style offers a contemporary design with slightly arched pickets, providing an elegant and modern aesthetic for your property.',
+            'Eagle' => 'The Eagle style showcases a distinctive arched top with decorative finials, adding a touch of sophistication and luxury to any property.',
+            'Starling' => 'The Starling style features a unique design with alternating picket heights, creating a dynamic and visually interesting fence line.',
+            'Puppy Picket 1*' => 'The Puppy Picket 1* style features additional lower pickets to prevent small pets from escaping, while maintaining an elegant appearance.',
+            'Puppy Picket 2*' => 'The Puppy Picket 2* style offers enhanced security for small pets with closely spaced lower pickets and a stylish overall design.',
+            'Puppy Picket 3*' => 'The Puppy Picket 3* style provides maximum security for small pets with the closest picket spacing at the bottom, while preserving aesthetic appeal.'
+        ];
+        
+        return $descriptions[$model] ?? 'A high-quality aluminum fence model from OnGuard, designed for durability and aesthetic appeal.';
     }
     
     /**
@@ -196,5 +489,175 @@ class AluminumFenceController extends Controller
         ];
         
         return $specs[$type] ?? '';
+    }
+    
+    /**
+     * Display aluminum fence products available for pickup
+     */
+    public function pickup()
+    {
+        // Get aluminum fence products available for pickup
+        $pickupProducts = [
+            'Heron' => [
+                'title' => 'Heron 48" Height',
+                'image' => url('storage/products/1744373828.gif'),
+                'items' => [
+                    [
+                        'name' => 'Section',
+                        'size' => '48in H x 6ft W',
+                        'price' => 75.00
+                    ],
+                    [
+                        'name' => 'Post',
+                        'size' => '2in x 2 x 72in',
+                        'price' => 26.00
+                    ],
+                    [
+                        'name' => 'Gate Post',
+                        'size' => '2in x 2 x 72in',
+                        'price' => 50.00
+                    ],
+                    [
+                        'name' => 'Gate',
+                        'size' => '48in h x 36in W',
+                        'price' => 300.00
+                    ]
+                ]
+            ],
+            'Siskin' => [
+                'title' => 'Siskin 54" Height',
+                'image' => url('storage/products/1744373828.gif'),
+                'items' => [
+                    [
+                        'name' => 'Section',
+                        'size' => '54in H x 6ft W',
+                        'price' => 85.00
+                    ],
+                    [
+                        'name' => 'Post',
+                        'size' => '2in x 2 x 84in',
+                        'price' => 27.00
+                    ],
+                    [
+                        'name' => 'Gate Post',
+                        'size' => '2in x 2 x 84in',
+                        'price' => 50.00
+                    ],
+                    [
+                        'name' => 'Gate',
+                        'size' => '54in h x 36in W',
+                        'price' => 325.00
+                    ]
+                ]
+            ],
+            'Starling48' => [
+                'title' => 'Starling 48" Height',
+                'image' => url('storage/products/1744373828.gif'),
+                'items' => [
+                    [
+                        'name' => 'Section',
+                        'size' => '48in H x 6ft W',
+                        'price' => 80.00
+                    ],
+                    [
+                        'name' => 'Post',
+                        'size' => '2in x 2 x 72in',
+                        'price' => 27.00
+                    ],
+                    [
+                        'name' => 'Gate Post',
+                        'size' => '2in x 2 x 72in',
+                        'price' => 45.00
+                    ],
+                    [
+                        'name' => 'Gate',
+                        'size' => '48in h x 36in W',
+                        'price' => 300.00
+                    ]
+                ]
+            ],
+            'Starling54' => [
+                'title' => 'Starling 54" Height',
+                'image' => url('storage/products/1744373828.gif'),
+                'items' => [
+                    [
+                        'name' => 'Section',
+                        'size' => '54in H x 6ft W',
+                        'price' => 85.00
+                    ],
+                    [
+                        'name' => 'Post',
+                        'size' => '2in x 2 x 84in',
+                        'price' => 27.00
+                    ],
+                    [
+                        'name' => 'Gate Post',
+                        'size' => '2in x 2 x 84in',
+                        'price' => 50.00
+                    ],
+                    [
+                        'name' => 'Gate',
+                        'size' => '54in h x 36in W',
+                        'price' => 325.00
+                    ]
+                ]
+            ],
+            'Longspur48' => [
+                'title' => 'Longspur 48" Height',
+                'image' => url('storage/products/1744373828.gif'),
+                'items' => [
+                    [
+                        'name' => 'Section',
+                        'size' => '48in H x 6ft W',
+                        'price' => 80.00
+                    ],
+                    [
+                        'name' => 'Post',
+                        'size' => '2in x 2 x 72in',
+                        'price' => 27.00
+                    ],
+                    [
+                        'name' => 'Gate Post',
+                        'size' => '2in x 2 x 72in',
+                        'price' => 50.00
+                    ],
+                    [
+                        'name' => 'Gate',
+                        'size' => '48in h x 36in W',
+                        'price' => 300.00
+                    ]
+                ]
+            ],
+            'Longspur72' => [
+                'title' => 'Longspur 72" Height',
+                'image' => url('storage/products/1744373828.gif'),
+                'items' => [
+                    [
+                        'name' => 'Section',
+                        'size' => '72in H x 6ft W',
+                        'price' => 110.00
+                    ],
+                    [
+                        'name' => 'Post',
+                        'size' => '2 1/2in x 2 1/2 x 96in',
+                        'price' => 50.00
+                    ],
+                    [
+                        'name' => 'Gate Post',
+                        'size' => '2 1/2in x 2 1/2 x 96in',
+                        'price' => 50.00
+                    ],
+                    [
+                        'name' => 'Gate',
+                        'size' => '72in h x 36in W',
+                        'price' => 350.00
+                    ]
+                ]
+            ]
+        ];
+        
+        return view('categories.aluminumfence-pickup', [
+            'pickupProducts' => $pickupProducts
+        ]);
     }
 }
