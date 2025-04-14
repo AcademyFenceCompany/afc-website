@@ -145,7 +145,7 @@
                 @php
                     $customCedarProducts = $wood_categories->filter(function($item) {
                         return (!isset($item['category_group']) || $item['category_group'] === 'custom_cedar') 
-                            && !in_array($item['family_category_id'], [25, 337,24]);
+                            && !in_array($item['family_category_id'], [25, 337, 24, 82, 147, 791]);
                     });
                 @endphp
 
@@ -160,12 +160,34 @@
                                 <div class="text-center pt-2">
                                     <h6 class="card-title text-brown fw-bold">{{ $category['family_category_name'] }}</h6>
                                 </div>
-                                @if (isset($category['spacing']) && !empty($category['spacing']))
+                                @if ($category['family_category_id'] == 7)
+                                    <a href="{{ route('solid-board') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                @elseif ($category['family_category_id'] == 8)
+                                    @if (isset($category['spacing']) && !empty($category['spacing']))
+                                        <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
+                                            @foreach ($category['spacing'] as $spacing)
+                                                @if ($spacing)
+                                                    <a href="{{ route('board-on-board', ['spacing' => $spacing]) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
+                                                        {{ $spacing }}
+                                                    </a>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <a href="{{ route('board-on-board') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @endif
+                                @elseif ($category['family_category_id'] == 4)
+                                    <a href="{{ route('tongue-groove') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                @elseif ($category['family_category_id'] == 161)
+                                    <a href="{{ route('postrail.index') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                @elseif ($category['family_category_id'] == 5)
+                                    <a href="{{ route('stockade.index') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                @elseif (isset($category['spacing']) && !empty($category['spacing']))
                                     <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
                                                 <a href="{{ route('woodfence.specs', [
-                                                    'subcategoryId' => $category['family_category_id'],
+                                                    'id' => $category['family_category_id'],
                                                     'spacing' => $spacing,
                                                 ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
                                                     {{ $spacing }}
@@ -175,7 +197,7 @@
                                     </div>
                                 @else
                                     <a href="{{ route('woodfence.specs', [
-                                        'subcategoryId' => $category['family_category_id'],
+                                        'id' => $category['family_category_id'],
                                     ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
                                 @endif
                             </div>
@@ -207,7 +229,7 @@
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
                                                 <a href="{{ route('woodfence.specs', [
-                                                    'subcategoryId' => $category['family_category_id'],
+                                                    'id' => $category['family_category_id'],
                                                     'spacing' => $spacing,
                                                 ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
                                                     {{ $spacing }}
@@ -216,9 +238,13 @@
                                         @endforeach
                                     </div>
                                 @else
-                                    <a href="{{ route('woodfence.specs', [
-                                        'subcategoryId' => $category['family_category_id'],
-                                    ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @if ($category['family_category_id'] == 82)
+                                        <a href="{{ route('woodpostcaps.index') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @else
+                                        <a href="{{ route('woodfence.specs', [
+                                            'id' => $category['family_category_id'],
+                                        ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @endif
                                 @endif
                             </div>
                         </div>
@@ -238,7 +264,7 @@
             <div class="row g-4">
                 @php
                     $accessoryProducts = $wood_categories->filter(function($item) {
-                        return in_array($item['family_category_id'], [25, 337,24]);
+                        return in_array($item['family_category_id'], [25, 337, 24, 82, 147, 791]);
                     });
                 @endphp
 
@@ -253,12 +279,12 @@
                                     <img src="{{ $category['image'] }}" class="rounded product-image">
                                 @endif
                                 
-                                @if (isset($category['spacing']) && !empty($category['spacing']))
+                                {{-- @if (isset($category['spacing']) && !empty($category['spacing']))
                                     <div class="d-flex flex-wrap justify-content-center gap-1 mt-2">
                                         @foreach ($category['spacing'] as $spacing)
                                             @if ($spacing)
                                                 <a href="{{ route('woodfence.specs', [
-                                                    'subcategoryId' => $category['family_category_id'],
+                                                    'id' => $category['family_category_id'],
                                                     'spacing' => $spacing,
                                                 ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">
                                                     {{ $spacing }}
@@ -266,11 +292,14 @@
                                             @endif
                                         @endforeach
                                     </div>
-                                @else
-                                    <a href="{{ route('woodfence.specs', [
-                                        'subcategoryId' => $category['family_category_id'],
-                                    ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
-                                @endif
+                                @else --}}
+                                    @if ($category['family_category_id'] == 82)
+                                        <a href="{{ route('woodpostcaps.index') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @else
+                                        <a href="{{ route('woodfence.specs', [
+                                            'id' => $category['family_category_id'],
+                                        ]) }}?styleTitle={{ urlencode($category['family_category_name']) }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
+                                    @endif
                             </div>
                         </div>
                     </div>
