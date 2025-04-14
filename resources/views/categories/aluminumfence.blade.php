@@ -111,20 +111,47 @@
     }
     
     .model-image {
-        width: 100%;
         height: 150px;
+        width: 100%;
         background-color: #f8f9fa;
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+        overflow: hidden;
     }
     
     .model-image img {
         max-width: 100%;
         max-height: 100%;
-        object-fit: cover;
     }
     
+    .primary-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 0.3s ease;
+    }
+    
+    .hover-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .model-card:hover .primary-image {
+        opacity: 0;
+    }
+    
+    .model-card:hover .hover-image {
+        opacity: 1;
+    }
     
     .model-name {
         font-weight: bold;
@@ -194,6 +221,20 @@
         .model-card {
             width: 100%;
         }
+    }
+    
+    .accessories-button {
+        background-color: #001755;
+        border-color: #001755;
+        font-size: 1.25rem;
+        padding: 15px 30px;
+        transition: all 0.3s ease;
+    }
+    
+    .accessories-button:hover {
+        background-color: #002b80;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 </style>
 @endsection
@@ -272,13 +313,17 @@
                         <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                             <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
                                 <div class="model-image">
-                                    <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName] ?? url('storage/products/default.png') }}" 
+                                    <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
                                          alt="{{ $modelName }} {{ $typeName }}" 
+                                         class="primary-image"
                                          onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                    <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/aluminiumfence-bunting-res.JPG') }}" 
+                                         alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                         class="hover-image">
                                 </div>
                                 <div class="model-info">
                                     <div class="model-name text-center ">{{ $modelName }}</div>
-                                    <div class="text-center mt-2">
+                                    <div class="text-center mb-2">
                                         <button class="btn btn-sm btn-danger">View Products</button>
                                     </div>
                                 </div>
@@ -290,63 +335,16 @@
         @endforeach
     </div>
     
-    <!-- Product Section - Initially hidden -->
-    <div id="product-section" class="product-section" style="{{ count($products) > 0 ? '' : 'display: none;' }}">
-        <div class="product-header">
-            <h5 class="mb-0" id="product-title">
-                @if($selectedFenceType && $selectedModel)
-                    {{ $selectedModel }} {{ $selectedFenceType }} Aluminum Fence
-                @else
-                    Aluminum Fence Products
-                @endif
-            </h5>
+    <!-- OnGuard Accessories Button -->
+    <div class="row mt-5 mb-5">
+        <div class="col-12 text-center">
+            <div class="section-title">OnGuard Accessories</div>
+            <p class="mb-4">Complete your OnGuard aluminum fence with essential accessories designed to work perfectly with all fence systems.</p>
+            
+            <a href="{{ route('aluminumfence.accessories') }}" class="btn btn-primary btn-lg accessories-button">
+                <i class="bi bi-tools me-2"></i> View All OnGuard Accessories
+            </a>
         </div>
-        
-        @if(count($products) > 0)
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Item Number</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Color</th>
-                        <th>Quantity</th>
-                        <th>Price / Add to Cart</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($products as $product)
-                        <tr>
-                            <td>{{ $product->item_no }}</td>
-                            <td>{{ $product->product_name }}</td>
-                            <td>{{ $product->size }}</td>
-                            <td>{{ $product->color }}</td>
-                            <td>
-                                <div class="input-group input-group-sm">
-                                    <button class="btn btn-outline-secondary quantity-minus" type="button">-</button>
-                                    <input type="text" class="form-control quantity-input" value="1" min="1" style="max-width: 50px;">
-                                    <button class="btn btn-outline-secondary quantity-plus" type="button">+</button>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <div>${{ number_format($product->price, 2) }}</div>
-                                <button class="btn btn-danger btn-sm add-to-cart-btn" 
-                                        data-item="{{ $product->item_no }}" 
-                                        data-name="{{ $product->product_name }}" 
-                                        data-price="{{ $product->price }}"
-                                        style="padding: 1px 5px;font-size: 12px;">
-                                    Add to Cart
-                                </button>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @else
-            <div class="alert alert-info">
-                Please select a fence model to view available products.
-            </div>
-        @endif
     </div>
 </div>
 @endsection
@@ -448,7 +446,7 @@
         });
         
         // Set default type to Residential
-        @if($selectedFenceType)
+        @if(isset($selectedFenceType) && $selectedFenceType)
             // If there's a selected type from the URL, activate that button
             $('.type-button[data-type="{{ $selectedFenceType }}"]').click();
         @else
