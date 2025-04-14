@@ -134,27 +134,50 @@
         </div>
 
         <!-- Brand Section -->
-        <div class="row g-4 mb-5">
-            @foreach ($aluminum_categories as $category)
-                <div class="col-6 col-sm-4 col-md-4 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="text-center p-2">
-                            @if (isset($category['image']))
-                                <img src="{{ $category['image'] }}" class="rounded " style="width: 350px; height: 250px; object-fit: cover;">
-                            @endif
-                            <div class="text-center pt-2">
-                                <h6 class="card-title text-brown fw-bold">{{ $category['family_category_name'] }}</h6>
+        <div class="row mb-5">
+            <!-- OnGuard Section (First Half) -->
+            <div class="col-md-6">
+                @foreach ($aluminum_categories as $category)
+                    @if ($category['family_category_id'] == 1055)
+                        <div class="card">
+                            <div class="text-center p-2">
+                                @if (isset($category['image']))
+                                    <a href="{{ route('aluminumfence.index') }}" class="text-brown" style="text-decoration: none;"><img src="{{ $category['image'] }}" class="rounded" style="width: 100%; height: 300px; object-fit: cover;"></a>
+                                @endif
+                                <div class="text-center pt-2">
+                                    <h4 class="card-title text-brown fw-bold"><a href="{{ route('aluminumfence.index') }}" class="text-brown" style="text-decoration: none;">{{ $category['family_category_name'] }}</a></h4>
+                                </div>
                             </div>
-                            
-                            @if ($category['family_category_id'] == 1055)
-                                <a href="{{ route('aluminumfence.index') }}" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
-                            @else
-                                <a href="#" class="btn btn-sm btn-brown btn-small-text mt-2" style="background-color: #8B4513 !important; color: white !important;">VIEW</a>
-                            @endif
                         </div>
+                    @endif
+                @endforeach
+            </div>
+            
+            <!-- Other Brands Section (Second Half) -->
+            <div class="col-md-6">
+                <div class="row g-4">
+                    @foreach ($aluminum_categories as $category)
+                        @if ($category['family_category_id'] != 1055)
+                            <div class="col-6">
+                                <div class="card h-100 border-0 shadow-sm">
+                                    <div class="text-center p-2">
+                                        @if (isset($category['image']))
+                                            <img src="{{ $category['image'] }}" class="rounded" style="width: 100%; height: 150px; object-fit: cover;">
+                                        @endif
+                                        <div class="text-center pt-2">
+                                            <h6 class="card-title text-brown fw-bold">{{ $category['family_category_name'] }}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                    <div class="notes" style="font-size: 14px;">
+                        <p>Use the form get a quote for above brands to send us required material list or call/email us. Phone:(973) 674-0600 | Email:info@academyfence.com</p>
+                        <a href="" class="btn btn-sm btn-brown btn-small-text" style="background-color: #8B4513 !important; color: white !important;">GET QUOTE</a>
                     </div>
                 </div>
-            @endforeach
+            </div>
         </div>
     </main>
 @endsection
