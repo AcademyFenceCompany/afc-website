@@ -171,7 +171,6 @@
         color: white;
         padding: 10px;
         text-align: center;
-        margin: -15px -15px 15px -15px;
         border-radius: 5px 5px 0 0;
     }
     
@@ -273,9 +272,6 @@
             
             <!-- Model List -->
             <div class="model-list mt-4">
-                <div class="model-list-header">
-                    <h6 class="mb-0">AVAILABLE MODELS</h6>
-                </div>
                 <div class="model-list-content">
                     @foreach($fenceTypes as $fenceType => $typeData)
                         <div class="model-type-section">
@@ -374,68 +370,108 @@
 
 @section('scripts')
 <script>
-    $(document).ready(function() {
-        // Initial load of products based on default size
-        const defaultSize = $('input[name="size"]:checked').val();
-        filterProductsBySize(defaultSize);
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof jQuery === 'undefined') {
+            console.error('jQuery is not loaded!');
+            return;
+        }
         
-        // Filter products when size is changed
-        $('.size-filter').on('change', function() {
-            const selectedSize = $(this).val();
-            filterProductsBySize(selectedSize);
-        });
-        
-        // Handle color select change
-        $('#color-select').on('change', function() {
-            const selectedColor = $(this).val();
-            // Here you can add logic to filter by color if needed
-        });
-        
-        // Function to filter products by size
-        function filterProductsBySize(size) {
-            // Show loading indicator
-            $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+        (function($) {
+            console.log('Document ready');
             
-            // Hide the current product and fetch the new one via AJAX
-            $.ajax({
-                url: '{{ route("aluminumfence.filter") }}',
-                method: 'GET',
-                data: {
-                    type: '{{ $type }}',
-                    model: '{{ $model }}',
-                    size: size
-                },
-                success: function(response) {
-                    // Update the product table with the filtered product
-                    if (response.product) {
-                        const product = response.product;
+            const sizeInputs = $('input[name="size"]');
+            const colorSelect = $('#color-select');
+            
+            console.log('Size inputs found:', sizeInputs.length);
+            console.log('Color select found:', colorSelect.length);
+            
+            const defaultSize = sizeInputs.filter(':checked').val();
+            const defaultColor = colorSelect.val();
+            
+            console.log('Default size:', defaultSize);
+            console.log('Default color:', defaultColor);
+            
+            if (defaultSize) {
+                console.log('Filtering with initial values');
+                filterProducts(defaultSize, defaultColor || '');
+            } else {
+                console.log('No default size found, skipping initial filter');
+            }
+            
+            sizeInputs.on('change', function() {
+                console.log('Size changed');
+                const selectedSize = $(this).val();
+                const selectedColor = colorSelect.val() || '';
+                console.log('Selected size:', selectedSize);
+                console.log('Selected color:', selectedColor);
+                filterProducts(selectedSize, selectedColor);
+            });
+            
+            colorSelect.on('change', function() {
+                console.log('Color changed');
+                const selectedColor = $(this).val();
+                const selectedSize = sizeInputs.filter(':checked').val();
+                console.log('Selected size:', selectedSize);
+                console.log('Selected color:', selectedColor);
+                filterProducts(selectedSize, selectedColor);
+            });
+            
+            function filterProducts(size, color) {
+                console.log('Filtering products - Size:', size, 'Color:', color);
+                
+                $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+                
+                $.ajax({
+                    url: '{{ route("aluminumfence.filter") }}',
+                    method: 'GET',
+                    data: {
+                        type: '{{ $type }}',
+                        model: '{{ $model }}',
+                        size: size,
+                        color: color
+                    },
+                    beforeSend: function() {
+                        console.log('AJAX request sending with data:', {
+                            type: '{{ $type }}',
+                            model: '{{ $model }}',
+                            size: size,
+                            color: color
+                        });
+                    },
+                    success: function(response) {
+                        console.log('AJAX success response:', response);
                         
-                        // Create new row HTML
-                        const newRow = `
-                            <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
-                                <td>${product.item_no}</td>
-                                <td>${product.product_name}</td>
-                                <td>${product.size}</td>
-                                <td>${product.color}</td>
-                                <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
-                                <td>
-                                    <input type="number" class="quantity-input" value="1" min="1">
-                                </td>
-                                <td>
-                                    <button class="btn-add-cart" 
-                                        data-item="${product.item_no}" 
-                                        data-name="${product.product_name}" 
-                                        data-price="${product.price}">
-                                        Add
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
+                        if (response.product) {
+                            const product = response.product;
+                            console.log('Product found:', product);
+                            
+                            const newRow = `
+                                <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
+                                    <td>${product.item_no}</td>
+                                    <td>${product.product_name}</td>
+                                    <td>${product.size}</td>
+                                    <td>${product.color}</td>
+                                    <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
+                                    <td>
+                                        <input type="number" class="quantity-input" value="1" min="1">
+                                    </td>
+                                    <td>
+                                        <button class="btn-add-cart" 
+                                            data-item="${product.item_no}" 
+                                            data-name="${product.product_name}" 
+                                            data-price="${product.price}">
+                                            Add
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                            
+                            $('#products-table tbody').html(newRow);
+                        } else {
+                            console.log('No product found in response');
+                            $('#products-table tbody').html('<tr><td colspan="7" class="text-center">No matching product found.</td></tr>');
+                        }
                         
-                        // Replace the current row with the new one
-                        $('#products-table tbody').html(newRow);
-                        
-                        // Update associated products
                         if (response.associatedSections && response.associatedSections.length > 0) {
                             let associatedHtml = '';
                             
@@ -484,7 +520,6 @@
                                 `;
                             });
                             
-                            // If necessary products box doesn't exist, create it
                             if ($('.necessary-products-box').length === 0) {
                                 const necessaryProductsBox = `
                                     <div class="necessary-products-box mt-4">
@@ -496,7 +531,6 @@
                                 `;
                                 $('#products-table').closest('.card').after(necessaryProductsBox);
                             } else {
-                                // Update existing necessary products box
                                 $('.necessary-products-box').html(`
                                     <div class="necessary-products-title">
                                         <h5 class="mb-0">NECESSARY PRODUCTS</h5>
@@ -505,31 +539,25 @@
                                 `);
                             }
                         } else {
-                            // Remove necessary products box if no associated products
                             $('.necessary-products-box').remove();
                         }
+                    },
+                    error: function(error) {
+                        console.error('Error filtering products:', error);
+                        $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Error loading product. Please try again.</td></tr>');
                     }
-                },
-                error: function(error) {
-                    console.error('Error filtering products:', error);
-                    $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Error loading product. Please try again.</td></tr>');
-                }
+                });
+            }
+            
+            $(document).on('click', '.btn-add-cart', function() {
+                const item = $(this).data('item');
+                const name = $(this).data('name');
+                const price = $(this).data('price');
+                const quantity = $(this).closest('tr').find('.quantity-input').val();
+                
+                alert(`Added to cart: ${quantity} x ${name} (${item}) - $${price * quantity}`);
             });
-        }
-        
-        // Add to cart functionality
-        $(document).on('click', '.btn-add-cart', function() {
-            const item = $(this).data('item');
-            const name = $(this).data('name');
-            const price = $(this).data('price');
-            const quantity = $(this).closest('tr').find('.quantity-input').val();
-            
-            // Add to cart logic here
-            // For example, using a simple alert for now
-            alert(`Added to cart: ${quantity} x ${name} (${item}) - $${price * quantity}`);
-            
-            // In a real implementation, you would send this to a cart controller
-        });
+        })(jQuery);
     });
 </script>
 @endsection
