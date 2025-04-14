@@ -19,7 +19,7 @@
         }
 
         .post-cap-image {
-            max-width: 250px;
+            max-width: 150px;
             object-fit: contain;
         }
 
@@ -63,7 +63,7 @@
         <h1 class="page-title text-center py-2 mb-0">POST CAPS</h1>
     </div>
     <div class="text-center py-2 mb-4 border-bottom">
-        <p class="mb-0">We carry wood post caps, solar post caps, and vinyl post caps. Post Caps are normally used for a
+        <p class="mb-0">Post Caps are normally used for a
             number of projects including fence. We carry a wide selection of post caps in differrent materials including
             wood, vinyl and aluminum as well as solar post caps in different colors.</p>
     </div>
@@ -73,8 +73,8 @@
         <div class="row g-4">
             <!-- Card 1 -->
             <div class="col-md-4">
-                <div class="post-cap-card d-flex post-cap-flex p-0">
-                    <img src="/resources/images/post_cap.jpg" alt="Vinyl Cap" class="post-cap-image me-1">
+                <div class="post-cap-card d-flex post-cap-flex p-3">
+                    <img src="/resources/images/post_cap.jpg" alt="Vinyl Cap" class="post-cap-image me-3">
                     <div class="post-cap-content">
                         <h5>Vinyl Post Caps</h5>
                         <p>Vinyl PVC Ball Cap, External Flat Cap, New England Cap, Gothic Cap, and Internal Flat Cap.
