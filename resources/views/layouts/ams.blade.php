@@ -34,16 +34,23 @@
         <!-- Products -->
         <a class="menu-item" data-bs-toggle="collapse" href="#productsMenu" role="button" aria-expanded="false"
             aria-controls="productsMenu">
-            Products <i class="bi bi-caret-down-fill"></i>
+            Products Management <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="productsMenu">
-            <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
-            <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
-            <a href="{{ route('categories.display') }}" class="menu-item">Category Management</a>
-            <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">AFC Category Management</a>
-            <a href="{{ route('ams.product-query.index') }}" class="menu-item">Product Query</a>
+            <a href="{{ route('ams.product-query.create') }}" class="menu-item">Add Product</a>
+            <a href="{{ route('ams.product-query.index') }}" class="menu-item">View Product</a>
         </div>
-
+        
+        <!-- Categories -->
+        <a class="menu-item" data-bs-toggle="collapse" href="#categoriesMenu" role="button" aria-expanded="false"
+        aria-controls="categoriesMenu">
+    Category Management <i class="bi bi-caret-down-fill"></i>
+    </a>
+    <div class="collapse submenu" id="categoriesMenu">
+        <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">View Categories</a>
+        <a href="{{ route('ams.mysql-categories.create') }}" class="menu-item">Add Category</a>
+        <a href="{{ route('ams.mysql-majorcategories.create') }}" class="menu-item">Add Major Category</a>
+    </div>
         <!-- Customers -->
         <a class="menu-item" data-bs-toggle="collapse" href="#customersMenu" role="button" aria-expanded="false"
             aria-controls="customersMenu">

@@ -97,7 +97,7 @@
     }
     
     .model-card {
-        width: calc(25% - 20px);
+        /* width: calc(25% - 20px); */
         border: 1px solid #ddd;
         border-radius: 8px;
         overflow: hidden;
@@ -241,34 +241,41 @@
 
 @section('content')
 <div class="container">
-    <!-- OnGuard Header -->
-    <div class="row">
-        <div class="col-12">
-            <div class="main-header">
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <img src="{{ url('storage/products/Onguard-FenceTown-400x400.jpg') }}" alt="OnGuard Logo" class="img-fluid" style="max-width: 250px;">
-                    </div>
-                    <div class="col-md-5">
-                        <h2 class="mb-0">OnGuard Fence Systems</h2>
-                        <div class="mt-2">
-                            <p>OnGuard extrudes and manufactures high-quality aluminum fence components for residential and commercial applications where
-                                 long-lasting durability and beauty are required. OnGuard products are 
-                                 easy to install, come in classic colors and are offered in a wide array of
-                                beautiful designs and classic finish options.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <ul class="list-unstyled">
-                            <li><i class="bi bi-currency-dollar text-white me-2"></i>LOWEST PRICE</li>
-                            <li><i class="bi bi-truck text-white me-2"></i>SHIPS IN 2-6 WEEKS</li>
-                            <li><i class="bi bi-plus-circle text-white me-2"></i>PUPPY PICKET OPTION</li>
-                            <li><i class="bi bi-star text-white me-2"></i>BEVELED RAIL DESIGN</li>
-                            <li><i class="bi bi-check-circle text-white me-2"></i>LIFETIME WARRANTY</li>
-                        </ul>
-                        <a href="{{ route('aluminumfence.pickup') }}" class="btn btn-danger mt-2">See what's available for pickup</a>
-                    </div>
+    <div class="rounded bg-brown mb-2">
+        <h1 class="page-title text-center mb-0">OnGuard Aluminum Fence</h1>
+    </div>
+    <!-- Info Section -->
+    <div class="row g-4 mb-6">
+        <!-- Left Section - About -->
+        <div class="col-md-8 wf-about mb-2">
+            <div class="d-flex">
+                <img src="{{ url('storage/products/onguard-fencetown-400x400.jpg') }}" alt="OnGuard Fence" style="width: 180px; height: 180px; object-fit: cover;" class="me-4 rounded about-image-onguard">
+                <div>
+                    <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
+                    <p class="page-description mb-2">
+                        OnGuard extrudes and manufactures high-quality aluminum fence components for residential and commercial applications where
+                        long-lasting durability and beauty are required. OnGuard products are 
+                        easy to install, come in classic colors and are offered in a wide array of
+                        beautiful designs and classic finish options.
+                    </p>
+                    <a href="{{ route('aluminumfence.pickup') }}" class="btn btn-danger">See what's available for pickup</a>
+
                 </div>
+
+            </div>
+        </div>
+
+        <!-- Right Section - Manufacturer Info -->
+        <div class="col-md-4">
+            <div class="p-3 rounded bg-light-yellow">
+                <ul class="small-font mb-0">
+                    <li><strong><i class="bi bi-currency-dollar text-brown me-2"></i>Delivered in 2–6 Weeks</strong></li>
+                    <li><strong><i class="bi bi-truck text-brown me-2"></i>Unbeatable Low Price</strong></li>
+                    <li><strong><i class="bi bi-plus-circle text-brown me-2"></i>Backed by a Lifetime Warranty</strong></li>
+                    <li><strong><i class="bi bi-star text-brown me-2"></i>Add-On Puppy Picket Option for Extra Safety</strong></li>
+                    <li><strong><i class="bi bi-check-circle text-brown me-2"></i>Sleek Beveled Rail for a Refined Look</strong></li>
+                </ul>
+
             </div>
         </div>
     </div>
@@ -308,27 +315,121 @@
                     </div>
                 </div>
                 
-                <div class="model-grid">
+                <!-- The Most Popular Section -->
+                <h4 class="section-title mt-4 mb-3">The Most Popular</h4>
+                <div class="row mb-4">
+                    @foreach(['Starling', 'Siskin', 'Longspur', 'Heron'] as $modelName)
+                        @if(isset($typeData['models'][$modelName]))
+                            <div class="col-md-3 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
+                                        <div class="model-image">
+                                            <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }}" 
+                                                 class="primary-image"
+                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                                 class="hover-image">
+                                        </div>
+                                        <div class="model-info">
+                                            <div class="model-name text-center">{{ $modelName }}</div>
+                                            <div class="text-center mb-2">
+                                                <button class="btn btn-sm btn-danger">View Products</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- Other Models Section -->
+                <div class="row mb-4">
+                    @foreach(['Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet'] as $modelName)
+                        @if(isset($typeData['models'][$modelName]))
+                            <div class="col-md-2.4" style="flex: 0 0 20%; max-width: 20%;">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
+                                        <div class="model-image">
+                                            <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }}" 
+                                                 class="primary-image"
+                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                                 class="hover-image">
+                                        </div>
+                                        <div class="model-info">
+                                            <div class="model-name text-center">{{ $modelName }}</div>
+                                            <div class="text-center mb-2">
+                                                <button class="btn btn-sm btn-danger">View Products</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- Puppy Pickets Section -->
+                <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
+                <div class="row mb-4">
+                    @foreach(['Puppy 1', 'Puppy 2', 'Puppy 3'] as $modelName)
+                        @if(isset($typeData['models'][$modelName]))
+                            <div class="col-md-4 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
+                                        <div class="model-image">
+                                            <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }}" 
+                                                 class="primary-image"
+                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                                 class="hover-image">
+                                        </div>
+                                        <div class="model-info">
+                                            <div class="model-name text-center">{{ $modelName }}</div>
+                                            <div class="text-center mb-2">
+                                                <button class="btn btn-sm btn-danger">View Products</button>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- All Other Models (if any) -->
+                <div class="row mb-4">
                     @foreach($typeData['models'] as $modelName => $model)
-                        <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                            <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
-                                <div class="model-image">
-                                    <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
-                                         alt="{{ $modelName }} {{ $typeName }}" 
-                                         class="primary-image"
-                                         onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                    <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/aluminiumfence-bunting-res.JPG') }}" 
-                                         alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                         class="hover-image">
+                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Puppy 1', 'Puppy 2', 'Puppy 3']))
+                            <div class="col-md-3 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
+                                        <div class="model-image">
+                                            <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }}" 
+                                                 class="primary-image"
+                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                                 class="hover-image">
+                                        </div>
+                                        <div class="model-info">
+                                            <div class="model-name text-center">{{ $modelName }}</div>
+                                            <div class="text-center mb-2">
+                                                <button class="btn btn-sm btn-danger">View Products</button>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                                <div class="model-info">
-                                    <div class="model-name text-center ">{{ $modelName }}</div>
-                                    <div class="text-center mb-2">
-                                        <button class="btn btn-sm btn-danger">View Products</button>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                            </div>
+                        @endif
                     @endforeach
                 </div>
             </div>
