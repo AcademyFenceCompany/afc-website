@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Ams;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductQueryController extends Controller
@@ -76,80 +78,301 @@ class ProductQueryController extends Controller
             'perPage' => $perPage,
         ]);
     }
+    
     public function loadCategory($id)
-{
-    $productsQuery = DB::connection('mysql_second')
-        ->table('products')
-        ->leftJoin('categories', 'products.categories_id', '=', 'categories.id')
-        ->select('products.*', 'categories.cat_name')
-        ->where('categories.id', $id);
+    {
+        $productsQuery = DB::connection('mysql_second')
+            ->table('products')
+            ->leftJoin('categories', 'products.categories_id', '=', 'categories.id')
+            ->select('products.*', 'categories.cat_name')
+            ->where('categories.id', $id);
 
-    // Get the page from the request
-    $page = request()->input('page', 1);
-    
-    // Paginate with 10 items per page
-    $products = $productsQuery->paginate(10, ['*'], 'page', $page);
-    
-    // Make sure we don't duplicate the category_id parameter in pagination links
-    $products->appends(request()->except(['page', 'category_id']));
-    
-    // Pass the category ID to the view for proper link generation
-    return view('ams.product-query._products', [
-        'products' => $products,
-        'categoryId' => $id
-    ]);
-}
-
-public function edit($id)
-{
-    $product = DB::connection('mysql_second')
-        ->table('products')
-        ->leftJoin('categories', 'products.categories_id', '=', 'categories.id')
-        ->select(
-            'products.*', 
-            'categories.cat_name', 
-            'categories.id as category_id',
-            'products.enabled as web_enabled'
-        )
-        ->where('products.id', $id)
-        ->first();
-
-    $categories = DB::connection('mysql_second')->table('categories')->pluck('cat_name', 'id');
-
-    return view('ams.product-query.edit', compact('product', 'categories'));
-}
-
-public function update(Request $request, $id)
-{
-    // Map web_enabled to enabled for database update
-    $data = $request->only(['product_name', 'item_no', 'price', 'desc_short', 'categories_id']);
-    
-    // Handle web_enabled separately to map it to the correct database column
-    if ($request->has('web_enabled')) {
-        $data['enabled'] = $request->input('web_enabled');
+        // Get the page from the request
+        $page = request()->input('page', 1);
+        
+        // Paginate with 10 items per page
+        $products = $productsQuery->paginate(10, ['*'], 'page', $page);
+        
+        // Make sure we don't duplicate the category_id parameter in pagination links
+        $products->appends(request()->except(['page', 'category_id']));
+        
+        // Pass the category ID to the view for proper link generation
+        return view('ams.product-query._products', [
+            'products' => $products,
+            'categoryId' => $id
+        ]);
     }
 
-    // Handle small image upload
-    if ($request->hasFile('img_small')) {
-        $smallFilename = time() . '_small.' . $request->img_small->extension();
-        $request->img_small->storeAs('public/products', $smallFilename);
-        $data['img_small'] = $smallFilename;
-    }
-
-    // Handle large image upload
-    if ($request->hasFile('img_large')) {
-        $largeFilename = time() . '_large.' . $request->img_large->extension();
-        $request->img_large->storeAs('public/products', $largeFilename);
-        $data['img_large'] = $largeFilename;
+    public function create()
+    {
+        $categories = DB::connection('mysql_second')->table('categories')
+            ->orderBy('majorcategories_id')
+            ->orderBy('cat_name')
+            ->pluck('cat_name', 'id');
+        
+        return view('ams.product-query.create', [
+            'categories' => $categories
+        ]);
     }
     
-    DB::connection('mysql_second')
-        ->table('products')
-        ->where('id', $id)
-        ->update($data);
+    public function store(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'item_no' => 'required|string|max:50',
+            'price' => 'required|numeric',
+            'categories_id' => 'required|exists:mysql_second.categories,id',
+            'img_small' => 'nullable|image|max:2048',
+            'img_large' => 'nullable|image|max:2048',
+        ]);
+        
+        // Only include fields that exist in the database
+        $allowedFields = [
+            'product_name', 'item_no', 'seo_name', 'categories_id', 
+            'desc_short', 'desc_long', 'price', 'list', 'cost', 'ws_price',
+            'color', 'size', 'weight_lbs', 'material', 'style', 'speciality', 
+            'spacing', 'coating', 'gauge', 'enabled', 'img_small', 'img_large',
+            'meta_title', 'meta_description', 'meta_keywords', 'product_assoc'
+        ];
+        
+        $data = array_intersect_key($request->except(['_token', 'img_small', 'img_large']), 
+                                   array_flip($allowedFields));
+        
+        // Generate SEO name if not provided
+        if (empty($data['seo_name'])) {
+            $data['seo_name'] = Str::slug($data['product_name']);
+        }
+        
+        // Handle image uploads
+        if ($request->hasFile('img_small')) {
+            $smallImage = $request->file('img_small');
+            $smallImageName = time() . '_small.' . $smallImage->getClientOriginalExtension();
+            $smallImage->storeAs('public/products', $smallImageName);
+            $data['img_small'] = $smallImageName;
+        }
 
-    return redirect()->route('ams.product-query.index')->with('success', 'Product updated.');
-}
+        if ($request->hasFile('img_large')) {
+            $largeImage = $request->file('img_large');
+            $largeImageName = time() . '_large.' . $largeImage->getClientOriginalExtension();
+            $largeImage->storeAs('public/products', $largeImageName);
+            $data['img_large'] = $largeImageName;
+        }
+
+        // Insert product into database
+        $productId = DB::connection('mysql_second')->table('products')->insertGetId($data);
+
+        return redirect()->route('ams.product-query.edit', $productId)
+            ->with('success', 'Product created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $product = DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->first();
+
+        if (!$product) {
+            return redirect()->route('ams.product-query.index')
+                ->with('error', 'Product not found.');
+        }
+
+        $categories = DB::connection('mysql_second')->table('categories')
+            ->orderBy('majorcategories_id')
+            ->orderBy('cat_name')
+            ->pluck('cat_name', 'id');
+
+        // Get category details for shippable status
+        $category = DB::connection('mysql_second')->table('categories')
+            ->where('id', $product->categories_id)
+            ->first();
+
+        // Add shippable status from category to product object
+        $product->shippable = $category ? $category->shippable : 0;
+
+        return view('ams.product-query.edit', [
+            'product' => $product,
+            'categories' => $categories
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the request
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'item_no' => 'required|string|max:50',
+            'price' => 'required|numeric',
+            'categories_id' => 'required|exists:mysql_second.categories,id',
+            'img_small' => 'nullable|image|max:2048',
+            'img_large' => 'nullable|image|max:2048',
+        ]);
+
+        // Get existing product
+        $product = DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->first();
+
+        if (!$product) {
+            return redirect()->route('ams.product-query.index')
+                ->with('error', 'Product not found.');
+        }
+
+        // Only include fields that exist in the database
+        $allowedFields = [
+            'product_name', 'item_no', 'seo_name', 'categories_id', 
+            'desc_short', 'desc_long', 'price', 'list', 'cost', 'ws_price',
+            'color', 'size', 'weight_lbs', 'material', 'style', 'speciality', 
+            'spacing', 'coating', 'gauge', 'enabled', 'img_small', 'img_large',
+            'meta_title', 'meta_description', 'meta_keywords', 'product_assoc'
+        ];
+        
+        // Get all input data first before filtering
+        $inputData = $request->except(['_token', 'img_small', 'img_large', 'old_product_name']);
+        
+        // Now filter to only allowed fields
+        $data = array_intersect_key($inputData, array_flip($allowedFields));
+        
+        // Generate SEO name if not provided
+        if (empty($data['seo_name'])) {
+            $data['seo_name'] = Str::slug($data['product_name']);
+        }
+
+        // Handle image uploads
+        if ($request->hasFile('img_small')) {
+            // Delete old image if exists
+            if ($product->img_small) {
+                Storage::delete('public/products/' . $product->img_small);
+            }
+            
+            $smallImage = $request->file('img_small');
+            $smallImageName = time() . '_small.' . $smallImage->getClientOriginalExtension();
+            $smallImage->storeAs('public/products', $smallImageName);
+            $data['img_small'] = $smallImageName;
+        }
+
+        if ($request->hasFile('img_large')) {
+            // Delete old image if exists
+            if ($product->img_large) {
+                Storage::delete('public/products/' . $product->img_large);
+            }
+            
+            $largeImage = $request->file('img_large');
+            $largeImageName = time() . '_large.' . $largeImage->getClientOriginalExtension();
+            $largeImage->storeAs('public/products', $largeImageName);
+            $data['img_large'] = $largeImageName;
+        }
+
+        // Update product in database
+        DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->update($data);
+
+        return redirect()->route('ams.product-query.edit', $id)
+            ->with('success', 'Product updated successfully.');
+    }
+    
+    public function destroy($id)
+    {
+        $product = DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->first();
+
+        if (!$product) {
+            return redirect()->route('ams.product-query.index')
+                ->with('error', 'Product not found.');
+        }
+
+        // Delete product images
+        if ($product->img_small) {
+            Storage::delete('public/products/' . $product->img_small);
+        }
+        
+        if ($product->img_large) {
+            Storage::delete('public/products/' . $product->img_large);
+        }
+
+        // Delete product from database
+        DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->delete();
+
+        return redirect()->route('ams.product-query.index')
+            ->with('success', 'Product deleted successfully.');
+    }
+
+    public function deleteImage($id, $type)
+    {
+        if (!in_array($type, ['img_small', 'img_large'])) {
+            return redirect()->route('ams.product-query.edit', $id)
+                ->with('error', 'Invalid image type.');
+        }
+
+        $product = DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->first();
+
+        if (!$product) {
+            return redirect()->route('ams.product-query.index')
+                ->with('error', 'Product not found.');
+        }
+
+        // Delete image file
+        if ($product->$type) {
+            Storage::delete('public/products/' . $product->$type);
+        }
+
+        // Update product record to remove image reference
+        DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->update([$type => null]);
+
+        return redirect()->route('ams.product-query.edit', $id)
+            ->with('success', 'Image deleted successfully.');
+    }
+
+    /**
+     * Duplicate a product
+     */
+    public function duplicate($id)
+    {
+        // Get existing product
+        $originalProduct = DB::connection('mysql_second')->table('products')
+            ->where('id', $id)
+            ->first();
+
+        if (!$originalProduct) {
+            return redirect()->route('ams.product-query.index')
+                ->with('error', 'Product not found.');
+        }
+
+        // Convert to array and remove the ID to create a new product
+        $newProduct = (array) $originalProduct;
+        unset($newProduct['id']);
+        
+        // Modify the product name to indicate it's a duplicate
+        $newProduct['product_name'] = $newProduct['product_name'] . ' (Copy)';
+        
+        // If there's an SEO name, update it too
+        if (!empty($newProduct['seo_name'])) {
+            $newProduct['seo_name'] = $newProduct['seo_name'] . '-copy';
+        }
+        
+        // If there's an item number, modify it slightly
+        if (!empty($newProduct['item_no'])) {
+            $newProduct['item_no'] = $newProduct['item_no'] . '-C';
+        }
+        
+        // Handle images - we don't duplicate the files, just reference the same ones
+        // The user can update these later if needed
+        
+        // Insert the new product
+        $newProductId = DB::connection('mysql_second')->table('products')
+            ->insertGetId($newProduct);
+            
+        return redirect()->route('ams.product-query.edit', $newProductId)
+            ->with('success', 'Product duplicated successfully. You can now edit the copy.');
+    }
 
     /**
      * Search products by ID, item number, or name

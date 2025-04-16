@@ -162,7 +162,8 @@
                                 <div class="card h-100 border-0 shadow-sm">
                                     <div class="text-center p-2">
                                         @if (isset($category['image']))
-                                            <img src="{{ $category['image'] }}" class="rounded" style="width: 100%; height: 150px; object-fit: cover;">
+
+                                        <img src="{{ $category['image'] }}" class="rounded" style="width: 100%; height: 150px; object-fit: cover;">
                                         @endif
                                         <div class="text-center pt-2">
                                             <h6 class="card-title text-brown fw-bold">{{ $category['family_category_name'] }}</h6>

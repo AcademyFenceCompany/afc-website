@@ -54,12 +54,35 @@
         background-color: #f9f9f9;
     }
     
-    .product-image {
-        width: 290px !important;
-        height: 200px !important;
+    .product-image-container {
+        position: relative;
+        width: 290px;
+        height: 200px;
+        overflow: hidden;
+    }
+    
+    .primary-image, .hover-image {
+        width: 100%;
+        height: 100%;
         object-fit: contain;
         border: 1px solid #ddd;
         border-radius: 5px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .hover-image {
+        opacity: 0;
+    }
+    
+    .product-image-container:hover .primary-image {
+        opacity: 0;
+    }
+    
+    .product-image-container:hover .hover-image {
+        opacity: 1;
     }
     
     .btn-add-cart {
@@ -241,11 +264,14 @@
     <div class="row mb-4">
         <!-- Product Image and Size Selector -->
         <div class="col-md-3">
-            <img src="{{ $modelImage }}" alt="{{ $type }} {{ $model }}" class="product-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
+            <div class="product-image-container">
+                <img src="{{ $modelImage }}" alt="{{ $type }} {{ $model }}" class="primary-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
+                <img src="{{ $selectedProduct->img_small ? url('storage/products/' . $selectedProduct->img_small) : url('storage/products/default.png') }}" alt="{{ $type }} {{ $model }} Hover" class="hover-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
+            </div>
             
             <!-- Size Filter -->
             <div class="size-selector">
-                <h5 class="mb-0">SELECT SIZE</h5>
+                <h5 class="mb-0">SELECT HEIGHT</h5>
                 <div class="d-flex flex-column mt-3">
                     @foreach($sizes as $size)
                         <div class="size-option">
@@ -419,7 +445,18 @@
             function filterProducts(size, color) {
                 console.log('Filtering products - Size:', size, 'Color:', color);
                 
+                // Show loading indicator
                 $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+                
+                // Cache key for storing filtered results
+                const cacheKey = `${size}-${color}-{{ $type }}-{{ $model }}`;
+                
+                // Check if we have cached results
+                if (window.productCache && window.productCache[cacheKey]) {
+                    console.log('Using cached results');
+                    processFilterResponse(window.productCache[cacheKey]);
+                    return;
+                }
                 
                 $.ajax({
                     url: '{{ route("aluminumfence.filter") }}',
@@ -441,112 +478,125 @@
                     success: function(response) {
                         console.log('AJAX success response:', response);
                         
-                        if (response.product) {
-                            const product = response.product;
-                            console.log('Product found:', product);
-                            
-                            const newRow = `
-                                <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
-                                    <td>${product.item_no}</td>
-                                    <td>${product.product_name}</td>
-                                    <td>${product.size}</td>
-                                    <td>${product.color}</td>
-                                    <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
-                                    <td>
-                                        <input type="number" class="quantity-input" value="1" min="1">
-                                    </td>
-                                    <td>
-                                        <button class="btn-add-cart" 
-                                            data-item="${product.item_no}" 
-                                            data-name="${product.product_name}" 
-                                            data-price="${product.price}">
-                                            Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            `;
-                            
-                            $('#products-table tbody').html(newRow);
-                        } else {
-                            console.log('No product found in response');
-                            $('#products-table tbody').html('<tr><td colspan="7" class="text-center">No matching product found.</td></tr>');
-                        }
+                        // Cache the response
+                        if (!window.productCache) window.productCache = {};
+                        window.productCache[cacheKey] = response;
                         
-                        if (response.associatedSections && response.associatedSections.length > 0) {
-                            let associatedHtml = '';
-                            
-                            response.associatedSections.forEach(function(section) {
-                                associatedHtml += `
-                                    <div class="section-container mb-4">
-                                        <h6 class="section-title bg-secondary text-white p-2">${section.title}</h6>
-                                        <table class="product-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Item #</th>
-                                                    <th>Name</th>
-                                                    <th>Size</th>
-                                                    <th>Color</th>
-                                                    <th>Price</th>
-                                                    <th>Qty</th>
-                                                    <th>Add</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                ${section.products.map(function(product) {
-                                                    return `
-                                                        <tr>
-                                                            <td>${product.item_no}</td>
-                                                            <td>${product.product_name}</td>
-                                                            <td>${product.size}</td>
-                                                            <td>${product.color}</td>
-                                                            <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
-                                                            <td>
-                                                                <input type="number" class="quantity-input" value="1" min="1">
-                                                            </td>
-                                                            <td>
-                                                                <button class="btn-add-cart" 
-                                                                    data-item="${product.item_no}" 
-                                                                    data-name="${product.product_name}" 
-                                                                    data-price="${product.price}">
-                                                                    Add
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    `;
-                                                }).join('')}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                `;
-                            });
-                            
-                            if ($('.necessary-products-box').length === 0) {
-                                const necessaryProductsBox = `
-                                    <div class="necessary-products-box mt-4">
-                                        <div class="necessary-products-title">
-                                            <h5 class="mb-0">NECESSARY PRODUCTS</h5>
-                                        </div>
-                                        ${associatedHtml}
-                                    </div>
-                                `;
-                                $('#products-table').closest('.card').after(necessaryProductsBox);
-                            } else {
-                                $('.necessary-products-box').html(`
-                                    <div class="necessary-products-title">
-                                        <h5 class="mb-0">NECESSARY PRODUCTS</h5>
-                                    </div>
-                                    ${associatedHtml}
-                                `);
-                            }
-                        } else {
-                            $('.necessary-products-box').remove();
-                        }
+                        // Process the response
+                        processFilterResponse(response);
                     },
                     error: function(error) {
                         console.error('Error filtering products:', error);
                         $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Error loading product. Please try again.</td></tr>');
                     }
                 });
+            }
+            
+            function processFilterResponse(response) {
+                if (response.product) {
+                    const product = response.product;
+                    console.log('Product found:', product);
+                    
+                    const newRow = `
+                        <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
+                            <td>${product.item_no}</td>
+                            <td>${product.product_name}</td>
+                            <td>${product.size}</td>
+                            <td>${product.color}</td>
+                            <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
+                            <td>
+                                <input type="number" class="quantity-input" value="1" min="1">
+                            </td>
+                            <td>
+                                <button class="btn-add-cart" 
+                                    data-item="${product.item_no}" 
+                                    data-name="${product.product_name}" 
+                                    data-price="${product.price}">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    
+                    $('#products-table tbody').html(newRow);
+                } else {
+                    console.log('No product found in response');
+                    $('#products-table tbody').html('<tr><td colspan="7" class="text-center">No matching product found.</td></tr>');
+                }
+                
+                updateAssociatedProducts(response);
+            }
+            
+            function updateAssociatedProducts(response) {
+                if (response.associatedSections && response.associatedSections.length > 0) {
+                    let associatedHtml = '';
+                    
+                    response.associatedSections.forEach(function(section) {
+                        associatedHtml += `
+                            <div class="section-container mb-4">
+                                <h6 class="section-title bg-secondary text-white p-2">${section.title}</h6>
+                                <table class="product-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item #</th>
+                                            <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Add</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${section.products.map(function(product) {
+                                            return `
+                                                <tr>
+                                                    <td>${product.item_no}</td>
+                                                    <td>${product.product_name}</td>
+                                                    <td>${product.size}</td>
+                                                    <td>${product.color}</td>
+                                                    <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
+                                                    <td>
+                                                        <input type="number" class="quantity-input" value="1" min="1">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn-add-cart" 
+                                                            data-item="${product.item_no}" 
+                                                            data-name="${product.product_name}" 
+                                                            data-price="${product.price}">
+                                                            Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                    });
+                    
+                    if ($('.necessary-products-box').length === 0) {
+                        const necessaryProductsBox = `
+                            <div class="necessary-products-box mt-4">
+                                <div class="necessary-products-title">
+                                    <h5 class="mb-0">NECESSARY ASSOCIATED PRODUCTS</h5>
+                                </div>
+                                ${associatedHtml}
+                            </div>
+                        `;
+                        $('#products-table').closest('.card').after(necessaryProductsBox);
+                    } else {
+                        $('.necessary-products-box').html(`
+                            <div class="necessary-products-title">
+                                <h5 class="mb-0">NECESSARY ASSOCIATED PRODUCTS</h5>
+                            </div>
+                            ${associatedHtml}
+                        `);
+                    }
+                } else {
+                    $('.necessary-products-box').remove();
+                }
             }
             
             $(document).on('click', '.btn-add-cart', function() {

@@ -122,14 +122,23 @@
                     </div>
                     
                     <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
-                    <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
+                    <!-- Chain Link Fence Dropdown -->
+                    <div class="dropdown">
+                        <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">CHAIN LINK</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('chainlink.main') }}">All Chain Link Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Chain Link Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Chain Link Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Chain Link Fence</a></li>
+                        </ul>
+                    </div>
                     
                     <!-- Aluminum Fence Dropdown -->
                     <div class="dropdown">
                         <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
-                            <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence') }}">OnGuard Aluminum Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
                         </ul>
                     </div>
@@ -171,14 +180,23 @@
                         </div>
                         
                         <a href="#" class="nav-link btn nav-btn mb-2">VINYL FENCE</a>
-                        <a href="#" class="nav-link btn nav-btn mb-2">CHAIN LINK</a>
+                        <!-- Chain Link Fence Dropdown -->
+                        <div class="dropdown mb-2">
+                            <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">CHAIN LINK</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('chainlink.main') }}">All Chain Link Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Chain Link Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Chain Link Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Chain Link Fence</a></li>
+                            </ul>
+                        </div>
                         
                         <!-- Aluminum Fence Dropdown -->
                         <div class="dropdown mb-2">
                             <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
-                                <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence') }}">OnGuard Aluminum Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
                             </ul>
                         </div>
