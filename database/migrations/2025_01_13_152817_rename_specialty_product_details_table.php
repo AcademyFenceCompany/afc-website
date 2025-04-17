@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('product_details', function (Blueprint $table) {
-            $table->renameColumn('speciality', 'specialty');
+            $table->renameColumn('speciality', 'speciality');
         });
     }
 

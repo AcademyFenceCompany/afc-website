@@ -322,23 +322,21 @@
                         @if(isset($typeData['models'][$modelName]))
                             <div class="col-md-3 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
-                                        <div class="model-image">
-                                            <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }}" 
-                                                 class="primary-image"
-                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                                 class="hover-image">
+                                    <div class="model-image">
+                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
                                         </div>
-                                        <div class="model-info">
-                                            <div class="model-name text-center">{{ $modelName }}</div>
-                                            <div class="text-center mb-2">
-                                                <button class="btn btn-sm btn-danger">View Products</button>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -351,23 +349,21 @@
                         @if(isset($typeData['models'][$modelName]))
                             <div class="col-md-2.4" style="flex: 0 0 20%; max-width: 20%;">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
-                                        <div class="model-image">
-                                            <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }}" 
-                                                 class="primary-image"
-                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                                 class="hover-image">
+                                    <div class="model-image">
+                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
                                         </div>
-                                        <div class="model-info">
-                                            <div class="model-name text-center">{{ $modelName }}</div>
-                                            <div class="text-center mb-2">
-                                                <button class="btn btn-sm btn-danger">View Products</button>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -381,23 +377,21 @@
                         @if(isset($typeData['models'][$modelName]))
                             <div class="col-md-4 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
-                                        <div class="model-image">
-                                            <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }}" 
-                                                 class="primary-image"
-                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                                 class="hover-image">
+                                    <div class="model-image">
+                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
                                         </div>
-                                        <div class="model-info">
-                                            <div class="model-name text-center">{{ $modelName }}</div>
-                                            <div class="text-center mb-2">
-                                                <button class="btn btn-sm btn-danger">View Products</button>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -410,23 +404,21 @@
                         @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Puppy 1', 'Puppy 2', 'Puppy 3']))
                             <div class="col-md-3 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                                    <a href="{{ route('aluminumfence.product', ['type' => $typeName, 'model' => $modelName]) }}" class="text-decoration-none">
-                                        <div class="model-image">
-                                            <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }}" 
-                                                 class="primary-image"
-                                                 onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                            <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
-                                                 alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                                 class="hover-image">
+                                    <div class="model-image">
+                                        <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
                                         </div>
-                                        <div class="model-info">
-                                            <div class="model-name text-center">{{ $modelName }}</div>
-                                            <div class="text-center mb-2">
-                                                <button class="btn btn-sm btn-danger">View Products</button>
-                                            </div>
-                                        </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         @endif
@@ -475,8 +467,10 @@
             var type = $(this).data('type');
             var model = $(this).data('model');
             
-            // Redirect to the product page for the selected type and model
-            window.location.href = '/aluminum-fence/onguard/' + type + '-' + model;
+            console.log("Clicked model card:", type, model);
+            
+            // Navigate to product page with separate path parameters
+            window.location.href = "/aluminum-fence/onguard/" + type + "/" + model;
         });
         
         // Handle view products button clicks
@@ -487,8 +481,10 @@
             var type = card.data('type');
             var model = card.data('model');
             
-            // Redirect to the product page for the selected type and model
-            window.location.href = '/aluminum-fence/onguard/' + type + '-' + model;
+            console.log("Clicked view products button:", type, model);
+            
+            // Navigate to product page with separate path parameters
+            window.location.href = "/aluminum-fence/onguard/" + type + "/" + model;
         });
         
         // Handle quantity plus button clicks

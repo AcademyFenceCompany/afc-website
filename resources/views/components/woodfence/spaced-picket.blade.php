@@ -7,7 +7,7 @@
     // Define the preferred order for styles
     $styleOrder = ['Straight On Top', 'Concave', 'Convex'];
     
-    // Define the specialty order for Spaced Picket
+    // Define the speciality order for Spaced Picket
     $specialityOrderMap = [
         'Straight On Top' => ['Slant Ear', 'Gothic Point', 'French Gothic'],
         'Concave' => ['Flat Picket', 'Gothic Point', 'French Gothic'],
@@ -84,7 +84,7 @@
     <div class="row">
         @foreach ($filteredProductsBySpeciality as $specialityName => $products)
             <div class="col-md-4 mb-4">
-                <x-woodfence.specialty-card 
+                <x-woodfence.speciality-card 
                     :styleGroup="$styleGroup" 
                     :specialityName="$specialityName" 
                     :products="$products" 
