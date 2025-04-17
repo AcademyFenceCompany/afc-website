@@ -18,7 +18,7 @@ class CartController extends Controller
                 'size1' => 'nullable|string',
                 'size2' => 'nullable|string',
                 'size3' => 'nullable|string',
-                'specialty' => 'nullable|string',
+                'speciality' => 'nullable|string',
                 'material' => 'nullable|string',
                 'spacing' => 'nullable|string',
                 'coating' => 'nullable|string',

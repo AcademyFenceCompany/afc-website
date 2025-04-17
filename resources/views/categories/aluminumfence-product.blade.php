@@ -460,8 +460,9 @@
                 
                 $.ajax({
                     url: '{{ route("aluminumfence.filter") }}',
-                    method: 'GET',
+                    method: 'POST',
                     data: {
+                        _token: '{{ csrf_token() }}',
                         type: '{{ $type }}',
                         model: '{{ $model }}',
                         size: size,

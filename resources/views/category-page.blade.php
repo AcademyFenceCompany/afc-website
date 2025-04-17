@@ -235,17 +235,17 @@
                                 <!-- Navigation Buttons -->
                                 <div class="mt-3 text-center">
                                     @foreach ($group['subgroups'] as $index => $subgroup)
-                                        <button class="btn btn-outline-primary mb-2 me-2 specialty-btn"
-                                            data-target="specialty-{{ $loop->parent->index }}-{{ $index }}">
+                                        <button class="btn btn-outline-primary mb-2 me-2 speciality-btn"
+                                            data-target="speciality-{{ $loop->parent->index }}-{{ $index }}">
                                             {{ $subgroup['title'] }}
                                         </button>
                                     @endforeach
                                 </div>
 
-                                <!-- Specialty Groups -->
+                                <!-- speciality Groups -->
                                 @foreach ($group['subgroups'] as $index => $subgroup)
-                                    <div class="specialty-group mt-4"
-                                        id="specialty-{{ $loop->parent->index }}-{{ $index }}"
+                                    <div class="speciality-group mt-4"
+                                        id="speciality-{{ $loop->parent->index }}-{{ $index }}"
                                         style="{{ $loop->first ? '' : 'display: none;' }}">
                                         @include('partials.product-table', [
                                             'products' => $subgroup['products'],
@@ -300,14 +300,14 @@
 @section('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle specialty button clicks
-            const specialtyBtns = document.querySelectorAll('.specialty-btn');
-            specialtyBtns.forEach(btn => {
+            // Handle speciality button clicks
+            const specialityBtns = document.querySelectorAll('.speciality-btn');
+            specialityBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const targetId = this.getAttribute('data-target');
                     const parentGroup = this.closest('.mt-5');
-                    const allGroups = parentGroup.querySelectorAll('.specialty-group');
-                    const allBtns = parentGroup.querySelectorAll('.specialty-btn');
+                    const allGroups = parentGroup.querySelectorAll('.speciality-group');
+                    const allBtns = parentGroup.querySelectorAll('.speciality-btn');
 
                     // Hide all groups
                     allGroups.forEach(group => group.style.display = 'none');
@@ -423,7 +423,7 @@
                     // Add other fields if they exist
                     if (button.dataset.size2) formData.append('size2', button.dataset.size2);
                     if (button.dataset.size3) formData.append('size3', button.dataset.size3);
-                    if (button.dataset.specialty) formData.append('specialty', button.dataset.specialty);
+                    if (button.dataset.speciality) formData.append('speciality', button.dataset.speciality);
                     if (button.dataset.material) formData.append('material', button.dataset.material);
                     if (button.dataset.spacing) formData.append('spacing', button.dataset.spacing);
                     if (button.dataset.coating) formData.append('coating', button.dataset.coating);
