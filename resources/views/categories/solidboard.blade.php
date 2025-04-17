@@ -13,7 +13,7 @@
 
         <div class="row mb-5">
             @php
-                // Define the specialty order for this style
+                // Define the speciality order for this style
                 $specialityOrder = [
                     'Straight On Top' => ['Slant Ear', 'Gothic Point', 'French Gothic'],
                     'Concave' => ['Flat Picket', 'Gothic Point', 'French Gothic'],

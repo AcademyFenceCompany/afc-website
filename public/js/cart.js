@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const size1 = button.dataset.size1 || "";
             const size2 = button.dataset.size2 || "";
             const size3 = button.dataset.size3 || "";
-            const specialty = button.dataset.specialty || "";
+            const speciality = button.dataset.speciality || "";
             const material = button.dataset.material || "";
             const spacing = button.dataset.spacing || "";
             const coating = button.dataset.coating || "";
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 size1,
                 size2,
                 size3,
-                specialty,
+                speciality,
                 material,
                 spacing,
                 coating,
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     size1,
                     size2,
                     size3,
-                    specialty,
+                    speciality,
                     material,
                     spacing,
                     coating,

@@ -187,8 +187,8 @@ Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class
 
 // Aluminum Fence Routes
 Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
-Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence');
-Route::get('/aluminum-fence/onguard/{type}-{model}', [AluminumFenceController::class, 'productDetails'])->name('aluminumfence.product');
+Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence.index');
+Route::get('/aluminum-fence/onguard/{type}/{model}', [AluminumFenceController::class, 'productDetails'])->name('aluminumfence.product');
 Route::get('/aluminum-fence/pickup', [AluminumFenceController::class, 'pickup'])->name('aluminumfence.pickup');
 Route::get('/aluminum-fence/accessories', [AluminumFenceController::class, 'accessories'])->name('aluminumfence.accessories');
 Route::post('/aluminum-fence/filter-products', [AluminumFenceController::class, 'filterProducts'])->name('aluminumfence.filter');
@@ -196,6 +196,7 @@ Route::post('/aluminum-fence/filter-products', [AluminumFenceController::class, 
 // Chain Link Fence Routes
 Route::get('/chain-link-fence', [ChainLinkFenceController::class, 'main'])->name('chainlink.main');
 Route::get('/chain-link-fence/{height}', [ChainLinkFenceController::class, 'heightCategory'])->name('chainlink.height');
+Route::get('/chain-link-fence/{height}/system/{system}', [ChainLinkFenceController::class, 'heightCategory'])->name('chainlink.height.system');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');

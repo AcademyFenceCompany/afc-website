@@ -26,7 +26,7 @@
                         <th>Price</th>
                         <th>Color</th>
                         <th>Style</th>
-                        <th>Specialty</th>
+                        <th>speciality</th>
                         <th>Size 1</th>
                         <th>Size 2</th>
                         <th>Size 3</th>
@@ -76,7 +76,7 @@
                         <td>${product.price_per_unit}</td>
                         ${product.color !== null ? `<td>${product.color}</td>` : '<td></td>'}
                         ${product.style !== null ? `<td>${product.style}</td>` : '<td></td>'}
-                        ${product.specialty !== null ? `<td>${product.specialty}</td>` : '<td></td>'}
+                        ${product.speciality !== null ? `<td>${product.speciality}</td>` : '<td></td>'}
                         ${product.size1 !== null ? `<td>${product.size1}</td>` : '<td></td>'}
                         ${product.size2 !== null ? `<td>${product.size2}</td>` : '<td></td>'}
                         ${product.size3 !== null ? `<td>${product.size3}</td>` : '<td></td>'}

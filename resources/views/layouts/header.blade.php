@@ -138,7 +138,7 @@
                         <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
-                            <li><a class="dropdown-item" href="{{ route('aluminumfence') }}">OnGuard Aluminum Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
                         </ul>
                     </div>
@@ -196,7 +196,7 @@
                             <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
-                                <li><a class="dropdown-item" href="{{ route('aluminumfence') }}">OnGuard Aluminum Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
                             </ul>
                         </div>
