@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $page->title ?? 'Welded Wire')
+@section('title', $page->title ?? 'Post Caps')
 
 @section('content')
 
@@ -92,7 +92,7 @@
                         <h5>Wood Post Caps</h5>
                         <p>Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat
                             Top and Ball Top.</p>
-                        <a href="#" class="btn btn-product mt-2">View Product</a>
+                        <a href="{{ route('woodpostcaps.index') }}" class="btn btn-product mt-2">View Product</a>
                     </div>
                 </div>
             </div>
