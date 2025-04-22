@@ -22,6 +22,14 @@ body{
     color: #5e5e5e;
     --bs-body-color: #222;
 }
+
+.text-bg-secondary{
+    background-color: RGB(104, 104, 104) !important;
+}
+//Product Description Page
+.main-qty{
+    border: 2px solid;
+}
 header{
     .nav-link{
         background-color: $primary-color;
@@ -46,24 +54,32 @@ header{
     .big-menu{
         position: relative;
         height: auto;
-        
-    }
-    .dropdown-menu{
-        width: 20vw;
-        margin-left: -1px;
-        .dropdown-item{
-            color:rgb(43, 43, 43);
+        .dropdown-menu{
+            width: 20vw;
+            margin-left: -1px;
+            line-height: 1.3;
+            .dropdown-submenu{
+                display: none;
+                position: absolute;
+                --bs-dropdown-bg: #eee !important;
+                left: 100%;
+                top: 0;
+                height: 100%;
+            }
+            .dropdown-item{
+                color:rgb(43, 43, 43);
+                padding: 0.4rem 1rem;
+            }
+            li{
+                padding: 0;
+                font-size: .9rem;
+            }
+            > li:hover > .dropdown-submenu {
+                display: block;
+            }
         }
     }
-    .dropdown-menu > li:hover > .dropdown-submenu {
-        display: block;
-    }
-    .dropdown-submenu{
-        --bs-dropdown-bg: #eee;
-        left: 100%;
-        top: 0;
-        height: 100%;
-    }
+
 }
 nav.top-bar{
     background-color: rgb(56, 56, 56);
@@ -78,8 +94,14 @@ nav.top-bar{
     // thead{
     //     background-color: #ececec;
     // }
-    .add-to-cart{
-        //background-color: $primary-2-color;
+    // .add-to-cart{
+    //     //background-color: $primary-2-color;
+    // }
+    .form-control{
+        width: 1rem;
+        border: 1px solid #cecece !important;
+        margin: 0 .5rem !important;
+        border-radius: .5rem !important;
     }
 }
 .banner-blocks{
@@ -144,10 +166,53 @@ nav.top-bar{
     }
 }
 .btn-primary{
-    background-color: $secondary-color;
+    background-color: $primary-color;
     border-color: $primary-color;
     &:hover{
         background-color: $primary-2-color;
         border-color: $primary-2-color;
     }
+}
+section{
+    border-top: 5px solid light-gray;
+    border-bottom: 5px solid light-gray;
+}
+.system-complete-card{
+    .card-desc{
+        line-height: 1.5;
+    }
+    .card-text{
+        border-bottom: 1px solid rgb(201, 201, 201);
+    }
+    .prod-detail{
+        display: none;
+        top: -20px;
+        right: 0;
+        position: absolute;
+        width: 600px;
+        left: -50%;
+        z-index: 1000;
+    }
+}
+.filter-loading {
+    display: inline-block;
+    animation: fadePulse 1.5s infinite;
+}
+
+@keyframes fadePulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+.grid-list-item{
+    border: 2px solid $bs-body-color;
+    border-radius: .5rem;
+    display: block;
+    border: 2px solid #cacaca;
+    border-radius: 0.5rem;
+    display: block;
+    background-color: beige;
 }

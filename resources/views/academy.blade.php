@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>AcademyFence - Free eCommerce Grocery Store HTML Website Template</title>
+    <title>AcademyFence - HTML Website Template</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,17 +12,27 @@
     <meta name="description" content="">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
+    
 
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendor.css') }}">
+
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" >
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css" >
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> -->
-
+    <style>
+      section{
+          padding: 10rem 0;
+          border-top: 2px solid rgb(126, 126, 126);
+          border-bottom: 2px solid rgb(126, 126, 126);
+      }
+    </style>
   </head>
   <body>
 
@@ -89,7 +99,7 @@
         <div class="order-md-last">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-primary">Your cart</span>
-            <span class="badge bg-primary rounded-pill">3</span>
+            <span class="badge bg-primary rounded-pill cart-count">0</span>
           </h4>
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -141,232 +151,15 @@
       </div>
     </div>
 
-    <header class="bg-white shadow-sm sticky-sm-top sticky-md-top">
-        <nav class="top-bar">
-            <div class="container d-flex flex-wrap">
-                <ul class="nav me-auto d-sm-none">
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Directions</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Customer Service</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Get a Quote</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Shopping Cart</a></li>
-                </ul>
-                <ul class="nav">
-                <li class="nav-item nav-link">119 N Day St, Orange, NJ 07050, 973-674-0600</li>
-                </ul>
-            </div>
-        </nav>
-        <div class="container">
-            <div class="row py-1 border-bottom">
-            
-            <div class="col-sm-4 col-lg-3 text-center text-sm-start">
-                <div class="main-logo">
-                <a href="index.html">
-                    <img src="https://www.academyfence.com/images/logo.png" alt="logo" class="img-fluid">
-                </a>
-                </div>
-                <p class="logo-caption m-0 d-none d-lg-block">The original Fence Superstore</p>
-            </div>
-            
-            <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-6 d-flex align-items-center">
-                <div class="search-bar w-100 bg-light d-flex p-2 my-2 rounded-4">
-                    <div class="d-none d-md-block">
-                        <select class="form-select border-0 bg-transparent">
-                            <option>All Categories</option>
-                            <option>Groceries</option>
-                            <option>Drinks</option>
-                            <option>Chocolates</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search all categories">
-                        <div class="input-group-append">
-                            <button class="btn bg-light" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
-                <div class="support-box text-end d-none d-xl-block">
-                    <span class="fs-6 text-muted">For Support?</span>
-                    <h5 class="mb-0">973-674-0400</h5>
-                </div>
-
-
-
-                <div class="cart text-end d-none d-lg-block dropdown">
-                <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 d-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                    <span class="fs-6 text-muted dropdown-toggle">Your Cart</span>
-                    <span class="cart-total fs-5 fw-bold">$1290.00</span>
-                </button>
-                <div class="dropdown">
-                    <a href="#" class="position-relative text-dark p-2 show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                        <i class="bi bi-cart fs-4"></i>
-                        <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
-                            0
-                        </span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-end p-3 shadow-lg show d-none" style="min-width: 300px; position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 46px);" data-popper-placement="bottom-end">
-                        <ul id="mini-cart-items" class="list-unstyled mb-2">
-                                    </ul>
-
-                        <p id="empty-cart-message" class=" text-center">Your cart is
-                            empty
-                        </p>
-                        <div class="d-grid gap-2">
-                            <a href="http://192.168.0.24/cart" class="btn btn-danger w-100">View Cart</a>
-                            <a href="http://192.168.0.24/checkout" class="btn btn-danger w-100">Checkout</a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-
-            </div>
-        </div>
-        <nav class="main-nav">
-            <div class="container">
-                <div class="row py-2">
-                <div class="d-flex  justify-content-center justify-content-sm-between align-items-center">
-                    <nav class="main-menu d-flex navbar navbar-expand-lg">
-
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                        aria-controls="offcanvasNavbar">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-
-                        <div class="offcanvas-header justify-content-center">
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-
-                        <div class="offcanvas-body">              
-                    
-                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-                            <li class="nav-item active dropdown">
-                                <a class="nav-link dropdown-toggle big-menu text-bg-secondary" role="button" id="big-menu" data-bs-toggle="dropdown" aria-expanded="false" type="button"
-                                data-mdb-toggle="dropdown">Shop By Category</a>
-                                <ul class="dropdown-menu" aria-labelledby="big-menu">
-                                    <li class="d-flex justify-content-between"><a href="index.html" class="dropdown-item">Wood Fence <span class="badge rounded-pill text-bg-success">Pick Up</span></a></li>
-                                    <li><a href="index.html" class="dropdown-item">404 Error </a></li>
-                                    <li><a href="index.html" class="dropdown-item">Privacy Fence</a></li>
-                                    <li><a href="index.html" class="dropdown-item">Picket Fence</a></li>
-                                    <li><a href="index.html" class="dropdown-item">Split Rail Fence</a></li>
-                                    <li><a href="index.html" class="dropdown-item">Post and Rail Fence</a></li>
-                                    <li><a href="index.html" class="dropdown-item">Lattice Fence</a></li>
-                                    <li class="d-flex flex-sm-row justify-content-between align-items-center" role="button" id="big-menu-3" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <a href="index.html" class="dropdown-item">Split Rail Fence</a>
-                                        <i class="bi bi-chevron-right"></i>
-                                        <ul class="dropdown-menu dropdown-submenu">
-                                            <li><a href="index.html" class="dropdown-item">Wood Fence <span class="badge rounded-pill text-bg-success">Pick Up</span></a></li>
-                                            <li><a href="index.html" class="dropdown-item">404 Error </a></li>
-                                            <li><a href="index.html" class="dropdown-item">Privacy Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Picket Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Split Rail Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Post and Rail Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Lattice Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Shadowbox Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Dog Ear Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Stockade Fence</a></li>
-                                            <li class="d-flex flex-sm-row justify-content-between align-items-center">
-                                                <a href="index.html" class="dropdown-item">Board on Board Fence</a>
-                                                <i class="bi bi-chevron-right"></i>
-                                                <ul class="dropdown-menu dropdown-submenu">
-                                                    <li><a href="index.html" class="dropdown-item">Wood Fence <span class="badge rounded-pill text-bg-success">Pick Up</span></a></li>
-                                                    <li><a href="index.html" class="dropdown-item">404 Error </a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Privacy Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Picket Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Split Rail Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Post and Rail Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Lattice Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Shadowbox Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Dog Ear Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Stockade Fence</a></li>
-                                                    <li><a href="index.html" class="dropdown-item">Board on Board Fence</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="index.html" class="dropdown-item">Dog Ear Fence</a></li>
-                                    <li><a href="index.html" class="dropdown-item">Stockade Fence</a></li>
-                                    <li class="d-flex justify-content-between align-items-center">
-                                        <a href="index.html" class="dropdown-item">Board on Board Fence </a>
-                                        <i class="bi bi-chevron-right"></i>
-                                        <ul class="dropdown-menu dropdown-submenu">
-                                            <li><a href="index.html" class="dropdown-item">Wood Fence <span class="badge rounded-pill text-bg-success">Pick Up</span></a></li>
-                                            <li><a href="index.html" class="dropdown-item">404 Error </a></li>
-                                            <li><a href="index.html" class="dropdown-item">Privacy Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Picket Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Split Rail Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Post and Rail Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Lattice Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Shadowbox Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Dog Ear Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Stockade Fence</a></li>
-                                            <li><a href="index.html" class="dropdown-item">Board on Board Fence</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#men" class="nav-link">Wood Fence</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#men" class="nav-link">Vinyl Fence</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#men" class="nav-link">Chain Link Fence</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#men" class="nav-link">Aluminum Fence</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#men" class="nav-link">Welded Wire</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#men" class="nav-link text-bg-info">Get A Quote</a>
-                            </li>
-                        </ul>
-                        
-
-                        </div>
-
-                    </div>
-                </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+    @include('partials.header')
     
-    <section class="hero-banner" style="background-image: url(https://barrierbossusa.com/cdn/shop/products/Vinyl-Fence-Panels-BarrierBoss-37941654257965.jpg?v=1736314569);">
-        <div class="container px-4 py-5 mb-5">
-            <div class="row align-items-center g-5 py-5">
-                <div class="col-lg-6">
-                    <img src="/resources/images/warehouse.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
-                </div>
-                <div class="col-lg-6 d-none">
-                    <h1 class="display-5 fw-bold lh-1 mb-3">Academy Fence Compary</h1>
-                    <p class="lead">Academy Fence Company Established in the 1960's we offer a complete line of all types of fencing and railing. As installers and designers we are able to offer the best quality available in the industry. Whether it is aluminum, vinyl, chain link, wood or welded wire fencing you can be assured that we offer only the best in quality and standards.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-                        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
-                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <x-hero-banner />
 
     <section class="py-3 d-none" style="background-image: url('images/background-pattern.jpg');background-repeat: no-repeat;background-size: cover;">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-
-            <div class="banner-blocks">
-            
+            <div class="banner-blocks">          
               <div class="banner-ad large bg-info block-1">
 
                 <div class="swiper main-swiper sw-bg">
@@ -469,6 +262,7 @@
         </div>
     </section>
 
+
     <section class="product-desc">
         <div class="container mt-5">
             <div class="row">
@@ -494,7 +288,7 @@
                 <!-- Product Details -->
                 <div class="col-md-6 g-col-6 px-3">
                     <h2 class="mb-3">Spaced Picket Section 2 1/2 in-SOT - Slant Ear</h2>
-                    <p class="text-muted mb-4">SKU: WH1000XM4</p>
+                    <p class="text-muted mb-4">Item No: WH1000XM4</p>
                     <div class="mb-3">
                         <span class="h4 me-2">$349.99</span>
                         <span class="text-muted"><s>$399.99</s></span>
@@ -522,7 +316,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" class="form-control" id="quantity" value="1" min="1" style="width: 80px;">
+                        <input type="number" class="form-control main-qty" id="quantity" value="1" min="1" style="width: 80px;">
                     </div>
                     <div class="d-sm-flex flex-sm-row gap-4">
                         <button class="btn btn-primary btn-lg flex-sm-fill">
@@ -546,31 +340,147 @@
         </div>
     </section>
 
+    <section class="product-desc-customization">
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Product Images -->
+                <div class="col-md-6 mb-4 g-col-6 px-5">
+                    <img src="{{ asset('assets/images/defaultfenceSG.png') }}" alt="Product" class="img-fluid rounded mb-3 product-image img-thumbnail" id="mainImage">
+                    <div class="row ">
+                        <div class="col-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" class="img-thumbnail" alt="Thumbnail 1">
+                        </div>
+                        <div class="col-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" class="img-thumbnail" alt="Thumbnail 1">
+                        </div>                        
+                        <div class="col-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" class="img-thumbnail" alt="Thumbnail 1">
+                        </div>
+                        <div class="col-3">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/2048px-No_image_available.svg.png" class="img-thumbnail" alt="Thumbnail 1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="col-md-6 g-col-6 px-3">
+                    <h2 class="mb-3">Academy System 1, 4ft Complete</h2>
+                    <p class="text-muted mb-4">Item No: WH1000XM4</p>
+                    <div class="mb-3">
+                        <span class="h4 me-2" style="color:rgb(129, 143, 8);">$349.99</span>
+                        <span class="text-muted"><s>$399.99</s></span>
+                    </div>
+
+                    <p class="mb-4">Our complete fence systems include all necessary hardware for your fence installation. We simply need to know three things; 1) your total linear footage (price per foot), 2) the number of terminal posts, 3) and the number of access gates.
+                    All parts are included in the price that are necessary to erect the fence except for concrete. For example the price per foot includes the chain link mesh fabric, the top rail, line posts,
+                     and loop caps. Alternatively you have the option to select individual parts from our complete line of posts, rail, pipe, fittings, hardware, hinges, latches, accessories and gates; all in stock and ready to pick up or to ship.</p>
+                    <div class="mb-4">
+                        <h5>Color:</h5>
+                        <div class="btn-group" role="group" aria-label="Color selection">
+                            <input type="radio" class="btn-check" name="color" id="black" autocomplete="off" checked>
+                            <label class="btn btn-outline-dark" for="black">Black</label>
+                            <input type="radio" class="btn-check" name="color" id="Green" autocomplete="off">
+                            <label class="btn btn-outline-secondary" for="Green">Green</label>
+                            <input type="radio" class="btn-check" name="color" id="Blue" autocomplete="off">
+                            <label class="btn btn-outline-danger" for="blue">Brown</label>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" class="form-control main-qty" id="quantity" value="1" min="1" style="width: 80px;">
+                    </div>
+                    <div class="d-sm-flex flex-sm-row gap-4">
+                        <button class="btn btn-primary btn-lg flex-sm-fill">
+                            <i class="bi bi-cart-plus"></i> Add to Cart
+                        </button>
+                        <button class="btn btn-outline-secondary btn-lg flex-sm-fill" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">
+                            <i class="bi bi-envelope-paper"></i> Get a Quote
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <h5>Customize Your Order</h5>
+                        <table class="table table-responsive">
+                          <tbody>
+                            <tr>
+                              <td>Add Foot of Fencing @ <strong>$19.77</strong> each</td>
+                              <td>
+                                <input min="1" type="number" id="quantity" name="quantity" width="4rem" style="width:4rem !important" pattern="[0-9]*" value="0" required=""
+                                data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Tooltip on left">
+                              </td>
+                              <td>
+                                <button class="btn add-to-cart btn-primary float-right" data-item="PSFL72" data-qty="1" data-name="Flat Top Wood Fence Post" data-price="12.00">
+                                    Update Cart
+                                </button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Add Single Walk Gate 3ft @ <strong>$19.77</strong> each</td>
+                              <td>
+                                <input min="1" type="number" id="quantity" name="quantity" width="4rem" style="width:4rem !important" pattern="[0-9]*" value="0" required="">
+                              </td>
+                              <td>
+                                <button class="btn add-to-cart btn-primary float-right" data-item="PSFL72" data-qty="1" data-name="Flat Top Wood Fence Post" data-price="12.00">
+                                    Update Cart
+                                </button>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Add 2x6 Terminal Posts  @ <strong>$19.77</strong> each</td>
+                              <td>
+                                <input min="1" type="number" id="quantity" name="quantity" width="4rem" style="width:4rem !important" pattern="[0-9]*" value="0" required="">
+                              </td>
+                              <td>
+                                <button class="btn add-to-cart btn-primary float-right" data-item="PSFL72" data-qty="1" data-name="Flat Top Wood Fence Post" data-price="12.00">
+                                    Update Cart
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4">
+                        <h5>Kit Includes:</h5>
+                        <ul>
+                            <li>(42) 2-1/2" Black Steel Tension Band Item# 10406B</li>
+                            <li>(23) 1-3/8" Black Fork Latch Hanger Item# 10873B</li>
+                            <li>(42) 2-1/2" Black Steel Tension Band Item# 10406B</li>
+                            <li>(23) 1-3/8" Black Fork Latch Hanger Item# 10873B</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <x-fencesyscustom />
+    <x-chainlink-byparts />
+
     <section class="sub-category py-5">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <h2 class="section-title mb-4">Straight On Top</h2>
                 </div>
-                <?php 
-                for ($i = 0; $i < 4; $i++) {
-                    echo'
-                    <div class="col-lg-3 col-sm-12">
-                        <div class="card mb-4">
-                            <img src="https://www.academyfence.com/images/wood/sketch2/SE_SOT_SKETCH_SM.jpg" class="card-img-top py-3" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Slant Ear</h5>
-                                <p class="card-text p-1 m-0"><strong>Section Top Style:</strong> Straight</p>
-                                <p class="card-text p-1 m-0"><strong>Heights:</strong> 3ft, 42in, 4ft, 5ft, 6ft, 7ft, 8ft</p>
-                                <p class="card-text p-1 m-0">Picket Style: Slant Ear</p>
-                                <p class="card-text p-1 m-0">Spacing: 2-1/2in</p>
-                                <a href="#" class="btn btn-primary d-none">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>';
-                }
+                
+                @php
+                  for ($i = 0; $i < 4; $i++) {
+                      echo'
+                      <div class="col-lg-3 col-sm-12">
+                          <div class="card mb-4">
+                              <img src="https://www.academyfence.com/images/wood/sketch2/SE_SOT_SKETCH_SM.jpg" class="card-img-top py-3" alt="...">
+                              <div class="card-body">
+                                  <h5 class="card-title">Slant Ear</h5>
+                                  <p class="card-text p-1 m-0"><strong>Section Top Style:</strong> Straight</p>
+                                  <p class="card-text p-1 m-0"><strong>Heights:</strong> 3ft, 42in, 4ft, 5ft, 6ft, 7ft, 8ft</p>
+                                  <p class="card-text p-1 m-0">Picket Style: Slant Ear</p>
+                                  <p class="card-text p-1 m-0">Spacing: 2-1/2in</p>
+                                  <a href="#" class="btn btn-primary d-none">Go somewhere</a>
+                              </div>
+                          </div>
+                      </div>';
+                  }
+                @endphp
 
-                ?>
             </div>
             <div class="row mt-5">
                 <div class="col-12">
@@ -603,95 +513,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-sm-12">
-                    <div class="accordion" id="accordionPanelSideMenu">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                <strong>Straight On Top</strong>
-                            </button>
-                            </h2>
-                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-                                <div class="accordion-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            Slant Ear
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                                        <label class="form-check-label" for="defaultCheck2">
-                                            Gothic Point
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                                        <label class="form-check-label" for="defaultCheck3">
-                                            French Gothic
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
-                                <strong>Concave</strong>
-                            </button>
-                            </h2>
-                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show">
-                            <div class="accordion-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            Slant Ear
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                                        <label class="form-check-label" for="defaultCheck2">
-                                            Gothic Point
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                                        <label class="form-check-label" for="defaultCheck3">
-                                            French Gothic
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
-                                <strong>Convex</strong>
-                            </button>
-                            </h2>
-                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
-                            <div class="accordion-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            Slant Ear
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                                        <label class="form-check-label" for="defaultCheck2">
-                                            Gothic Point
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                                        <label class="form-check-label" for="defaultCheck3">
-                                            French Gothic
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <x-sidebar-filter />
                 </div>
                 <div class="col-lg-9 col-sm-12">
                     <div class="row">
@@ -760,7 +582,7 @@
                                     <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                                 </button>
                             </span>
-                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1" style="width: 1rem;">
+                            <input type="text" id="quantity" name="quantity" class="form-control border input-number mx-3 w-25" value="1">
                             <span class="input-group-btn">
                                 <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
                                     <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
@@ -769,8 +591,8 @@
                         </div>
                         </td>
                         <td>
-                            <span class="px-2">$12.00</span>
-                            <button class="btn add-to-cart btn-sm btn-primary float-right" data-item="PSFL72" data-name="Flat Top Wood Fence Post" data-price="12.00">
+                            <span class="px-2 me-3">$12.00</span>
+                            <button class="btn add-to-cart btn-primary float-right" data-item="PSFL72" data-qty="1" data-name="Flat Top Wood Fence Post" data-price="12.00">
                                 Add to Cart
                             </button>
                         </td>
@@ -797,7 +619,7 @@
                         </td>
                         <td>
                             <span class="px-2">$12.00</span>
-                            <button class="btn add-to-cart btn-sm btn-primary" data-item="PSFL72" data-name="Flat Top Wood Fence Post" data-price="12.00">
+                            <button class="btn add-to-cart btn-sm btn-primary" data-item="PSFL72" data-qty="1" data-name="Flat Top Wood Fence Post" data-price="12.00">
                                 Add to Cart
                             </button>
                         </td>
@@ -3024,8 +2846,10 @@
     </div>
     <script src="{{ asset('assets/js/jquery-1.11.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/plugins.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
   </body>
 </html>

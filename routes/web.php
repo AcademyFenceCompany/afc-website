@@ -18,6 +18,8 @@ use App\Models\Order;
 use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\Ams\ProductQueryController;
+use App\Http\Controllers\AcademyTestController;
+use App\Http\Controllers\ProductFilterController;
 use Illuminate\Support\Facades\DB;
 
 // AMS Routes
@@ -247,8 +249,25 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
-Route::get('/academytest', function () {
-    return view('academy');
-});
+//==================== Development Routes (Colin) ====================//
 
+Route::get('/academytest', [AcademyTestController::class, 'index']); //->middleware(['auth', 'verified'])->name('academytest');
+Route::get('/chainlinkfence', function(){
+ 
+    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+    $height = 100; //$h;
+    return view('chainlinkhome', compact('majCategories', 'subCategories', 'height'));
+})->name('chainlinkfence'); //->middleware(['auth', 'verified'])->name('academytest');
+//Route::get('/academytest/height/{height}', [AcademyTestController::class, 'height'])->name('academytest.height');
+Route::get('/academytest/height/{height}', function ($height) {
+    // return response()->json([
+    //     'message' => 'This is dummy JSON data for height 4',
+    //     'height' => $height,
+    //     'data' => [
+    //         'example_key' => 'example_value'
+    //     ]
+    // ]);
+    return app(ProductFilterController::class)->height($height);
+})->name('academytest.height');
 require __DIR__ . '/auth.php';
