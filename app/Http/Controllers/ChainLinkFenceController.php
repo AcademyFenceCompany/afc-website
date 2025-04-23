@@ -75,28 +75,48 @@ class ChainLinkFenceController extends Controller
         $systems = [
             1 => [
                 'name' => 'System 1',
-                'description' => 'Galv Wire 2" + Galv Frame',
-                'parent_suffix' => '' // Default system uses base parent code
+                'frame' => 'Galvanized Pipe',
+                'wire' => 'Galv 2" Mesh-9 Ga',
+                'description' => 'Galv/Galv-2x4',
+                'parent_suffix' => '', // Default system uses base parent code
+                'image' => url('storage/products/chainlinks/chainlink_fence_galvframe_g.gif'),
+                'type' => 'Standard',
             ],
             2 => [
                 'name' => 'System 2',
-                'description' => 'Vinyl Wire 2" + Galv Frame',
-                'parent_suffix' => 'S2'
+                'frame' => 'Galvanized Pipe',
+                'wire' => 'Blk 2" Mesh-9 Ga',
+                'description' => 'Galv/Vinyl-2x4',
+                'parent_suffix' => 'S2',
+                'image' => url('storage/products/chainlinks/galvframe_blackwire.gif'),
+                'type' => 'Standard',
             ],
             3 => [
                 'name' => 'System 3',
-                'description' => 'Vinyl Wire 2" + Color Coated Frame',
-                'parent_suffix' => 'S3'
+                'frame' => 'Vinyl Coated Pipe',
+                'wire' => 'Blk 2" Mesh-9 Ga',
+                'description' => 'Vinyl/Vinyl-2x4',
+                'parent_suffix' => 'S3',
+                'image' => url('storage/products/chainlinks/blackframe_blackwire.gif'),
+                'type' => 'Standard',
             ],
             4 => [
                 'name' => 'System 4',
-                'description' => 'Pool Code Vinyl Wire 1 1/4" + Galv Frame',
-                'parent_suffix' => 'S4'
+                'frame' => 'Galvanized Pipe',
+                'wire' => 'Blk 1 1/4" Mesh-11 Ga',
+                'description' => 'Galv/Vinyl-1 1/4',
+                'parent_suffix' => 'S4',
+                'image' => url('storage/products/chainlinks/galvframe_blackwirepc.gif'),
+                'type' => 'Non-Climbable',
             ],
             5 => [
                 'name' => 'System 5',
-                'description' => 'Pool Code Vinyl Wire 1 1/4" + Color Coated Frame',
-                'parent_suffix' => 'S5'
+                'frame' => 'Vinyl Coated Pipe',
+                'wire' => 'Blk 1 1/4" Mesh-11 Ga',
+                'description' => 'Vinyl/Vinyl-1 1/4',
+                'parent_suffix' => 'S5',
+                'image' => url('storage/products/chainlinks/blackframe_blackwirepc.gif'),
+                'type' => 'Non-Climbable',
             ]
         ];
         
@@ -115,46 +135,48 @@ class ChainLinkFenceController extends Controller
             $parentCode .= $systems[$system]['parent_suffix'];
         }
         
-        // Get products for this height and system by parent value
+        // Define style patterns for each system and height
+        $heightPrefix = strtolower(substr($height, 0, 1)); // Get first character of height (4, 5, or 6)
+        
+        // Define frame types for each system
+        $frameTypes = [
+            1 => 'galv', // System 1: Galvanized frame and wire
+            2 => 'galv', // System 2: Galvanized frame, black wire
+            3 => 'vinyl', // System 3: Vinyl frame and wire
+            4 => 'galv', // System 4: Galvanized frame, black wire (non-climbable)
+            5 => 'vinyl', // System 5: Vinyl frame and wire (non-climbable)
+        ];
+        
+        // Style pattern for the current height and system
+        $stylePattern = $heightPrefix . 'ftsys' . $system;
+        
+        // Terminal post style pattern based on frame type for the current system
+        $terminalPostPattern = $heightPrefix . 'ftsys' . $frameTypes[$system];
+        
+        // Log the patterns we're searching for
+        \Illuminate\Support\Facades\Log::info("Searching for products with patterns: {$stylePattern}, {$terminalPostPattern}");
+        
+        // Get products for this height and system using style patterns
         $products = DB::connection('mysql_second')
             ->table('productsqry')
-            ->where('parent', 'LIKE', "{$parentCode}%")
+            ->where(function($query) use ($stylePattern, $terminalPostPattern) {
+                // Match by style pattern for the specific height and system
+                $query->where('style', 'LIKE', "%{$stylePattern}%")
+                    // Or match terminal posts by frame type for this height
+                    ->orWhere('style', 'LIKE', "%{$terminalPostPattern}%");
+            })
             ->where('enabled', 1)
-            ->select('id', 'product_name', 'item_no', 'price', 'desc_short', 'desc_long', 'img_small', 'img_large', 'color', 'size', 'material', 'style', 'product_assoc', 'parent')
+            ->select('id', 'product_name', 'item_no', 'price', 'desc_short', 'desc_long', 
+                    'img_small', 'img_large', 'color', 'size', 'material', 'style', 
+                    'product_assoc', 'parent')
             ->get();
             
-        // Define specific product IDs for each system
-        $systemProductIds = [
-            1 => [
-                'fence_section' => [2720],
-                'terminal_posts' => [2721, 2722],
-                'gates' => [2877, 2878, 2879, 3029, 3053, 3057]
-            ],
-            2 => [
-                'fence_section' => [2723],
-                'terminal_posts' => [2721, 2722],
-                'gates' => [2880, 2881, 2882, 3060, 3063, 3065]
-            ],
-            3 => [
-                'fence_section' => [2726],
-                'terminal_posts' => [2741, 2732],
-                'gates' => [2887, 2888, 2889, 3070, 3072, 3074]
-            ],
-            4 => [
-                'fence_section' => [2744],
-                'terminal_posts' => [2721, 2722],
-                'gates' => [2898, 2900, 2902, 3079, 3081, 3083]
-            ],
-            5 => [
-                'fence_section' => [2730],
-                'terminal_posts' => [2741, 2732],
-                'gates' => [2908, 2910, 2912, 3087, 3088, 3090]
-            ]
-        ];
+        // Log how many products were found
+        \Illuminate\Support\Facades\Log::info("Found " . $products->count() . " products for {$height} System {$system}");
         
         // Define product categories
         $productCategories = [
-            'fence_section' => 'Fence Section (Price per Linear Foot)',
+            'fence_section' => 'Fence Custom Complete (Price per Linear Foot)',
             'terminal_posts' => 'Terminal Posts',
             'gates' => 'Gates w/hardware',
         ];
@@ -177,21 +199,32 @@ class ChainLinkFenceController extends Controller
                     ? url('storage/products/' . $product->img_small) 
                     : url('storage/products/default.png'));
             
-            // Determine product category based on ID
-            $category = null; // Default to null (no category)
+            // Determine product category based on style pattern and product name
+            $category = null;
             
-            // Check if product is a gate
-            if (isset($systemProductIds[$system]['gates']) && in_array($product->id, $systemProductIds[$system]['gates'])) {
+            // Convert style and product name to lowercase for easier matching
+            $style = strtolower($product->style ?? '');
+            $productName = strtolower($product->product_name ?? '');
+            
+            // Check for gates first (they're most specific)
+            if (strpos($style, 'gate') !== false || 
+                strpos($productName, 'gate') !== false ||
+                strpos($productName, 'walk') !== false ||
+                strpos($productName, 'drive') !== false) {
                 $category = 'gates';
             }
-            // Check other categories
+            // Check for terminal posts
+            elseif (strpos($style, 'post') !== false || 
+                   strpos($style, 'terminal') !== false ||
+                   strpos($productName, 'post') !== false ||
+                   strpos($productName, 'terminal') !== false ||
+                   strpos($productName, 'corner') !== false ||
+                   strpos($productName, 'end post') !== false) {
+                $category = 'terminal_posts';
+            }
+            // Default to fence section for remaining products
             else {
-                foreach (['fence_section', 'terminal_posts'] as $cat) {
-                    if (isset($systemProductIds[$system][$cat]) && in_array($product->id, $systemProductIds[$system][$cat])) {
-                        $category = $cat;
-                        break;
-                    }
-                }
+                $category = 'fence_section';
             }
             
             // Only add product if it belongs to a defined category

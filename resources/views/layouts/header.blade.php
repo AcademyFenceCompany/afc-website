@@ -105,9 +105,8 @@
                 <nav class="nav mb-3 d-none d-md-flex flex-wrap">
                     <!-- Wood Fence Dropdown -->
                     <div class="dropdown">
-                        <a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WOOD FENCE</a>
+                        <li><a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">WOOD FENCE</a></li>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('woodfence') }}">All Wood Fence</a></li>
                             <li><a class="dropdown-item" href="/wood-fence/specs/6/2%201/2%20in.?styleTitle=Spaced+Picket">Spaced Picket Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('solid-board') }}">Solid Board Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Shadow Box Board On Board</a></li>
@@ -124,9 +123,8 @@
                     <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
                     <!-- Chain Link Fence Dropdown -->
                     <div class="dropdown">
-                        <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">CHAIN LINK</a>
+                        <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">CHAIN LINK</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('chainlink.main') }}">All Chain Link Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Chain Link Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Chain Link Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Chain Link Fence</a></li>
@@ -135,9 +133,8 @@
                     
                     <!-- Aluminum Fence Dropdown -->
                     <div class="dropdown">
-                        <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
+                        <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">ALUMINUM FENCE</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
                         </ul>
@@ -171,7 +168,6 @@
                         <div class="dropdown mb-2">
                             <a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WOOD FENCE</a>
                             <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('woodfence') }}">All Wood Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('stockade.index') }}">Stockade Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Board Fence</a></li>
                             <li><a class="dropdown-item" href="{{ route('tongue-groove') }}">Tongue Groove Fence</a></li>
@@ -184,7 +180,6 @@
                         <div class="dropdown mb-2">
                             <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">CHAIN LINK</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('chainlink.main') }}">All Chain Link Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Chain Link Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Chain Link Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Chain Link Fence</a></li>
@@ -195,7 +190,6 @@
                         <div class="dropdown mb-2">
                             <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('aluminumfence.main') }}">All Aluminum Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
                                 <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
                             </ul>
