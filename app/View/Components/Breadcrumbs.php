@@ -17,11 +17,30 @@ class Breadcrumbs extends Component
     {
         $breadcrumbs = [];
         $segments = request()->segments();
+        $currentUrl = '';
 
         foreach ($segments as $index => $segment) {
+            $currentUrl .= '/' . $segment;
+            
+            // Special handling for chainlink fence routes
+            if ($segment === 'chain-link-fence') {
+                $name = 'Chain Link Fence';
+            } elseif ($segment === 'complete' && isset($segments[$index-1]) && $segments[$index-1] === 'chain-link-fence') {
+                $name = 'Complete';
+            } elseif ($segment === 'package' && isset($segments[$index-1]) && $segments[$index-1] === 'chain-link-fence') {
+                $name = 'Package';
+            } elseif (in_array($segment, ['4ft', '5ft', '6ft']) && 
+                     (isset($segments[$index-1]) && in_array($segments[$index-1], ['chain-link-fence', 'complete', 'package']))) {
+                $name = $segment . ' Height';
+            } elseif ($segment === 'system' && isset($segments[$index-1]) && in_array($segments[$index-1], ['4ft', '5ft', '6ft'])) {
+                $name = 'System';
+            } else {
+                $name = ucfirst(str_replace('-', ' ', $segment));
+            }
+            
             $breadcrumbs[] = [
-                'name' => ucfirst(str_replace('-', ' ', $segment)),
-                'url' => url(implode('/', array_slice($segments, 0, $index + 1))),
+                'name' => $name,
+                'url' => url($currentUrl),
             ];
         }
 
