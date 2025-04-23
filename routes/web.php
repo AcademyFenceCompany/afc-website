@@ -195,6 +195,10 @@ Route::post('/aluminum-fence/filter-products', [AluminumFenceController::class, 
 
 // Chain Link Fence Routes
 Route::get('/chain-link-fence', [ChainLinkFenceController::class, 'main'])->name('chainlink.main');
+Route::get('/chain-link-fence/complete/{height}', [ChainLinkFenceController::class, 'heightCategoryWithOption'])
+    ->name('chainlink.complete.height');
+Route::get('/chain-link-fence/package/{height}', [ChainLinkFenceController::class, 'heightCategoryWithOption'])
+    ->name('chainlink.package.height');
 Route::get('/chain-link-fence/{height}', [ChainLinkFenceController::class, 'heightCategory'])->name('chainlink.height');
 Route::get('/chain-link-fence/{height}/system/{system}', [ChainLinkFenceController::class, 'heightCategory'])->name('chainlink.height.system');
 

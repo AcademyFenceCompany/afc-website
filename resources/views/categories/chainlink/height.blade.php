@@ -120,10 +120,13 @@
     }
     
     .system-selection-title {
-        font-size: 18px;
+        font-size: 15px;
         font-weight: bold;
         margin-bottom: 15px;
-        color: #1a4d2e;
+        color: #fff;
+        margin-left: 200px;
+        background-color: #972525;
+        padding: 8px 20px;
     }
     
     .system-card {
@@ -133,6 +136,8 @@
         transition: all 0.3s ease;
         height: 85%;
         background-color: #f8f9fa;
+        display: flex;
+        align-items: center;
     }
     
     .system-card.active {
@@ -140,16 +145,31 @@
     }
     
     .system-name {
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: #333;
-        font-size: 14px;
-    }
+    font-weight: bold;
+    margin-bottom: 0px;
+    color: #333;
+    font-size: 15px;
+}
     
     .system-description {
         color: #555;
-        font-size: 13px;
+        font-size: 12px;
     }
+    
+    .system-image {
+    width: 43%;
+    min-width: 80px;
+    margin-right: 6px;
+    overflow: hidden;
+}
+    
+    .bundle-info {
+        flex: 1;
+    }
+    .system-image img {
+    width: 100%;
+    height: 100px;
+}
     
     .current-system-info {
         margin-bottom: 30px;
@@ -232,11 +252,12 @@
     }
     
     .product-item-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 8px;
-    }
+    display: flex
+;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 8px;
+}
     
     .product-item-title {
         font-weight: bold;
@@ -276,7 +297,7 @@
     
     .size-select select {
         width: auto;
-        min-width: 150px;
+        min-width: 120px;
     }
     
     .product-controls {
@@ -322,15 +343,18 @@
     }
     
     .installation-title {
-        color: #972525;
-        font-size: 10px;
+        color: #fff !important;
+        font-size: 14px;
         margin-bottom: 10px;
         font-weight: bold;
+        background-color: #972525 !important;
+        padding: 5px 5px;
     }
     
-    .installation-list {
-        padding-left: 20px;
-    }
+    installation-list {
+    padding-left: 20px;
+    font-size: 11px;
+}
     
     .installation-steps {
         padding-left: 20px;
@@ -359,6 +383,17 @@
         color: #972525;
     }
     
+    .system-type-badge {
+        background-color: #972525;
+        color: white;
+        font-size: 10px;
+        padding: 2px 5px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    
     @media (min-width: 768px) {
         .system-bundle-content {
             flex-direction: row;
@@ -379,34 +414,77 @@
 @section('content')
 <div class="container">
     <div class="rounded bg-brown mb-2">
-        <h1 class="page-title text-center mb-0">{{ $height }} Chain Link Fence</h1>
+        <div class="system-bundle-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="heightDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Change Height
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="heightDropdown">
+                        <li><a class="dropdown-item {{ $height == '4ft' ? 'active' : '' }}" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Height</a></li>
+                        <li><a class="dropdown-item {{ $height == '5ft' ? 'active' : '' }}" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Height</a></li>
+                        <li><a class="dropdown-item {{ $height == '6ft' ? 'active' : '' }}" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Height</a></li>
+                    </ul>
+                </div>
+                <h4 class="system-bundle-title text-center flex-grow-1">{{ $height }} - Chain Link Fence Complete {{ $systems[$system]['name'] }}</h4>
+            </div>
+        </div>
     </div>
     
     <!-- System Selection -->
     <div class="system-selection mb-2">
-        <h2 class="system-selection-title mb-3">Select System Type</h2>
+        <div class="titles d-flex justify-content-evenly">
+            {{-- <h2 class="system-selection-title mb-3" style="visibility: hidden;">Select System Type</h2>
+            <h2 class="system-selection-title mb-3">Non-Climbable | Pool Code</h2> --}}
+        </div>
+        <!-- All systems in one row -->
         <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 g-3">
+            <!-- Regular systems (1-3) -->
             @foreach($systems as $systemId => $systemInfo)
+                @if($systemId <= 3)
                 <div class="col">
                     <a href="{{ route('chainlink.height.system', ['height' => $height, 'system' => $systemId]) }}" 
                        class="text-decoration-none">
-                        <div class="system-card p-3 rounded {{ $systemId == $system ? 'active' : '' }}">
-                            <h3 class="system-name h5 mb-2">{{ $systemInfo['name'] }}</h3>
-                            <p class="system-description mb-0">{{ $systemInfo['description'] }}</p>
+                        <div class="system-card p-2 rounded {{ $systemId == $system ? 'active' : '' }}">
+                            <div class="system-image">
+                                <img src="{{ $systemInfo['image'] }}" alt="{{ $height }} Chain Link Fence">
+                            </div>
+                            <div class="bundle-info">
+                                <h3 class="system-name h5">{{ $systemInfo['name'] }}</h3>
+                                <p class="system-description mb-0"><strong><span class="text-center">Frame:</span><br><span style="margin-left: 0">{{ $systemInfo['frame'] }}</span></strong></p>
+                                <p class="system-description mb-0"><strong><span class="text-center">Wire:</span><br><span style="margin-left: 0">{{ $systemInfo['wire'] }}</span></strong></p>
+                            </div>
                         </div>
                     </a>
                 </div>
+                @endif
+            @endforeach
+            
+            <!-- Non-Climbable systems (4-5) -->
+            @foreach($systems as $systemId => $systemInfo)
+                @if($systemId >= 4)
+                <div class="col">
+                    <a href="{{ route('chainlink.height.system', ['height' => $height, 'system' => $systemId]) }}" 
+                       class="text-decoration-none">
+                        <div class="system-card p-2 rounded {{ $systemId == $system ? 'active' : '' }}">
+                            <div class="system-image">
+                                <img src="{{ $systemInfo['image'] }}" alt="{{ $height }} Chain Link Fence">
+                            </div>
+                            <div class="bundle-info">
+                                <h3 class="system-name h5">{{ $systemInfo['name'] }} <img src="{{ url('storage/products/pcicon.jpg') }}" alt="Nonclimb" class="img-fluid" style="max-height: 20px; margin-right: 5px;"></h3>
+                                <p class="system-description mb-0"><strong>Frame:<br>{{ $systemInfo['frame'] }}</strong></p>
+                                <p class="system-description mb-0"><strong>Wire:<br>{{ $systemInfo['wire'] }}</strong></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endif
             @endforeach
         </div>
     </div>
     
     <!-- Current System Bundle -->
     <div class="system-bundle">
-        <div class="system-bundle-header">
-            <h3 class="system-bundle-title">{{ $height }} Chain Link Fence - {{ $systems[$system]['name'] }}</h3>
-            <div class="system-bundle-subtitle">{{ $systems[$system]['description'] }}</div>
-        </div>
-        
         <!-- System Info Box -->
         <div class="system-info-box">
             <div class="row">
@@ -430,27 +508,36 @@
         <div class="system-bundle-content">
             <!-- Bundle Image -->
             <div class="bundle-image">
-                <img src="{{ url('storage/categories/chainlink.jpg') }}" alt="{{ $height }} Chain Link Fence System">
+                <h4 class="text-center">{{ $height }} High-{{ $systems[$system]['name'] }}</h4>
+                <img src="{{ $systems[$system]['image'] }}" alt="{{ $height }} Chain Link Fence System">
                 
                 <!-- Installation Options -->
                 <div class="installation-options mt-4">
-                    <h4 class="installation-title">Installation Options:</h4>
-                    <ol class="installation-list">
-                        <li>
-                            <strong>Allow our professional fence technicians to do the work for you!!</strong> (New Jersey area) 
-                            Use our simple quote sheet and send in your info by email or fax.
-                        </li>
-                        <li class="mt-2">
-                            <strong>Install your {{ $height }} chain link system yourself.</strong> In order to simplify the process of figuring out what fence parts you need for your fencing project and to calculate the actual price, we offer the following simple method:
-                            
-                            <ol class="installation-steps mt-2">
-                                <li>Select the Academy chain link fence system {{ $height }} (five choices above)</li>
-                                <li>Determine the total linear footage of your fence measurements and multiply by the price per foot. This price includes the chain link mesh fabric, the top rail, line posts, and loop caps and tie wire ties.</li>
-                                <li>Determine how many terminal posts you need (this is any post where the fence starts and stops, including end, corner, and gate posts.) This price includes the post, and all the fittings (including tension bands, brace bands, rail ends, and caps). You may choose larger diameter terminal posts for the larger double drive gates.</li>
-                                <li>Choose the quantity and size of access gates. This price includes the gate, and all the hardware (including hinges, latches, gate caps, and drop bars for double gates). It does not include the gate posts, those would be counted as terminal posts.</li>
-                            </ol>
-                        </li>
-                    </ol>
+                    <h4 class="installation-title">
+                        <a href="#" id="installation-toggle" class="installation-title text-decoration-none text-dark d-flex align-items-center" 
+                           onclick="toggleInstallation(event)">
+                            <span>Learn more about installations</span>
+                            <i class="bi bi-chevron-down ms-2"></i>
+                        </a>
+                    </h4>
+                    <div id="installation-content" class="collapse">
+                        <ol class="installation-list">
+                            <li>
+                                <strong>Allow our professional fence technicians to do the work for you!!</strong> (New Jersey area) 
+                                Use our simple quote sheet and send in your info by email or fax.
+                            </li>
+                            <li class="mt-2">
+                                <strong>Install your {{ $height }} chain link system yourself.</strong> In order to simplify the process of figuring out what fence parts you need for your fencing project and to calculate the actual price, we offer the following simple method:
+                                
+                                <ol class="installation-steps mt-2">
+                                    <li>Select the Academy chain link fence system {{ $height }} (five choices above)</li>
+                                    <li>Determine the total linear footage of your fence measurements and multiply by the price per foot. This price includes the chain link mesh fabric, the top rail, line posts, and loop caps and tie wire ties.</li>
+                                    <li>Determine how many terminal posts you need (this is any post where the fence starts and stops, including end, corner, and gate posts.) This price includes the post, and all the fittings (including tension bands, brace bands, rail ends, and caps). You may choose larger diameter terminal posts for the larger double drive gates.</li>
+                                    <li>Choose the quantity and size of access gates. This price includes the gate, and all the hardware (including hinges, latches, gate caps, and drop bars for double gates). It does not include the gate posts, those would be counted as terminal posts.</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
             
@@ -459,31 +546,45 @@
                 @if(count($productGroups) > 0)
                     @foreach($productGroups as $categoryKey => $group)
                         <div class="product-category">
-                            <h3 class="product-category-title">{{ $group['title'] }}</h3>
+                            <h3 class="product-category-title">{{ $group['title'] }} - {{ $systems[$system]['name'] }}</h3>
                             
-                            @if($categoryKey == 'fence_section')
-                                <div class="product-category-description">
-                                    <strong>Includes:</strong><br>
-                                    * 1 3/8 Top Rail * Fabric * 1 5/8 x 6ft Line Post * Loop Caps * Ties<br>
-                                    <strong>** Add $1.00 per foot for runs under 50 feet **</strong><br>
-                                    <strong>** For 1 3/8 Bottom Rail add $1.50 per foot **</strong><br>
-                                    <strong>** For 1 5/8 Bottom Rail add $1.75 per foot **</strong>
-                                </div>
-                            @elseif($categoryKey == 'terminal_posts')
+                            @if($categoryKey == 'terminal_posts')
+                               
+                                @foreach($group['products'] as $product)
+                                    <div class="product-item">
+                                        <div class="product-item-header">
+                                            <div class="product-item-title" style="margin-right: 8px">{{ $product->product_name }}-{{ $product->size }}</div>
+                                            <div class="product-item-actions">
+                                                <div class="product-controls">
+                                                    <div class="quantity-control quantity-small">
+                                                        <div class="quantity-btn quantity-minus" onclick="updateQuantity({{ $product->id }}, -1)"><i class="bi bi-dash"></i></div>
+                                                        <input type="number" id="quantity-{{ $product->id }}" class="form-control quantity-input" value="1" min="1" onchange="updateTotalPrice({{ $product->id }})">
+                                                        <div class="quantity-btn quantity-plus" onclick="updateQuantity({{ $product->id }}, 1)"><i class="bi bi-plus"></i></div>
+                                                    </div>
+                                                    <div class="total-price" id="total-price-{{ $product->id }}">${{ number_format($product->price, 2) }}</div>
+                                                    <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
+                                                            id="add-btn-{{ $product->id }}"
+                                                            data-item="{{ $product->item_no }}" 
+                                                            data-name="{{ $product->product_name }}" 
+                                                            data-price="{{ $product->price }}"
+                                                            data-quantity="1"> Add to Cart
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                                 <div class="product-category-description">
                                     <strong>Includes:</strong><br>
                                     * Post * Tension Bars * Tension Bands * Rail Ends * Brace Bands * Cap
                                 </div>
-                            @elseif($categoryKey == 'gates')
-                                <div class="product-category-description">
-                                    <strong>Includes:</strong><br>
-                                    * Complete assembled gate * All necessary hinges & hardware
-                                </div>
-                            @endif
-                            
-                            @php
+                            @else
+                                <!-- Group other products by base name -->
+                                @php
                                 // Group products by base name (removing size info)
                                 $productTypes = [];
+                                
+                                // For other categories, group by base name
                                 foreach($group['products'] as $product) {
                                     // Extract base product name (without size)
                                     $baseName = preg_replace('/\s+\d+(\.\d+)?(\s*x\s*\d+(\.\d+)?)?(ft|in)?$/i', '', $product->product_name);
@@ -495,49 +596,63 @@
                                     
                                     $productTypes[$baseName][] = $product;
                                 }
-                            @endphp
-                            
-                            @foreach($productTypes as $baseName => $products)
-                                <div class="product-item">
-                                    <div class="product-item-header">
-                                        <div class="product-item-title">{{ $baseName }}</div>
-                                    </div>
-                                    
-                                    <div class="product-item-actions">
-                                        @if(count($products) > 1)
-                                            <div class="size-select">
-                                                <label for="size-select-{{ $products[0]->id }}">Size:</label>
-                                                <select class="form-select form-select-sm" id="size-select-{{ $products[0]->id }}" 
-                                                        onchange="updateProductPrice(this, {{ json_encode(array_map(function($p) { 
-                                                            return ['id' => $p->id, 'price' => $p->price, 'item_no' => $p->item_no]; 
-                                                        }, $products)) }})">
-                                                    @foreach($products as $index => $product)
-                                                        <option value="{{ $product->id }}" data-item="{{ $product->item_no }}" data-price="{{ $product->price }}">
-                                                            {{ $product->size ?? 'Standard' }} - ${{ number_format($product->price, 2) }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                @endphp
+                                
+                                @foreach($productTypes as $baseName => $products)
+                                    <div class="product-item">
+                                        <div class="product-item-header">
+                                            <div class="product-item-title" style="margin-right: 8px">{{ $baseName }}</div>
+                                            <div class="product-item-actions">
+                                                @if(count($products) > 1)
+                                                    <div class="size-select">
+                                                        <label for="size-select-{{ $products[0]->id }}"></label>
+                                                        <select class="form-select form-select-sm" id="size-select-{{ $products[0]->id }}" 
+                                                                onchange="updateProductPrice(this, {{ json_encode(array_map(function($p) { 
+                                                                    return ['id' => $p->id, 'price' => $p->price, 'item_no' => $p->item_no]; 
+                                                                }, $products)) }})">
+                                                            @foreach($products as $index => $product)
+                                                                <option value="{{ $product->id }}" data-item="{{ $product->item_no }}" data-price="{{ $product->price }}">
+                                                                    {{ $product->size ?? 'Standard' }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
+                                                
+                                                <div class="product-controls">
+                                                    <div class="quantity-control quantity-small">
+                                                        <div class="quantity-btn quantity-minus" onclick="updateQuantity({{ $products[0]->id }}, -1)"><i class="bi bi-dash"></i></div>
+                                                        <input type="number" id="quantity-{{ $products[0]->id }}" class="form-control quantity-input" value="1" min="1" onchange="updateTotalPrice({{ $products[0]->id }})">
+                                                        <div class="quantity-btn quantity-plus" onclick="updateQuantity({{ $products[0]->id }}, 1)"><i class="bi bi-plus"></i></div>
+                                                    </div>
+                                                    <div class="total-price" id="total-price-{{ $products[0]->id }}">${{ number_format($products[0]->price, 2) }}</div>
+                                                    <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
+                                                            id="add-btn-{{ $products[0]->id }}"
+                                                            data-item="{{ $products[0]->item_no }}" 
+                                                            data-name="{{ $baseName }}" 
+                                                            data-price="{{ $products[0]->price }}"
+                                                            data-quantity="1"> Add to Cart
+                                                    </button>
+                                                </div>
                                             </div>
-                                        @endif
-                                        
-                                        <div class="product-controls">
-                                            <div class="quantity-control quantity-small">
-                                                <div class="quantity-btn quantity-minus" onclick="updateQuantity({{ $products[0]->id }}, -1)"><i class="bi bi-dash"></i></div>
-                                                <input type="number" id="quantity-{{ $products[0]->id }}" class="form-control quantity-input" value="1" min="1" onchange="updateTotalPrice({{ $products[0]->id }})">
-                                                <div class="quantity-btn quantity-plus" onclick="updateQuantity({{ $products[0]->id }}, 1)"><i class="bi bi-plus"></i></div>
-                                            </div>
-                                            <div class="total-price" id="total-price-{{ $products[0]->id }}">${{ number_format($products[0]->price, 2) }}</div>
-                                            <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
-                                                    id="add-btn-{{ $products[0]->id }}"
-                                                    data-item="{{ $products[0]->item_no }}" 
-                                                    data-name="{{ $baseName }}" 
-                                                    data-price="{{ $products[0]->price }}"
-                                                    data-quantity="1"> Add
-                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                                @if($categoryKey == 'fence_section')
+                                    <div class="product-category-description">
+                                        <strong>Includes:</strong><br>
+                                        * Fabric * 1 3/8 Top Rail * 1 5/8 x 6ft Line Post * Loop Caps * Ties<br>
+                                        {{-- <strong>** Add $1.00 per foot for runs under 50 feet **</strong><br>
+                                        <strong>** For 1 3/8 Bottom Rail add $1.50 per foot **</strong><br>
+                                        <strong>** For 1 5/8 Bottom Rail add $1.75 per foot **</strong> --}}
+                                    </div>
+                                @elseif($categoryKey == 'gates')
+                                    <div class="product-category-description">
+                                        <strong>Includes:</strong><br>
+                                        * Complete assembled gate * All necessary hinges & hardware
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     @endforeach
                 @else
@@ -551,39 +666,6 @@
 </div>
 
 <script>
-function updateProductPrice(selectElement, products) {
-    const selectedId = parseInt(selectElement.value);
-    const selectedProduct = products.find(p => p.id === selectedId);
-    
-    if (selectedProduct) {
-        // Get current quantity
-        const productBaseId = products[0].id;
-        const quantityInput = document.getElementById('quantity-' + productBaseId);
-        const quantity = parseInt(quantityInput.value) || 1;
-        
-        // Update total price
-        const totalPriceElement = document.getElementById('total-price-' + productBaseId);
-        if (totalPriceElement) {
-            const totalPrice = selectedProduct.price * quantity;
-            totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
-        }
-        
-        // Update item number
-        const itemNoElement = document.getElementById('item-no-' + productBaseId);
-        if (itemNoElement) {
-            itemNoElement.textContent = selectedProduct.item_no;
-        }
-        
-        // Update add to cart button data attributes
-        const addButton = document.getElementById('add-btn-' + productBaseId);
-        if (addButton) {
-            addButton.setAttribute('data-item', selectedProduct.item_no);
-            addButton.setAttribute('data-price', selectedProduct.price);
-            addButton.setAttribute('data-quantity', quantity);
-        }
-    }
-}
-
 function updateQuantity(productId, change) {
     const quantityInput = document.getElementById('quantity-' + productId);
     let quantity = parseInt(quantityInput.value) || 1;
@@ -594,6 +676,34 @@ function updateQuantity(productId, change) {
     quantityInput.value = quantity;
     
     updateTotalPrice(productId);
+}
+
+function updateProductPrice(select, products) {
+    const selectedOption = select.options[select.selectedIndex];
+    const productId = select.value;
+    const price = parseFloat(selectedOption.getAttribute('data-price'));
+    const itemNo = selectedOption.getAttribute('data-item');
+    
+    // Update add button with new product info
+    const addButton = document.getElementById('add-btn-' + products[0].id);
+    addButton.setAttribute('data-item', itemNo);
+    addButton.setAttribute('data-price', price);
+    addButton.id = 'add-btn-' + productId;
+    
+    // Update total price
+    const quantityInput = document.getElementById('quantity-' + products[0].id);
+    const totalPriceElement = document.getElementById('total-price-' + products[0].id);
+    
+    if (quantityInput && totalPriceElement) {
+        const quantity = parseInt(quantityInput.value) || 1;
+        const totalPrice = price * quantity;
+        
+        totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
+        
+        // Update quantity input ID to match new product ID
+        quantityInput.id = 'quantity-' + productId;
+        totalPriceElement.id = 'total-price-' + productId;
+    }
 }
 
 function updateTotalPrice(productId) {
@@ -625,6 +735,21 @@ function updateTotalPrice(productId) {
         
         addButton.setAttribute('data-quantity', quantity);
         addButton.setAttribute('data-price', price);
+    }
+}
+
+function toggleInstallation(event) {
+    event.preventDefault();
+    const installationContent = document.getElementById('installation-content');
+    const toggleLink = document.getElementById('installation-toggle');
+    const chevronIcon = toggleLink.querySelector('.bi-chevron-down');
+    
+    if (installationContent.classList.contains('collapse')) {
+        installationContent.classList.remove('collapse');
+        chevronIcon.classList.replace('bi-chevron-down', 'bi-chevron-up');
+    } else {
+        installationContent.classList.add('collapse');
+        chevronIcon.classList.replace('bi-chevron-up', 'bi-chevron-down');
     }
 }
 

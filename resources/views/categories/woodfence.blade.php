@@ -78,7 +78,7 @@
             <h1 class="page-title text-center py-2 mb-0">WOOD FENCE</h1>
         </div>
         <div class="text-center py-2 mb-4 border-bottom">
-            <p class="mb-0">Academy Wood Fence - Cedar Fencing Leaders in Wood Fencing for Over 40 Years.</p>
+            <p class="mb-0">Academy Wood Fence - Cedar Wood Fencing Leaders Since 1968</p>
         </div>
 
         <!-- Info Section -->
