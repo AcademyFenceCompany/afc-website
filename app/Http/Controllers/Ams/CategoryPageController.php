@@ -3,22 +3,29 @@
 namespace App\Http\Controllers\Ams;
 
 use App\Http\Controllers\Controller;
-use App\Models\CategoryPage;
-use App\Models\FamilyCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CategoryPageController extends Controller
 {
     public function index()
     {
-        $pages = CategoryPage::with('category')->get();
+        $pages = DB::connection('mysql_second')
+            ->table('category_pages')
+            ->join('majorcategories', 'category_pages.family_category_id', '=', 'majorcategories.id')
+            ->select('category_pages.*', 'majorcategories.cat_name')
+            ->get();
+
         return view('ams.cms.pages.index', compact('pages'));
     }
 
     public function create()
     {
-        $categories = FamilyCategory::all();
+        $categories = DB::connection('mysql_second')
+            ->table('categories')
+            ->get();
+
         return view('ams.cms.pages.create', [
             'page' => null,
             'categories' => $categories
@@ -28,7 +35,7 @@ class CategoryPageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'family_category_id' => 'required|exists:family_categories,family_category_id',
+            'family_category_id' => 'required|exists:mysql_second.categories,id',
             'template' => 'required|string|in:standard,welded_wire,razor_wire',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
@@ -56,22 +63,39 @@ class CategoryPageController extends Controller
                 ->store('category-pages', 'public');
         }
 
-        CategoryPage::create($validated);
+        $validated['slug'] = \Str::slug($validated['title'] ?? 'category-page-' . time());
+
+        DB::connection('mysql_second')
+            ->table('category_pages')
+            ->insert($validated);
 
         return redirect()->route('ams.cms.pages.index')
             ->with('success', 'Category page created successfully.');
     }
 
-    public function edit(CategoryPage $page)
+    public function edit($id)
     {
-        $categories = FamilyCategory::all();
-        return view('ams.cms.pages.edit', compact('page', 'categories'));
-    }
+        $page = DB::connection('mysql_second')
+            ->table('category_pages')
+            ->where('id', $id)
+            ->first();
 
-    public function update(Request $request, CategoryPage $page)
+        if (!$page) {
+            return redirect()->route('ams.cms.pages.index')
+                ->with('error', 'Category page not found.');
+        }
+
+$categories = DB::connection('mysql_second')
+    ->table('majorcategories')
+    ->get();
+
+return view('ams.cms.pages.edit', compact('page', 'categories'));
+}
+
+    public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'family_category_id' => 'required|exists:family_categories,family_category_id',
+            'family_category_id' => 'required|exists:mysql_second.majorcategories,id',
             'template' => 'required|string|in:standard,welded_wire,razor_wire',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
@@ -88,6 +112,16 @@ class CategoryPageController extends Controller
             'menu_type' => 'nullable|string|in:main_menu,quick_menu',
             'menu_order' => 'nullable|integer|min:0'
         ]);
+
+        $page = DB::connection('mysql_second')
+            ->table('category_pages')
+            ->where('id', $id)
+            ->first();
+
+        if (!$page) {
+            return redirect()->route('ams.cms.pages.index')
+                ->with('error', 'Category page not found.');
+        }
 
         if ($request->hasFile('product_image')) {
             if ($page->product_image) {
@@ -105,14 +139,31 @@ class CategoryPageController extends Controller
                 ->store('category-pages', 'public');
         }
 
-        $page->update($validated);
+        if (isset($validated['title']) && $validated['title'] !== $page->title) {
+            $validated['slug'] = \Str::slug($validated['title'] ?? 'category-page-' . time());
+        }
+
+        DB::connection('mysql_second')
+            ->table('category_pages')
+            ->where('id', $id)
+            ->update($validated);
 
         return redirect()->route('ams.cms.pages.index')
             ->with('success', 'Category page updated successfully.');
     }
 
-    public function destroy(CategoryPage $page)
+    public function destroy($id)
     {
+        $page = DB::connection('mysql_second')
+            ->table('category_pages')
+            ->where('id', $id)
+            ->first();
+
+        if (!$page) {
+            return redirect()->route('ams.cms.pages.index')
+                ->with('error', 'Category page not found.');
+        }
+
         if ($page->product_image) {
             Storage::disk('public')->delete($page->product_image);
         }
@@ -120,7 +171,10 @@ class CategoryPageController extends Controller
             Storage::disk('public')->delete($page->footer_product_image);
         }
         
-        $page->delete();
+        DB::connection('mysql_second')
+            ->table('category_pages')
+            ->where('id', $id)
+            ->delete();
 
         return redirect()->route('ams.cms.pages.index')
             ->with('success', 'Category page deleted successfully.');
