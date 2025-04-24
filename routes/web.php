@@ -303,5 +303,14 @@ Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'upda
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
 
+Route::get('/post-caps', function () {
+    return view('post-caps');
+})->name('post-caps');
+
+Route::get('/temp-construction-fence', function () {
+    return view('temp-construction-fence');
+})->name('temp-construction-fence');
+
+
 
 require __DIR__ . '/auth.php';
