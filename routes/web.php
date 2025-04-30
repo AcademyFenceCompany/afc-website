@@ -102,6 +102,16 @@ Route::prefix('ams')->middleware('auth')->group(function () {
             'sample_data' => $sampleData
         ]);
     });
+    //==================== Development AMS Routes (Colin) ====================//
+    Route::get('/login', function(){
+        return view('ams.login', [
+            'title' => 'AMS Login',
+            'header' => 'AMS Login'
+        ]);
+    })->name('ams.login');
+    Route::get('/home', function () {
+        return view('ams.home');
+    })->name('ams.home');
 });
 
 Route::get('/', function () {
@@ -328,4 +338,10 @@ Route::get('/productdesc', function(){
     return view('productdesc', compact('majCategories', 'subCategories', 'fenceCategories'));
 
 })->name('category');
+Route::get('/logintest', function(){
+    return view('login', [
+        'title' => 'AMS Login',
+        'header' => 'AMS Login'
+    ]);
+})->name('ams.login');
 require __DIR__ . '/auth.php';
