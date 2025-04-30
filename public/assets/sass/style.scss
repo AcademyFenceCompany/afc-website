@@ -1,6 +1,6 @@
-$primary-color: #f5b149;
+$primary-color:  #882905;
 $primary-2-color:#ca9237;
-$secondary-color: #882905;
+$secondary-color: #f5b149;
 
 $bs-body-color: #5e5e5e;
 :root {
@@ -12,7 +12,6 @@ $bs-body-color: #5e5e5e;
     --light-color: #fff;
     --dark-color: #000;
     --bg-color: #f8f7f2;
-    --hover-color: #f6b453;
     --footer-bg-color: #000;
 }
 .bg-danger{
@@ -32,16 +31,17 @@ body{
 }
 header{
     .nav-link{
-        background-color: $primary-color;
+        background-color: $secondary-color;
         border-radius: .4rem;
         padding: .5rem 1rem !important;
         text-align: center;
-        font-weight: bold;
+        font-weight: normal;
         line-height: 2;
         height: 100%;
         display: flex;
         align-items: stretch;
         align-content: center;
+        text-transform: uppercase;
     }
     .filter-categories{ 
         border-radius: .4rem;
@@ -67,7 +67,7 @@ header{
                 height: 100%;
             }
             .dropdown-item{
-                color:rgb(43, 43, 43);
+                color:rgb(22, 22, 22);
                 padding: 0.4rem 1rem;
             }
             li{
@@ -79,12 +79,60 @@ header{
             }
         }
     }
+    @media (max-width: 800px) {
+        .big-menu {
+            width:100%;
+            .dropdown-toggle::after{
+                right: 1rem;
+            }
+            .d-flex{
+                flex-direction: column;
+            }
+            .dropdown-menu {
+                width: 20vw;
+                margin-left: -1px;
+                line-height: 1.3;
+                .dropdown-submenu{
+                    display: none;
+                    position: absolute;
+                    --bs-dropdown-bg: #eee !important;
+                    left: 100%;
+                    top: 0;
+                    height: 100%;
+                }
+                .dropdown-item{
+                    color:rgb(22, 22, 22);
+                    padding: 0.4rem 0;
+                }
+                li{
+                    padding: 0;
+                    font-size: .9rem;
+                }
+                > li:hover > .dropdown-submenu {
+                    display: block;
+                }
+                //////////////////////////////
+                width: 100%;
+                //position: static;
+                .dropdown-submenu {
+                    position: static;
+                    left: 0;
+                    top: 0;
+                }
+                .dropdown-menu {
+                    position: relative;
+                    width: 100%;
+                    padding:1rem;
+                }
+            }
+        }
+    }
 
 }
 nav.top-bar{
-    background-color: rgb(56, 56, 56);
+    background-color: rgb(242, 233, 228);
     .nav-link{
-        color: white;
+        color: rgb(7, 7, 7);
         font-weight: normal;
         background-color: transparent;
         font-size: .9rem;
@@ -147,7 +195,7 @@ nav.top-bar{
     border:1px solid #E1E1E1;
 }
 .search-bar{
-    border: 2px solid gray;
+    border: 2px solid #c4c4c4;
     select{
         width: auto;
     }
@@ -168,14 +216,13 @@ nav.top-bar{
 .btn-primary{
     background-color: $primary-color;
     border-color: $primary-color;
-    &:hover{
-        background-color: $primary-2-color;
-        border-color: $primary-2-color;
-    }
+    // &:hover{
+    //     background-color: $primary-2-color;
+    //     border-color: $primary-2-color;
+    // }
 }
 section{
-    border-top: 5px solid light-gray;
-    border-bottom: 5px solid light-gray;
+    border: none;
 }
 .system-complete-card{
     .card-desc{
@@ -215,4 +262,84 @@ section{
     border-radius: 0.5rem;
     display: block;
     background-color: beige;
+}
+.gallery-carrosel{
+    color: #FFF;
+    --height: 60vh;
+    height: var(--height);
+    overflow-y: hidden;
+    .carousel-item{
+        height: var(--height);
+        background-image: url('https://www.academyfence.com/codes-and-permits/wp-content/uploads/2019/04/yard-from-fork-lift-dark-480x165.jpg');
+        //height: 500px;
+        background-repeat: no-repeat;
+        background-size: cover;
+        h1{
+            font-size: 2.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase !important;
+        }
+        p{
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+        }
+    }
+    .gallery-footer{
+        border-top:1px solid rgb(78, 78, 78);
+        height: auto;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        i{
+            color: $secondary-color;
+        }
+        .list-group-item{
+            background-color: transparent !important;
+            border:none;
+            color: white;
+        }
+    }
+}
+.gallery-container{
+    .lightbox-carousel{
+        border: 1rem solid #FFF;
+    }
+    .img-container{
+        height: 300px;
+        overflow-y: hidden;
+        padding:0;
+        display: inline-block;
+    }
+}
+.counties{
+    .county-list{
+        font-family: 'Montserrat', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: .1rem;
+        color: #000;
+    }
+}
+.lightbox-caption{
+    bottom: 0;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    background: #3e3e3e9e;
+    font-size: 1rem;
+    padding:1rem;
+    em{
+        font-style:normal;
+    }
+}
+.banner-ad{
+    color: #FFF;
+}
+.landing-features{
+    background:#eaf0cb;
+    padding:0;
+}
+.testimonials{
+    background-color: #f2e9e4;
 }

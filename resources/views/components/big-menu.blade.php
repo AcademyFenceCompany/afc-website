@@ -1,11 +1,13 @@
 <ul class="dropdown-menu col-4" id="big-menu" aria-labelledby="big-menu">
     @foreach ($majCategories as $category)
-        <li class="d-flex flex-sm-row justify-content-between align-items-center">
+        <li class="flex-sm-row justify-content-between align-items-center">
             @php
                 $subCategories = \DB::table('categories')->where('majorcategories_id', $category->id)->get();
             @endphp
-            <a href="#" class="dropdown-item">{{ $category->cat_name }}</a>
-            @if (!$subCategories->isEmpty()) <i class="bi bi-chevron-right"></i> @endif
+            <a href="#" class="dropdown-item">
+                {{ $category->cat_name }}
+                @if (!$subCategories->isEmpty()) <i class="bi bi-chevron-right float-right"></i> @endif
+            </a>
             <!-- Second Level menu-->
             <ul class="dropdown-menu dropdown-submenu">
                 @foreach ($subCategories as $subcategory)

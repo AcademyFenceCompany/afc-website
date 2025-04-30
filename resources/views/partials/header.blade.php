@@ -134,7 +134,7 @@
                             <a href="#men" class="nav-link">Welded Wire</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#men" class="nav-link text-bg-info">Get A Quote</a>
+                            <a href="#men" class="nav-link text-bg-info" style="background-color: RGB(234, 221, 181)">Get A Quote</a>
                         </li>
                     </ul>
                     

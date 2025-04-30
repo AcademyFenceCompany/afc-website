@@ -10,7 +10,7 @@ class CartController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'item_no' => 'required|string',
+                'item_no' => 'required|string', //Replace with actual unique identifier (product ID)
                 'product_name' => 'required|string',
                 'price' => 'required|numeric',
                 'quantity' => 'required|integer|min:1',
@@ -30,6 +30,7 @@ class CartController extends Controller
                 'shipping_class' => 'nullable|string',
             ]);
 
+            //Replace with actual unique identifier (product ID)
             // Get cart from session or create a new one
             $cart = session()->get('cart', []);
 
@@ -118,21 +119,20 @@ class CartController extends Controller
             'message' => 'Cart cleared successfully',
         ]);
     }
-    public function update(Request $request)
-{
-    $cart = session()->get('cart', []);
+    public function update(Request $request){
+        $cart = session()->get('cart', []);
 
-    if (isset($cart[$request->item_no])) {
-        $cart[$request->item_no]['quantity'] = $request->quantity;
-        $cart[$request->item_no]['total'] = $cart[$request->item_no]['price'] * $request->quantity;
+        if (isset($cart[$request->item_no])) {
+            $cart[$request->item_no]['quantity'] = $request->quantity;
+            $cart[$request->item_no]['total'] = $cart[$request->item_no]['price'] * $request->quantity;
+        }
+
+        session()->put('cart', $cart);
+
+        return response()->json([
+            'success' => true,
+            'subtotal' => array_sum(array_column($cart, 'total'))
+        ]);
     }
-
-    session()->put('cart', $cart);
-
-    return response()->json([
-        'success' => true,
-        'subtotal' => array_sum(array_column($cart, 'total'))
-    ]);
-}
 
 }
