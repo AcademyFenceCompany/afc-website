@@ -27,6 +27,7 @@
             Orders <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="ordersMenu">
+            <a href="{{ route('ams.orders.create') }}" class="menu-item">Create New Order</a>
             <a href="{{ route('ams.activity') }}" class="menu-item">Today's Activity</a>
             <a href="#" class="menu-item">Test Account</a>
         </div>
@@ -123,6 +124,9 @@
         <div class="header">
             <h2>@yield('title')</h2>
             <div class="header-buttons">
+                <a href="{{ route('ams.orders.create') }}" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-circle"></i> Create New Order
+                </a>
                 <a href="{{ route('ams.home') }}" class="btn btn-outline-light">
                     <i class="bi bi-house-fill"></i> Home
                 </a>
