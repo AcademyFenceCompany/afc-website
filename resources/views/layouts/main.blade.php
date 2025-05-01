@@ -53,8 +53,10 @@
             }, 60000); // 60 seconds
         });
     </script>
-    {{-- <script src="{{ asset('js/cart.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/cart-item.js') }}"></script> --}}
+    <!-- Cart Scripts -->
+    <script src="{{ asset('js/mini-cart.js') }}"></script>
+    <script src="{{ asset('js/cart.js') }}"></script>
+    <script src="{{ asset('js/cart-helper.js') }}"></script>
 
 </body>
 

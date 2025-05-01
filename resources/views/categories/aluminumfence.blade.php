@@ -236,6 +236,44 @@
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
+    @media (max-width: 767.98px) {
+        .page-title {
+            font-size: 15px !important;
+        }
+        .about-flex {
+            flex-direction: column;
+            align-items: center;
+        }
+        .type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            padding: 10px 0;
+        }
+        .type-button {
+            width: 50%;
+        }
+        .model-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .model-image {
+            width: 120px;
+            height: 120px;
+        }
+        .model-info {
+            width: 100%;
+            text-align: center;
+        }
+        /* Adjust column width for mobile */
+        .model-column {
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
+            padding: 0 5px;
+        }
+    }
 </style>
 @endsection
 
@@ -248,7 +286,7 @@
     <div class="row g-4 mb-6">
         <!-- Left Section - About -->
         <div class="col-md-8 wf-about mb-2">
-            <div class="d-flex">
+            <div class="d-flex about-flex">
                 <img src="{{ url('storage/products/onguard-fencetown-400x400.jpg') }}" alt="OnGuard Fence" style="width: 180px; height: 180px; object-fit: cover;" class="me-4 rounded about-image-onguard">
                 <div>
                     <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
@@ -320,7 +358,7 @@
                 <div class="row mb-4">
                     @foreach(['Starling', 'Siskin', 'Longspur', 'Heron'] as $modelName)
                         @if(isset($typeData['models'][$modelName]))
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
                                         <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
@@ -347,7 +385,7 @@
                 <div class="row mb-4">
                     @foreach(['Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet'] as $modelName)
                         @if(isset($typeData['models'][$modelName]))
-                            <div class="col-md-2.4" style="flex: 0 0 20%; max-width: 20%;">
+                            <div class="col-md-2.4 model-column" style="flex: 0 0 20%; max-width: 20%;">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
                                         <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
@@ -373,9 +411,9 @@
                 <!-- Puppy Pickets Section -->
                 <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
                 <div class="row mb-4">
-                    @foreach(['Puppy 1', 'Puppy 2', 'Puppy 3'] as $modelName)
+                    @foreach(['Finch', 'Sparrow'] as $modelName)
                         @if(isset($typeData['models'][$modelName]))
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
                                         <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
@@ -401,8 +439,8 @@
                 <!-- All Other Models (if any) -->
                 <div class="row mb-4">
                     @foreach($typeData['models'] as $modelName => $model)
-                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Puppy 1', 'Puppy 2', 'Puppy 3']))
-                            <div class="col-md-3 mb-3">
+                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Finch', 'Sparrow']))
+                            <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
                                         <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 

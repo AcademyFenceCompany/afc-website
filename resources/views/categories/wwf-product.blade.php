@@ -161,7 +161,7 @@
                                                     data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
                                                     data-price="{{ $product->price_per_unit }}" data-color="{{ $product->color }}"
                                                     data-size1="{{ $product->size1 }}" data-size2="{{ $product->size2 }}"
-                                                    data-size3="{{ $product->size3 }}" data-speciality="{{ $product->speciality }}"
+                                                    {{-- data-size3="{{ $product->size3 }}" data-speciality="{{ $product->speciality }}" --}}
                                                     data-material="{{ $product->material }}"
                                                     data-spacing="{{ $product->spacing }}" data-coating="{{ $product->coating }}"
                                                     data-weight="{{ $product->weight }}"
@@ -228,7 +228,7 @@
                                             data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
                                             data-price="{{ $product->price_per_unit }}" data-color="{{ $product->color }}"
                                             data-size1="{{ $product->size1 }}" data-size2="{{ $product->size2 }}"
-                                            data-size3="{{ $product->size3 }}" data-speciality="{{ $product->speciality }}"
+                                            {{-- data-size3="{{ $product->size3 }}" data-speciality="{{ $product->speciality }}" --}}
                                             data-material="{{ $product->material }}"
                                             data-spacing="{{ $product->spacing }}" data-coating="{{ $product->coating }}"
                                             data-weight="{{ $product->weight }}"
