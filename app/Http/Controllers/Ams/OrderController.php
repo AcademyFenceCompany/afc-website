@@ -31,19 +31,116 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
-        $salesPersons = User::all();
-        $customers = Customer::with(['addresses'])->get();
-        $categories = FamilyCategory::whereNull('parent_category_id')->get();
+        try {
+            // Create a temporary order object with default values
+            $order = (object)[
+                'id' => time(), // Use timestamp as temporary ID
+                'temp_id' => time(), // Use timestamp as temporary ID
+                'created_by' => auth()->id() ?? 1,
+                'created_at' => now(),
+                'call_date' => now()->format('Y-m-d H:i:s'),
+                'status' => 'new',
+                'subtotal' => 0,
+                'tax' => 0,
+                'shipping' => 0,
+                'total' => 0
+            ];
+            
+            // Default empty collections
+            $shippingAddresses = collect([]);
+            $billingInfo = collect([]);
+            $selectedCustomer = null;
 
-        // Create a new empty order with just the numeric fields
-        $order = CustomerOrder::create([
-            'subtotal' => 0,
-            'tax_amount' => 0,
-            'shipping' => 0,
-            'total' => 0
-        ]);
-        
-        return view('ams.order.create-order', compact('salesPersons', 'customers', 'categories', 'order'));
+            // If customer_id is provided, get all customer data
+            if ($request->has('customer_id')) {
+                // Get customer details
+                $selectedCustomer = DB::connection('mysql_second')->table('customers')
+                    ->where('id', $request->customer_id)
+                    ->first();
+                
+                if ($selectedCustomer) {
+                    // Set customer data in order
+                    $order->cust_id_fk = $selectedCustomer->id;
+                    $order->customer_name = $selectedCustomer->name;
+                    $order->customer_company = $selectedCustomer->company;
+                    $order->customer_email = $selectedCustomer->email;
+                    $order->customer_phone = $selectedCustomer->phone;
+                    
+                    // Get customer shipping addresses
+                    $shippingAddresses = DB::connection('mysql_second')->table('cust_addresses')
+                        ->where(function($query) use ($selectedCustomer) {
+                            $query->where('cust_id_fk', $selectedCustomer->id)
+                                  ->orWhere('customers_id', $selectedCustomer->id);
+                        })
+                        ->get();
+                    
+                    // Get customer billing information
+                    $billingInfo = DB::connection('mysql_second')->table('cust_billing')
+                        ->where(function($query) use ($selectedCustomer) {
+                            $query->where('cust_id_fk', $selectedCustomer->id)
+                                  ->orWhere('customers_id', $selectedCustomer->id);
+                        })
+                        ->get();
+                    
+                    // If we have a primary shipping address, use it
+                    if ($selectedCustomer->primary_addr_fk) {
+                        $primaryAddress = $shippingAddresses->firstWhere('id', $selectedCustomer->primary_addr_fk);
+                        if ($primaryAddress) {
+                            $order->shipping_address = $primaryAddress;
+                        }
+                    }
+                    
+                    // If we have a primary billing address, use it
+                    if ($selectedCustomer->primary_billing_fk) {
+                        $primaryBilling = $billingInfo->firstWhere('id', $selectedCustomer->primary_billing_fk);
+                        if ($primaryBilling) {
+                            $order->billing_info = $primaryBilling;
+                        }
+                    }
+                }
+            }
+            
+            // Get all customers for the dropdown
+            $customers = DB::connection('mysql_second')->table('customers')
+                ->select('id', 'name', 'company', 'contact', 'email', 'phone', 'phone_alt', 'fax')
+                ->whereNotNull('name')
+                ->whereNotNull('company')
+                ->whereNotNull('contact')
+                ->whereNotNull('email')
+                ->whereNotNull('phone')
+                ->orderBy('id')
+                ->get();
+
+            return view('ams.order.create-order', [
+                'order' => $order,
+                'customers' => $customers,
+                'selectedCustomer' => $selectedCustomer,
+                'shippingAddresses' => $shippingAddresses,
+                'billingInfo' => $billingInfo
+            ]);
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Error in OrderController@create: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            
+            // Return a view with error message
+            return view('ams.order.create-order', [
+                'order' => (object)[
+                    'id' => time(),
+                    'temp_id' => time(),
+                    'status' => 'new',
+                    'subtotal' => 0,
+                    'tax' => 0,
+                    'shipping' => 0,
+                    'total' => 0
+                ],
+                'customers' => collect([]),
+                'selectedCustomer' => null,
+                'shippingAddresses' => collect([]),
+                'billingInfo' => collect([]),
+                'error' => 'An error occurred while loading the order form: ' . $e->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -54,40 +151,73 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        // Create order
-        $order = CustomerOrder::create([
-            'customer_id' => $request->customer_id,
-            'billing_address_id' => $request->billing_address_id,
-            'shipping_address_id' => $request->shipping_address_id,
-            'order_origin' => $request->origin,
-            'call_date' => Carbon::now(),
-        ]);
+        try {
+            // Create order in the orders table using mysql_second connection
+            $orderId = DB::connection('mysql_second')->table('orders')->insertGetId([
+                'cust_id_fk' => $request->customer_id,
+                'creation' => now(),
+                'modified' => now(),
+                'mod_by' => auth()->id() ?? 1,
+                'call_date' => $request->call_date ?? now(),
+                'quote_number' => $request->quote_number,
+                'sold_number' => $request->sold_number,
+                'sales_person' => $request->sales_person,
+                'status' => 'new',
+                'subtotal' => $request->subtotal ?? 0,
+                'tax' => $request->tax ?? 0,
+                'shipping' => $request->shipping ?? 0,
+                'total' => $request->total ?? 0,
+                'notes' => $request->notes
+            ]);
 
-        // Create order status
-        $orderStatus = OrderStatus::create([
-            'customer_order_id' => $order->id,
-            'call_date' => Carbon::now(),
-            'processor_call_date_id' => auth()->id(),
-        ]);
-
-        // Create order items
-        if ($request->has('items')) {
-            foreach ($request->items as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'original_order_id' => $order->original_order_id,
-                    'product_id' => $item['product_id'],
-                    'product_quantity' => $item['quantity'],
-                    'product_price_at_time_of_purchase' => $item['price'],
-                ]);
+            // Save order items
+            if ($request->has('items') && is_array($request->items)) {
+                foreach ($request->items as $item) {
+                    DB::connection('mysql_second')->table('order_items')->insert([
+                        'order_id_fk' => $orderId,
+                        'product_id_fk' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                        'subtotal' => $item['subtotal'],
+                        'creation' => now(),
+                        'modified' => now(),
+                        'mod_by' => auth()->id() ?? 1
+                    ]);
+                }
             }
-        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Order created successfully',
-            'order' => $order
-        ]);
+            // Save shipping address if provided
+            if ($request->has('shipping_address_id')) {
+                DB::connection('mysql_second')->table('orders')
+                    ->where('id', $orderId)
+                    ->update([
+                        'shipping_address_id_fk' => $request->shipping_address_id
+                    ]);
+            }
+
+            // Save billing address if provided
+            if ($request->has('billing_address_id')) {
+                DB::connection('mysql_second')->table('orders')
+                    ->where('id', $orderId)
+                    ->update([
+                        'billing_address_id_fk' => $request->billing_address_id
+                    ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order created successfully',
+                'order_id' => $orderId
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error in OrderController@store: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating order: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
