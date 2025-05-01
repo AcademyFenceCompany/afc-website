@@ -116,7 +116,7 @@
             <div class="logo text-center mb-4">
               <img src="https://www.academyfence.com/images/logo.png" alt="logo" class="img-fluid">
             </div>
-            <h2 class="text-center">Admin Login In</h2>
+            <h2 class="text-center">AMS Admin Login</h2>
             <p class="text-center mb-4">Please enter your credentials to login.</p>
             <form>
               <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -168,7 +168,7 @@
             </div>
 
             <div>
-              <p class="mb-0">Don't have an account? <a href="#!" class="fw-bold">Sign Up</a>
+              <p class="mb-0 text-center">Don't have an account? <a href="#!" class="fw-bold">Sign Up</a>
               </p>
             </div>
 
