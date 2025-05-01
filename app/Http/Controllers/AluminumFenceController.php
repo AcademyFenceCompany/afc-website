@@ -46,7 +46,7 @@ class AluminumFenceController extends Controller
         
         // Base query for aluminum fence products
         $baseQuery = DB::connection('mysql_second')
-            ->table('productsqry')
+            ->table('products')
             ->where(function($query) {
                 $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
                       ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
@@ -61,7 +61,7 @@ class AluminumFenceController extends Controller
                     material AS fence_type,
                     style AS model_name,
                     COUNT(*) AS total
-                FROM productsqry
+                FROM products
                 WHERE (product_name LIKE 'OnGuard Aluminum Fence%'
                    OR product_name LIKE 'OnGuard Ornamental Aluminum Fence%'
                    OR product_name LIKE 'On Guard Ornamental Aluminum Fence%')
@@ -107,7 +107,7 @@ class AluminumFenceController extends Controller
         
         // Get Puppy Picket models from database
         $puppyPickets = DB::connection('mysql_second')
-            ->table('productsqry')
+            ->table('products')
             ->select('speciality', 'material', 'style', 'item_no', 'img_large')
             ->where('speciality', 'LIKE', 'puppy picket%')
             ->where('item_no', 'LIKE', '%PP')
@@ -175,7 +175,7 @@ class AluminumFenceController extends Controller
             foreach ($typeData['models'] as $modelName => $modelData) {
                 // Find a product from this model to get its image
                 $representativeProduct = DB::connection('mysql_second')
-                    ->table('productsqry')
+                    ->table('products')
                     ->where('material', $typeName)
                     ->where('style', $modelName)
                     ->select('img_large', 'img_small')
@@ -235,7 +235,7 @@ class AluminumFenceController extends Controller
             
             // Base query for aluminum fence products
             $baseQuery = DB::connection('mysql_second')
-                ->table('productsqry')
+                ->table('products')
                 ->where(function($query) {
                     $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
                           ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
@@ -313,7 +313,7 @@ class AluminumFenceController extends Controller
             } else {
                 // For regular models, use the standard query
                 $representativeImage = DB::connection('mysql_second')
-                    ->table('productsqry')
+                    ->table('products')
                     ->where('material', $type)
                     ->where('style', $model)
                     ->whereNotNull('img_large')
@@ -335,7 +335,7 @@ class AluminumFenceController extends Controller
                         material AS fence_type,
                         style AS model_name,
                         COUNT(*) AS total
-                    FROM productsqry
+                    FROM products
                     WHERE (product_name LIKE 'OnGuard Aluminum Fence%'
                        OR product_name LIKE 'OnGuard Ornamental Aluminum Fence%'
                        OR product_name LIKE 'On Guard Ornamental Aluminum Fence%')
@@ -410,7 +410,7 @@ class AluminumFenceController extends Controller
                 // Now fetch all these products from database
                 foreach ($sections as $section) {
                     $sectionProducts = DB::connection('mysql_second')
-                        ->table('productsqry')
+                        ->table('products')
                         ->whereIn('item_no', $section['items'])
                         ->where('enabled', 1)
                         ->get();
@@ -472,7 +472,7 @@ class AluminumFenceController extends Controller
         
         // Get the product details from the database
         $baseQuery = DB::connection('mysql_second')
-            ->table('productsqry')
+            ->table('products')
             ->where('enabled', 1);
             
         if ($isPuppyPicket) {
@@ -847,7 +847,7 @@ class AluminumFenceController extends Controller
     private function getOnGuardAccessories()
     {
         return DB::connection('mysql_second')
-            ->table('productsqry')
+            ->table('products')
             ->where('parent', 'LIKE', 'ONGAMM%')
             ->where('enabled', 1)
             ->select('id', 'item_no', 'product_name', 'price', 'size', 'color', 'img_large')
