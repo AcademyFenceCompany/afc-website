@@ -56,62 +56,70 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (event) => {
         if (event.target.classList.contains("add-to-cart-btn")) {
             const button = event.target;
-            const itemNo = button.dataset.item;
-            const productName = button.dataset.name;
+            const id = button.dataset.id || "";
+            const itemNo = button.dataset.item_no;
+            const productName = button.dataset.product_name;
             const price = button.dataset.price;
             const color = button.dataset.color || "";
-            const size1 = button.dataset.size1 || "";
+            const size = button.dataset.size || "";
+            const sizeIn = button.dataset.size_in || "";
+            const sizeWt = button.dataset.size_wt || "";
+            const sizeHt = button.dataset.size_ht || "";
             const size2 = button.dataset.size2 || "";
             const size3 = button.dataset.size3 || "";
             const speciality = button.dataset.speciality || "";
             const material = button.dataset.material || "";
             const spacing = button.dataset.spacing || "";
             const coating = button.dataset.coating || "";
-            const weight = button.dataset.weight || "";
-            const familyCategory = button.dataset.family_category || "";
-            const generalImage = button.dataset.general_image || "";
-            const smallImage = button.dataset.small_image || "";
-            const largeImage = button.dataset.large_image || "";
+            const weightLbs = button.dataset.weight_lbs || "";
+            const catIdFk = button.dataset.cat_id_fk || "";
+            const imgSmall = button.dataset.img_small || "";
+            const imgLarge = button.dataset.img_large || "";
             const freeShipping = button.dataset.free_shipping || "0";
             const specialShipping = button.dataset.special_shipping || "0";
             const amountPerBox = button.dataset.amount_per_box || "1";
-            const description = button.dataset.description || "";
-            const subcategoryId = button.dataset.subcategory_id || "";
-            const shippingLength = button.dataset.shipping_length || "";
-            const shippingWidth = button.dataset.shipping_width || "";
-            const shippingHeight = button.dataset.shipping_height || "";
-            const shippingClass = button.dataset.shipping_class || "";
+            const descShort = button.dataset.desc_short || "";
+            const descLong = button.dataset.desc_long || "";
+            const shipLength = button.dataset.ship_length || "";
+            const shipWidth = button.dataset.ship_width || "";
+            const shipHeight = button.dataset.ship_height || "";
+            const categoriesId = button.dataset.categories_id || "";
+            const shippingMethod = button.dataset.shipping_method || "";
             const quantityInput =
                 button.closest("tr")?.querySelector(".quantity-input") ||
                 document.querySelector(".quantity-input");
             const quantity = parseInt(quantityInput?.value || 1);
 
             console.log("Add to Cart:", {
+                id,
                 itemNo,
                 productName,
                 price,
                 color,
-                size1,
+                size,
+                sizeIn,
+                sizeWt, 
+                sizeHt,
                 size2,
                 size3,
                 speciality,
                 material,
                 spacing,
                 coating,
-                weight,
-                familyCategory,
-                generalImage,
-                smallImage,
-                largeImage,
+                weightLbs,
+                catIdFk,
+                imgSmall,
+                imgLarge,
                 freeShipping,
                 specialShipping,
                 amountPerBox,
-                description,
-                subcategoryId,
-                shippingLength,
-                shippingWidth,
-                shippingHeight,
-                shippingClass,
+                descShort,
+                descLong,
+                shipLength,
+                shipWidth,
+                shipHeight,
+                categoriesId,
+                shippingMethod,
                 quantity,
             });
 
@@ -124,31 +132,35 @@ document.addEventListener("DOMContentLoaded", () => {
                     ).content,
                 },
                 body: JSON.stringify({
+                    id: id,
                     item_no: itemNo,
                     product_name: productName,
                     price,
                     color,
-                    size1,
+                    size,
+                    size_in: sizeIn,
+                    size_wt: sizeWt,
+                    size_ht: sizeHt,
                     size2,
                     size3,
                     speciality,
                     material,
                     spacing,
                     coating,
-                    weight,
-                    family_category: familyCategory,
-                    general_image: generalImage,
-                    small_image: smallImage,
-                    large_image: largeImage,
+                    weight_lbs: weightLbs,
+                    cat_id_fk: catIdFk,
+                    img_small: imgSmall,
+                    img_large: imgLarge,
                     free_shipping: freeShipping,
                     special_shipping: specialShipping,
                     amount_per_box: amountPerBox,
-                    description,
-                    subcategory_id: subcategoryId,
-                    shipping_length: shippingLength,
-                    shipping_width: shippingWidth,
-                    shipping_height: shippingHeight,
-                    shipping_class: shippingClass,
+                    desc_short: descShort,
+                    desc_long: descLong,
+                    ship_length: shipLength,
+                    ship_width: shipWidth,
+                    ship_height: shipHeight,
+                    categories_id: categoriesId,
+                    shipping_method: shippingMethod,
                     quantity,
                 }),
             })

@@ -6,7 +6,7 @@
         </span>
     </a>
 
-    <div class="dropdown-menu dropdown-menu-end p-3 shadow-lg" style="min-width: 300px;">
+    <div class="dropdown-menu dropdown-menu-end p-3 shadow-lg" style="min-width: 270px;">
         <ul id="mini-cart-items" class="list-unstyled mb-2">
             @foreach (session('cart', []) as $item)
                 <li class="d-flex justify-content-between align-items-start mb-2">
