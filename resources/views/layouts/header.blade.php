@@ -1,6 +1,4 @@
 <header>
-    @include('layouts.ticker')
-
     <!-- Top Bar -->
     <div class="container-fluid bg-black text-light py-2">
         <div class="custom-container d-flex justify-content-between align-items-center flex-wrap">
@@ -11,6 +9,16 @@
                 <a href={{ url('/customerservice') }} class="text-light">
                     <i class="bi bi-headset"></i><span class="d-none d-sm-inline"> Customer Service</span>
                 </a>
+            </div>
+            <div class="dropdown njfig-btn">
+                <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
+                    NJ Fence INSTALLATION Guide
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Option 1</a></li>
+                    <li><a class="dropdown-item" href="#">Option 2</a></li>
+                    <li><a class="dropdown-item" href="#">Option 3</a></li>
+                </ul>
             </div>
             <div class="d-flex my-1">
                 <div>
@@ -54,30 +62,40 @@
                     <a href={{ url('/') }}>
                         <img src="{{ url('/resources/images/logo.png') }}" alt="Academy Fence Company" class="img-fluid" style="max-height: 80px;">
                     </a>
+                    <p class="mb-0 logoline">'The Original Fence Superstore'</p>
                 </div>
-                <div class="col-12 col-md-6 mb-3 mb-md-0">
-                    <div class="d-flex flex-column flex-md-row align-items-center">
-                        <div class="search-section d-flex w-100 mb-2 mb-md-0">
-                            <input type="text" class="form-control search-input me-2" placeholder="Search for...">
-                            <button class="btn btn-dark">Search</button>
+                
+                <div class="col-12 col-md-9 mb-3 mb-md-0">
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                        <div class="search-section d-flex me-md-3" style="max-width: 250px;">
+                            <input type="text" class="form-control search-input me-2" placeholder="Search...">
+                            <button class="btn btn-dark btn-sm">Search</button>
                         </div>
-                        <div class="d-none d-md-flex align-items-center ms-md-4 mt-2 mt-md-0">
-                            <span class="me-2"><i class="bi bi-geo-alt"></i> 119 N Day Street, Orange, NJ</span>
-                            <span><i class="bi bi-telephone"></i> (973) 674-0600</span>
+                        <div class="d-flex flex-column flex-md-row align-items-md-center mt-2 mt-md-0">
+                            <div class="me-md-3 text-nowrap mb-1 mb-md-0">
+                                <i class="bi bi-geo-alt"></i> <span class="fw-bold">Headquarters</br></span> <span style="font-size: 13px;">119 N Day Street, Orange, NJ, 07050</span>
+                            </div>
+                            <div class="text-nowrap">
+                                <i class="bi bi-telephone"></i> (973) 674-0600
+                            </div>
                         </div>
+                        <div class="d-none d-md-block text-md-end">
+                            <button class="quote-btn btn btn-danger">GET A QUOTE</button>
+                        </div>
+                        
                     </div>
                 </div>
-                <div class="col-12 col-md-3 text-center text-md-end">
+                <div class="col-12 col-md-3 text-center text-md-end d-md-none">
                     <button class="quote-btn btn btn-danger">GET A QUOTE</button>
                 </div>
             </div>
 
             <!-- Navigation Menu -->
             <div class="container-fluid">
-                <div class="tagline-box text-center my-2">
+                {{-- <div class="tagline-box text-center my-2">
                     <h3 class="tagline">The Original Fence Superstore</h3>
-                </div>
-                
+                </div> --}}
+             
                 <!-- Mobile Menu Toggle Button -->
                 <button class="btn nav-btn d-md-none w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavMenu" aria-expanded="false" aria-controls="mobileNavMenu">
                     <i class="bi bi-list"></i> Menu
@@ -85,10 +103,43 @@
                 
                 <!-- Desktop Navigation -->
                 <nav class="nav mb-3 d-none d-md-flex flex-wrap">
-                    <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn">WOOD FENCE</a>
+                    <!-- Wood Fence Dropdown -->
+                    <div class="dropdown">
+                        <li><a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">WOOD FENCE</a></li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/wood-fence/specs/6/2%201/2%20in.?styleTitle=Spaced+Picket">Spaced Picket Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('solid-board') }}">Solid Board Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Shadow Box Board On Board</a></li>
+                            <li><a class="dropdown-item" href="{{ route('stockade.index') }}">Stockade Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Board Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tongue-groove') }}">Tongue Groove Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('postrail.index') }}">Posts & Rails</a></li>
+                            <li><a class="dropdown-item" href="{{ route('woodpostcaps.index') }}">Woodpost Caps</a></li>
+                            <li><a class="dropdown-item" href="">Loose Wood Fence</a></li>
+
+                        </ul>
+                    </div>
+                    
                     <a href="#" class="nav-link btn nav-btn">VINYL FENCE</a>
-                    <a href="#" class="nav-link btn nav-btn">CHAIN LINK</a>
-                    <a href="#" class="nav-link btn nav-btn">ALUMINUM FENCE</a>
+                    <!-- Chain Link Fence Dropdown -->
+                    <div class="dropdown">
+                        <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">CHAIN LINK</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Chain Link Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Chain Link Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Chain Link Fence</a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Aluminum Fence Dropdown -->
+                    <div class="dropdown">
+                        <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">ALUMINUM FENCE</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
+                        </ul>
+                    </div>
+                    
                     <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
                     @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                         <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
@@ -113,16 +164,42 @@
                 <!-- Mobile Navigation -->
                 <div class="collapse mb-3" id="mobileNavMenu">
                     <div class="d-flex flex-column">
-                        <a href='{{ route('woodfence') }}' class="nav-link btn nav-btn mb-2">WOOD FENCE</a>
+                        <!-- Wood Fence Dropdown -->
+                        <div class="dropdown mb-2">
+                            <a href="{{ route('woodfence') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WOOD FENCE</a>
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ route('stockade.index') }}">Stockade Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('board-on-board') }}">Board Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tongue-groove') }}">Tongue Groove Fence</a></li>
+                            <li><a class="dropdown-item" href="{{ route('postrail.index') }}">Posts & Rails</a></li>
+                            </ul>
+                        </div>
+                        
                         <a href="#" class="nav-link btn nav-btn mb-2">VINYL FENCE</a>
-                        <a href="#" class="nav-link btn nav-btn mb-2">CHAIN LINK</a>
-                        <a href="#" class="nav-link btn nav-btn mb-2">ALUMINUM FENCE</a>
+                        <!-- Chain Link Fence Dropdown -->
+                        <div class="dropdown mb-2">
+                            <a href="{{ route('chainlink.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">CHAIN LINK</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '4ft']) }}">4ft Chain Link Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '5ft']) }}">5ft Chain Link Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('chainlink.height', ['height' => '6ft']) }}">6ft Chain Link Fence</a></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Aluminum Fence Dropdown -->
+                        <div class="dropdown mb-2">
+                            <a href="{{ route('aluminumfence.main') }}" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">ALUMINUM FENCE</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence.index') }}">OnGuard Aluminum Fence</a></li>
+                                <li><a class="dropdown-item" href="{{ route('aluminumfence.pickup') }}">Available for Pickup</a></li>
+                            </ul>
+                        </div>
+                        
                         <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn mb-2">WELDED WIRE</a>
                         @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                             <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn mb-2">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
                         @endforeach
                         <a href='{{ route('contact') }}' class="nav-link btn nav-btn mb-2">CONTACT US</a>
-                        
                         <div class="dropdown">
                             <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="bi bi-list"></i> Quick Menu
@@ -146,16 +223,6 @@
                 <!-- Breadcrumb -->
                 <div class="breadcrumb mb-2 mb-md-0">
                     <x-breadcrumbs />
-                </div>
-                <div class="dropdown njfig-btn">
-                    <a href="#" class="quote-btn btn btn-danger dropdown-toggle" data-bs-toggle="dropdown">
-                        NJ Fence INSTALLATION Guide
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
-                    </ul>
                 </div>
             </div>
         </div>

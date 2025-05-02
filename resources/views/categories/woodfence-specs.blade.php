@@ -1,193 +1,303 @@
-{{-- <pre>{{ dd($styleGroups) }}</pre> --}}
-
 @extends('layouts.main')
-@section('title', 'Wood Fence Products')
 
 @section('content')
-    <main class="container">
-        <!-- Header Section -->
-        <div class="rounded" style="background-color: #8B4513;">
-            <h1 class="text-white text-center py-3 mb-0">WOOD FENCE</h1>
-        </div>
-        <div class="text-center py-2 mb-4 border-bottom">
-            <p class="mb-0">Academy Wood Fence - Cedar Fencing Leaders in Wood Fencing for Over 40 Years.</p>
-        </div>
+<div class="container">
+    @php
+        // Define category-specific variables
+        $categoryId = isset($category['id']) ? $category['id'] : 0;
+        $categoryName = isset($category['cat_name']) ? $category['cat_name'] : 'Wood Fence';
+        $isSpacedPicket = ($categoryId == 6);
+        $spacing = isset($spacing) ? $spacing : '';
+    @endphp
+    
+    <div class="row">
+        <div class="col-md-12">
+            {{-- <h1 class="text-center mb-4">Wood Fence Specifications</h1>      --}}
 
-        <!-- Info Section -->
-        <div class="row g-4 mb-4">
-            <!-- Left Section - About -->
-            <div class="col-md-6">
-                <div class="d-flex">
-                    <img src="/resources/images/woodfenceabt.png" alt="Wood Post Cap" class="me-4 rounded"
-                        style="width: 180px; height: 180px; object-fit: cover;">
-                    <div>
-                        <h4 class="mb-3">Academy Wood Fence - Cedar Fencing</h4>
-                        <p class="mb-2" style="font-size: 14px;">
-                            Academy Fence offers many different types of wood fencing including, spaced picket wood fencing,
-                            solid board wood fencing, board on board and post and rail wood fencing for purchase or install.
-                            Academy Fence designs, manufactures, wholesales and professionally installs top quality custom
-                            decorative and privacy wood fencing and picket.
-                        </p>
+    @if($isSpacedPicket)
+        <x-woodfence.spaced-picket 
+            :styleGroups="$styleGroups" 
+            :category="$category"
+        />
+    @elseif($groupBy === 'style')
+        <h3 class="text-center mt-4 mb-4">Wood Fence Specifications</h3>
+        
+        @php
+            // Define the preferred order for styles
+            $styleOrder = ['Straight On Top', 'Concave', 'Convex'];
+            
+            // Define the preferred order for specialities within each style
+            $specialityOrderMap = [
+                'Straight On Top' => ['Slant Ear', 'Flat Picket', 'Gothic Point', 'French Gothic'],
+                'Concave' => ['Slant Ear', 'Flat Picket', 'Gothic Point', 'French Gothic'],
+                'Convex' => ['Slant Ear', 'Flat Picket', 'Gothic Point', 'French Gothic']
+            ];
+        @endphp
+        
+        @foreach ($styleOrder as $styleName)
+            @php
+                // Find the style group if it exists
+                $styleGroup = null;
+                foreach ($styleGroups as $group) {
+                    if ($group['style'] === $styleName) {
+                        $styleGroup = $group;
+                        break;
+                    }
+                }
+                
+                // Skip if style doesn't exist
+                if (!$styleGroup) continue;
+                
+                // Filter out Dog Ear, Flat Top, Knob Top, and Solid Top specialities
+                // Also filter out products that don't have web_enabled set to true
+                $filteredProducts = $styleGroup['combos']->filter(function($product) {
+                    // Base filtering for all styles
+                    return !in_array($product['speciality'], ['Dog Ear', 'Flat Top', 'Knob Top', 'Solid Top']) && 
+                           isset($product['web_enabled']) && $product['web_enabled'] == 1;
+                });
+                
+                // Skip if no products after filtering
+                if ($filteredProducts->isEmpty()) continue;
+                
+                // Group filtered products by speciality
+                $filteredProductsBySpeciality = [];
+                foreach ($filteredProducts as $product) {
+                    $speciality = $product['speciality'] ?? 'Standard';
+                    if (!isset($filteredProductsBySpeciality[$speciality])) {
+                        $filteredProductsBySpeciality[$speciality] = [];
+                    }
+                    $filteredProductsBySpeciality[$speciality][] = $product;
+                }
+            @endphp
+            
+            <h2 class="section-title mt-5 mb-4" style="background-color: #000; color: #fff; padding: 10px; text-align: center; text-transform: uppercase;">{{ $styleGroup['style'] }}</h2>
+            <div class="row">
+                @foreach ($filteredProductsBySpeciality as $specialityName => $products)
+                    <div class="col-md-4 mb-4">
+                        <x-woodfence.speciality-card 
+                            :styleGroup="$styleGroup" 
+                            :specialityName="$specialityName" 
+                            :products="$products"
+                        />
                     </div>
-                </div>
+                @endforeach
             </div>
-
-            <!-- Middle Section - Brochures -->
-            <div class="col-md-2 text-center">
-                <h4 class="text-brown mb-3">Brochures</h4>
-                <div class="d-flex flex-column gap-2">
-                    <button class="btn btn-light border w-100 text-center">Wood Post Cap Brochure</button>
-                    <button class="btn btn-light border w-100 text-center">Wood Post Cap Order Sheet</button>
-                    <button class="btn w-100" style="background-color: #8B4513; color: white;">Get a Quote</button>
-                </div>
-            </div>
-
-            <!-- Right Section - Manufacturer Info -->
-            <div class="col-md-4">
-                <div class="p-3 rounded" style="background-color: #FFFFD4;">
-                    <h5 class="text-center mb-1">The Original online Fence Superstore</h5>
-                    <p class="text-center small mb-3 fst-italic">Family owned operated since 1968</p>
-
-                    <h5 class="text-brown mb-2">Welded Wire Manufacturer</h5>
-                    <ul class="list-unstyled mb-0" style="font-size: 14px;">
-                        <li>• Widest variety of mesh size and gauges</li>
-                        <li>• Direct Ship from our warehouse</li>
-                        <li>• Our manufacture specifications:
-                            <ul class="list-unstyled ps-3 mb-0">
-                                <li>• Full gauge steel core</li>
-                                <li>• Hot dip galvanized</li>
-                                <li>• Then quality PVC coated</li>
-                            </ul>
-                        </li>
-                        <li>• Pick up available in NJ</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- Product List Section -->
-        @if($groupBy === 'style')
-            @foreach ($styleGroups as $styleGroup)
-                <div class="row m-2">
-                    <div class="rounded" style="background-color: #000;">
-                        <h2 class="text-white text-center py-2 my-0 text-uppercase fs-2">{{ $styleGroup->get('style') }}</h2>
-                    </div>
-                    <div class="container text-center">
-                        <div class="row align-items">
-                            @foreach ($styleGroup->get('combos') as $product)
-                                <div class="col-4 p-2">
-                                    <div class="card product-card shadow-sm w-100">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <h5 class="fw-bold">{{ $product->get('specialty') }}</h5>
-                                            <div class="product-image me-3 align-items-center">
-                                                <a href="{{ route('product.show', ['id' => $product->get('product_id')]) }}">
-                                                    <img src="{{ $product->get('general_image') }}"
-                                                        alt="{{ $product->get('specialty') }}" class="img-fluid rounded"
-                                                        style="max-height: 300px; max-width: 300px;">
-                                                </a>
-                                            </div>
-                                            <div class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                                <p>Section Top Style: {{ $styleGroup->get('style') }}</p>
-                                                <p>Picket Style: {{ $product->get('specialty') }}</p>
-                                                @if($product->get('spacing'))
-                                                    <p>Spacing: {{ $product->get('spacing') }}</p>
-                                                @endif
-                                                @if($product->get('material'))
-                                                    <p>Material: {{ $product->get('material') }}</p>
-                                                @endif
-                                                @if (in_array($product->get('family_category_id'), [17, 18, 19]))
-                                                    <p>Heights: 3ft, 42in, 4ft, 5ft, 6ft, 7ft, 8ft</p>
-                                                @else
-                                                    <p>Heights:5ft, 6ft, 7ft, 8ft</p>
-                                                @endif
-                                                <p>Price: From ${{ number_format($product->get('price'), 2) }}</p>
-                                                <div class="mt-3">
-                                                    <a href="{{ route('product.show', ['id' => $product->get('product_id')]) }}"
-                                                        class="btn btn-danger text-white">View Product</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+        @endforeach
+    @elseif($groupBy === 'speciality')
+        <div class="row">
+            @foreach ($specialityGroups as $specialityGroup)
+                @php
+                    // Skip Dog Ear, Flat Top, Knob Top, and Solid Top speciality groups
+                    if (in_array($specialityGroup['speciality'], ['Dog Ear', 'Flat Top', 'Knob Top', 'Solid Top'])) continue;
+                    
+                    // Filter out products that don't have web_enabled set to true
+                    // For Straight On Top, hide Flat Picket
+                    // For Concave and Convex, hide Slant Ear
+                    $filteredProducts = $specialityGroup['products']->filter(function($product) use ($specialityGroup, $isSpacedPicket) {
+                        // Base filtering for all products
+                        $baseFilter = isset($product['web_enabled']) && $product['web_enabled'] == 1;
+                        
+                        // Get the style from the product
+                        $style = $product['style'] ?? '';
+                        
+                        // Apply style-specific filtering only for categories 6
+                        if ($isSpacedPicket) {
+                            // Style-specific filtering
+                            if ($style === 'Straight On Top') {
+                                // For Straight On Top, hide Flat Picket
+                                return $baseFilter && $specialityGroup['speciality'] !== 'Flat Picket';
+                            } elseif (in_array($style, ['Concave', 'Convex'])) {
+                                // For Concave and Convex, hide Slant Ear
+                                return $baseFilter && $specialityGroup['speciality'] !== 'Slant Ear';
+                            }
+                        }
+                        
+                        return $baseFilter;
+                    });
+                    
+                    // Skip if no products after filtering
+                    if ($filteredProducts->isEmpty()) continue;
+                @endphp
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card product-card shadow-sm h-100">
+                        <div class="card-header bg-dark text-white text-center py-1">
+                            <h5 class="my-0 fs-6">{{ $specialityGroup['speciality'] }}</h5>
+                        </div>
+                        @php
+                            $product = $filteredProducts->first();
+                        @endphp
+                        <div class="card-body p-2 text-center">
+                            <div class="product-image mb-2">
+                                <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                    <img src="{{ $product['general_image'] }}"
+                                        alt="{{ $specialityGroup['speciality'] }}" 
+                                        class="img-fluid rounded"
+                                        style="max-height: 135px !important; max-width: 100%;">
+                                </a>
+                            </div>
+                            <div class="product-details small">
+                                <p class="mb-1"><strong>Section Top Style:</strong> {{ $product['style'] }}</p>
+                                <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                <p class="mb-1"><strong>Picket Style:</strong> {{ $specialityGroup['speciality'] }}</p>
+                                @if(isset($product['spacing']) && !empty($product['spacing']))
+                                    <p class="mb-1"><strong>Spacing:</strong> {{ $product['spacing'] }}</p>
+                                @endif
+                                @if(isset($product['material']) && !empty($product['material']))
+                                    <p class="mb-1"><strong>Material:</strong> {{ $product['material'] }}</p>
+                                @endif
+                                @if(isset($product['price']) && $product['price'])
+                                    <p class="mb-2"><strong>6ft Price:</strong> ${{ number_format($product['price'], 2) }}</p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 text-center">
+                            <a href="{{ route('product.show', ['id' => $product['product_id']]) }}" class="btn btn-sm btn-brown">View Details</a>
                         </div>
                     </div>
                 </div>
             @endforeach
-        @elseif($groupBy === 'specialty')
-            @foreach ($specialtyGroups as $specialtyGroup)
-                <div class="row m-2">
-                    <div class="rounded" style="background-color: #000;">
-                        <h2 class="text-white text-center py-2 my-0 text-uppercase fs-2">{{ $specialtyGroup['specialty'] }}</h2>
-                    </div>
-                    <div class="container text-center">
-                        <div class="row align-items">
-                            @foreach ($specialtyGroup['products'] as $product)
-                                <div class="col-4 p-2">
-                                    <div class="card product-card shadow-sm w-100">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <div class="product-image me-3 align-items-center">
-                                                <a href="{{ route('product.show', ['id' => $product->get('product_id')]) }}">
-                                                    <img src="{{ $product->get('general_image') }}"
-                                                        alt="Product Image" class="img-fluid rounded"
-                                                        style="max-height: 300px; max-width: 300px;">
-                                                </a>
-                                            </div>
-                                            <div class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                                <p>Picket Style: {{ $specialtyGroup['specialty'] }}</p>
-                                                @if($product->get('spacing'))
-                                                    <p>Spacing: {{ $product->get('spacing') }}</p>
-                                                @endif
-                                                @if($product->get('material'))
-                                                    <p>Material: {{ $product->get('material') }}</p>
-                                                @endif
-                                                <p>Price: From ${{ number_format($product->get('price'), 2) }}</p>
-                                                <div class="mt-3">
-                                                    <a href="{{ route('product.show', ['id' => $product->get('product_id')]) }}"
-                                                        class="btn btn-danger text-white">View Product</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+        </div>
+    @else
+        <div class="row">
+            @foreach($products as $product)
+                @php
+                    // Skip products with Dog Ear, Flat Top, Knob Top, and Solid Top speciality
+                    if (in_array($product['speciality'] ?? '', ['Dog Ear', 'Flat Top', 'Knob Top', 'Solid Top'])) continue;
+                    
+                    // Only show products with ID 4 or 5
+                    if (!in_array($product['product_id'], [4, 5])) continue;
+                    
+                    // Filter out products that don't have web_enabled set to true
+                    // For Straight On Top, hide Flat Picket
+                    // For Concave and Convex, hide Slant Ear
+                    $baseFilter = isset($product['web_enabled']) && $product['web_enabled'] == 1;
+                    
+                    // Get the style from the product
+                    $style = $product['style'] ?? '';
+                    
+                    // Apply style-specific filtering only for categories 6
+                    if ($isSpacedPicket) {
+                        // Style-specific filtering
+                        if ($style === 'Straight On Top') {
+                            // For Straight On Top, hide Flat Picket
+                            if ($product['speciality'] === 'Flat Picket') continue;
+                        } elseif (in_array($style, ['Concave', 'Convex'])) {
+                            // For Concave and Convex, hide Slant Ear
+                            if ($product['speciality'] === 'Slant Ear') continue;
+                        }
+                    }
+                    
+                    // Skip if no products after filtering
+                    if (!$baseFilter) continue;
+                @endphp
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card product-card shadow-sm h-100">
+                        <div class="card-header text-center py-2">
+                            <h5 class="my-0">{{ $product['product_name'] ?? 'Tongue & Groove Fence - 100% Cedar' }}</h5>
+                            <small>(Click image to purchase)</small>
                         </div>
-                    </div>
-                </div>
-            @endforeach
-        @else
-            <div class="container">
-                <div class="row">
-                    @foreach($products as $product)
-                        <div class="col-4 p-2">
-                            <div class="card product-card shadow-sm w-100">
-                                <div class="d-flex flex-column align-items-center">
-                                    <div class="product-image me-3 align-items-center">
-                                        <a href="{{ route('product.show', ['id' => $product->get('product_id')]) }}">
-                                            <img src="{{ $product->get('general_image') }}"
-                                                alt="Product Image" class="img-fluid rounded"
-                                                style="max-height: 300px; max-width: 300px;">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="text-center">
+                                        <h6>{{ $product['product_id'] == 4 ? 'Diagonal Lattice Top' : 'Square Lattice Top' }}</h6>
+                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                            <img src="{{ $product['general_image'] }}"
+                                                alt="{{ $product['product_name'] ?? 'Tongue & Groove Fence' }}" 
+                                                class="img-fluid rounded"
+                                                style="max-height: 150px; max-width: 100%;">
                                         </a>
+                                        <div class="product-details mt-2 p-2" style="background-color: #f5f5dc;">
+                                            <p class="mb-1"><strong>Section Top Style:</strong> Straight</p>
+                                            <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                            <p class="mb-1"><strong>Picket Style:</strong> Tongue & Groove</p>
+                                            <p class="mb-1"><strong>Spacing:</strong> Solid</p>
+                                            <p class="mb-1"><strong>6ft Price:</strong> $290.00</p>
+                                        </div>
                                     </div>
-                                    <div class="product-details mt-2 d-flex flex-column justify-content-between flex-grow-1 align-items-center">
-                                        @if($product->get('spacing'))
-                                            <p>Spacing: {{ $product->get('spacing') }}</p>
-                                        @endif
-                                        @if($product->get('material'))
-                                            <p>Material: {{ $product->get('material') }}</p>
-                                        @endif
-                                        <p>Price: From ${{ number_format($product->get('price'), 2) }}</p>
-                                        <div class="mt-3">
-                                            <a href="{{ route('product.show', ['id' => $product->get('product_id')]) }}"
-                                                class="btn btn-danger text-white">View Product</a>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="text-center">
+                                        <h6>{{ $product['product_id'] == 4 ? 'Solid Top' : 'Diamond Top' }}</h6>
+                                        <a href="{{ route('product.show', ['id' => $product['product_id']]) }}">
+                                            <img src="{{ $product['general_image'] }}"
+                                                alt="{{ $product['product_name'] ?? 'Tongue & Groove Fence' }}" 
+                                                class="img-fluid rounded"
+                                                style="max-height: 150px; max-width: 100%;">
+                                        </a>
+                                        <div class="product-details mt-2 p-2" style="background-color: #f5f5dc;">
+                                            <p class="mb-1"><strong>Section Top Style:</strong> Straight</p>
+                                            <p class="mb-1"><strong>Heights:</strong> 6ft</p>
+                                            <p class="mb-1"><strong>Picket Style:</strong> Tongue & Groove</p>
+                                            <p class="mb-1"><strong>Spacing:</strong> Solid</p>
+                                            <p class="mb-2"><strong>6ft Price:</strong> {{ $product['product_id'] == 5 ? 'Discontinued' : '$290.00' }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="small text-center mt-2">
+                                * All sketches, images, drawings and pictures are intended to give the viewer a sense of the general style of the item. They are not to scale and should not be used for specific details or measurements.
+                            </div>
                         </div>
-                    @endforeach
+                    </div>
                 </div>
-            </div>
-        @endif
-    </main>
+            @endforeach
+        </div>
+    @endif
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        // Equal height for cards in the same row
+        function equalizeCardHeights() {
+            $('.row').each(function() {
+                let maxHeight = 0;
+                $('.card', this).each(function() {
+                    $(this).css('height', '');
+                    maxHeight = Math.max(maxHeight, $(this).outerHeight());
+                });
+                $('.card', this).outerHeight(maxHeight);
+            });
+        }
+        
+        $(window).on('load resize', function() {
+            equalizeCardHeights();
+        });
+    });
+</script>
+@endsection
+@section('styles')
+<style>
+    .product-card .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .product-card .product-image img {
+        display: block;
+        margin: 0 auto;
+        max-height: 150px;
+    }
+
+    .product-card .product-details {
+        text-align: center;
+    }
+
+    .product-card .card-footer {
+        text-align: center;
+    }
+    
+    .section-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+</style>
 @endsection

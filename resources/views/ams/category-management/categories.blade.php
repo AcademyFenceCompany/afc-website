@@ -3,6 +3,13 @@
 @section('title', 'Categories')
 
 @section('content')
+    <div class="mb-4">
+        <a href="{{ route('ams.mysql-categories.index') }}" class="btn btn-primary">
+            <i class="bi bi-database"></i> MySQL Categories Management
+        </a>
+        <p class="text-muted mt-2">Click the button above to manage categories in the mysql_second database.</p>
+    </div>
+    
     <ul class="tree">
         @foreach ($categories as $category)
             <li class="category">

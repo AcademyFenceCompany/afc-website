@@ -74,16 +74,14 @@
             <div class="row justify-content-center g-4 mt-3">
                 @foreach ($general_ww_mesh_size_imgs as $mesh_size)
                     <div class="col-6 col-md-4 col-lg-2 d-flex justify-content-center">
-                        <div class="card text-center shadow-sm h-100" style="width: 150px;border: none;">
+                        <div class="card text-center shadow-sm h-100 w-100" style="border: none;">
                             <div class="card-header bg-danger text-white fw-bold py-2">
-                                <h6>{{ $mesh_size->size2 }}</h6>
+                                <h6 class="mb-0">{{ $mesh_size->size2 }}</h6>
                             </div>
-                            <div class="card-body p-2">
+                            <div class="card-body p-2 d-flex flex-column align-items-center">
                                 <img src="{{ $mesh_size->image ?? '/resources/images/4x4.jpg' }}" alt="Wire Image"
-                                    style="height:140px; " class="img-fluid mb-3 rounded">
-                                <div class="d-grid gap-2">
-
-
+                                    class="img-fluid mb-3 rounded" style="height: 120px; object-fit: cover;">
+                                <div class="d-grid gap-2 w-100 mt-auto">
                                     <!-- Galvanized Button -->
                                     <a class="btn btn-outline-dark btn-sm fw-bold"
                                         href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Galvanized']) }}">
@@ -92,8 +90,7 @@
 
                                     <!-- Vinyl Coated Button -->
                                     <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Vinyl PVC']) }}"
-                                        class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Vinyl PVC</a>
-
+                                        class="btn btn-outline-dark btn-sm fw-bold">Vinyl PVC</a>
                                 </div>
                             </div>
                         </div>
@@ -181,18 +178,16 @@
             <div class="row justify-content-center">
                 @foreach (["1/2\"", "1/4\"", "1/8\""] as $size)
                     <div class="col-4 mb-3 d-flex justify-content-center">
-                        <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                            <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">
-                                {{ $size }}
+                        <div class="card text-center shadow-sm h-100 w-100" style="border: none;">
+                            <div class="card-header bg-danger text-white fw-bold py-2">
+                                <h6 class="mb-0">{{ $size }}</h6>
                             </div>
-                            <div class="card-body p-2">
+                            <div class="card-body p-2 d-flex flex-column align-items-center">
                                 <img src="/resources/images/4x4.jpg" alt="{{ $size }}"
-                                    class="img-fluid mb-3 rounded">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-dark btn-sm fw-bold"
-                                        style="font-size: 12px;">Galvanized</button>
-                                    <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                        Coated</button>
+                                    class="img-fluid mb-3 rounded" style="height: 120px; object-fit: cover;">
+                                <div class="d-grid gap-2 w-100 mt-auto">
+                                    <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
+                                    <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
                                 </div>
                             </div>
                         </div>
@@ -206,18 +201,16 @@
             <div class="row justify-content-center">
                 @foreach (["1\" Hex", "2\" Hex"] as $size)
                     <div class="col-6 mb-3 d-flex justify-content-center">
-                        <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                            <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">
-                                {{ $size }}
+                        <div class="card text-center shadow-sm h-100 w-100" style="border: none;">
+                            <div class="card-header bg-danger text-white fw-bold py-2">
+                                <h6 class="mb-0">{{ $size }}</h6>
                             </div>
-                            <div class="card-body p-2">
+                            <div class="card-body p-2 d-flex flex-column align-items-center">
                                 <img src="/resources/images/4x4.jpg" alt="{{ $size }}"
-                                    class="img-fluid mb-3 rounded">
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-outline-dark btn-sm fw-bold"
-                                        style="font-size: 12px;">Galvanized</button>
-                                    <button class="btn btn-outline-secondary btn-sm fw-bold"
-                                        style="font-size: 12px;">Vinyl Coated</button>
+                                    class="img-fluid mb-3 rounded" style="height: 120px; object-fit: cover;">
+                                <div class="d-grid gap-2 w-100 mt-auto">
+                                    <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
+                                    <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
                                 </div>
                             </div>
                         </div>
@@ -230,15 +223,16 @@
         <div class="col-lg-2">
             <div class="row justify-content-center">
                 <div class="col-12 mb-3 d-flex justify-content-center">
-                    <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                        <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">Silt & Wired Back</div>
-                        <div class="card-body p-2">
-                            <img src="/resources/images/4x4.jpg" alt="Silt Fence" class="img-fluid mb-3 rounded">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-dark btn-sm fw-bold"
-                                    style="font-size: 12px;">Galvanized</button>
-                                <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                    Coated</button>
+                    <div class="card text-center shadow-sm h-100 w-100" style="border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-2">
+                            <h6 class="mb-0">Silt & Wired Back</h6>
+                        </div>
+                        <div class="card-body p-2 d-flex flex-column align-items-center">
+                            <img src="/resources/images/4x4.jpg" alt="Silt Fence" 
+                                class="img-fluid mb-3 rounded" style="height: 120px; object-fit: cover;">
+                            <div class="d-grid gap-2 w-100 mt-auto">
+                                <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
+                                <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
                             </div>
                         </div>
                     </div>
@@ -250,13 +244,15 @@
         <div class="col-lg-2">
             <div class="row justify-content-center">
                 <div class="col-12 mb-3 d-flex justify-content-center">
-                    <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                        <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">Various Sizes</div>
-                        <div class="card-body p-2">
-                            <img src="/resources/images/4x4.jpg" alt="Silt Fence" class="img-fluid mb-3 rounded">
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-outline-dark btn-sm fw-bold" style="font-size: 12px;">Natural
-                                    Wood</button>
+                    <div class="card text-center shadow-sm h-100 w-100" style="border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-2">
+                            <h6 class="mb-0">Various Sizes</h6>
+                        </div>
+                        <div class="card-body p-2 d-flex flex-column align-items-center">
+                            <img src="/resources/images/4x4.jpg" alt="Snow Fence" 
+                                class="img-fluid mb-3 rounded" style="height: 120px; object-fit: cover;">
+                            <div class="d-grid gap-2 w-100 mt-auto">
+                                <button class="btn btn-outline-dark btn-sm fw-bold">Natural Wood</button>
                             </div>
                         </div>
                     </div>
@@ -379,17 +375,17 @@
         <!-- Game & Horse -->
         <div class="col-lg-4">
             <div class="bg-black text-white text-center py-3 rounded">
-                <h5>Game & Horse</h5>
+                <h5 class="mb-0">Game & Horse</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-5 text-center">
                         <div class="card-header bg-danger text-white fw-bold py-2">
-                            Various Sizes
+                            <h6 class="mb-0">Various Sizes</h6>
                         </div>
-                        <img src="/resources/images/Group 294 (1).png" alt="Game & Horse" class="img-fluid rounded"
-                            style="max-height: 150px;">
+                        <img src="/resources/images/Group 294 (1).png" alt="Game & Horse" class="img-fluid rounded my-3"
+                            style="height: 120px; object-fit: cover;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
                             <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
@@ -412,17 +408,17 @@
         <!-- Knock In Posts -->
         <div class="col-lg-4">
             <div class="bg-black text-white text-center py-3 rounded">
-                <h5>Knock In Posts</h5>
+                <h5 class="mb-0">Knock In Posts</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-5 text-center">
                         <div class="card-header bg-danger text-white fw-bold py-2">
-                            U-Channel
+                            <h6 class="mb-0">U-Channel</h6>
                         </div>
-                        <img src="/resources/images/Group 294 (2).png" alt="Knock In Posts" class="img-fluid rounded"
-                            style="max-height: 150px;">
+                        <img src="/resources/images/Group 294 (2).png" alt="Knock In Posts" class="img-fluid rounded my-3"
+                            style="height: 120px; object-fit: cover;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-dark btn-sm fw-bold">Green</button>
                             <button class="btn btn-outline-secondary btn-sm fw-bold">Black</button>
@@ -431,7 +427,6 @@
                     <!-- Content -->
                     <div class="col-md-7">
                         <div class="card text-center shadow-sm h-100">
-
                             <div class="card-body">
                                 <p>Heavy Knock-In U</p>
                                 <ul class="text-start prd-sm-text">
@@ -452,17 +447,17 @@
         <!-- Fence Pen Kits -->
         <div class="col-lg-4">
             <div class="bg-black text-white text-center py-3 rounded">
-                <h5>Fence Pen Kits</h5>
+                <h5 class="mb-0">Fence Pen Kits</h5>
             </div>
             <div class="p-4 bg-light rounded shadow-sm mt-3">
                 <div class="row align-items-center">
                     <!-- Image -->
                     <div class="col-md-5 text-center">
                         <div class="card-header bg-danger text-white fw-bold py-2">
-                            Various Sizes
+                            <h6 class="mb-0">Various Sizes</h6>
                         </div>
-                        <img src="/resources/images/Group 294 (3).png" alt="Fence Pen Kits" class="img-fluid rounded"
-                            style="max-height: 150px;">
+                        <img src="/resources/images/Group 294 (3).png" alt="Fence Pen Kits" class="img-fluid rounded my-3"
+                            style="height: 120px; object-fit: cover;">
                         <div class="d-grid gap-2">
                             <button class="btn btn-outline-dark btn-sm fw-bold">Vinyl Coated</button>
                             <button class="btn btn-outline-secondary btn-sm fw-bold">Galvanized</button>
