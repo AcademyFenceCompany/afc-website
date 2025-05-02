@@ -338,6 +338,8 @@ Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarku
 // API Routes
 Route::get('/api/products/search', [App\Http\Controllers\ProductApiController::class, 'search']);
 Route::get('/api/products/item/{itemNumber}', [App\Http\Controllers\ProductApiController::class, 'getByItemNumber']);
+Route::get('/api/order-categories', [App\Http\Controllers\OrderCategoryController::class, 'getCategories']);
+Route::get('/api/order-products/{categoryId}', [App\Http\Controllers\OrderCategoryController::class, 'ajaxGetProducts']);
 
 Route::get('/post-caps', function () {
     return view('post-caps');
