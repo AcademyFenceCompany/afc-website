@@ -333,10 +333,34 @@
                 </div>
 
                 <!-- Order Items Section -->
-                <div class="card mb-3">
-                    <div class="card-header">
+                <div class="card mt-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Order Items</h5>
                     </div>
+                    
+                    <!-- Product Search Box -->
+                    <div class="card-body border-bottom pb-3">
+                        <div class="row g-2">
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="productSearch" placeholder="Search by Item # or Product Name">
+                                    <button class="btn btn-outline-secondary" type="button" id="searchProductBtn">
+                                        <i class="bi bi-search"></i> Search
+                                    </button>
+                                </div>
+                                <div id="searchResults" class="position-absolute bg-white border rounded shadow-sm d-none" style="z-index: 1000; width: 95%; max-height: 300px; overflow-y: auto;"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="itemNumberDirect" placeholder="Item #">
+                                    <button class="btn btn-primary" type="button" id="addByItemBtn">
+                                        <i class="bi bi-plus-lg"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="orderItemsTable">
@@ -625,6 +649,7 @@
 
 @section('scripts')
     <script src="{{ asset('js/order-categories.js') }}"></script>
+    <script src="{{ asset('js/order-products.js') }}"></script>
     <script>
         $(document).ready(function() {
             // Initialize order items table
@@ -783,7 +808,7 @@
             tableBody.empty();
             
             if (orderItems.length === 0) {
-                tableBody.append('<tr><td colspan="6" class="text-center">No items added to order</td></tr>');
+                // tableBody.append('<tr><td colspan="6" class="text-center">No items added to order</td></tr>');
                 $('#subtotal-display').text('$0.00');
                 return;
             }
@@ -868,5 +893,33 @@
             // Update order items JSON for submission
             $('#orderItemsJson').val(JSON.stringify(getOrderItems()));
         }
+    </script>
+    <script>
+        function calculateOrderTotals() {
+            const subtotal = parseFloat(document.getElementById('subtotal-display').textContent.replace('$', '')) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            
+            // Update tax amount display if it exists
+            const taxDisplay = document.getElementById('tax-display');
+            if (taxDisplay) {
+                taxDisplay.textContent = '$' + taxAmount.toFixed(2);
+            }
+            
+            // Calculate and update total
+            const total = subtotal + taxAmount;
+            const totalDisplay = document.getElementById('total-display');
+            if (totalDisplay) {
+                totalDisplay.textContent = '$' + total.toFixed(2);
+            }
+            
+            // Update hidden fields for form submission
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            document.getElementById('tax_amount').value = taxAmount.toFixed(2);
+            document.getElementById('total').value = total.toFixed(2);
+        }
+        
+        // Initialize tax rate change listener
+        document.getElementById('taxRate').addEventListener('change', calculateOrderTotals);
     </script>
 @endsection

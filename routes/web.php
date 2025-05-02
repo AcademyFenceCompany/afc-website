@@ -335,6 +335,9 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
+// API Routes
+Route::get('/api/products/search', [App\Http\Controllers\ProductApiController::class, 'search']);
+Route::get('/api/products/item/{itemNumber}', [App\Http\Controllers\ProductApiController::class, 'getByItemNumber']);
 
 Route::get('/post-caps', function () {
     return view('post-caps');

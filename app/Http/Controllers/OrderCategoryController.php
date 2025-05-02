@@ -14,7 +14,8 @@ class OrderCategoryController extends Controller
             // Get major categories from mysql_second
             $majorCategories = DB::connection('mysql_second')
                 ->table('majorcategories')
-                ->orderBy('cat_name')
+                ->where('enabled', 1)
+                ->orderBy('id')
                 ->get();
                 
             $result = [];
@@ -29,8 +30,9 @@ class OrderCategoryController extends Controller
                 // Get categories for this major category
                 $categories = DB::connection('mysql_second')
                     ->table('categories')
+                    ->where('active', 1)
                     ->where('majorcategories_id', $majorCategory->id)
-                    ->orderBy('cat_name')
+                    ->orderBy('id')
                     ->get();
                     
                 foreach ($categories as $category) {
