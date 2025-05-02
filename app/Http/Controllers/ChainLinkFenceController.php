@@ -158,7 +158,7 @@ class ChainLinkFenceController extends Controller
         
         // Get products for this height and system using style patterns
         $products = DB::connection('mysql_second')
-            ->table('productsqry')
+            ->table('products')
             ->where(function($query) use ($stylePattern, $terminalPostPattern) {
                 // Match by style pattern for the specific height and system
                 $query->where('style', 'LIKE', "%{$stylePattern}%")
@@ -166,9 +166,17 @@ class ChainLinkFenceController extends Controller
                     ->orWhere('style', 'LIKE', "%{$terminalPostPattern}%");
             })
             ->where('enabled', 1)
-            ->select('id', 'product_name', 'item_no', 'price', 'desc_short', 'desc_long', 
-                    'img_small', 'img_large', 'color', 'size', 'material', 'style', 
-                    'product_assoc', 'parent')
+            ->select('id', 'product_name', 'seo_name', 'desc_short', 'color', 'item_no', 
+            'parent', 'cat_id_fk','price','weight_lbs', 'shipable', 'size', 'size_ln', 'size_wt', 'size_ht', 
+            'inv_stocked', 'inv_eastorange', 'inv_orange', 'inv_processing', 'inv_ordered', 
+            'inv_ordered_expect', 'img_small', 'img_large', 'supplier', 'ext_domain', 'featured',
+             'creation', 'modified', 'inv_mod', 'mod_by', 'product_assoc', 'product_accessories', 
+             'alt_length', 'alt_width', 'alt_height', 'ship_length', 'ship_width', 'ship_height', 
+             'nominal_length', 'nominal_width', 'nominal_height', 'product_relatives', 'meta_title', 
+             'meta_keywords', 'add_keywords', 'meta_description', 'display_size_2', 'free_shipping', 
+             'special_shipping', 'amount_per_box', 'class', 'inv_stocked', 'producttree', 'gauge', 'size2',
+             'size3', 'spacing', 'coating', 'material', 'style', 'speciality', 'shippable', 'notes', 
+             'enabled', 'categories_id', 'shipping_method')
             ->get();
             
         // Log how many products were found
