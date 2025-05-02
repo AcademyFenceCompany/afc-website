@@ -52,6 +52,50 @@ class OrderCategoryController extends Controller
         }
     }
     
+    public function getCategories()
+    {
+        try {
+            // Get major categories from mysql_second
+            $majorCategories = DB::connection('mysql_second')
+                ->table('majorcategories')
+                ->where('enabled', 1)
+                ->orderBy('id')
+                ->get();
+                
+            $result = [];
+            
+            foreach ($majorCategories as $majorCategory) {
+                $categoryGroup = [
+                    'id' => $majorCategory->id,
+                    'name' => $majorCategory->cat_name,
+                    'subcategories' => []
+                ];
+                
+                // Get categories for this major category
+                $categories = DB::connection('mysql_second')
+                    ->table('categories')
+                    ->where('active', 1)
+                    ->where('majorcategories_id', $majorCategory->id)
+                    ->orderBy('id')
+                    ->get();
+                    
+                foreach ($categories as $category) {
+                    $categoryGroup['subcategories'][] = [
+                        'id' => $category->id,
+                        'name' => $category->cat_name
+                    ];
+                }
+                
+                $result[] = $categoryGroup;
+            }
+            
+            return response()->json($result);
+        } catch (\Exception $e) {
+            Log::error('Error fetching categories: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to load categories: ' . $e->getMessage()], 500);
+        }
+    }
+    
     public function ajaxGetProducts($categoryId)
     {
         try {

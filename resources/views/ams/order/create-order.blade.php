@@ -49,6 +49,7 @@
             </div>
             <div class="col-md-12 text-end mb-2">
                 <button type="button" class="btn btn-sm btn-success me-1" id="save-order">Save and Finish</button>
+                <button type="button" class="btn btn-sm btn-danger" id="clearOrderItems">Clear Items</button>
             </div>
         </div>
 
@@ -87,21 +88,7 @@
         <div class="row mt-4">
             <!-- Left Sidebar - Categories -->
             <div class="col-md-3">
-                <!-- Add Items Section -->
-                <div class="card mb-3">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Add Items</h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div id="categoriesList">
-                            <div class="text-center py-4">
-                                <div class="spinner-border" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('ams.order.categories-sidebar')
             </div>
             
             <!-- Main Content - Order Details -->
@@ -390,209 +377,344 @@
                 </div>
                 
                 <!-- Order Totals Section -->
-                <div class="card card-sm mt-2">
-                    <div class="card-body p-2">
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Order Totals</h5>
+                    </div>
+                    <div class="card-body">
                         <div class="row g-2">
                             <div class="col-md-4">
-                                <div class="input-group input-group-sm">
+                                <div class="input-group">
                                     <span class="input-group-text">Tax Rate (%)</span>
                                     <input type="number" class="form-control" id="taxRate" name="tax_rate" value="0" min="0" max="100" step="0.01">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="input-group input-group-sm">
-                                    <span class="input-group-text">Shipping Cost</span>
-                                    <input type="number" class="form-control" id="shippingCost" name="shipping_cost" value="0" min="0" step="0.01">
+                                <div class="input-group">
+                                    <span class="input-group-text">Shipping</span>
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" id="shipping-cost-value" value="0.00" readonly>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="calculateShipping()">Calculate</button>
                                 </div>
+                                <input type="hidden" id="shipping-cost" name="shipping_cost" value="0">
+                                <input type="hidden" id="shipping-method" name="shipping_method" value="">
                             </div>
                             <div class="col-md-4">
-                                <div class="d-flex justify-content-between">
-                                    <div>Tax: <span id="taxAmount">$0.00</span></div>
-                                    <div>Total: <span id="total">$0.00</span></div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">Total:</span>
+                                    <span class="fw-bold" id="total-display">$0.00</span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Shipping Calculator -->
-                <div class="card card-sm mt-2">
-                    <div class="card-body p-2">
-                        <div class="row g-2">
-                            <div class="col-md-12">
-                                <div class="d-flex align-items-center gap-3">
-                                    <button type="button" class="btn btn-sm btn-primary" id="calculateShippingBtn" data-bs-toggle="modal" data-bs-target="#shippingModal">
-                                        <i class="fas fa-shipping-fast me-1"></i> Calculate Shipping
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-danger">Delete Shipping</button>
-
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="form-check form-check-inline m-0">
-                                            <input class="form-check-input" type="checkbox" id="tax-exempt">
-                                            <label class="form-check-label small" for="tax-exempt">Tax Exempt</label>
-                                        </div>
-
-                                        <div class="input-group input-group-sm" style="width: auto;">
-                                            <span class="input-group-text">Deposit</span>
-                                            <div class="input-group-text">
-                                                <input class="form-check-input mt-0" type="radio" name="deposit"
-                                                    value="1st">
-                                                <label class="form-check-label ms-1">1st</label>
-                                            </div>
-                                            <div class="input-group-text">
-                                                <input class="form-check-input mt-0" type="radio" name="deposit"
-                                                    value="2nd">
-                                                <label class="form-check-label ms-1">2nd</label>
-                                            </div>
-                                        </div>
-                                        <small class="text-muted">50% deposit required</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Hidden fields for order submission -->
-                <input type="hidden" name="order_id" value="">
-                <input type="hidden" name="order_items" id="orderItemsJson">
-                <input type="hidden" name="subtotal" id="subtotalInput">
-                <input type="hidden" name="tax_amount" id="taxInput">
-                <input type="hidden" name="shipping_cost" id="shippingInput">
-                <input type="hidden" name="total" id="totalInput">
-            </div>
-        </div>
-    </div>
-
-    <!-- Shipping Options Modal -->
-    <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="shippingModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-light">
-                    <h5 class="modal-title" id="shippingModalLabel">Shipping</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul class="nav nav-tabs" id="shippingTabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="tab" href="#upsShipping">UPS Shipping</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#freightShipping">Freight Shipping</a>
-                        </li>
-                    </ul>
-                    
-                    <div class="tab-content mt-3">
-                        <!-- UPS Shipping Tab -->
-                        <div class="tab-pane fade show active" id="upsShipping">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-sm">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Class</th>
-                                            <th>Size</th>
-                                            <th>Qty per Box</th>
-                                            <th>Weight</th>
-                                            <th>Cost</th>
-                                            <th>Item</th>
-                                            <th>Qty in Box</th>
-                                            <th>Weight of Box</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="upsShippingTable">
-                                        <!-- UPS shipping items will be populated here -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                            <div class="table-responsive mt-3">
-                                <table class="table table-bordered table-sm">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Weight</th>
-                                            <th>Total Cost</th>
-                                            <th>Box Price</th>
-                                            <th>Markup</th>
-                                            <th>Full Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="upsShippingTotals">
-                                        <!-- UPS shipping totals will be populated here -->
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                         
-                        <!-- Freight Shipping Tab -->
-                        <div class="tab-pane fade" id="freightShipping">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-sm">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Carriers</th>
-                                            <th>Weight</th>
-                                            <th>Cost</th>
-                                            <th>Markup</th>
-                                            <th>Price</th>
-                                            <th>Destination</th>
-                                            <th>Quote Number</th>
-                                            <th>Pallet Qty</th>
-                                            <th>Pallet Size</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="freightShippingTable">
-                                        <!-- Freight shipping items will be populated here -->
-                                    </tbody>
-                                </table>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary" onclick="calculateShipping()">
+                                    <i class="fas fa-shipping-fast me-1"></i> Calculate Shipping
+                                </button>
+                                <button type="button" class="btn btn-danger" onclick="deleteShipping()">Delete Shipping</button>
+                                
+                                <div class="d-inline-block ms-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="tax-exempt" name="tax_exempt" value="1">
+                                        <label class="form-check-label" for="tax-exempt">Tax Exempt</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-inline-block ms-3">
+                                    <span class="me-2">Deposit</span>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="deposit" id="deposit-1st" value="1st">
+                                        <label class="form-check-label" for="deposit-1st">1st</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="deposit" id="deposit-2nd" value="2nd">
+                                        <label class="form-check-label" for="deposit-2nd">2nd</label>
+                                    </div>
+                                    <span class="ms-2 text-muted">50% deposit required</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden inputs for form submission -->
+                        <input type="hidden" id="subtotal" name="subtotal" value="0">
+                        <input type="hidden" id="tax_amount" name="tax_amount" value="0">
+                        <input type="hidden" id="total" name="total" value="0">
+                        <input type="hidden" id="orderItemsJson" name="order_items" value="[]">
+                    </div>
+                </div>
+                
+                <!-- Shipping Modal -->
+                <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="shippingModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="shippingModalLabel">Shipping</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Shipping Rates List -->
+                                <div id="shippingRates" class="mb-3">
+                                    <!-- Shipping rates will be populated here -->
+                                    <div class="text-center p-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="mt-2">Calculating shipping rates...</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- UPS Shipping Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">UPS Shipping</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Class</th>
+                                                        <th>Size</th>
+                                                        <th>Qty per Box</th>
+                                                        <th>Weight</th>
+                                                        <th>Cost</th>
+                                                        <th>Item</th>
+                                                        <th>Qty in Box</th>
+                                                        <th>Weight of Box</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="upsShippingTable">
+                                                    <!-- UPS shipping items will be populated here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <div class="table-responsive mt-3">
+                                            <table class="table table-bordered table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Weight</th>
+                                                        <th>Total Cost</th>
+                                                        <th>Box Price</th>
+                                                        <th>Markup</th>
+                                                        <th>Full Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="upsShippingTotals">
+                                                    <!-- UPS shipping totals will be populated here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Freight Shipping Section -->
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Freight Shipping</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Carriers</th>
+                                                        <th>Weight</th>
+                                                        <th>Cost</th>
+                                                        <th>Markup</th>
+                                                        <th>Price</th>
+                                                        <th>Destination</th>
+                                                        <th>Quote Number</th>
+                                                        <th>Pallet Qty</th>
+                                                        <th>Pallet Size</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="freightShippingTable">
+                                                    <!-- Freight shipping items will be populated here -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="button" class="btn btn-success" id="populateToOrder">Populate to Order</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="d-flex justify-content-end mt-3">
-                        <button type="button" class="btn btn-success btn-sm" id="populateToOrder">Populate to Order</button>
+                </div>
+
+                <!-- Address Book Modal -->
+                <div class="modal fade" id="addressBookModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Address Book</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                        <i class="fas fa-plus"></i> Add New Address
+                                    </button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Address 1</th>
+                                                <th>Address 2</th>
+                                                <th>City</th>
+                                                <th>State</th>
+                                                <th>Zip</th>
+                                                <th>Type</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="addressBookTable">
+                                            <!-- Addresses will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Address Book Modal -->
-    <div class="modal fade" id="addressBookModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Address Book</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
-                            <i class="fas fa-plus"></i> Add New Address
-                        </button>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-sm table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Address 1</th>
-                                    <th>Address 2</th>
-                                    <th>City</th>
-                                    <th>State</th>
-                                    <th>Zip</th>
-                                    <th>Type</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="addressBookTable">
-                                <!-- Addresses will be loaded here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/order-categories.js') }}"></script>
+    <script src="{{ asset('js/order-products.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize order items table
+            updateOrderItemsTable();
+            
+            // Initialize datepicker
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+            
+            // Handle form submission
+            $('#orderForm').on('submit', function(e) {
+                // Don't clear localStorage on form submission
+                // This allows the items to persist even after page reload
+                
+                // Ensure order items are included in form submission
+                $('#orderItemsJson').val(JSON.stringify(getOrderItems()));
+            });
+            
+            // Initialize address lookup
+            $('#customer_id').on('change', function() {
+                const customerId = $(this).val();
+                if (customerId) {
+                    $.ajax({
+                        url: `/api/customers/${customerId}/addresses`,
+                        method: 'GET',
+                        success: function(data) {
+                            populateAddresses(data);
+                        },
+                        error: function(xhr) {
+                            console.error('Error fetching addresses:', xhr);
+                        }
+                    });
+                }
+            });
+            
+            // Clear existing items from previous implementations
+            $('#clearOrderItems').on('click', function() {
+                if (confirm('Are you sure you want to clear all order items?')) {
+                    clearOrderItems(); // This function is defined in order-products.js
+                }
+            });
+            
+            // Connect the calculate shipping button
+            $('button[onclick="calculateShipping()"]').on('click', function() {
+                if (typeof window.calculateShipping === 'function') {
+                    window.calculateShipping();
+                } else {
+                    console.error('calculateShipping function not found');
+                    alert('Shipping calculation is not available. Please check the console for errors.');
+                }
+            });
+            
+            // If categories don't load after 3 seconds, initialize with default categories
+            setTimeout(function() {
+                if ($('#categoriesList .spinner-border').length > 0) {
+                    console.log('Categories not loaded after timeout, initializing with defaults');
+                    const defaultCategories = [
+                        {
+                            id: 1,
+                            name: "Aluminum Fence",
+                            subcategories: [
+                                { id: 101, name: "Residential" },
+                                { id: 102, name: "Commercial" }
+                            ]
+                        },
+                        {
+                            id: 2,
+                            name: "Chain Link Fence",
+                            subcategories: [
+                                { id: 201, name: "Galvanized" },
+                                { id: 202, name: "Vinyl Coated" }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            name: "Vinyl Fence",
+                            subcategories: [
+                                { id: 301, name: "Privacy" },
+                                { id: 302, name: "Picket" }
+                            ]
+                        }
+                    ];
+                    renderCategories(defaultCategories);
+                }
+            }, 3000);
+        });
+        
+        function calculateOrderTotals() {
+            const subtotal = parseFloat(document.getElementById('subtotal-display').textContent.replace('$', '')) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const shippingCost = parseFloat(document.getElementById('shipping-cost').value) || 0;
+            
+            // Update tax amount display if it exists
+            const taxDisplay = document.getElementById('tax-display');
+            if (taxDisplay) {
+                taxDisplay.textContent = '$' + taxAmount.toFixed(2);
+            }
+            
+            // Calculate and update total
+            const total = subtotal + taxAmount + shippingCost;
+            const totalDisplay = document.getElementById('total-display');
+            if (totalDisplay) {
+                totalDisplay.textContent = '$' + total.toFixed(2);
+            }
+            
+            // Update hidden fields for form submission
+            document.getElementById('subtotal').value = subtotal.toFixed(2);
+            document.getElementById('tax_amount').value = taxAmount.toFixed(2);
+            document.getElementById('total').value = total.toFixed(2);
+            
+            console.log('Order totals updated:', { subtotal, taxAmount, shippingCost, total });
+        }
+        
+        // Initialize tax rate change listener
+        document.getElementById('taxRate').addEventListener('change', calculateOrderTotals);
+        
+        // Helper function to get order items (for compatibility)
+        function getOrderItems() {
+            return JSON.parse(localStorage.getItem('orderItems') || '[]');
+        }
+    </script>
 @endsection
 
 @section('styles')
@@ -645,281 +767,4 @@
             padding: 0.25rem;
         }
     </style>
-@endsection
-
-@section('scripts')
-    <script src="{{ asset('js/order-categories.js') }}"></script>
-    <script src="{{ asset('js/order-products.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            // Initialize order items table
-            updateOrderItemsTable();
-            
-            // Handle item removal
-            $(document).on('click', '.remove-item-btn', function() {
-                const itemId = $(this).data('id');
-                removeOrderItem(itemId);
-            });
-            
-            // Handle item quantity change
-            $(document).on('change', '.item-quantity', function() {
-                const itemId = $(this).data('id');
-                const newQuantity = parseInt($(this).val());
-                updateItemQuantity(itemId, newQuantity);
-            });
-            
-            // Handle customer selection
-            $('#customer-select').change(function() {
-                const customerId = $(this).val();
-                if (customerId) {
-                    window.location.href = `/ams/orders/create?customer_id=${customerId}`;
-                }
-            });
-
-            // Handle "Same as Shipping" checkbox
-            $('#same-as-shipping').change(function() {
-                if ($(this).is(':checked')) {
-                    // Copy shipping address to billing address
-                    $('#billing-name').val($('#shipping-name').val());
-                    $('#billing-company').val($('#shipping-company').val());
-                    $('#billing-address').val($('#shipping-address').val());
-                    $('#billing-address2').val($('#shipping-address2').val());
-                    $('#billing-city').val($('#shipping-city').val());
-                    $('#billing-state').val($('#shipping-state').val());
-                    $('#billing-zip').val($('#shipping-zip').val());
-                    $('#billing-country').val($('#shipping-country').val());
-                }
-            });
-
-            // Address Book Modal - Use Address
-            $(document).on('click', '.use-address-btn', function() {
-                const addressId = $(this).data('address-id');
-                const addressType = $(this).data('address-type');
-                
-                // Get address data from the modal
-                const name = $(this).data('name');
-                const company = $(this).data('company');
-                const address = $(this).data('address');
-                const address2 = $(this).data('address2');
-                const city = $(this).data('city');
-                const state = $(this).data('state');
-                const zip = $(this).data('zip');
-                const country = $(this).data('country');
-                const phone = $(this).data('phone');
-                
-                // Populate the appropriate address form
-                if (addressType === 'shipping') {
-                    $('#shipping-address-id').val(addressId);
-                    $('#shipping-name').val(name);
-                    $('#shipping-company').val(company);
-                    $('#shipping-address').val(address);
-                    $('#shipping-address2').val(address2);
-                    $('#shipping-city').val(city);
-                    $('#shipping-state').val(state);
-                    $('#shipping-zip').val(zip);
-                    $('#shipping-country').val(country);
-                    $('#shipping-phone').val(phone);
-                } else if (addressType === 'billing') {
-                    $('#billing-info-id').val(addressId);
-                    $('#billing-name').val(name);
-                    $('#billing-company').val(company);
-                    $('#billing-address').val(address);
-                    $('#billing-address2').val(address2);
-                    $('#billing-city').val(city);
-                    $('#billing-state').val(state);
-                    $('#billing-zip').val(zip);
-                    $('#billing-country').val(country);
-                }
-                
-                // Close the modal
-                $('#addressBookModal').modal('hide');
-            });
-
-            // Save order
-            $('#save-order').click(function() {
-                // Collect order data
-                const orderData = {
-                    customer_id: $('#customer-select').val(),
-                    call_date: $('#call-date').val(),
-                    quote_number: $('#quote-number').val(),
-                    sold_number: $('#sold-number').val(),
-                    sales_person: $('#sales-person').val(),
-                    shipping_address_id: $('#shipping-address-id').val(),
-                    billing_address_id: $('#billing-info-id').val(),
-                    items: getOrderItems(),
-                    subtotal: calculateSubtotal(),
-                    tax: calculateTax(),
-                    shipping: calculateShipping(),
-                    total: calculateTotal(),
-                    notes: $('#order-notes').val()
-                };
-
-                // Submit order via AJAX
-                $.ajax({
-                    url: '{{ route("ams.orders.store") }}',
-                    type: 'POST',
-                    data: orderData,
-                    success: function(response) {
-                        if (response.success) {
-                            alert('Order created successfully!');
-                            // Redirect to the order view page
-                            window.location.href = `/ams/orders/${response.order_id}`;
-                        } else {
-                            alert('Error: ' + response.message);
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Error: ' + xhr.responseJSON.message);
-                    }
-                });
-            });
-
-            // Helper functions for calculations
-            function getOrderItems() {
-                // Implementation depends on how order items are stored in the UI
-                // For example, if stored in localStorage:
-                return JSON.parse(localStorage.getItem('orderItems') || '[]');
-            }
-
-            function calculateSubtotal() {
-                const items = getOrderItems();
-                return items.reduce((total, item) => total + (item.price * item.quantity), 0);
-            }
-
-            function calculateTax() {
-                // Implement tax calculation logic
-                return calculateSubtotal() * 0.07; // Example: 7% tax
-            }
-
-            function calculateShipping() {
-                // Implement shipping calculation logic
-                return 0; // Default to 0
-            }
-
-            function calculateTotal() {
-                return calculateSubtotal() + calculateTax() + calculateShipping();
-            }
-        });
-        
-        // Function to update the order items table
-        function updateOrderItemsTable() {
-            const orderItems = getOrderItems();
-            const tableBody = $('#orderItemsTableBody');
-            tableBody.empty();
-            
-            if (orderItems.length === 0) {
-                // tableBody.append('<tr><td colspan="6" class="text-center">No items added to order</td></tr>');
-                $('#subtotal-display').text('$0.00');
-                return;
-            }
-            
-            let subtotal = 0;
-            
-            orderItems.forEach(function(item) {
-                const itemTotal = parseFloat(item.price) * parseInt(item.quantity);
-                subtotal += itemTotal;
-                
-                const row = `
-                    <tr>
-                        <td>${item.itemNo}</td>
-                        <td>${item.productName}</td>
-                        <td>$${parseFloat(item.price).toFixed(2)}</td>
-                        <td>
-                            <input type="number" class="form-control form-control-sm item-quantity" 
-                                value="${item.quantity}" min="1" data-id="${item.id}">
-                        </td>
-                        <td>$${itemTotal.toFixed(2)}</td>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-danger remove-item-btn" data-id="${item.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                
-                tableBody.append(row);
-            });
-            
-            $('#subtotal-display').text('$' + subtotal.toFixed(2));
-            updateOrderTotals();
-        }
-        
-        // Function to get order items from localStorage
-        function getOrderItems() {
-            const storedItems = localStorage.getItem('orderItems');
-            return storedItems ? JSON.parse(storedItems) : [];
-        }
-        
-        // Function to remove an item from the order
-        function removeOrderItem(itemId) {
-            let orderItems = getOrderItems();
-            orderItems = orderItems.filter(item => item.id !== itemId);
-            localStorage.setItem('orderItems', JSON.stringify(orderItems));
-            updateOrderItemsTable();
-            showToast('Item removed from order', 'warning');
-        }
-        
-        // Function to update an item's quantity
-        function updateItemQuantity(itemId, newQuantity) {
-            if (newQuantity < 1) return;
-            
-            let orderItems = getOrderItems();
-            const itemIndex = orderItems.findIndex(item => item.id === itemId);
-            
-            if (itemIndex !== -1) {
-                orderItems[itemIndex].quantity = newQuantity;
-                localStorage.setItem('orderItems', JSON.stringify(orderItems));
-                updateOrderItemsTable();
-            }
-        }
-        
-        // Function to update order totals
-        function updateOrderTotals() {
-            const subtotal = parseFloat($('#subtotal-display').text().replace('$', '')) || 0;
-            const taxRate = parseFloat($('#taxRate').val()) || 0;
-            const taxAmount = subtotal * (taxRate / 100);
-            const shippingCost = parseFloat($('#shippingCost').val()) || 0;
-            const total = subtotal + taxAmount + shippingCost;
-            
-            $('#taxAmount').text('$' + taxAmount.toFixed(2));
-            $('#total').text('$' + total.toFixed(2));
-            
-            // Update hidden inputs for form submission
-            $('#subtotalInput').val(subtotal.toFixed(2));
-            $('#taxInput').val(taxAmount.toFixed(2));
-            $('#shippingInput').val(shippingCost.toFixed(2));
-            $('#totalInput').val(total.toFixed(2));
-            
-            // Update order items JSON for submission
-            $('#orderItemsJson').val(JSON.stringify(getOrderItems()));
-        }
-    </script>
-    <script>
-        function calculateOrderTotals() {
-            const subtotal = parseFloat(document.getElementById('subtotal-display').textContent.replace('$', '')) || 0;
-            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const taxAmount = subtotal * (taxRate / 100);
-            
-            // Update tax amount display if it exists
-            const taxDisplay = document.getElementById('tax-display');
-            if (taxDisplay) {
-                taxDisplay.textContent = '$' + taxAmount.toFixed(2);
-            }
-            
-            // Calculate and update total
-            const total = subtotal + taxAmount;
-            const totalDisplay = document.getElementById('total-display');
-            if (totalDisplay) {
-                totalDisplay.textContent = '$' + total.toFixed(2);
-            }
-            
-            // Update hidden fields for form submission
-            document.getElementById('subtotal').value = subtotal.toFixed(2);
-            document.getElementById('tax_amount').value = taxAmount.toFixed(2);
-            document.getElementById('total').value = total.toFixed(2);
-        }
-        
-        // Initialize tax rate change listener
-        document.getElementById('taxRate').addEventListener('change', calculateOrderTotals);
-    </script>
 @endsection
