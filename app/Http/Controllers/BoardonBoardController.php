@@ -109,7 +109,7 @@ class BoardonBoardController extends Controller
         
         foreach ($products as $product) {
             $style = $product->style ?? 'Standard';
-            $speciality = $product->specialty ?? ($product->speciality ?? 'Standard');
+            $speciality = $product->speciality ?? ($product->speciality ?? 'Standard');
             
             // Clean up style and speciality values - using independent if statements to catch all matches
             if (stripos($style, 'straight') !== false) {

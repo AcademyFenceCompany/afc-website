@@ -35,7 +35,7 @@ try {
             'productsqry.item_no',
             'productsqry.categories_id',
             'productsqry.style',
-            'productsqry.specialty',
+            'productsqry.speciality',
             'productsqry.spacing',
             'productsqry.size',
             'productsqry.price',
@@ -50,7 +50,7 @@ try {
             echo "  Item #: " . $product->item_no . "\n";
             echo "  Category: " . $product->cat_name . " (ID: " . $product->categories_id . ")\n";
             echo "  Style: " . ($product->style ?? 'N/A') . "\n";
-            echo "  Specialty: " . ($product->specialty ?? 'N/A') . "\n";
+            echo "  speciality: " . ($product->speciality ?? 'N/A') . "\n";
             echo "  Spacing: " . ($product->spacing ?? 'N/A') . "\n";
             echo "  Size: " . ($product->size ?? 'N/A') . "\n";
             echo "  Price: $" . ($product->price ?? 'N/A') . "\n\n";

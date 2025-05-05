@@ -142,7 +142,7 @@ class OrderController extends Controller
                     'details' => [
                         'color' => $product->color,
                         'style' => $product->style,
-                        'specialty' => $product->speciality,
+                        'speciality' => $product->speciality,
                         'size1' => $product->size1,
                         'size2' => $product->size2,
                         'size3' => $product->size3

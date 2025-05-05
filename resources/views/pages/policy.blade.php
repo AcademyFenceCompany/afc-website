@@ -2,68 +2,160 @@
 
 @include('layouts.aboutHeader')
 
-    <!-- Policies Content Section -->
-    <div class="card mb-4 shadow-sm">
-        <div class="p-4">
-            <div class="row">
-                <!-- Column 1 -->
-                <div class="col-md-6 policy-box">
-                    <h4 class="fw-bold">Return Policy</h4>
-                    <p>
-                        We are always proud of the quality of our products. If you are dissatisfied with your purchase, you may return the product in its original, unused condition with tags attached within 5 days of receiving it. Please email or call us first to obtain a return authorization number or your return will not be accepted. Returned items will be inspected, if determined unused and in new condition, customer will receive a refund of the purchase price less shipping costs & handling fees, less a 25% restocking fee...
-                    </p>
+<!-- Policies Content Section -->
+<div class="card mb-4 shadow-sm">
+    <div class="p-4">
+        <div class="row">
+            <h2 class="text-center fw-bold">General Policies</h2>
+            <!-- Column 1 -->
+            <div class="col-md-6 policy-box">
+                <h5 class="fw-bold">Return Policy</h5>
+                <p>We take great pride in the quality of our products. If you are not satisfied with your purchase, you
+                    may return the item in its original, unused condition with tags attached within <strong>5
+                        days</strong> of receipt. Prior to returning, please contact us via email or phone to obtain a
+                    return authorization number—returns without authorization will not be accepted.</p>
 
-                    <h4 class="fw-bold">Defective Return</h4>
-                    <p>
-                        Defective items claimed need to be returned in original packaging, or it will be identified as misuse defect. No credit will be issued. We will only issue in-house credit for such damaged returns.
-                    </p>
+                <p>All returned items will be inspected, and if deemed unused and in new condition, a refund will be
+                    issued for the purchase price <strong>minus shipping costs, handling fees, and a 25% restocking
+                        fee</strong>. Returns must be shipped at your expense using a carrier of your choice. We
+                    strongly recommend selecting a <strong>traceable shipping method</strong> such as UPS or FedEx,
+                    which provide tracking details. The U.S. Postal Service also offers delivery confirmation for an
+                    additional fee.</p>
 
-                    <h4 class="fw-bold">Lost - Shipments and Claims</h4>
-                    <p>
-                        If the shipping company loses your package during or after picking it up from our shipping facilities, which happens very rarely, it is the fault and responsibility of the shipping company, not Academy Fence Company. 
-                        <br>There will be two options:
-                        <ol>
-                            <li>We provide you the claim and instructions and once this is settled, we send you the purchased items at no additional cost to you, the customer. This could take several weeks.</li>
-                            <li>You repurchase the order. We reship the order and reimburse your original "lost" shipment when it has been "settled" with the shipping company.</li>
-                        </ol>
-                    </p>
-                </div>
+                <ul>
+                    <li>
+                        <strong>Orders canceled on the same day before <span class="text-dark">4:00 PM
+                                EST</span></strong>
+                        will not incur any additional charges.
+                    </li>
+                    <li>
+                        <strong>Cancellations made after <span class="text-dark">4:00 PM EST</span></strong>
+                        will be subject to a <strong class="text-danger">5% administrative fee</strong>, along with any
+                        costs related to the order’s preparation
+                        (e.g., quality checks, packaging, shipping readiness).
+                    </li>
+                    <li>
+                        If the order has already been shipped, a refund will be issued for the purchase price
+                        <strong class="text-danger">minus shipping costs, handling fees, and a 25% restocking
+                            fee</strong>.
+                    </li>
+                </ul>
 
-                <!-- Column 2 -->
-                <div class="col-md-6 policy-box">
-                    <h4 class="fw-bold">Damaged / Opened Box Upon Arrival</h4>
-                    <p>
-                        All items are double inspected before we ship out with a shipping carrier to ensure the items are in good condition. If you find the item or package is damaged you must report this to the shipping carrier's driver immediately so the driver will have the record of your claim. Customer will have to contact carrier's claim department to file a claim for any lost or damaged items...
-                    </p>
+                <p><strong>Please note:</strong> <span class="text-danger">Special, promotional, and clearance items are
+                        <strong>final sale</strong> and non-refundable.</span></p>
 
-                    <h4 class="fw-bold">Refusals or Undeliverable Orders</h4>
-                    <p>
-                        Customer pays a 30% processing & restocking fee as well as shipping costs from us to you and back to us as a result of refusals or undeliverable.
-                    </p>
+                <p>Once your return is received at our warehouse, please allow <strong>up to 14 business days</strong>
+                    for processing and credit issuance.</p>
 
-                    <h4 class="fw-bold">Cancelled or Changed Orders</h4>
-                    <p>
-                        Orders canceled or changed prior to material shipping out will be charged a 5% administrative fee.
-                    </p>
+                <h5 class="fw-bold">Defective Return</h5>
+                <p>Items claimed as defective must be returned in their <strong>original packaging</strong>; otherwise,
+                    they may be classified as <strong class="text-danger">misuse-related damage</strong>, and no credit
+                    will be issued. Approved defective returns will receive <strong class="fw-bold">in-house credit
+                        only</strong>.</p>
 
-                    <h4 class="fw-bold">Freight</h4>
-                    <p>
-                        In some rare cases, freight prices are subject to change. We will contact you if a price adjustment is needed.
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <h4 class="fw-bold">Product Specific Information</h4>
-                    <p>
-                        <strong>Classy Cap Solar Lights</strong><br>
-                        Priority Customer Service<br>
-                        As a Classy Cap primary distributor, any Classy Cap customer service issues are promptly and directly handled by Classy Cap manufacturer when purchased at Academy Fence.<br>
-                        Call 866-460-4604
-                    </p>
-                </div>
+                <h5 class="fw-bold">Lost - Shipments and Claims</h5>
+
+                <p>In the rare event that a package is lost during transit after being picked up from our shipping
+                    facility, the responsibility falls on the shipping carrier. While Academy Fence Company is not
+                    liable for lost shipments, we recommend reaching out directly to the shipping company to file a
+                    claim. If you need assistance, we are happy to help guide you through the process.</p>
+
+                <h6 class="fw-bold">You will have two options for proceeding:</h6>
+                <ol>
+                    <li>
+                        <strong>File a Claim & Wait for Resolution:</strong> We will provide you with the necessary
+                        claim details and instructions. Once the claim is settled with the shipping carrier, we will
+                        reship your purchased items at no additional cost. Please note that this process may take
+                        several weeks.
+                    </li>
+                    <li>
+                        <strong>Repurchase & Reimbursement:</strong> You may choose to repurchase the order, and we will
+                        promptly reship the items. Once the shipping company resolves the original claim, we will
+                        reimburse you for the lost shipment.
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-md-6 policy-box">
+                <h5 class="fw-bold">Damaged or Opened Box Upon Arrival:</h5>
+                <p>We thoroughly inspect all items before shipping to ensure they are in good condition. If you receive
+                    a damaged package or item, you must report it to the shipping carrier&rsquo;s driver immediately so
+                    they
+                    can document your claim. Customers are responsible for filing a claim with the carrier&rsquo;s
+                    claims
+                    department for any lost or damaged items. We are not responsible for delays, loss, or damage that
+                    occurs during transportation.</p>
+
+                <p>Once you have reported the damage to the shipping driver and obtained written confirmation, please
+                    contact our customer service. We follow one of two procedures:</p>
+
+                <ol>
+                    <li>
+                        We submit a claim for the damaged item, allowing you to reorder it immediately. Once the claim
+                        is processed, we will issue a refund for the approved amount.
+                    </li>
+                    <li>
+                        We submit the claim, and you wait for the shipping carrier to finalize it before we resend the
+                        item to you.
+                    </li>
+                </ol>
+
+                <p>For assistance, please reach out to our customer service team.</p>
+
+                <h5 class="fw-bold">Refusals or Undeliverable Orders</h5>
+                <p>If an order is refused or deemed undeliverable, the customer will be responsible for a <strong>30%
+                        processing and restocking fee</strong>. Additionally, shipping costs for both the initial
+                    delivery and the return to our facility will be charged. We encourage customers to double-check
+                    their shipping details to avoid any unnecessary fees.</p>
+
+                <h5 class="fw-bold">Cancelled or Changed Orders</h5>
+                <p>If the cancellation or changes are made on the same day the order is placed, no additional fee will
+                    apply. Otherwise, orders canceled or modified before the materials have been shipped will incur a
+                    <strong>5% administrative fee</strong>.
+                </p>
+
+                <h5 class="fw-bold">Freight</h5>
+                <p>While we strive to provide accurate shipping costs, freight prices may occasionally be subject to
+                    change due to unforeseen factors. In such rare cases, we will reach out to you promptly to discuss
+                    any necessary price adjustments before proceeding with your order.</p>
+
+                <h5 class="fw-bold">Important Notice:</h5>
+                <p>By placing an order with us, you acknowledge and agree to our policies, terms, and conditions.</p>
 
             </div>
+            <!-- <div class="col">
+                <h2 class="text-center fw-bold">Product Specific Information</h2> -->
+
+                <!-- Column 1 -->
+                <!-- <div class="col-md-6 policy-box">
+                    <h5 class="fw-bold">Welded Wire</h5>
+                    <ul>
+                        <li>If you cancel your order on the same day before 4:00 PM EST, no additional charges will
+                            apply.
+                        </li>
+                        <li>If you cancel after 4:00 PM EST, a 5% fee will be charged, along with any additional costs
+                            depending on the order&rsquo;s preparation status, such as quality checks, packaging, and
+                            readiness
+                            for shipping.</li>
+                        <li>If the product has already been shipped, a refund will be issued for the purchase price
+                            minus
+                            shipping costs, handling fees, and a 25% restocking fee. Returns must be shipped at your
+                            expense
+                            using a carrier of your choice.</li>
+                        <li>If the product is damaged &ndash; If the product arrives damaged, report it
+                            to
+                            the
+                            shipping carrier immediately and obtain written confirmation. Then, contact our customer
+                            service
+                            for assistance.</li>
+                    </ul>
+                </div> -->
+            <!-- </div> -->
+
         </div>
     </div>
-    @include('layouts.footerproducts')
+</div>
+{{-- @include('layouts.footerproducts') --}}
 </main>
 @endsection

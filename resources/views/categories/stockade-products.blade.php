@@ -62,8 +62,8 @@
         <div class="col-12">
             <div class="main-header">
                 <h4 class="mb-0">
-                    @if ($currentSpecialty)
-                        {{ $currentSpecialty }}
+                    @if ($currentspeciality)
+                        {{ $currentspeciality }}
                     @else
                         Stockade Fence Products
                     @endif

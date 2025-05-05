@@ -11,15 +11,15 @@ class WoodPostCapsController extends Controller
     {
         // Category ID for Wood Post Caps
         $categoryId = 82;
-        
+
         // Fetch products from the database
         $query = DB::connection('mysql_second')
             ->table('productsqry')
             ->where('categories_id', $categoryId)
             ->where('enabled', 1);
-            
+
         $products = $query->get();
-        
+
         // Define parent codes and their display names
         $parentGroups = [
             'AFCWPCP' => 'Standard Pyramid',
@@ -33,31 +33,31 @@ class WoodPostCapsController extends Controller
             'AFCWPCB5' => '5" Ball',
             'AFCWPCBC5' => 'Copper 5" Ball',
         ];
-        
+
         // Default image path
         $defaultImage = url('storage/products/default.png');
-        
+
         // Process products and group by parent
         $productsByParent = [];
         $productData = [];
-        
+
         foreach ($products as $product) {
             // Get parent code
             $parentCode = $product->parent ?? '';
-            
+
             // Skip if not a valid parent code
             if (!isset($parentGroups[$parentCode])) {
                 continue;
             }
-            
+
             // Initialize parent group if not exists
             if (!isset($productsByParent[$parentCode])) {
                 $productsByParent[$parentCode] = [];
             }
-            
+
             // Add product to the appropriate parent group
             $productsByParent[$parentCode][] = $product;
-            
+
             // Store product data for easy access
             $productData[$product->id] = [
                 'image' => $product->img_large ? url('storage/products/' . $product->img_large) : $defaultImage,
@@ -66,23 +66,24 @@ class WoodPostCapsController extends Controller
                 'item_no' => $product->item_no ?? '',
                 'size' => $product->size ?? '',
                 'alt_length' => $product->alt_length ?? '',
+                'size2' => $product->size2 ?? '',
             ];
         }
-        
+
         // Get one representative product for each parent group for the main view
         $representativeProducts = [];
-        
+
         foreach ($parentGroups as $code => $name) {
             if (isset($productsByParent[$code]) && !empty($productsByParent[$code])) {
                 $representativeProducts[$code] = $productsByParent[$code][0];
             }
         }
-        
+
         // If a specific style is requested, filter products
         $currentStyle = null;
         if ($style && isset($parentGroups[$style])) {
             $currentStyle = $style;
-            
+
             // We're still returning all products, but marking which one is selected
             return view('categories.woodpostcaps', [
                 'representativeProducts' => $representativeProducts,
@@ -94,7 +95,7 @@ class WoodPostCapsController extends Controller
                 'selectedParent' => $style
             ]);
         }
-        
+
         // Return the view with the grouped products
         return view('categories.woodpostcaps', [
             'representativeProducts' => $representativeProducts,

@@ -32,7 +32,7 @@ try {
         echo "Name: {$product->product_name}\n";
         
         // Check if certain fields exist in the product
-        $fields = ['style', 'specialty', 'spacing', 'size', 'categories_id', 'color', 'price'];
+        $fields = ['style', 'speciality', 'spacing', 'size', 'categories_id', 'color', 'price'];
         foreach ($fields as $field) {
             if (property_exists($product, $field)) {
                 echo "$field: " . ($product->$field ?? 'N/A') . "\n";
