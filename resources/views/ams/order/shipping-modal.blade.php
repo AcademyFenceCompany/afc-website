@@ -30,8 +30,6 @@
                                         <th>Weight</th>
                                         <th>Cost</th>
                                         <th>Item</th>
-                                        <th>Qty in Box</th>
-                                        <th>Weight of Box</th>
                                     </tr>
                                 </thead>
                                 <tbody id="upsShippingTable">

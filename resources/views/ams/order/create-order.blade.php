@@ -481,8 +481,6 @@
                                                         <th>Weight</th>
                                                         <th>Cost</th>
                                                         <th>Item</th>
-                                                        <th>Qty in Box</th>
-                                                        <th>Weight of Box</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="upsShippingTable">
@@ -520,6 +518,7 @@
                                             <table class="table table-bordered table-sm">
                                                 <thead class="table-light">
                                                     <tr>
+                                                        <th>Select</th>
                                                         <th>Carriers</th>
                                                         <th>Weight</th>
                                                         <th>Cost</th>
@@ -535,6 +534,70 @@
                                                     <!-- Freight shipping items will be populated here -->
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Shipping Estimate Organizer -->
+                                <div class="card mt-3">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">Shipping Estimate Organizer</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-carrier" class="form-label">Carrier</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-carrier" name="shipping_organizer_carrier">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-weight" class="form-label">Weight</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-weight" name="shipping_organizer_weight">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-class" class="form-label">Class</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-class" name="shipping_organizer_class">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-cost" class="form-label">Cost Price</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-cost" name="shipping_organizer_cost">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-zip" class="form-label">Zip</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-zip" name="shipping_organizer_zip">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-res-date" class="form-label">Res Date</label>
+                                                    <input type="date" class="form-control" id="shipping-organizer-res-date" name="shipping_organizer_res_date" value="{{ date('Y-m-d') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-packages" class="form-label">Packages</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-packages" name="shipping_organizer_packages">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="mb-3">
+                                                    <label for="shipping-organizer-quoted-by" class="form-label">Quoted by</label>
+                                                    <input type="text" class="form-control" id="shipping-organizer-quoted-by" name="shipping_organizer_quoted_by" value="sunny">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8 d-flex align-items-end">
+                                                <button type="button" class="btn btn-primary" id="addShippingEstimate">Add to Order</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
