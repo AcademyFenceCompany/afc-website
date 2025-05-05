@@ -283,6 +283,19 @@
                                 <select class="form-select form-select-sm" id="payment-method">
                                     <option value="">Select Payment</option>
                                 </select>
+                                
+                                <!-- Order Status Dropdown -->
+                                <div class="mt-2">
+                                    <label for="order-status" class="form-label small mb-1">Order Status</label>
+                                    <select class="form-select form-select-sm" id="order-status" name="order_status">
+                                        <option value="QUOTE" data-color="#FFD8B1">QUOTE</option>
+                                        <option value="NEW" data-color="#A9D4F6">NEW</option>
+                                        <option value="PROCESSED" data-color="#C0C0C0">PROCESSED</option>
+                                        <option value="PROCESSING" data-color="#E8B4B4">PROCESSING</option>
+                                        <option value="DEPOSIT" data-color="#B6D7B9">DEPOSIT</option>
+                                        <option value="MATERIAL" data-color="#FF5252">MATERIAL</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         
@@ -654,7 +667,7 @@
     <script src="{{ asset('js/order-categories.js') }}"></script>
     <script src="{{ asset('js/order-products.js') }}"></script>
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize order items table
             updateOrderItemsTable();
             
@@ -777,6 +790,80 @@
         function getOrderItems() {
             return JSON.parse(localStorage.getItem('orderItems') || '[]');
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderStatusDropdown = document.getElementById('order-status');
+            orderStatusDropdown.addEventListener('change', function() {
+                applyOrderStatusColor(this);
+            });
+            
+            // Initialize the color on page load
+            if (orderStatusDropdown) {
+                applyOrderStatusColor(orderStatusDropdown);
+            }
+            
+            // Save Order Button Event Listener
+            const saveOrderBtn = document.getElementById('save-order');
+            if (saveOrderBtn) {
+                saveOrderBtn.addEventListener('click', function() {
+                    // Get all the order data including the order status
+                    const formData = {
+                        customer_id: document.getElementById('customer-select').value,
+                        call_date: document.getElementById('call-date').value,
+                        quote_number: document.getElementById('quote-number').value,
+                        sold_number: document.getElementById('sold-number').value,
+                        sales_person: document.getElementById('sales-person').value,
+                        shipping_name: document.getElementById('shipping-name')?.value,
+                        shipping_company: document.getElementById('shipping-company')?.value,
+                        shipping_address: document.getElementById('shipping-address')?.value,
+                        shipping_address2: document.getElementById('shipping-address2')?.value,
+                        shipping_city: document.getElementById('shipping-city')?.value,
+                        shipping_state: document.getElementById('shipping-state')?.value,
+                        shipping_zip: document.getElementById('shipping-zip')?.value,
+                        shipping_phone: document.getElementById('shipping-phone')?.value,
+                        
+                        subtotal: document.getElementById('subtotal')?.value,
+                        tax_amount: document.getElementById('tax_amount')?.value,
+                        shipping_cost: document.getElementById('shipping-cost')?.value,
+                        total: document.getElementById('total')?.value,
+                        
+                        // This is the key change - include the order status
+                        order_status: document.getElementById('order-status')?.value
+                    };
+                    
+                    // Send the data to the server
+                    fetch('/ams/orders', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('Order saved successfully!');
+                            // Always redirect to the activity page instead of trying to view the order
+                            window.location.href = '/ams/activity';
+                        } else {
+                            alert('Error saving order: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving order:', error);
+                        alert('Error saving order. Please try again.');
+                    });
+                });
+            }
+        });
+        
+        function applyOrderStatusColor(selectElement) {
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const color = selectedOption.getAttribute('data-color');
+            selectElement.style.backgroundColor = color;
+            selectElement.style.color = '#fff';
+        }
     </script>
 @endsection
 
@@ -828,6 +915,46 @@
         .shipping-table th, .shipping-table td {
             font-size: 0.85rem;
             padding: 0.25rem;
+        }
+        
+        /* Order Status Styling */
+        .order-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .order-status-QUOTE {
+            background-color: #FFD8B1;
+            color: #000;
+        }
+        
+        .order-status-PROCESSED {
+            background-color: #C0C0C0;
+            color: #000;
+        }
+        
+        .order-status-DEPOSIT {
+            background-color: #B6D7B9;
+            color: #000;
+        }
+        
+        .order-status-NEW {
+            background-color: #A9D4F6;
+            color: #000;
+        }
+        
+        .order-status-PROCESSING {
+            background-color: #E8B4B4;
+            color: #000;
+        }
+        
+        .order-status-MATERIAL {
+            background-color: #FF5252;
+            color: #fff;
         }
     </style>
 @endsection
