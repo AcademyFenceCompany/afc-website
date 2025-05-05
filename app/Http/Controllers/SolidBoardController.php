@@ -110,7 +110,7 @@ class SolidBoardController extends Controller
                 'name' => $category->cat_name,
                 'description' => $category->cat_desc_long ?? 'No description available',
                 'seo_name' => $category->seo_name,
-                'image' => $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png'),
+                'image' => $category->image ? url('storage/categories/' . $category->image) : url('storage/categories/default.png'),
             ],
             'productMap' => $productMap,
             'productIdMap' => $productIdMap,

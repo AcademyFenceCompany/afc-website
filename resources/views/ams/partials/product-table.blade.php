@@ -14,8 +14,8 @@
                 @if ($product->style)
                     <small class="badge bg-light text-dark">Style: {{ $product->style }}</small>
                 @endif
-                @if ($product->specialty)
-                    <small class="badge bg-light text-dark">Specialty: {{ $product->specialty }}</small>
+                @if ($product->speciality)
+                    <small class="badge bg-light text-dark">speciality: {{ $product->speciality }}</small>
                 @endif
                 @if ($product->size1)
                     <small class="badge bg-light text-dark">Size 1: {{ $product->size1 }}</small>

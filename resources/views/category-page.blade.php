@@ -5,54 +5,70 @@
 
 @section('content')
     <!-- Header Section -->
-    <div class="bg-black text-white text-center py-3 rounded">
-        <h1 class="mb-0">{{ $page->title }}</h1>
+    <div class="rounded bg-brown">
+        <h1 class="page-title text-center py-2 mb-0">{{ $page->title }}</h1>
     </div>
-    <div class="mt-2">
-        <p class="text-center">{!! $page->subtitle !!}</p>
+    <div class="text-center py-2 mb-4 border-bottom">
+        <p class="mb-0">{!! $page->subtitle !!}</p>
     </div>
 
-    <!-- Main Section -->
-    <div class="row mt-4 align-items-center">
-        <!-- Left Column -->
-        <div class="col-md-4">
-            <div class="bg-warning text-dark p-4 rounded shadow-sm">
-                <h4 class="fw-bold">The Original online Fence Superstore</h4>
-                <p class="mb-0"><em>Family owned operated since 1968</em></p>
-                <div>{!! $page->bulletin_board !!}</div>
+   <!-- Main Section (Styled Like Info Section) -->
+<div class="row g-4 mb-3">
+    <!-- Left Section - Superstore Info -->
+    <div class="col-md-6 wf-about">
+        <div class="d-flex">
+            @if ($page->img_large)
+                <img src="{{ Storage::url($page->img_large) }}"
+                    alt="{{ $page->title }} Image"
+                    class="me-4 rounded about-image"
+                    style="max-width: 200px; height: auto;">
+            @endif
+            <div>
+                <div class="small-font">
+                    {!! $page->product_text !!}
+                </div>
+                
 
                 <!-- Category Tidbits -->
-                <div class="mt-3">
+                <div class="small">
                     @if ($page->category_tidbit_1)
-                        <div class="mb-3">{!! $page->category_tidbit_1 !!}</div>
+                        <div class="mb-2">{!! $page->category_tidbit_1 !!}</div>
                     @endif
                     @if ($page->category_tidbit_2)
-                        <div class="mb-3">{!! $page->category_tidbit_2 !!}</div>
+                        <div class="mb-2">{!! $page->category_tidbit_2 !!}</div>
                     @endif
                     @if ($page->category_tidbit_3)
-                        <div class="mb-3">{!! $page->category_tidbit_3 !!}</div>
+                        <div class="mb-2">{!! $page->category_tidbit_3 !!}</div>
                     @endif
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Center Image -->
-        <div class="col-md-4 text-center">
-            @if ($page->product_image)
-                <img style="max-width: 357px;height: 270px;" src="{{ Storage::url($page->product_image) }}"
-                    alt="{{ $page->title }} Image" class="img-fluid rounded shadow-sm">
-            @endif
-        </div>
-
-        <!-- Right Column -->
-        <div class="col-md-4">
-            @if ($page->product_text)
-                <div class="product-text">
-                    {!! $page->product_text !!}
-                </div>
-            @endif
+    <!-- Middle Section - Optional Buttons (Replace if needed) -->
+    <div class="col-md-2 text-center">
+        <h5 class="text-brown mb-2">Options</h5>
+        <div class="d-flex flex-column gap-2">
+            <button class="btn btn-light border w-100 text-center">Contact Us</button>
+            <button class="btn btn-light border w-100 text-center">More Info</button>
+            <button class="btn btn-brown w-100" style="background-color: #8B4513 !important; color: white !important;">
+                Get a Quote
+            </button>
         </div>
     </div>
+
+    <!-- Right Section - Product Text -->
+    <div class="col-md-4">
+        @if ($page->product_text)
+            <div class="p-3 rounded bg-light-yellow">
+            <h6 class="mb-2 fw-bold">The Original Online Fence Superstore</h6>
+                <p class="mb-2 fst-italic">Family owned & operated since 1968</p>
+                <div class="page-description mb-2">{!! $page->bulletin_board !!}</div>
+            </div>
+        @endif
+    </div>
+</div>
+
 
     <!-- Products Section -->
     @if (empty($groupedProducts['groups']) && empty($meshSize_products) && empty($mainTableProducts))
@@ -235,17 +251,17 @@
                                 <!-- Navigation Buttons -->
                                 <div class="mt-3 text-center">
                                     @foreach ($group['subgroups'] as $index => $subgroup)
-                                        <button class="btn btn-outline-primary mb-2 me-2 specialty-btn"
-                                            data-target="specialty-{{ $loop->parent->index }}-{{ $index }}">
+                                        <button class="btn btn-outline-primary mb-2 me-2 speciality-btn"
+                                            data-target="speciality-{{ $loop->parent->index }}-{{ $index }}">
                                             {{ $subgroup['title'] }}
                                         </button>
                                     @endforeach
                                 </div>
 
-                                <!-- Specialty Groups -->
+                                <!-- speciality Groups -->
                                 @foreach ($group['subgroups'] as $index => $subgroup)
-                                    <div class="specialty-group mt-4"
-                                        id="specialty-{{ $loop->parent->index }}-{{ $index }}"
+                                    <div class="speciality-group mt-4"
+                                        id="speciality-{{ $loop->parent->index }}-{{ $index }}"
                                         style="{{ $loop->first ? '' : 'display: none;' }}">
                                         @include('partials.product-table', [
                                             'products' => $subgroup['products'],
@@ -300,14 +316,14 @@
 @section('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle specialty button clicks
-            const specialtyBtns = document.querySelectorAll('.specialty-btn');
-            specialtyBtns.forEach(btn => {
+            // Handle speciality button clicks
+            const specialityBtns = document.querySelectorAll('.speciality-btn');
+            specialityBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const targetId = this.getAttribute('data-target');
                     const parentGroup = this.closest('.mt-5');
-                    const allGroups = parentGroup.querySelectorAll('.specialty-group');
-                    const allBtns = parentGroup.querySelectorAll('.specialty-btn');
+                    const allGroups = parentGroup.querySelectorAll('.speciality-group');
+                    const allBtns = parentGroup.querySelectorAll('.speciality-btn');
 
                     // Hide all groups
                     allGroups.forEach(group => group.style.display = 'none');
@@ -423,7 +439,7 @@
                     // Add other fields if they exist
                     if (button.dataset.size2) formData.append('size2', button.dataset.size2);
                     if (button.dataset.size3) formData.append('size3', button.dataset.size3);
-                    if (button.dataset.specialty) formData.append('specialty', button.dataset.specialty);
+                    if (button.dataset.speciality) formData.append('speciality', button.dataset.speciality);
                     if (button.dataset.material) formData.append('material', button.dataset.material);
                     if (button.dataset.spacing) formData.append('spacing', button.dataset.spacing);
                     if (button.dataset.coating) formData.append('coating', button.dataset.coating);

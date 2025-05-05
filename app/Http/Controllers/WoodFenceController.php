@@ -118,7 +118,7 @@ class WoodFenceController extends Controller
 
         $details = $query->select(
                 'product_details.style',
-                'product_details.specialty',
+                'product_details.speciality',
                 'product_details.spacing',
                 'product_details.material',
                 'products.family_category_id',
@@ -144,7 +144,7 @@ class WoodFenceController extends Controller
                 $hold = collect([
                     'product_id' => $this->productBySubcatID($group->subcategory_id),
                     'subcategory_id' => $group->subcategory_id,
-                    'specialty' => $group->specialty,
+                    'speciality' => $group->speciality,
                     'spacing' => $group->spacing,
                     'material' => $group->material,
                     'general_image' => $group->general_image,
@@ -165,17 +165,17 @@ class WoodFenceController extends Controller
                 'spacing' => $spacing
             ]);
         }
-        // If no style, try to group by specialty
-        elseif ($details->whereNotNull('specialty')->count() > 0) {
-            $specialties = $details->pluck('specialty')->unique()->filter()->map(function($specialty) {
+        // If no style, try to group by speciality
+        elseif ($details->whereNotNull('speciality')->count() > 0) {
+            $specialties = $details->pluck('speciality')->unique()->filter()->map(function($speciality) {
                 return collect([
-                    'specialty' => $specialty,
+                    'speciality' => $speciality,
                     'products' => collect([])
                 ]);
-            })->keyBy('specialty');
+            })->keyBy('speciality');
 
             $grouped = $details->reduce(function ($carry, $group) {
-                if (!$group->specialty) return $carry;
+                if (!$group->speciality) return $carry;
 
                 $hold = collect([
                     'product_id' => $this->productBySubcatID($group->subcategory_id),
@@ -186,16 +186,16 @@ class WoodFenceController extends Controller
                     'price' => $this->getMinPriceBySubcatID($group->subcategory_id)
                 ]);
 
-                if ($carry->has($group->specialty)) {
-                    $carry->get($group->specialty)['products']->push($hold);
+                if ($carry->has($group->speciality)) {
+                    $carry->get($group->speciality)['products']->push($hold);
                 }
 
                 return $carry;
             }, $specialties);
 
             return view('categories.woodfence-specs', [
-                'specialtyGroups' => $grouped,
-                'groupBy' => 'specialty',
+                'specialityGroups' => $grouped,
+                'groupBy' => 'speciality',
                 'styleTitle' => $styleTitle,
                 'spacing' => $spacing
             ]);
@@ -207,7 +207,7 @@ class WoodFenceController extends Controller
                     'product_id' => $this->productBySubcatID($product->subcategory_id),
                     'subcategory_id' => $product->subcategory_id,
                     'style' => $product->style,
-                    'specialty' => $product->specialty,
+                    'speciality' => $product->speciality,
                     'spacing' => $product->spacing,
                     'material' => $product->material,
                     'general_image' => $product->general_image,

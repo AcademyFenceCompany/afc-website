@@ -15,7 +15,7 @@ class WoodFenceMysql2Controller extends Controller
             ->table('categories')
             ->where('majorcategories_id', 1)
             ->where('web_enabled', 1) // Only show web-enabled categories
-            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name', 'img', 'web_enabled')
+            ->select('id', 'cat_name', 'cat_desc_long', 'seo_name', 'image', 'web_enabled')
             ->get();
 
         $categoriesWithDetails = [];
@@ -116,7 +116,7 @@ class WoodFenceMysql2Controller extends Controller
                 'id' => $category->id,
                 'name' => $category->cat_name,
                 'description' => $category->cat_desc_long ?? 'No description available',
-                'image' => $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png'),
+                'image' => $category->image ? url('storage/categories/' . $category->image) : url('storage/categories/default.png'),
                 'spacing_options' => $spacingOptions,
                 'seo_name' => $category->seo_name,
                 'category_group' => $categoryGroup,
@@ -303,7 +303,7 @@ class WoodFenceMysql2Controller extends Controller
         $formattedProducts = $productsArray;
 
         // Add the image to the category object
-        $category->image = $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png');
+        $category->image = $category->image ? url('storage/categories/' . $category->image) : url('storage/categories/default.png');
 
         // Group products according to groupBy parameter
         if ($groupBy === 'style') {

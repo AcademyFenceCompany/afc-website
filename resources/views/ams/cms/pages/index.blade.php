@@ -33,11 +33,11 @@
                         <tbody>
                             @foreach ($pages as $page)
                                 <tr>
-                                    <td>{{ $page->category->family_category_name }}</td>
+                                    <td>{{ $page->cat_name }}</td>
                                     <td>{{ $page->title }}</td>
-                                    <td>{{ $page->updated_at->format('M d, Y H:i') }}</td>
+                                    <td>{{ $page->updated_at }}</td>
                                     <td>
-                                        <a href="{{ route('ams.cms.pages.edit', $page) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('ams.cms.pages.edit', $page->id) }}" class="btn btn-sm btn-primary">
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
                                         <form action="{{ route('ams.cms.pages.destroy', $page->id) }}" method="POST"
