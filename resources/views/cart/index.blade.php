@@ -17,7 +17,7 @@
                     <th class="text-start">Price</th>
                 </tr>
             </thead>
-            @dump(session('cart'))
+            {{-- @dump(session('cart')) --}}
             <tbody>
                 @forelse (session('cart', []) as $item)
                     <tr>
@@ -27,10 +27,10 @@
                                     data-item="{{ $item['item_no'] }}"></i>
                             </h6>
                             <small class="text-muted">Item # - {{ $item['item_no'] }}</small><br>
-                            <small class="text-muted">{{ $item['size1'] ?? 'N/A' }}</small><br>
-                            <small class="text-muted">{{ $item['size2'] ?? 'N/A' }}</small><br>
-                            <small class="text-muted">{{ $item['size3'] ?? 'N/A' }}</small><br>
-                            <small class="text-muted">{{ $item['color'] ?? 'N/A' }}</small>
+                            <small class="text-muted">Size: {{ $item['size'] ?? 'N/A' }}</small><br>
+                            <small class="text-muted">Size 2: {{ $item['size2'] ?? 'N/A' }}</small><br>
+                            <small class="text-muted">Size 3: {{ $item['size3'] ?? 'N/A' }}</small><br>
+                            <small class="text-muted">Color: {{ $item['color'] ?? 'N/A' }}</small>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
