@@ -1570,3 +1570,157 @@ function addShippingDetailsToOrderFromOrganizer() {
         }
     }
 }
+
+// Order Status Handling
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the order status dropdown
+    const orderStatusDropdown = document.getElementById('order-status');
+    if (orderStatusDropdown) {
+        // Set an initial value if none is selected
+        if (!orderStatusDropdown.value) {
+            orderStatusDropdown.value = 'QUOTE'; // Default to QUOTE
+        }
+        
+        // Apply the initial color
+        applyOrderStatusColor(orderStatusDropdown);
+        
+        // Add change event listener
+        orderStatusDropdown.addEventListener('change', function() {
+            applyOrderStatusColor(this);
+        });
+    }
+    
+    // Add the order status to form submission
+    const saveOrderBtn = document.getElementById('save-order');
+    if (saveOrderBtn) {
+        saveOrderBtn.addEventListener('click', function() {
+            // Get the current order status
+            const orderStatus = document.getElementById('order-status').value;
+            
+            // Add the order status to the existing order data or create a hidden input
+            let orderStatusInput = document.getElementById('order-status-hidden');
+            if (!orderStatusInput) {
+                orderStatusInput = document.createElement('input');
+                orderStatusInput.type = 'hidden';
+                orderStatusInput.id = 'order-status-hidden';
+                orderStatusInput.name = 'order_status';
+                document.body.appendChild(orderStatusInput);
+            }
+            
+            orderStatusInput.value = orderStatus;
+            
+            // Now proceed with saving the order
+            saveOrder();
+        });
+    }
+});
+
+// Function to apply color based on selected order status
+function applyOrderStatusColor(selectElement) {
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const color = selectedOption.getAttribute('data-color');
+    
+    // Apply color to the select element background
+    if (color) {
+        selectElement.style.backgroundColor = color;
+        
+        // Adjust text color for readability based on background brightness
+        const rgb = hexToRgb(color);
+        const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+        selectElement.style.color = brightness > 128 ? '#000000' : '#FFFFFF';
+    }
+}
+
+// Helper function to convert hex color to RGB
+function hexToRgb(hex) {
+    // Remove # if present
+    hex = hex.replace('#', '');
+    
+    // Parse the hex values
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    return { r, g, b };
+}
+
+// Save order function (placeholder)
+function saveOrder() {
+    // Get all order data
+    const orderData = {
+        customer_id: document.getElementById('customer-select')?.value,
+        call_date: document.getElementById('call-date')?.value,
+        quote_number: document.getElementById('quote-number')?.value,
+        sold_number: document.getElementById('sold-number')?.value,
+        sales_person: document.getElementById('sales-person')?.value,
+        
+        shipping_name: document.getElementById('shipping-name')?.value,
+        shipping_company: document.getElementById('shipping-company')?.value,
+        shipping_address: document.getElementById('shipping-address')?.value,
+        shipping_address2: document.getElementById('shipping-address2')?.value,
+        shipping_city: document.getElementById('shipping-city')?.value,
+        shipping_state: document.getElementById('shipping-state')?.value,
+        shipping_zip: document.getElementById('shipping-zip')?.value,
+        shipping_country: document.getElementById('shipping-country')?.value,
+        shipping_phone: document.getElementById('shipping-phone')?.value,
+        
+        billing_name: document.getElementById('billing-name')?.value,
+        billing_company: document.getElementById('billing-company')?.value,
+        billing_address: document.getElementById('billing-address')?.value,
+        billing_address2: document.getElementById('billing-address2')?.value,
+        billing_city: document.getElementById('billing-city')?.value,
+        billing_state: document.getElementById('billing-state')?.value,
+        billing_zip: document.getElementById('billing-zip')?.value,
+        billing_country: document.getElementById('billing-country')?.value,
+        
+        origin: document.querySelector('input[name="origin"]:checked')?.value,
+        shipping_method_type: document.querySelector('input[name="shipping_method"]:checked')?.value,
+        payment_method: document.getElementById('payment-method')?.value,
+        
+        tax_rate: document.getElementById('taxRate')?.value,
+        shipping_cost: document.getElementById('shipping-cost')?.value,
+        shipping_method: document.getElementById('shipping-method')?.value,
+        tax_exempt: document.getElementById('tax-exempt')?.checked ? 1 : 0,
+        deposit: document.querySelector('input[name="deposit"]:checked')?.value,
+        
+        subtotal: document.getElementById('subtotal')?.value,
+        tax_amount: document.getElementById('tax_amount')?.value,
+        total: document.getElementById('total')?.value,
+        
+        order_items: getOrderItems(),
+        order_status: document.getElementById('order-status')?.value
+    };
+    
+    // Send order data to server
+    fetch('/ams/orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(orderData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Order saved successfully:', data);
+        
+        // Show success message
+        alert('Order saved successfully!');
+        
+        // Redirect to order list or order view page
+        if (data.order_id) {
+            window.location.href = `/ams/orders/${data.order_id}`;
+        } else {
+            window.location.href = '/ams/orders';
+        }
+    })
+    .catch(error => {
+        console.error('Error saving order:', error);
+        alert('Error saving order. Please try again.');
+    });
+}

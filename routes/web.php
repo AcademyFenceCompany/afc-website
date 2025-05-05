@@ -54,9 +54,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/all-products', [OrderController::class, 'getAllProducts'])->name('ams.all-products');
     
     // Order Activity
-    Route::get('/activity', function () {
-        return view('ams.activity');
-    })->name('ams.activity');
+    Route::get('/activity', [OrderController::class, 'activity'])->name('ams.activity');
     
     // Product Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -311,9 +309,7 @@ Route::get('/ams', function () {
 })->middleware('auth')->name('ams.home');
 
 
-Route::get('/ams/activity', function () {
-    return view('ams.activity');
-})->name('ams.activity');
+Route::get('/ams/activity', [OrderController::class, 'activity'])->name('ams.activity');
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
