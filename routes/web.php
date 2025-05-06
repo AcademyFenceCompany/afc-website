@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\Ams\OrderController;
+use App\Http\Controllers\OrderCategoryController;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
@@ -31,6 +32,30 @@ use App\Http\Controllers\ChainLinkFenceController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/', function () {
+        return view('ams.dashboard');
+    })->name('ams.home');
+    
+    // Order Routes
+    Route::prefix('orders')->name('ams.orders.')->group(function () {
+        Route::get('/create', [OrderController::class, 'create'])->name('create');
+        Route::post('/', [OrderController::class, 'store'])->name('store');
+        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+        Route::get('/{order}/edit', [OrderController::class, 'edit'])->name('edit');
+        Route::put('/{order}', [OrderController::class, 'update'])->name('update');
+        Route::delete('/{order}', [OrderController::class, 'destroy'])->name('destroy');
+        Route::post('/{order}/status', [OrderController::class, 'updateStatus'])->name('update-status');
+    });
+    
+    // Order Categories
+    Route::get('/categories', [OrderController::class, 'categories'])->name('ams.categories');
+    Route::get('/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.categories.show');
+    Route::get('/all-products', [OrderController::class, 'getAllProducts'])->name('ams.all-products');
+    
+    // Order Activity
+    Route::get('/activity', [OrderController::class, 'activity'])->name('ams.activity');
+    
     // Product Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -59,8 +84,6 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
  
     // Other AMS routes...
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
-    Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
     Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
     Route::get('/orders/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.orders.category.show');
     Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
@@ -75,6 +98,14 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         Route::delete('/{address}', [OrderController::class, 'deleteAddress'])->name('ams.customers.addresses.delete');
     });
     
+    // Order Category Routes
+    Route::prefix('api/order-categories')->group(function () {
+        Route::get('/', [OrderCategoryController::class, 'ajaxGetCategories']);
+        Route::get('/products/{categoryId}', [OrderCategoryController::class, 'ajaxGetProducts']);
+        Route::get('/product/{productId}', [OrderCategoryController::class, 'ajaxGetProductDetails']);
+        Route::get('/search', [OrderCategoryController::class, 'ajaxSearchProducts']);
+    });
+
     // Debug route
     Route::get('/debug/products', function() {
         $products = \App\Models\Product::with(['details', 'familyCategory'])->get();
@@ -278,9 +309,7 @@ Route::get('/ams', function () {
 })->middleware('auth')->name('ams.home');
 
 
-Route::get('/ams/activity', function () {
-    return view('ams.activity');
-})->name('ams.activity');
+Route::get('/ams/activity', [OrderController::class, 'activity'])->name('ams.activity');
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
@@ -302,6 +331,11 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
+// API Routes
+Route::get('/api/products/search', [App\Http\Controllers\ProductApiController::class, 'search']);
+Route::get('/api/products/item/{itemNumber}', [App\Http\Controllers\ProductApiController::class, 'getByItemNumber']);
+Route::get('/api/order-categories', [App\Http\Controllers\OrderCategoryController::class, 'getCategories']);
+Route::get('/api/order-products/{categoryId}', [App\Http\Controllers\OrderCategoryController::class, 'ajaxGetProducts']);
 
 Route::get('/post-caps', function () {
     return view('post-caps');

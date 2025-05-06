@@ -34,41 +34,41 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-});
-function loadProductsByCategory(categoryId, page = 1) {
-    currentCategoryId = categoryId;
 
-    // Update active state
-    document.querySelectorAll(".category-link").forEach((link) => {
-        link.classList.remove("active");
-    });
-    const activeLink = document.querySelector(
-        `[data-category-id="${categoryId}"]`,
-    );
-    if (activeLink) {
-        activeLink.classList.add("active");
-    }
+    function loadProductsByCategory(categoryId, page = 1) {
+        currentCategoryId = categoryId;
 
-    // Show loading state
-    const tbody = document.querySelector(".table tbody");
-    tbody.innerHTML =
-        '<tr><td colspan="7" class="text-center py-4"><i class="bi bi-hourglass-split"></i> Loading...</td></tr>';
+        // Update active state
+        document.querySelectorAll(".category-link").forEach((link) => {
+            link.classList.remove("active");
+        });
+        const activeLink = document.querySelector(
+            `[data-category-id="${categoryId}"]`,
+        );
+        if (activeLink) {
+            activeLink.classList.add("active");
+        }
 
-    // Fetch products
-    fetch(`/api/products/${categoryId}?page=${page}`)
-        .then((response) => response.json())
-        .then((data) => {
-            if (data.success && data.data) {
-                if (data.data.length > 0) {
-                    // Build table rows
-                    const rows = data.data
-                        .map((product) => {
-                            const price = parseFloat(product.price_per_unit);
-                            const formattedPrice = !isNaN(price)
-                                ? `$${price.toFixed(2)}`
-                                : "$0.00";
+        // Show loading state
+        const tbody = document.querySelector(".table tbody");
+        tbody.innerHTML =
+            '<tr><td colspan="7" class="text-center py-4"><i class="bi bi-hourglass-split"></i> Loading...</td></tr>';
 
-                            return `
+        // Fetch products
+        fetch(`/api/products/${categoryId}?page=${page}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success && data.data) {
+                    if (data.data.length > 0) {
+                        // Build table rows
+                        const rows = data.data
+                            .map((product) => {
+                                const price = parseFloat(product.price_per_unit);
+                                const formattedPrice = !isNaN(price)
+                                    ? `$${price.toFixed(2)}`
+                                    : "$0.00";
+
+                                return `
                    <tr>
                         <td>${product.item_no || ""}</td>
                         <td>${product.product_name || ""}</td>
@@ -89,37 +89,37 @@ function loadProductsByCategory(categoryId, page = 1) {
                         </td>
                     </tr>
                 `;
-                        })
-                        .join("");
+                            })
+                            .join("");
 
-                    tbody.innerHTML = rows;
+                        tbody.innerHTML = rows;
 
-                    // Update count display
-                    const countDisplay =
-                        document.querySelector(".text-muted.small");
-                    if (countDisplay) {
-                        countDisplay.textContent = `Showing 1 to ${data.data.length} of ${data.total} results`;
+                        // Update count display
+                        const countDisplay =
+                            document.querySelector(".text-muted.small");
+                        if (countDisplay) {
+                            countDisplay.textContent = `Showing 1 to ${data.data.length} of ${data.total} results`;
+                        }
+                    } else {
+                        tbody.innerHTML =
+                            '<tr><td colspan="7" class="text-center py-4">No products found for this category</td></tr>';
                     }
                 } else {
-                    tbody.innerHTML =
-                        '<tr><td colspan="7" class="text-center py-4">No products found for this category</td></tr>';
+                    throw new Error(data.message || "Failed to load products");
                 }
-            } else {
-                throw new Error(data.message || "Failed to load products");
-            }
 
-            // Update URL
-            const url = new URL(window.location);
-            url.searchParams.set("category", categoryId);
-            window.history.pushState({}, "", url);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            tbody.innerHTML =
-                '<tr><td colspan="7" class="text-center py-4 text-danger">Error loading products</td></tr>';
-        });
-}
-document.addEventListener("DOMContentLoaded", function () {
+                // Update URL
+                const url = new URL(window.location);
+                url.searchParams.set("category", categoryId);
+                window.history.pushState({}, "", url);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                tbody.innerHTML =
+                    '<tr><td colspan="7" class="text-center py-4 text-danger">Error loading products</td></tr>';
+            });
+    }
+
     // Handle both category clicks and toggle button clicks
     const categoryTree = document.querySelector(".category-tree");
     
@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
 
     // Auto-expand active category
     const activeLink = document.querySelector(".category-link.active");
