@@ -36,11 +36,12 @@
     </div>
     <!-- Orders List -->
     <div class="orders-list">
+        @dump($orders)
         @forelse ($orders as $order)
             <!-- Order Header -->
             <div class="order-header">
-                <a href="{{ route('orders.show', $order->original_order_id) }}" class="order-id">
-                    #{{ $order->original_order_id }}
+                <a href="{{ route('ams.orders.edit', $order->id) }}" class="order-id">
+                    #{{ $order->id }}
                 </a>
                 <span class="customer-name">
                     @if ($order->customer)
@@ -91,17 +92,17 @@
                     @if ($order->status->customer_confirmed_date)
                         <button class="status-button customer-confirmed" title="Customer Confirmed">CC</button>
                     @endif
-                    @if ($order->status->shipped_confirmed_date)
+                    {{-- @if ($order->status->shipped_confirmed_date)
                         <button class="status-button shipped" title="Shipped">SC</button>
-                    @endif
+                    @endif --}}
                 </div>
                 <!-- Toggle Button -->
-                <button class="toggle-items-btn" type="button" data-id="{{ $order->original_order_id }}">
+                <button class="toggle-items-btn" type="button" data-id="{{ $order->id }}">
                     Order Summary </button>
             </div>
 
             <!-- Order Items -->
-            <div class="order-items collapse" id="order-items-{{ $order->original_order_id }}">
+            <div class="order-items collapse" id="order-items-{{ $order->id }}">
                 <table class="table table-sm">
                     <thead>
                         <tr>

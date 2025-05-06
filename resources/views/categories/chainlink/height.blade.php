@@ -564,11 +564,23 @@
                                                     <div class="total-price" id="total-price-{{ $product->id }}">${{ number_format($product->price, 2) }}</div>
                                                     <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
                                                             id="add-btn-{{ $product->id }}"
-                                                            data-item="{{ $product->item_no }}" 
-                                                            data-name="{{ $product->product_name }}" 
+                                                            data-id="{{ $product->id }}"
+                                                            data-item_no="{{ $product->item_no }}" 
+                                                            data-product_name="{{ $product->product_name }}" 
                                                             data-price="{{ $product->price }}"
+                                                            data-color="{{ $product->color ?? '' }}"
+                                                            data-size="{{ $product->size ?? '' }}"
+                                                            data-size2="{{ $product->size2 ?? '' }}"
+                                                            data-size3="{{ $product->size3 ?? '' }}"
+                                                            data-weight_lbs="{{ $product->weight_lbs ?? '' }}"
+                                                            data-img_small="{{ $product->img_small ?? '' }}"
+                                                            data-img_large="{{ $product->img_large ?? '' }}"
+                                                            data-display_size_2="{{ $product->display_size_2 ?? '' }}"
+                                                            data-size2="{{ $product->size2 ?? '' }}"
+                                                            data-size3="{{ $product->size3 ?? '' }}"
                                                             data-quantity="1"> Add to Cart
                                                     </button>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -599,6 +611,7 @@
                                 @endphp
                                 
                                 @foreach($productTypes as $baseName => $products)
+                                {{-- @dd($products) --}}
                                     <div class="product-item">
                                         <div class="product-item-header">
                                             <div class="product-item-title" style="margin-right: 8px">{{ $baseName }}</div>
@@ -628,9 +641,32 @@
                                                     <div class="total-price" id="total-price-{{ $products[0]->id }}">${{ number_format($products[0]->price, 2) }}</div>
                                                     <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
                                                             id="add-btn-{{ $products[0]->id }}"
-                                                            data-item="{{ $products[0]->item_no }}" 
-                                                            data-name="{{ $baseName }}" 
+                                                            data-id="{{ $products[0]->id }}"
+                                                            data-item_no="{{ $products[0]->item_no }}" 
+                                                            data-product_name="{{ $products[0]->product_name }}" 
                                                             data-price="{{ $products[0]->price }}"
+                                                            data-color="{{ $products[0]->color ?? '' }}"
+                                                            data-size="{{ $products[0]->size ?? '' }}"
+                                                            data-size_in="{{ $products[0]->size_in ?? '' }}"
+                                                            data-size_wt="{{ $products[0]->size_wt ?? '' }}"
+                                                            data-size_ht="{{ $products[0]->size_ht ?? '' }}"
+                                                            data-weight_lbs="{{ $products[0]->weight_lbs ?? '' }}"
+                                                            data-img_small="{{ $products[0]->img_small ?? '' }}"
+                                                            data-img_large="{{ $products[0]->img_large ?? '' }}"
+                                                            data-display_size_2="{{ $products[0]->display_size_2 ?? '' }}"
+                                                            data-size2="{{ $products[0]->size2 ?? '' }}"
+                                                            data-size3="{{ $products[0]->size3 ?? '' }}"
+                                                            data-material="{{ $products[0]->material ?? '' }}"
+                                                            data-spacing="{{ $products[0]->spacing ?? '' }}"
+                                                            data-coating="{{ $products[0]->coating ?? '' }}"
+                                                            data-style="{{ $products[0]->style ?? '' }}"
+                                                            data-speciality="{{ $products[0]->speciality ?? '' }}"
+                                                            data-free_shipping="{{ $products[0]->free_shipping ?? '0' }}"
+                                                            data-special_shipping="{{ $products[0]->special_shipping ?? '0' }}"
+                                                            data-amount_per_box="{{ $products[0]->amount_per_box ?? '1' }}"
+                                                            data-class="{{ $products[0]->class ?? '' }}"
+                                                            data-categories_id="{{ $products[0]->categories_id ?? '' }}"
+                                                            data-shipping_method="{{ $products[0]->shipping_method ?? '' }}"
                                                             data-quantity="1"> Add to Cart
                                                     </button>
                                                 </div>
