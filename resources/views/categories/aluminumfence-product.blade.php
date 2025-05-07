@@ -565,9 +565,19 @@
         <!-- Product Image and Size Selector -->
         <div class="col-md-3">
             <p class="mobile-title">ONGUARD {{ strtoupper($type) }} ALUMINUM FENCE - {{ strtoupper($model) }}</p>
-            <div class="product-image-container">
-                <img src="{{ $modelImage }}" alt="{{ $type }} {{ $model }}" class="primary-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
-                <img src="{{ $selectedProduct->img_small ? url('storage/products/' . $selectedProduct->img_small) : url('storage/products/default.png') }}" alt="{{ $type }} {{ $model }} Hover" class="hover-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
+            <div class="product-image-container" id="product-image-container"> 
+                <img src="{{ $selectedProduct->img_large ? url('storage/products/' . $selectedProduct->img_large) : url('storage/products/default.jpg') }}" 
+                     alt="{{ $type }} {{ $model }}" 
+                     class="primary-image" 
+                     id="primary-product-image"
+                     onerror="this.src='{{ url('storage/products/default.jpg') }}'" 
+                     onclick="openImageModal(this.src, this.alt)">
+                <img src="{{ $selectedProduct->img_small ? url('storage/products/' . $selectedProduct->img_small) : url('storage/products/default.jpg') }}" 
+                     alt="{{ $type }} {{ $model }}" 
+                     class="hover-image" 
+                     id="hover-product-image"
+                     onerror="this.src='{{ url('storage/products/default.jpg') }}'" 
+                     onclick="openImageModal(this.src, this.alt)">
             </div>
             
             <!-- Size Filter -->
@@ -760,7 +770,7 @@
                                     <div class="section-table-container">
                                         @if(isset($section['products'][0]))
                                         {{-- <img src="{{ url('storage/products/' . $section['products'][0]->img_small) }}" alt="{{ $section['products'][0]->product_name }}" class="section-image"> --}}
-                                        {{-- <img src="{{ $section['products'][0]->img_small ? url('storage/products/' . $section['products'][0]->img_small) : url('storage/products/default.png') }}" alt="{{ $section['products'][0]->product_name }}" class="section-image" onerror="this.src='{{ url('storage/products/default.png') }}'"> --}}
+                                        {{-- <img src="{{ $section['products'][0]->img_small ? url('storage/products/' . $section['products'][0]->img_small) : url('storage/products/default.jpg') }}" alt="{{ $section['products'][0]->product_name }}" class="section-image" onerror="this.src='{{ url('storage/products/default.jpg') }}'"> --}}
                                         @endif
                                         <table class="product-table">
                                             <tbody>
@@ -873,6 +883,24 @@
         </div>
     </div>
 </div>
+
+<!-- Image Modal -->
+<div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Product Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" class="img-fluid" src="" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')
@@ -1025,6 +1053,9 @@
                     const product = response.product;
                     console.log('Product found:', product);
                     
+                    // Update the product images
+                    updateProductImages(product);
+                    
                     // Update desktop table view
                     const newRow = `
                         <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
@@ -1129,6 +1160,41 @@
                 updateAssociatedProducts(response);
             }
             
+            // Function to update product images when product changes
+            function updateProductImages(product) {
+                console.log('Updating product images for:', product);
+                
+                // Get the image container
+                const imageContainer = $('#product-image-container');
+                const primaryImage = $('#primary-product-image');
+                const hoverImage = $('#hover-product-image');
+                
+                // Default image path
+                const defaultImage = '{{ url('storage/products/default.jpg') }}';
+                
+                // Set the primary image
+                let primaryImageSrc = defaultImage;
+                if (product.img_large) {
+                    primaryImageSrc = '{{ url('storage/products/') }}/' + product.img_large;
+                }
+                
+                // Set the hover image - use img_small if available, otherwise use the main image
+                let hoverImageSrc = product.img_small ? 
+                    '{{ url('storage/products/') }}/' + product.img_small : 
+                    primaryImageSrc; // Use main image for hover if no specific hover image
+                
+                // Update the src attributes
+                primaryImage.attr('src', primaryImageSrc);
+                hoverImage.attr('src', hoverImageSrc);
+                
+                // Update alt attributes
+                const altText = `${product.material} ${product.style}`;
+                primaryImage.attr('alt', altText);
+                hoverImage.attr('alt', altText + ' Hover');
+                
+                console.log('Images updated:', {primary: primaryImageSrc, hover: hoverImageSrc});
+            }
+            
             function updateAssociatedProducts(response) {
                 if (response.associatedSections && response.associatedSections.length > 0) {
                     // Desktop view
@@ -1139,8 +1205,8 @@
                         const firstProductImage = section.products.length > 0 ? 
                             (section.products[0].img_small ? 
                                 `{{ url('storage/products/') }}/${section.products[0].img_small}` : 
-                                `{{ url('storage/products/default.png') }}`) : 
-                            `{{ url('storage/products/default.png') }}`;
+                                `{{ url('storage/products/default.jpg') }}`) : 
+                            `{{ url('storage/products/default.jpg') }}`;
                         
                         associatedHtml += `
                             <div class="accordion-item section-container mb-2">
@@ -1341,6 +1407,24 @@
                 }
             });
         })(jQuery);
+    });
+</script>
+
+<script>
+    function openImageModal(src, alt) {
+        $('#modalImage').attr('src', src);
+        $('#modalImage').attr('alt', alt);
+        $('#imageModalLabel').text(alt);
+        $('#imageModal').modal('show');
+    }
+    
+    $(document).ready(function() {
+        // Close modal with ESC key
+        $(document).keydown(function(e) {
+            if (e.key === "Escape") {
+                $('#imageModal').modal('hide');
+            }
+        });
     });
 </script>
 @endsection

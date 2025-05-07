@@ -349,7 +349,7 @@
                         <img src="<?php echo e(url('storage/products/' . strtolower($typeName) . '.jpg')); ?>" 
                              alt="<?php echo e($typeName); ?> Fence" 
                              class="img-fluid"
-                             onerror="this.src='<?php echo e(url('storage/products/default.png')); ?>'">
+                             onerror="this.src='<?php echo e(url('storage/products/default.jpg')); ?>'">
                     </div>
                 </div>
                 
@@ -361,13 +361,19 @@
                             <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="<?php echo e($typeName); ?>" data-model="<?php echo e($modelName); ?>">
                                     <div class="model-image">
-                                        <img src="<?php echo e($typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png')); ?>" 
+                                        <?php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? $defaultImage;
+                                            $hoverImage = $representativeImages[$typeName][$modelName]['hover'] ?? $mainImage;
+                                        ?>
+                                        <img src="<?php echo e($mainImage); ?>" 
                                              alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?>" 
                                              class="primary-image"
-                                             onerror="this.src='<?php echo e(url('storage/products/default.png')); ?>'">
-                                        <img src="<?php echo e($representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png')); ?>" 
+                                             onerror="this.src='<?php echo e($defaultImage); ?>'">
+                                        <img src="<?php echo e($hoverImage); ?>" 
                                              alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?> Hover" 
-                                             class="hover-image">
+                                             class="hover-image"
+                                             onerror="this.src='<?php echo e($defaultImage); ?>'">
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center"><?php echo e($modelName); ?></div>
@@ -388,13 +394,19 @@
                             <div class="col-md-2.4 model-column" style="flex: 0 0 20%; max-width: 20%;">
                                 <div class="model-card" data-type="<?php echo e($typeName); ?>" data-model="<?php echo e($modelName); ?>">
                                     <div class="model-image">
-                                        <img src="<?php echo e($typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png')); ?>" 
+                                        <?php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? $defaultImage;
+                                            $hoverImage = $representativeImages[$typeName][$modelName]['hover'] ?? $mainImage;
+                                        ?>
+                                        <img src="<?php echo e($mainImage); ?>" 
                                              alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?>" 
                                              class="primary-image"
-                                             onerror="this.src='<?php echo e(url('storage/products/default.png')); ?>'">
-                                        <img src="<?php echo e($representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png')); ?>" 
+                                             onerror="this.src='<?php echo e($defaultImage); ?>'">
+                                        <img src="<?php echo e($hoverImage); ?>" 
                                              alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?> Hover" 
-                                             class="hover-image">
+                                             class="hover-image"
+                                             onerror="this.src='<?php echo e($defaultImage); ?>'">
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center"><?php echo e($modelName); ?></div>
@@ -411,45 +423,25 @@
                 <!-- Puppy Pickets Section -->
                 <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
                 <div class="row mb-4">
-                    <?php $__currentLoopData = ['Finch', 'Sparrow']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $modelName): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if(isset($typeData['models'][$modelName])): ?>
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="model-card" data-type="<?php echo e($typeName); ?>" data-model="<?php echo e($modelName); ?>">
-                                    <div class="model-image">
-                                        <img src="<?php echo e($typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png')); ?>" 
-                                             alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?>" 
-                                             class="primary-image"
-                                             onerror="this.src='<?php echo e(url('storage/products/default.png')); ?>'">
-                                        <img src="<?php echo e($representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png')); ?>" 
-                                             alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?> Hover" 
-                                             class="hover-image">
-                                    </div>
-                                    <div class="model-info">
-                                        <div class="model-name text-center"><?php echo e($modelName); ?></div>
-                                        <div class="text-center mb-2">
-                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </div>
-                
-                <!-- All Other Models (if any) -->
-                <div class="row mb-4">
+                    
                     <?php $__currentLoopData = $typeData['models']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $modelName => $model): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <?php if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Finch', 'Sparrow'])): ?>
+                        <?php if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet'])): ?>
                             <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="<?php echo e($typeName); ?>" data-model="<?php echo e($modelName); ?>">
                                     <div class="model-image">
-                                        <img src="<?php echo e($model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png')); ?>" 
+                                        <?php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $model['image'] ?? $defaultImage;
+                                            $hoverImage = $model['hover_image'] ?? $mainImage; // Use the hover_image added to the controller
+                                        ?>
+                                        <img src="<?php echo e($mainImage); ?>" 
                                              alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?>" 
                                              class="primary-image"
-                                             onerror="this.src='<?php echo e(url('storage/products/default.png')); ?>'">
-                                        <img src="<?php echo e($representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png')); ?>" 
+                                             onerror="this.src='<?php echo e($defaultImage); ?>'">
+                                        <img src="<?php echo e($hoverImage); ?>" 
                                              alt="<?php echo e($modelName); ?> <?php echo e($typeName); ?> Hover" 
-                                             class="hover-image">
+                                             class="hover-image"
+                                             onerror="this.src='<?php echo e($defaultImage); ?>'">
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center"><?php echo e($modelName); ?></div>
