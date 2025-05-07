@@ -197,6 +197,7 @@ Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProdu
 
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
 Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+Route::get('/knockin-posts', [ProductByMeshSizeController::class, 'knockinpostProduct'])->name('knockin.posts');
 
 Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])

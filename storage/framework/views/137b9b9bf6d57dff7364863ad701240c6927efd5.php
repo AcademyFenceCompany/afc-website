@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Welded Wire'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -198,13 +196,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=4 in. x 4 in.&coating=Vinyl PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=4 in. x 4 in.&coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -228,13 +226,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -259,13 +257,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -288,13 +286,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -318,13 +316,13 @@
 
                                                                                                                 <div class="d-flex justify-content-center gap-2"> -->
                 <!-- Vinyl Coated Button -->
-                <!-- <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                <!-- <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
                                                                                                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                                                                                                         Vinyl
                                                                                                                     </a> -->
 
                 <!-- Galvanized Button -->
-                <!-- <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                <!-- <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                                                                                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                                                                                                         style="font-size: 12px; padding: 5px 20px;">
                                                                                                                         Galv
@@ -348,13 +346,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -378,13 +376,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -408,13 +406,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -438,13 +436,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -468,13 +466,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -499,13 +497,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -530,13 +528,13 @@
 
                                 <div class="d-flex justify-content-center gap-2">
                                     <!-- Vinyl Coated Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC"
+                                    <a href="/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC"
                                         class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                         Vinyl
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Galvanized"
+                                    <a href="/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
@@ -672,13 +670,13 @@
 
                                     <div class="d-flex justify-content-center gap-2">
                                         <!-- Vinyl Coated Button -->
-                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Vinyl%20PVC"
+                                        <a href="/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Vinyl%20PVC"
                                             class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                             Vinyl
                                         </a>
 
                                         <!-- Galvanized Button -->
-                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Galvanized"
+                                        <a href="/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Galvanized"
                                             class="btn btn-outline-dark btn-sm fw-bold gal"
                                             style="font-size: 12px; padding: 5px 20px;">
                                             Galv
@@ -703,13 +701,13 @@
 
                                     <div class="d-flex justify-content-center gap-2">
                                         <!-- Vinyl Coated Button -->
-                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Vinyl%20PVC"
+                                        <a href="/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Vinyl%20PVC"
                                             class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                             Vinyl
                                         </a>
 
                                         <!-- Galvanized Button -->
-                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Galvanized"
+                                        <a href="/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Galvanized"
                                             class="btn btn-outline-dark btn-sm fw-bold gal"
                                             style="font-size: 12px; padding: 5px 20px;">
                                             Galv
@@ -733,13 +731,13 @@
 
                                     <div class="d-flex justify-content-center gap-2">
                                         <!-- Vinyl Coated Button -->
-                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Vinyl%20PVC"
+                                        <a href="/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Vinyl%20PVC"
                                             class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                             Vinyl
                                         </a>
 
                                         <!-- Galvanized Button -->
-                                        <a href="http://192.168.0.135/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Galvanized"
+                                        <a href="/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Galvanized"
                                             class="btn btn-outline-dark btn-sm fw-bold gal"
                                             style="font-size: 12px; padding: 5px 20px;">
                                             Galv
@@ -800,11 +798,11 @@
                             style="height:120px;" class="img-fluid mb-1 rounded">
                         <div class="d-grid gap-1">
                             <div class="d-flex justify-content-center gap-2">
-                                <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Vinyl%20PVC"
+                                <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Vinyl%20PVC"
                                     class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                     Vinyl
                                 </a>
-                                <a href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Galvanized"
+                                <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Galvanized"
                                     class="btn btn-outline-dark btn-sm fw-bold gal"
                                     style="font-size: 12px; padding: 5px 20px;">
                                     Galv
@@ -824,11 +822,11 @@
                             style="height:120px; width:120px;" class="img-fluid mb-1 rounded">
                         <div class="d-grid gap-1">
                             <div class="d-flex justify-content-center gap-2">
-                                <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Vinyl%20PVC"
+                                <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Vinyl%20PVC"
                                     class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                     Vinyl
                                 </a>
-                                <a href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Galvanized"
+                                <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Galvanized"
                                     class="btn btn-outline-dark btn-sm fw-bold gal"
                                     style="font-size: 12px; padding: 5px 20px;">
                                     Galv
@@ -1021,13 +1019,13 @@
 
                                         <div class="d-flex justify-content-center gap-2">
                                             <!-- Vinyl Coated Button -->
-                                            <!-- <a href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
+                                            <!-- <a href="/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
                                                                                     class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
                                                                                     Vinyl
                                                                                 </a> -->
 
                                             <!-- Galvanized Button -->
-                                            <a href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
+                                            <a href="/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
                                                 class="btn btn-outline-dark btn-sm fw-bold gal"
                                                 style="font-size: 12px; padding: 5px 20px;">
                                                 Galv

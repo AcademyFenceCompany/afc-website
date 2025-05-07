@@ -75,28 +75,32 @@
         
 </style>
     
-    <!-- Welded Wire Products by Gauge -->
-    @foreach ($meshSize_products->groupBy('size3') as $gauge => $products)
-        <!-- Gauge Section -->
+    <!-- Welded Wire Products grouped by Mesh Size and Gauge -->
+    @foreach ($groupedByGauge as $groupKey => $products)
+        @php
+            // Extract mesh size (size2) and gauge (size3) from the group key
+            $parts = explode(', ', $groupKey);
+            $meshSize = $parts[0] ?? '';
+            $gauge = $parts[1] ?? '';
+        @endphp
+        <!-- Mesh Size & Gauge Section -->
         <div class="mt-0">
             <div class="bg-danger text-white text-center py-2 rounded">
-                <h4 class="m-0 mesh__title">{{ $gauge }}</h4>
+                <h4 class="m-0 mesh__title">{{ $meshSize }} {{ $gauge ? ', ' . $gauge : '' }}</h4>
             </div>
             <div class="row mt-1">
                 <!-- Left Image -->
                 <div class="col-md-2 text-center mb-4 mb-md-0">
-    <div class="card shadow-sm">
-        <div class="card-header bg-danger text-white fw-bold py-1 rounded">
-                        <!-- <img src="{{ $products->first()->large_image ?? '/resources/images/default.png' }}"
-                        alt="{{ $products->first()->product_name }}" class="img-fluid rounded"> -->
-                        <img src="/resources/images/4x4 vinyl.png"
-                alt="{{ $products->first()->product_name }}" class="img-fluid rounded product_img">
-            <div class="mt-1">
-                {{ $products->first()->size2 ?? 'Mesh Size' }} {{ $gauge ?? 'Gauge' }}
+                <div class="card shadow-sm">
+                    <div class="card-header bg-danger text-white fw-bold py-1 rounded">
+                                    <img src="{{ $products->first()->img_url ?? url('storage/products/default.jpg') }}"
+                                    alt="{{ $products->first()->product_name }}" class="img-fluid rounded product_img">
+                        <div class="mt-1">
+                            {{ $meshSize }} {{ $gauge ? ', ' . $gauge : '' }}
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
 
                 <!-- Product Table -->
                 <div class="col-md-9">
@@ -110,10 +114,11 @@
                                     <th>Item Number</th>
                                     <th>Size</th>
                                     <th>Mesh Size</th>
-                                    <th>Weight</th>
+                                    <th>weight</th>
                                     <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
+                                    <th>Coating</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,14 +126,14 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                                <a class="item-number" href="{{ route('product.show', ['id' => $product->product_id]) }}">
+                                                <a class="item-number" href="{{ route('product.show', ['id' => $product->id]) }}">
                                                 {{ $product->item_no }}
                                                 </a>
                                             </div> 
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                                {{ $product->size1 }}
+                                                {{ $product->size }}
                                             </div>
                                         </td>
                                         <td>
@@ -138,7 +143,7 @@
                                     </td>
                                         <td>
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                        {{ $product->weight ?? 'N/A' }} lbs
+                                        {{ $product->weight_lbs ?? 'N/A' }} lbs
                                         </div>
                                     </td>
                                         <td class="{{ strtolower($product->color) }}">
@@ -150,38 +155,42 @@
                                             <div class="d-flex align-items-center justify-content-center">
                                                 <button class="btn btn-outline-secondary btn-sm me-2 quantity-decrease">-</button>
                                                 <input type="number" class="quantity-input text-center" value="1"
-                                                    min="1" data-price="{{ $product->price_per_unit }}" />
+                                                    min="1" data-price="{{ $product->price }}" />
                                                 <button class="btn btn-outline-secondary btn-sm ms-2 quantity-increase">+</button>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-between">
-                                                <span class="dynamic-price">${{ number_format($product->price_per_unit, 2) }}</span>
+                                                <span class="dynamic-price">${{ number_format($product->price, 2) }}</span>
                                                 <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                                     data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
-                                                    data-price="{{ $product->price_per_unit }}" data-color="{{ $product->color }}"
-                                                    data-size1="{{ $product->size1 }}" data-size2="{{ $product->size2 }}"
+                                                    data-price="{{ $product->price }}" data-color="{{ $product->color }}"
+                                                    data-size="{{ $product->size }}" data-size2="{{ $product->size2 }}"
                                                     {{-- data-size3="{{ $product->size3 }}" data-speciality="{{ $product->speciality }}" --}}
                                                     data-material="{{ $product->material }}"
                                                     data-spacing="{{ $product->spacing }}" data-coating="{{ $product->coating }}"
-                                                    data-weight="{{ $product->weight }}"
-                                                    data-family_category="{{ $product->family_category_id }}"
-                                                    data-general_image="{{ $product->general_image }}"
-                                                    data-small_image="{{ $product->small_image }}"
-                                                    data-large_image="{{ $product->large_image }}"
+                                                    data-weight_lbs="{{ $product->weight_lbs }}"
+                                                    data-family_category="{{ $product->majorcategories_id ?? $product->family_category_id }}"
+                                                    data-general_image="{{ $product->img_url }}"
+                                                    data-small_image="{{ $product->img_small ? url('storage/products/' . $product->img_small) : url('storage/products/default.jpg') }}"
+                                                    data-large_image="{{ $product->img_large ? url('storage/products/' . $product->img_large) : url('storage/products/default.jpg') }}"
                                                     data-free_shipping="{{ $product->free_shipping }}"
                                                     data-special_shipping="{{ $product->special_shipping }}"
                                                     data-amount_per_box="{{ $product->amount_per_box }}"
-                                                    data-description="{{ $product->description }}"
-                                                    data-subcategory_id="{{ $product->subcategory_id }}"
-                                                    data-shipping_length="{{ $product->shipping_length }}"
-                                                    data-shipping_width="{{ $product->shipping_width }}"
-                                                    data-shipping_height="{{ $product->shipping_height }}"
-                                                    data-shipping_class="{{ $product->shipping_class }}">
+                                                    data-description="{{ $product->desc_short }}"
+                                                    data-shipping_length="{{ $product->ship_length }}"
+                                                    data-shipping_width="{{ $product->ship_width }}"
+                                                    data-shipping_height="{{ $product->ship_height }}"
+                                                    data-shipping_class="{{ $product->class }}">
                                                     Add to Cart
                                                 </button>
                                             </div>
                                         </td>
+                                        <td>
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                        {{ $product->coating }}
+                                        </div>
+                                    </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -194,7 +203,7 @@
                             <div class="card mb-3 shadow-sm">
                                 <div class="card-header bg-light">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <a href="{{ route('product.show', ['id' => $product->product_id]) }}" class="fw-bold">
+                                        <a href="{{ route('product.show', ['id' => $product->id]) }}" class="fw-bold">
                                             {{ $product->item_no }}
                                         </a>
                                         <span class="badge bg-primary">{{ $product->color }}</span>
@@ -203,48 +212,47 @@
                                 <div class="card-body">
                                     <div class="row mb-2">
                                         <div class="col-6 fw-bold">Size:</div>
-                                        <div class="col-6">{{ $product->size1 }}</div>
+                                        <div class="col-6">{{ $product->size }}</div>
                                     </div>
                                     <div class="row mb-2">
                                         <div class="col-6 fw-bold">Mesh Size:</div>
                                         <div class="col-6">{{ $product->size2 }} {{ $product->size3 }}</div>
                                     </div>
                                     <div class="row mb-2">
-                                        <div class="col-6 fw-bold">Weight:</div>
-                                        <div class="col-6">{{ $product->weight ?? 'N/A' }} lbs</div>
+                                        <div class="col-6 fw-bold">weight_lbs:</div>
+                                        <div class="col-6">{{ $product->weight_lbs ?? 'N/A' }} lbs</div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-6 fw-bold">Price:</div>
-                                        <div class="col-6 dynamic-price">${{ number_format($product->price_per_unit, 2) }}</div>
+                                        <div class="col-6 dynamic-price">${{ number_format($product->price, 2) }}</div>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-outline-secondary btn-sm quantity-decrease">-</button>
                                             <input type="number" class="quantity-input text-center mx-2" value="1"
-                                                min="1" style="width: 40px;" data-price="{{ $product->price_per_unit }}" />
+                                                min="1" style="width: 40px;" data-price="{{ $product->price }}" />
                                             <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                         </div>
                                         <button class="btn btn-danger text-white add-to-cart-btn"
                                             data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
-                                            data-price="{{ $product->price_per_unit }}" data-color="{{ $product->color }}"
-                                            data-size1="{{ $product->size1 }}" data-size2="{{ $product->size2 }}"
+                                            data-price="{{ $product->price }}" data-color="{{ $product->color }}"
+                                            data-size="{{ $product->size }}" data-size2="{{ $product->size2 }}"
                                             {{-- data-size3="{{ $product->size3 }}" data-speciality="{{ $product->speciality }}" --}}
                                             data-material="{{ $product->material }}"
                                             data-spacing="{{ $product->spacing }}" data-coating="{{ $product->coating }}"
-                                            data-weight="{{ $product->weight }}"
-                                            data-family_category="{{ $product->family_category_id }}"
-                                            data-general_image="{{ $product->general_image }}"
-                                            data-small_image="{{ $product->small_image }}"
-                                            data-large_image="{{ $product->large_image }}"
+                                            data-weight_lbs="{{ $product->weight_lbs }}"
+                                            data-family_category="{{ $product->majorcategories_id ?? $product->family_category_id }}"
+                                            data-general_image="{{ $product->img_url }}"
+                                            data-small_image="{{ $product->img_small ? url('storage/products/' . $product->img_small) : url('storage/products/default.jpg') }}"
+                                            data-large_image="{{ $product->img_large ? url('storage/products/' . $product->img_large) : url('storage/products/default.jpg') }}"
                                             data-free_shipping="{{ $product->free_shipping }}"
                                             data-special_shipping="{{ $product->special_shipping }}"
                                             data-amount_per_box="{{ $product->amount_per_box }}"
-                                            data-description="{{ $product->description }}"
-                                            data-subcategory_id="{{ $product->subcategory_id }}"
-                                            data-shipping_length="{{ $product->shipping_length }}"
-                                            data-shipping_width="{{ $product->shipping_width }}"
-                                            data-shipping_height="{{ $product->shipping_height }}"
-                                            data-shipping_class="{{ $product->shipping_class }}">
+                                            data-description="{{ $product->desc_short }}"
+                                            data-shipping_length="{{ $product->ship_length }}"
+                                            data-shipping_width="{{ $product->ship_width }}"
+                                            data-shipping_height="{{ $product->ship_height }}"
+                                            data-shipping_class="{{ $product->class }}">
                                             Add to Cart
                                         </button>
                                     </div>
@@ -294,34 +302,35 @@
                             <tr>
                                 <th>Item Number</th>
                                 <th>Size</th>
-                                <th>Weight</th>
+                                <th>weight_lbs</th>
                                 <th>Color</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ([['WWHD125', '5ft H', '4.60 lbs', 'Black', '$11.00'], ['WWHD126', '6ft H', '5.50 lbs', 'Black', '$12.00'], ['WWHD127', '7ft H', '6.40 lbs', 'Green', '$14.00'], ['WWHD128', '8ft H', '8.00 lbs', 'Black', '$15.00'], ['WWHD106', '10ft 6in H', '10.50 lbs', 'Black', '$20.00']] as $item)
+                            @dump($knockinpostproducts)
+                            @foreach ($knockinpostproducts as $product)
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <span class="item-number">{{ $item[0] }}</span>
+                                            <span class="item-number">{{ $product->item_no }}</span>
                                         </div>
                                     </td>
                                    
                                     <td>
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <span>{{ $item[1] }}</span>
+                                            <span>{{ $product->size }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center justify-content-center mt-2">
-                                            <span>{{ $item[2] }}</span>
+                                            <span>{{ $product->weight_lbs }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <select class="form-select form-select-sm">
-                                            <option selected>{{ $item[3] }}</option>
+                                            <option selected>{{ $product->color }}</option>
                                         </select>
                                     </td>
                                     <td class="text-center">
@@ -333,7 +342,7 @@
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center justify-content-between">
-                                            <span>{{ $item[4] }}</span>
+                                            <span>{{ $product->price }}</span>
                                             <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
                                         </div>
                                     </td>
@@ -345,26 +354,26 @@
                 
                 <!-- Mobile Cards (Visible only on Mobile) -->
                 <div class="d-md-none">
-                    @foreach ([['WWHD125', '5ft H', '4.60 lbs', 'Black', '$11.00'], ['WWHD126', '6ft H', '5.50 lbs', 'Black', '$12.00'], ['WWHD127', '7ft H', '6.40 lbs', 'Green', '$14.00'], ['WWHD128', '8ft H', '8.00 lbs', 'Black', '$15.00'], ['WWHD106', '10ft 6in H', '10.50 lbs', 'Black', '$20.00']] as $item)
+                    @foreach ($knockinpostproducts as $product)
                         <div class="card mb-3 shadow-sm">
                             <div class="card-header bg-light">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold">{{ $item[0] }}</span>
-                                    <span class="badge bg-primary">{{ $item[3] }}</span>
+                                    <span class="fw-bold">{{ $product->item_no }}</span>
+                                    <span class="badge bg-primary">{{ $product->color }}</span>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <div class="row mb-2">
                                     <div class="col-6 fw-bold">Size:</div>
-                                    <div class="col-6">{{ $item[1] }}</div>
+                                    <div class="col-6">{{ $product->size }}</div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-6 fw-bold">Weight:</div>
-                                    <div class="col-6">{{ $item[2] }}</div>
+                                    <div class="col-6 fw-bold">weight_lbs:</div>
+                                    <div class="col-6">{{ $product->weight_lbs }}</div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-6 fw-bold">Price:</div>
-                                    <div class="col-6">{{ $item[4] }}</div>
+                                    <div class="col-6">{{ $product->price }}</div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">

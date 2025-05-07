@@ -126,7 +126,7 @@ class AluminumFenceController extends Controller
                     'material' => $picket->material,
                     'style' => $picket->style,
                     'item_no' => $picket->item_no,
-                    'image' => $picket->img_large ? url('storage/products/' . $picket->img_large) : url('storage/products/default.png')
+                    'image' => $picket->img_large ? url('storage/products/' . $picket->img_large) : url('storage/products/default.jpg')
                 ];
             }
             $puppyPicketGroups[$speciality]['total']++;
@@ -140,6 +140,7 @@ class AluminumFenceController extends Controller
                     'name' => $modelName,
                     'total' => $picketData['total'],
                     'image' => $picketData['image'],
+                    'hover_image' => $picketData['image'], // Use the same image for hover
                     'item_no' => $picketData['item_no']
                 ];
             }
@@ -186,14 +187,14 @@ class AluminumFenceController extends Controller
                         'main' => url('storage/products/' . $representativeProduct->img_large),
                         'hover' => $representativeProduct->img_small 
                             ? url('storage/products/' . $representativeProduct->img_small) 
-                            : url('storage/products/aluminiumfence-bunting-res.JPG')
+                            : url('storage/products/default.jpg')
                     ];
                 }
                 else {
                     // Fallback to default image
                     $representativeImages[$typeName][$modelName] = [
-                        'main' => url('storage/products/default.png'),
-                        'hover' => url('storage/products/aluminiumfence-bunting-res.JPG')
+                        'main' => url('storage/products/default.jpg'),
+                        'hover' => url('storage/products/default.jpg')
                     ];
                 }
             }
@@ -323,7 +324,7 @@ class AluminumFenceController extends Controller
             // If no image found, use default
             $modelImage = $representativeImage 
                 ? url('storage/products/' . $representativeImage) 
-                : url('storage/products/default.png');
+                : url('storage/products/default.jpg');
             
             // Get model description
             $modelDescription = $this->getModelDescription($model);
@@ -594,7 +595,7 @@ class AluminumFenceController extends Controller
                         // Add image URL using the proper format
                         $product->img_url = $product->img_large 
                             ? url('storage/products/' . $product->img_large) 
-                            : url('storage/products/default.png');
+                            : url('storage/products/default.jpg');
                         return $product;
                     });
                 
@@ -611,7 +612,7 @@ class AluminumFenceController extends Controller
         if ($product) {
             $product->img_url = $product->img_large 
                 ? url('storage/products/' . $product->img_large) 
-                : url('storage/products/default.png');
+                : url('storage/products/default.jpg');
         }
         
         return response()->json([
@@ -855,7 +856,7 @@ class AluminumFenceController extends Controller
             ->map(function($product) {
                 $product->img_url = $product->img_large 
                     ? url('storage/products/' . $product->img_large) 
-                    : url('storage/products/default.png');
+                    : url('storage/products/default.jpg');
                 return $product;
             });
     }
