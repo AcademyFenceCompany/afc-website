@@ -9,6 +9,12 @@
 
 
 <style>
+    tr {
+        padding: 0px !important;
+    }
+    td {
+        padding: 0px !important;
+    }
    .ww_title {
     font-size: 24px !important;
     color: #fff !important;
@@ -46,9 +52,10 @@
         }
 
         .table th {
-            background-color: #343a40 !important;
+            background-color: #f0f0f0 !important;
             font-weight: 500 !important;
-            color: #fff !important;
+            color: #000 !important;
+            font-size: 12px !important;
         }
 
         .quantity-input::-webkit-inner-spin-button,
@@ -69,7 +76,7 @@
 }
 
 .product_img.zoomed {
-    transform: scale(1.6); 
+    transform: scale(1.8); 
     z-index: 1000;
     position: relative;
 }
@@ -88,7 +95,7 @@
         ?>
         <!-- Mesh Size & Gauge Section -->
         <div class="mt-0">
-            <div class="bg-danger text-white text-center py-2 rounded">
+            <div class="bg-secondary text-white text-center py-2 rounded">
                 <h4 class="m-0 mesh__title"><?php echo e($meshSize); ?> - <?php echo e($products->first()->material); ?></h4>
             </div>
             <div class="row mt-1">
@@ -121,6 +128,7 @@
                                     <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -166,9 +174,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center justify-content-between mt-2">
                                                 <span class="dynamic-price">$<?php echo e(number_format($product->price, 2)); ?></span>
-                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                                     data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
                                                     data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
                                                     data-size="<?php echo e($product->size); ?>" data-size2="<?php echo e($product->size2); ?>"
@@ -189,11 +201,8 @@
                                                     data-shipping_height="<?php echo e($product->ship_height); ?>"
                                                     data-shipping_class="<?php echo e($product->class); ?>">
                                                     Add to Cart
-                                                </button>
-                                            </div>
-                                        </td>
-                                       
-                                    </td>
+                                        </button>
+                                       </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
@@ -275,7 +284,7 @@
     <!-- Knock-In Posts Section -->
     <div class="mt-0">
         <!-- Section Title -->
-        <div class="bg-danger text-white text-center py-2 rounded">
+        <div class="bg-secondary text-white text-center py-2 rounded">
         <h4 class="m-0 mesh__title">Knock-In Posts U-Channel with fastening clips</h4>
     </div>
         <!-- Content -->
@@ -283,7 +292,7 @@
             <!-- Left Image -->
             <div class="col-md-2 text-center mb-4 mb-md-0">
             <div class="card shadow-sm">
-                <div class="card-header bg-danger text-white fw-bold py-1 rounded">
+                <div class="card-header bg-secondary text-white fw-bold py-1 rounded">
                     <img src="/resources/images/image 104.png" alt="Knock-In Posts" class="img-fluid rounded product_img" >
                     <div class="mt-1">U-Channel</div>
                 </div>
@@ -313,7 +322,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php dump($knockinpostproducts); ?>
                             <?php $__currentLoopData = $knockinpostproducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
                                     <td>
@@ -332,10 +340,10 @@
                                             <span><?php echo e($product->weight_lbs); ?></span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <select class="form-select form-select-sm">
-                                            <option selected><?php echo e($product->color); ?></option>
-                                        </select>
+                                    <td class="black">
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <span><?php echo e($product->color); ?></span>
+                                        </div>
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex align-items-center justify-content-center">
@@ -395,8 +403,400 @@
         </div>
     </div>
 
+    <!-- Additional Product Sections in 2-Column Layout -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Vinyl Black Fence Piping Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Vinyl Black Fence Piping - 1 5/8in O.D.</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center">
+                        
+                        <img src="https://images.thdstatic.com/productImages/a1002a60-e0c7-403b-8a32-5844e8b81df4/svn/black-hydromaxx-hydroponic-irrigation-tubing-1402014100-64_1000.jpg" alt="Vinyl Black Fence Piping" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                        
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $__empty_1 = true; $__currentLoopData = $vinylPipingProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number"><?php echo e($product->item_no); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->size); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->weight_lbs ?? 'N/A'); ?> lbs</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>$<?php echo e(number_format($product->price, 2)); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                    data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
+                                                    data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
+                                                    data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
+                                                    data-image="<?php echo e($product->img_url); ?>">
+                                                    Add to Cart
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                        <tr>
+                                            <td colspan="5" class="text-center">No vinyl piping products found</td>
+                                        </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Mobile Cards (Visible only on Mobile) -->
+                            <div class="d-md-none">
+                                <?php $__empty_1 = true; $__currentLoopData = $vinylPipingProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <div class="card mb-3 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold"><?php echo e($product->item_no); ?></span>
+                                            <span class="badge bg-primary"><?php echo e($product->color); ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Size:</div>
+                                            <div class="col-6"><?php echo e($product->size); ?></div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Weight:</div>
+                                            <div class="col-6"><?php echo e($product->weight_lbs ?? 'N/A'); ?> lbs</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6 fw-bold">Price:</div>
+                                            <div class="col-6">$<?php echo e(number_format($product->price, 2)); ?></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-outline-secondary btn-sm quantity-decrease">-</button>
+                                                <input type="number" class="quantity-input text-center mx-2" value="1"
+                                                    min="1" style="width: 40px;" data-price="<?php echo e($product->price); ?>" />
+                                                <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
+                                            </div>
+                                            <button class="btn btn-danger text-white add-to-cart-btn"
+                                                data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
+                                                data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
+                                                data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
+                                                data-image="<?php echo e($product->img_url); ?>">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <div class="alert alert-info">No vinyl piping products found</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Header Section -->
+            <!-- Round Cedar Non Tapered Wood Fence Post Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Round Cedar Non Tapered Wood Fence Post</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center mb-3">
+                        <img src="https://www.academyfence.com/images/roundrailbundle.jpg" alt="Round Cedar Wood Fence Post" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $__empty_1 = true; $__currentLoopData = $cedarPostProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number"><?php echo e($product->item_no); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->size); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->weight_lbs ?? 'N/A'); ?> lbs</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>$<?php echo e(number_format($product->price, 2)); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                    data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
+                                                    data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
+                                                    data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
+                                                    data-image="<?php echo e($product->img_url); ?>">
+                                                    Add to Cart
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                        <tr>
+                                            <td colspan="5" class="text-center">No cedar post products found</td>
+                                        </tr>
+                                        <?php endif; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Mobile Cards (Visible only on Mobile) -->
+                            <div class="d-md-none">
+                                <?php $__empty_1 = true; $__currentLoopData = $cedarPostProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                <div class="card mb-3 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold"><?php echo e($product->item_no); ?></span>
+                                            <span class="badge bg-primary"><?php echo e($product->color ?: 'Cedar'); ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Size:</div>
+                                            <div class="col-6"><?php echo e($product->size); ?></div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Weight:</div>
+                                            <div class="col-6"><?php echo e($product->weight_lbs ?? 'N/A'); ?> lbs</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6 fw-bold">Price:</div>
+                                            <div class="col-6">$<?php echo e(number_format($product->price, 2)); ?></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-outline-secondary btn-sm quantity-decrease">-</button>
+                                                <input type="number" class="quantity-input text-center mx-2" value="1"
+                                                    min="1" style="width: 40px;" data-price="<?php echo e($product->price); ?>" />
+                                                <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
+                                            </div>
+                                            <button class="btn btn-danger text-white add-to-cart-btn"
+                                                data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
+                                                data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
+                                                data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
+                                                data-image="<?php echo e($product->img_url); ?>">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                <div class="alert alert-info">No cedar post products found</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Bazooka Knock-In Post Driver Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Bazooka Knock-In Post Driver</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center mb-3">
+                        <img src="https://www.academyfence.com/images/xy/670post_driver_new.jpg" alt="Bazooka Knock-In Post Driver" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <?php $__currentLoopData = $postDriverProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th>Color</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number"><?php echo e($product->item_no); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->size); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->weight_lbs); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->price); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->color); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Round Pressure Treated Fence Post Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Round Pressure Treated Fence Post</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center mb-3">
+                        <img src="https://www.academyfence.com/images/5in-round-pt-post.jpg" alt="Round Pressure Treated Fence Post" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php $__currentLoopData = $treatedPostProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number"><?php echo e($product->item_no); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->size); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->weight_lbs); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span><?php echo e($product->price); ?></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
 
     <div class="text-center py-2 mb-4 border-bottom">
         <p class="mb-0">Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded wire prices
@@ -492,6 +892,5 @@
         });
     });
 </script>
-
 
 <?php echo $__env->make('layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\afc-website\resources\views/categories/wwf-product.blade.php ENDPATH**/ ?>

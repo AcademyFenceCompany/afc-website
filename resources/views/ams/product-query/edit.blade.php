@@ -11,7 +11,7 @@
             {{ session('success') }}
         </div>
     @endif
-
+{{-- @dump($product) --}}
     <form method="POST" action="{{ route('ams.product-query.update', $product->id) }}" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="old_product_name" value="{{ $product->product_name }}">
@@ -86,6 +86,23 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Weight (lbs)</label>
                                 <input type="number" step="0.01" name="weight_lbs" value="{{ $product->weight_lbs }}" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Cap Opening</label>
+                                <input type="text" name="cap_opening" value="{{ $product->nominal_length }}" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Fits Post Size</label>
+                                <input type="text" name="size3" value="{{ $product->nominal_width }}" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Display Size</label>
+                                <input type="number" step="0.01" name="display_size" value="{{ $product->display_size_2 }}" class="form-control">
                             </div>
                         </div>
 
