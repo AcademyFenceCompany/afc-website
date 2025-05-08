@@ -74,11 +74,12 @@
             <!-- Card 1 -->
             <div class="col-md-4">
                 <div class="post-cap-card d-flex post-cap-flex p-3">
-                    <img src="/resources/images/post_cap.jpg" alt="Vinyl Cap" class="post-cap-image me-3">
+                    <img src="/resources/images/chainlink_post_caps_100x100.jpg" alt="Vinyl Cap"
+                        class="post-cap-image me-3">
                     <div class="post-cap-content">
-                        <h5>Vinyl Post Caps</h5>
-                        <p>Vinyl PVC Ball Cap, External Flat Cap, New England Cap, Gothic Cap, and Internal Flat Cap.
-                            Accessories for 4" x 4", and 5" x 5" Vinyl Fence Posts.</p>
+                        <h5>Chain Link Post Caps</h5>
+                        <p>Aluminum chain link acorn caps are the perfect way to finish a fence project. Come in sizes
+                            ranging from 1-3/8" all the way up to 8-5/8".</p>
                         <a href="#" class="btn btn-product mt-2">View Product</a>
                     </div>
                 </div>
@@ -100,11 +101,12 @@
             <!-- Card 3 -->
             <div class="col-md-4">
                 <div class="post-cap-card d-flex post-cap-flex p-3">
-                    <img src="/resources/images/post_cap.jpg" alt="Chain Link Cap" class="post-cap-image me-3">
+                    <img src="/resources/images/vinyl_post_caps_100x100.jpg" alt="Chain Link Cap"
+                        class="post-cap-image me-3">
                     <div class="post-cap-content">
-                        <h5>Chain Link Post Caps</h5>
-                        <p>Aluminum chain link acorn caps are the perfect way to finish a fence project. Comes in sizes
-                            ranging from 1-3/8" all the way up to 6-5/8".</p>
+                        <h5>Vinyl Post Caps</h5>
+                        <p>Vinyl PVC Ball Cap, External Flat Cap, New England Cap, Gothic Cap and Internal Flat Caps.
+                            Accessories for 4" x 4", and 5" x 5" Vinyl Fence Posts.</p>
                         <a href="#" class="btn btn-product mt-2">View Product</a>
                     </div>
                 </div>

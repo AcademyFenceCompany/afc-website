@@ -17,7 +17,7 @@
     @yield('styles')
     <script src="{{ asset('js/app.js') }}" defer></script>
     @vite(['css/app.css', 'css/style.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="http://192.168.0.135/css/style.css"> <!-- Local CSS -->
+    <link rel="stylesheet" href="http://192.168.0.181/css/style.css"> <!-- Local CSS -->
 </head>
 
 <body style="font-family: 'Inter', sans-serif;">

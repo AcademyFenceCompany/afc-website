@@ -9,16 +9,7 @@ class WoodPostCapsController extends Controller
 {
     public function index(Request $request, $style = null)
     {
-        // Category ID for Wood Post Caps
         $categoryId = 82;
-
-        // Fetch products from the database
-        $query = DB::connection('mysql_second')
-            ->table('productsqry')
-            ->where('categories_id', $categoryId)
-            ->where('enabled', 1);
-
-        $products = $query->get();
 
         // Define parent codes and their display names
         $parentGroups = [
@@ -34,31 +25,40 @@ class WoodPostCapsController extends Controller
             'AFCWPCBC5' => 'Copper 5" Ball',
         ];
 
-        // Default image path
+        // Slug-to-parent-code map
+        $slugToParentCode = [
+            'standard-pyramid' => 'AFCWPCP',
+            'dentil-pyramid' => 'AFCWPCPD',
+            'copper-pyramid' => 'AFCWPCPC',
+            'standard-flat' => 'AFCWPCF',
+            'dentil-flat' => 'AFCWPCFD',
+            'copper-flat' => 'AFCWPCFC',
+            '3-ball' => 'AFCWPCB3',
+            '3-ball-dentil' => 'AFCWPCBD3',
+            '5-ball' => 'AFCWPCB5',
+            '5-ball-copper' => 'AFCWPCBC5',
+        ];
+
         $defaultImage = url('storage/products/default.png');
 
-        // Process products and group by parent
+        // Fetch products
+        $products = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('categories_id', $categoryId)
+            ->where('enabled', 1)
+            ->get();
+
+        // Group products by parent code
         $productsByParent = [];
         $productData = [];
 
         foreach ($products as $product) {
-            // Get parent code
             $parentCode = $product->parent ?? '';
-
-            // Skip if not a valid parent code
-            if (!isset($parentGroups[$parentCode])) {
+            if (!isset($parentGroups[$parentCode]))
                 continue;
-            }
 
-            // Initialize parent group if not exists
-            if (!isset($productsByParent[$parentCode])) {
-                $productsByParent[$parentCode] = [];
-            }
-
-            // Add product to the appropriate parent group
             $productsByParent[$parentCode][] = $product;
 
-            // Store product data for easy access
             $productData[$product->id] = [
                 'image' => $product->img_large ? url('storage/products/' . $product->img_large) : $defaultImage,
                 'price' => $product->price ?? 0,
@@ -70,39 +70,40 @@ class WoodPostCapsController extends Controller
             ];
         }
 
-        // Get one representative product for each parent group for the main view
+        // Representative product for each type
         $representativeProducts = [];
-
         foreach ($parentGroups as $code => $name) {
-            if (isset($productsByParent[$code]) && !empty($productsByParent[$code])) {
+            if (!empty($productsByParent[$code])) {
                 $representativeProducts[$code] = $productsByParent[$code][0];
             }
         }
 
-        // If a specific style is requested, filter products
-        $currentStyle = null;
-        if ($style && isset($parentGroups[$style])) {
-            $currentStyle = $style;
+        // Breadcrumbs setup
+        $breadcrumbs = [
+            ['name' => 'Wood Fence', 'url' => '/wood-fence'],
+            ['name' => 'Wood Post Caps', 'url' => '/wood-fence/wood-post-caps'],
+        ];
 
-            // We're still returning all products, but marking which one is selected
-            return view('categories.woodpostcaps', [
-                'representativeProducts' => $representativeProducts,
-                'productsByParent' => $productsByParent,
-                'productData' => $productData,
-                'currentStyle' => $currentStyle,
-                'parentGroups' => $parentGroups,
-                'defaultImage' => $defaultImage,
-                'selectedParent' => $style
-            ]);
+        $selectedParent = null;
+
+        if ($style && isset($slugToParentCode[$style])) {
+            $selectedParent = $slugToParentCode[$style];
+
+            // Add final breadcrumb dynamically
+            $breadcrumbs[] = [
+                'name' => $parentGroups[$selectedParent],
+                'url' => $request->url()
+            ];
         }
 
-        // Return the view with the grouped products
         return view('categories.woodpostcaps', [
             'representativeProducts' => $representativeProducts,
             'productsByParent' => $productsByParent,
-            'parentGroups' => $parentGroups,
             'productData' => $productData,
-            'defaultImage' => $defaultImage
+            'parentGroups' => $parentGroups,
+            'defaultImage' => $defaultImage,
+            'selectedParent' => $selectedParent,
+            'breadcrumbs' => $breadcrumbs
         ]);
     }
 }

@@ -177,7 +177,8 @@ Route::get('/wood-fence/post-rail', [PostRailController::class, 'index'])->name(
 Route::get('/wood-fence/post-rail/{style?}', [PostRailController::class, 'index'])->name('postrail.style');
 Route::get('/wood-fence/stockade', [StockadeFenceController::class, 'index'])->name('stockade.index');
 Route::get('/wood-fence/wood-post-caps', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.index');
-Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.style');
+Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index']);
+
 
 // Aluminum Fence Routes
 Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');

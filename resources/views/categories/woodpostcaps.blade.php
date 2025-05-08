@@ -119,7 +119,6 @@
 @section('content')
     <div class="container mt-4">
 
-
         <div class="row">
             <div class="col-12">
                 <div class="main-header">
@@ -128,10 +127,24 @@
             </div>
         </div>
 
+
         <!-- Cap Types Grid - All in one row with 5 columns -->
         <div class="row">
             @php
-                $allParentCodes = ['AFCWPCP', 'AFCWPCPD', 'AFCWPCPC', 'AFCWPCB3', 'AFCWPCBD3', 'AFCWPCB5', 'AFCWPCF', 'AFCWPCFD', 'AFCWPCFC'];
+                $parentCodeToSlug = [
+                    'AFCWPCP' => 'standard-pyramid',
+                    'AFCWPCPD' => 'dentil-pyramid',
+                    'AFCWPCPC' => 'copper-pyramid',
+                    'AFCWPCF' => 'standard-flat',
+                    'AFCWPCFD' => 'dentil-flat',
+                    'AFCWPCFC' => 'copper-flat',
+                    'AFCWPCB3' => '3-ball',
+                    'AFCWPCBD3' => '3-ball-dentil',
+                    'AFCWPCB5' => '5-ball',
+                    'AFCWPCBC5' => '5-ball-copper',
+                ];
+
+                $allParentCodes = array_keys($parentCodeToSlug);
             @endphp
 
             @foreach ($allParentCodes as $parentCode)
@@ -196,10 +209,15 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <div>${{ number_format($product->price, 2) }}</div>
+                                            <div>
+                                                $<span class="product-price"
+                                                    data-base-price="{{ $product->price }}">{{ number_format($product->price, 2) }}</span>
+                                            </div>
+
                                             <button class="btn btn-danger btn-sm add-to-cart-btn" data-item="{{ $product->item_no }}"
                                                 data-name="{{ $product->product_name }}" data-price="{{ $product->price }}"
-                                                data-product-id="{{ $product->id ?? '' }}" style="padding: 1px 5px;font-size: 12px;">
+                                                data-product-id="{{ $product->id ?? 'unknown' }}"
+                                                style="padding: 1px 5px;font-size: 12px;">
                                                 Add to Cart
                                             </button>
                                         </td>
@@ -212,113 +230,138 @@
             @endforeach
         </div>
     </div>
+@endsection
 
-    @section('scripts')
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                // Handle cap box clicks
-                $('.cap-box').click(function () {
-                    // Remove active class from all cap boxes
-                    $('.cap-box').removeClass('active');
+@section('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Handle cap box clicks
+            $('.cap-box').click(function () {
+                $('.cap-box').removeClass('active');
+                $(this).addClass('active');
 
-                    // Add active class to clicked cap box
-                    $(this).addClass('active');
+                var parentCode = $(this).data('parent');
+                var parentName = $(this).find('h5').text();
 
-                    // Get the parent code
-                    var parentCode = $(this).data('parent');
+                $('#cap-title').text(parentName + ' Wood Post Caps');
+                $('#breadcrumb-style').text(parentName);
+                $('.product-section').hide();
+                $('#products-' + parentCode).show();
 
-                    // Get the parent name for the title
-                    var parentName = $(this).find('h5').text();
+                $('html, body').animate({
+                    scrollTop: $('.note-box').offset().top - 20
+                }, 500);
 
-                    // Update the title
-                    $('#cap-title').text(parentName + ' Wood Post Caps');
+                if (history.pushState) {
+                    const parentCodeToSlug = {
+                        'AFCWPCP': 'standard-pyramid',
+                        'AFCWPCPD': 'dentil-pyramid',
+                        'AFCWPCPC': 'copper-pyramid',
+                        'AFCWPCF': 'standard-flat',
+                        'AFCWPCFD': 'dentil-flat',
+                        'AFCWPCFC': 'copper-flat',
+                        'AFCWPCB3': '3-ball',
+                        'AFCWPCBD3': '3-ball-dentil',
+                        'AFCWPCB5': '5-ball',
+                        'AFCWPCBC5': '5-ball-copper'
+                    };
 
-                    // Hide all product sections
-                    $('.product-section').hide();
+                    const slug = parentCodeToSlug[parentCode] || parentCode;
+                    const currentPath = window.location.pathname;
+                    const pathSegments = currentPath.split('/').filter(Boolean);
 
-                    // Show the product section for the selected parent
-                    $('#products-' + parentCode).show();
-
-                    // Scroll to the product section but keep the parent items visible
-                    $('html, body').animate({
-                        scrollTop: $('.note-box').offset().top - 20
-                    }, 500);
-
-                    // Update URL without page reload (for bookmarking)
-                    if (history.pushState) {
-                        var newUrl = window.location.protocol + "//" + window.location.host +
-                            window.location.pathname.split('/').slice(0, -1).join('/') +
-                            '/' + parentCode;
-                        window.history.pushState({ path: newUrl }, '', newUrl);
+                    if (Object.keys(parentCodeToSlug).includes(pathSegments[pathSegments.length - 1]) ||
+                        Object.values(parentCodeToSlug).includes(pathSegments[pathSegments.length - 1])) {
+                        pathSegments[pathSegments.length - 1] = slug;
+                    } else {
+                        pathSegments.push(slug);
                     }
-                });
 
-                // Handle quantity plus button clicks
-                $(document).on('click', '.quantity-plus', function () {
-                    var input = $(this).closest('.input-group').find('.quantity-input');
-                    var value = parseInt(input.val());
-                    input.val(value + 1);
-                });
-
-                // Handle quantity minus button clicks
-                $(document).on('click', '.quantity-minus', function () {
-                    var input = $(this).closest('.input-group').find('.quantity-input');
-                    var value = parseInt(input.val());
-                    if (value > 1) {
-                        input.val(value - 1);
-                    }
-                });
-
-                // Handle add to cart button clicks
-                $('.add-to-cart-btn').click(function () {
-                    var button = $(this);
-                    var itemNo = button.data('item');
-                    var name = button.data('name');
-                    var price = button.data('price');
-                    var quantity = button.closest('tr').find('.quantity-input').val();
-
-                    // Add to cart AJAX call
-                    $.ajax({
-                        url: '{{ route("cart.add") }}',
-                        method: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            item_no: itemNo,
-                            product_name: name,
-                            price: price,
-                            quantity: quantity
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                // Show success message
-                                alert('Item added to cart!');
-
-                                // Update cart count in the header if it exists
-                                if ($('.cart-count').length > 0) {
-                                    $('.cart-count').text(response.cartCount);
-                                }
-                            } else {
-                                alert('Error adding item to cart');
-                            }
-                        },
-                        error: function (xhr) {
-                            alert('Error adding item to cart');
-                            console.error(xhr.responseText);
-                        }
-                    });
-                });
-
-                // If there's a selected parent from the URL, trigger click on that cap box
-                @if(isset($selectedParent))
-                    $('.cap-box[data-parent="{{ $selectedParent }}"]').click();
-                @else
-                        // Show the first product section by default if no style is selected
-                        if ($('.cap-box').length > 0) {
-                        $('.cap-box').first().click();
-                    }
-                @endif
+                    const newUrl = window.location.origin + '/' + pathSegments.join('/');
+                    window.history.pushState({ path: newUrl }, '', newUrl);
+                }
             });
-        </script>
-    @endsection
+
+            // Recalculate price based on quantity
+            function updatePrice($input) {
+                var $row = $input.closest('tr');
+                var basePrice = parseFloat($row.find('.product-price').data('base-price'));
+                var quantity = parseInt($input.val()) || 1;
+                var total = (basePrice * quantity).toFixed(2);
+                $row.find('.product-price').text(total);
+            }
+
+            // Quantity plus
+            $(document).on('click', '.quantity-plus', function () {
+                var $input = $(this).closest('.input-group').find('.quantity-input');
+                var value = parseInt($input.val()) || 1;
+                $input.val(value + 1);
+                updatePrice($input);
+            });
+
+            // Quantity minus
+            $(document).on('click', '.quantity-minus', function () {
+                var $input = $(this).closest('.input-group').find('.quantity-input');
+                var value = parseInt($input.val()) || 1;
+                if (value > 1) {
+                    $input.val(value - 1);
+                    updatePrice($input);
+                }
+            });
+
+            // Quantity input manual change
+            $(document).on('input', '.quantity-input', function () {
+                updatePrice($(this));
+            });
+
+            // Add to cart AJAX
+            $(document).on('click', '.add-to-cart-btn', function () {
+                var $button = $(this);
+                var $row = $button.closest('tr');
+                var itemNo = $button.data('item');
+                var name = $button.data('name');
+                var price = $button.data('price');
+                var quantity = $row.find('.quantity-input').val();
+
+                $.ajax({
+                    url: '{{ route("cart.add") }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        item_no: itemNo,
+                        product_name: name,
+                        price: price,
+                        quantity: quantity
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            alert('Item added to cart!');
+                            if ($('.cart-count').length > 0) {
+                                $('.cart-count').text(response.cartCount);
+                            }
+                        } else {
+                            alert('Error adding item to cart');
+                        }
+                    },
+                    error: function (xhr) {
+                        alert('Error adding item to cart');
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Trigger selected parent cap on load
+            @if(isset($selectedParent))
+                $('.cap-box[data-parent="{{ $selectedParent }}"]').click();
+            @else
+                if ($('.cap-box').length > 0) {
+                    $('.cap-box').first().click();
+                }
+            @endif
+    });
+    </script>
+
+    
+
 @endsection
