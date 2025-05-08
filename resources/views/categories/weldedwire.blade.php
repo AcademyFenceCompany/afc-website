@@ -204,11 +204,11 @@
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="/wwf-product?meshSize=4 in. x 4 in.&coating=Galvanized"
+                                    {{-- <a href="/wwf-product?meshSize=4 in. x 4 in.&coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -233,12 +233,12 @@
                                         Vinyl
                                     </a>
 
-                                    <!-- Galvanized Button -->
+                                    {{-- <!-- Galvanized Button -->
                                     <a href="/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -294,46 +294,44 @@
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                    {{-- <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 
-                                                                                                <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                                                                                                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                                                                                                        <div class="card-header bg-danger text-white fw-bold py-1">
-                                                                                                            <h6 class="mesh-size__title">1 3/4 in. x 1 3/4 in.</h6>
-                                                                                                        </div>
-                                                                                                        <div class="card-body p-2">
-                                                                                                            <img src="#" alt="Wire Image"
-                                                                                                                style="height:120px; " class="img-fluid mb-1 rounded">
-                                                                                                            <div class="d-grid gap-1">
+                {{-- <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                        <div class="card-header bg-danger text-white fw-bold py-1">
+                        <h6 class="mesh-size__title">1 3/4 in. x 1 3/4 in.</h6>
+                        </div>
+                        <div class="card-body p-2">
+                            <img src="https://www.academyfence.com/images/weldedwire/Linedrawings/thumb/1x1x14BK.gif" alt="Wire Image"
+                            style="height:120px; " class="img-fluid mb-1 rounded">
+                        <div class="d-grid gap-1">
+                        <div class="d-flex justify-content-center gap-2"> 
+                        <!-- Vinyl Coated Button -->
+                        <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
+                                class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
+                                Vinyl
+                            </a>
 
-                                                                                                                <div class="d-flex justify-content-center gap-2"> -->
-                <!-- Vinyl Coated Button -->
-                <!-- <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC"
-                                                                                                                        class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
-                                                                                                                        Vinyl
-                                                                                                                    </a> -->
-
-                <!-- Galvanized Button -->
-                <!-- <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
-                                                                                                                        class="btn btn-outline-dark btn-sm fw-bold gal"
-                                                                                                                        style="font-size: 12px; padding: 5px 20px;">
-                                                                                                                        Galv
-                                                                                                                    </a>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div> -->
+                        <!-- Galvanized Button -->
+                        <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
+                                class="btn btn-outline-dark btn-sm fw-bold gal"
+                                style="font-size: 12px; padding: 5px 20px;">
+                                Galv
+                            </a>
+                        </div>
+                        </div>
+                        </div>
+                    </div>
+                </div> --}}
 
 
                 <div class="col-8 col-md-2 d-flex justify-content-center cards">
@@ -342,7 +340,7 @@
                             <h6 class="mesh-size__title">1 1/2 in. x 1 1/2 in.</h6>
                         </div>
                         <div class="card-body p-2">
-                            <img src="/resources/images/1 1:2 x 1 1:2.jpg" alt="Wire Image" style="height:120px; "
+                            <img src="https://weldedwirefence.com/wp-content/uploads/2019/06/0.5x0.5.jpg" alt="Wire Image" style="height:120px; "
                                 class="img-fluid mb-1 rounded">
                             <div class="d-grid gap-1">
 
@@ -353,12 +351,12 @@
                                         Vinyl
                                     </a>
 
-                                    <!-- Galvanized Button -->
+                                    {{-- <!-- Galvanized Button -->
                                     <a href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -383,12 +381,12 @@
                                         Vinyl
                                     </a>
 
-                                    <!-- Galvanized Button -->
+                                    {{-- <!-- Galvanized Button -->
                                     <a href="/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>
@@ -396,7 +394,7 @@
                 </div>
 
 
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                {{-- <div class="col-8 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">3 in. x 2 in.</h6>
@@ -423,7 +421,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
 
                 <div class="col-8 col-md-2 d-flex justify-content-center cards">
@@ -444,11 +442,11 @@
                                     </a>
 
                                     <!-- Galvanized Button -->
-                                    <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
+                                    {{-- <a href="/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Galvanized"
                                         class="btn btn-outline-dark btn-sm fw-bold gal"
                                         style="font-size: 12px; padding: 5px 20px;">
                                         Galv
-                                    </a>
+                                    </a> --}}
                                 </div>
                             </div>
                         </div>

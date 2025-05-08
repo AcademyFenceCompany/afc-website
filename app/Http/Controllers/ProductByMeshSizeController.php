@@ -8,11 +8,18 @@ use Illuminate\Http\Request;
 
 class ProductByMeshSizeController extends Controller
 {
-    public function showMeshSizeProducts(Request $request)
+    public function showMeshSizeProducts(Request $request, $coating = null, $meshSize = null)
     {
-        // Get the mesh size and coating parameters and decode them
-        $meshSize = urldecode($request->input('meshSize')); 
-        $coating = urldecode($request->input('coating'));
+        // Handle both route types: path parameters from new routes and query parameters from legacy route
+        if ($coating === null && $meshSize === null) {
+            // Legacy route with query parameters
+            $meshSize = urldecode($request->input('meshSize'));
+            $coating = urldecode($request->input('coating'));
+        } else {
+            // New route with path parameters
+            $meshSize = urldecode($meshSize);
+            $coating = urldecode($coating);
+        }
         
         // Get all welded wire products first
         $allWeldedWireProducts = DB::connection('mysql_second')
@@ -100,16 +107,28 @@ class ProductByMeshSizeController extends Controller
             return $product;
         });
         
-        // Group products by mesh size (size2) and gauge (size3) combination
-        $groupedByMeshAndGauge = $meshSize_products->groupBy(function($product) {
-            return $product->size2 . ', ' . $product->size3;
+        // Normalize products' display_size_2 values to improve consistency
+        $meshSize_products = $meshSize_products->map(function($product) {
+            // Normalize display_size_2: trim whitespace, replace multiple spaces with single space
+            if (isset($product->display_size_2)) {
+                $product->display_size_2 = trim(preg_replace('/\s+/', ' ', $product->display_size_2));
+            }
+            return $product;
         });
-
+        
+        // Group products by normalized display_size_2 for easier and more efficient organization
+        $groupedByDisplay = $meshSize_products->groupBy(function($product) {
+            // Use display_size_2 with fallback to size2, normalize to lowercase for consistent comparison
+            $displaySize = $product->display_size_2 ?? $product->size2;
+            return strtolower(trim($displaySize));
+        });
 
         $kproduct = DB::connection('mysql_second')
         ->table('productsqry')
         ->where('categories_id', 50)
+        ->where('parent','AFCHDFP')
         ->where('enabled', 1)
+        ->orderBy('weight_lbs','asc')
         ->get();
         
     // Add image URLs for the products
@@ -122,12 +141,26 @@ class ProductByMeshSizeController extends Controller
     
 
         
+        // Create breadcrumb data for the view with clear naming
+        $baseUrl = url('/weldedwire');
+        
+        // Format the coating name for better display
+        $formattedCoating = ucwords(strtolower($coating));
+        
+        // Format the mesh size to ensure consistent display
+        $formattedMeshSize = is_string($meshSize) ? trim($meshSize) : '';
+        
+        $breadcrumbs = [
+            ['name' => 'Welded Wire', 'url' => $baseUrl],
+            ['name' => $formattedCoating, 'url' => $baseUrl . '/' . urlencode($coating)],
+            ['name' => $formattedMeshSize, 'url' => '#']
+        ];
+        
         return view('categories.wwf-product', [
             'meshSize_products' => $meshSize_products,
-            'groupedByGauge' => $groupedByMeshAndGauge,
+            'groupedByGauge' => $groupedByDisplay,
             'knockinpostproducts' => $kproduct,
+            'breadcrumbs' => $breadcrumbs,
         ]);
     }
-
-
 }

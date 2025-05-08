@@ -423,7 +423,6 @@
                 <!-- Puppy Pickets Section -->
                 <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
                 <div class="row mb-4">
-                    
                     <?php $__currentLoopData = $typeData['models']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $modelName => $model): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet'])): ?>
                             <div class="col-md-3 col-6 mb-3">
