@@ -1,23 +1,25 @@
-// Function to Update Mini Cart
 function updateMiniCart(cart) {
     const miniCartItems = document.getElementById("mini-cart-items");
     const emptyCartMessage = document.getElementById("empty-cart-message");
     const cartCountElement = document.getElementById("cart-count");
 
-    // Clear existing mini cart content
+    if (!cart || typeof cart !== 'object') return; // 🚫 guard clause for bad input
+
+    // Clear mini cart content
     if (miniCartItems) {
         miniCartItems.innerHTML = "";
     }
 
-    // Update cart badge count
+    // Update badge count
     if (cartCountElement) {
         cartCountElement.textContent = Object.keys(cart).length;
     }
 
-    if (Object.keys(cart).length > 0 && miniCartItems && emptyCartMessage) {
+    const hasItems = Object.keys(cart).length > 0;
+
+    if (hasItems && miniCartItems && emptyCartMessage) {
         emptyCartMessage.classList.add("d-none");
 
-        // Populate mini cart dynamically
         Object.values(cart).forEach(item => {
             miniCartItems.innerHTML += `
                 <li class="d-flex justify-content-between align-items-start mb-2">

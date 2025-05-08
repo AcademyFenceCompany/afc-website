@@ -3,6 +3,7 @@
 @section('title', 'Wood Post Caps')
 
 @section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         .page-title {
             text-align: center;
@@ -234,6 +235,8 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('js/mini-cart.js') }}"></script>
     <script>
         $(document).ready(function () {
             // Handle cap box clicks
@@ -336,32 +339,38 @@
                     },
                     success: function (response) {
                         if (response.success) {
-                            alert('Item added to cart!');
+                            toastr.success(name + ' added to cart!');
+
+                            // ✅ Update cart count badge
                             if ($('.cart-count').length > 0) {
                                 $('.cart-count').text(response.cartCount);
                             }
+
+                            // ✅ Dynamically update mini cart if data is present and function exists
+                            if (typeof updateMiniCart === 'function' && response.cart) {
+                                updateMiniCart(response.cart);
+                            }
                         } else {
-                            alert('Error adding item to cart');
+                            toastr.error('Error adding item to cart');
                         }
                     },
                     error: function (xhr) {
-                        alert('Error adding item to cart');
+                        toastr.error('Error adding item to cart');
                         console.error(xhr.responseText);
                     }
                 });
             });
 
+
             // Trigger selected parent cap on load
             @if(isset($selectedParent))
                 $('.cap-box[data-parent="{{ $selectedParent }}"]').click();
             @else
-                if ($('.cap-box').length > 0) {
-                    $('.cap-box').first().click();
-                }
+                                    if ($('.cap-box').length > 0) {
+                $('.cap-box').first().click();
+            }
             @endif
-    });
+                });
     </script>
-
-    
 
 @endsection
