@@ -1,6 +1,11 @@
+
+
+
 <?php $__env->startSection('title', 'Welded Wire'); ?>
 
 <?php $__env->startSection('content'); ?>
+
+<!-- Using global breadcrumb from header -->
 
 
 <style>
@@ -20,7 +25,7 @@
         }
 
         .mesh__title {
-            font-size: 20px;
+            font-size: 15px;
         }
 
         .card-header {
@@ -71,29 +76,29 @@
 
         
 </style>
-    
+    <?php if(count($groupedByGauge) > 0): ?>
+    <div class="bg-black rounded mb-3">
+        <h1 class="ww_title text-center py-0 mb-0 mt-3"><?php echo e($groupedByGauge->first()->first()->size2); ?> <?php echo e($groupedByGauge->first()->first()->product_name); ?></h1>
+    </div>
+    <?php endif; ?>
     <!-- Welded Wire Products grouped by Mesh Size and Gauge -->
-    <?php $__currentLoopData = $groupedByGauge; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $groupKey => $products): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php $__currentLoopData = $groupedByGauge; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $displaySize => $products): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <?php
-            // Extract mesh size (size2) and gauge (size3) from the group key
-            $parts = explode(', ', $groupKey);
-            $meshSize = $parts[0] ?? '';
-            $gauge = $parts[1] ?? '';
+            $meshSize = $products->first()->display_size_2 ?? $products->first()->size2 ?? $displaySize;
         ?>
         <!-- Mesh Size & Gauge Section -->
         <div class="mt-0">
             <div class="bg-danger text-white text-center py-2 rounded">
-                <h4 class="m-0 mesh__title"><?php echo e($meshSize); ?> <?php echo e($gauge ? ', ' . $gauge : ''); ?></h4>
+                <h4 class="m-0 mesh__title"><?php echo e($meshSize); ?> - <?php echo e($products->first()->material); ?></h4>
             </div>
             <div class="row mt-1">
                 <!-- Left Image -->
                 <div class="col-md-2 text-center mb-4 mb-md-0">
                 <div class="card shadow-sm">
                     <div class="card-header bg-danger text-white fw-bold py-1 rounded">
-                                    <img src="<?php echo e($products->first()->img_url ?? url('storage/products/default.jpg')); ?>"
-                                    alt="<?php echo e($products->first()->product_name); ?>" class="img-fluid rounded product_img">
+                                    <img src=<?php echo e($products->first()->img_url); ?> alt="<?php echo e($products->first()->product_name); ?>" class="img-fluid rounded product_img">
                         <div class="mt-1">
-                            <?php echo e($meshSize); ?> <?php echo e($gauge ? ', ' . $gauge : ''); ?>
+                            <?php echo e($meshSize); ?>
 
                         </div>
                     </div>
@@ -116,7 +121,6 @@
                                     <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
-                                    <th>Coating</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -188,11 +192,7 @@
                                                 </button>
                                             </div>
                                         </td>
-                                        <td>
-                                        <div class="d-flex align-items-center justify-content-center mt-2">
-                                        <?php echo e($product->coating); ?>
-
-                                        </div>
+                                       
                                     </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -397,9 +397,7 @@
 
 
 <!-- Header Section -->
-<div class="bg-black rounded">
-        <h1 class="ww_title text-center py-0 mb-0 mt-3">WELDED WIRE</h1>
-    </div>
+
     <div class="text-center py-2 mb-4 border-bottom">
         <p class="mb-0">Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded wire prices
             from different companies, one of the most important factors of Strength and Quality can be determined by
