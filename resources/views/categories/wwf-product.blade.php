@@ -9,6 +9,12 @@
 
 
 <style>
+    tr {
+        padding: 0px !important;
+    }
+    td {
+        padding: 0px !important;
+    }
    .ww_title {
     font-size: 24px !important;
     color: #fff !important;
@@ -46,9 +52,10 @@
         }
 
         .table th {
-            background-color: #343a40 !important;
+            background-color: #f0f0f0 !important;
             font-weight: 500 !important;
-            color: #fff !important;
+            color: #000 !important;
+            font-size: 12px !important;
         }
 
         .quantity-input::-webkit-inner-spin-button,
@@ -69,7 +76,7 @@
 }
 
 .product_img.zoomed {
-    transform: scale(1.6); 
+    transform: scale(1.8); 
     z-index: 1000;
     position: relative;
 }
@@ -88,7 +95,7 @@
         @endphp
         <!-- Mesh Size & Gauge Section -->
         <div class="mt-0">
-            <div class="bg-danger text-white text-center py-2 rounded">
+            <div class="bg-secondary text-white text-center py-2 rounded">
                 <h4 class="m-0 mesh__title">{{ $meshSize }} - {{ $products->first()->material }}</h4>
             </div>
             <div class="row mt-1">
@@ -120,6 +127,7 @@
                                     <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,9 +169,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="d-flex align-items-center justify-content-between">
+                                            <div class="d-flex align-items-center justify-content-between mt-2">
                                                 <span class="dynamic-price">${{ number_format($product->price, 2) }}</span>
-                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                
+                                            </div>
+                                        </td>
+                                        <td>
+                                        <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
                                                     data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
                                                     data-price="{{ $product->price }}" data-color="{{ $product->color }}"
                                                     data-size="{{ $product->size }}" data-size2="{{ $product->size2 }}"
@@ -184,11 +196,8 @@
                                                     data-shipping_height="{{ $product->ship_height }}"
                                                     data-shipping_class="{{ $product->class }}">
                                                     Add to Cart
-                                                </button>
-                                            </div>
-                                        </td>
-                                       
-                                    </td>
+                                        </button>
+                                       </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -269,7 +278,7 @@
     <!-- Knock-In Posts Section -->
     <div class="mt-0">
         <!-- Section Title -->
-        <div class="bg-danger text-white text-center py-2 rounded">
+        <div class="bg-secondary text-white text-center py-2 rounded">
         <h4 class="m-0 mesh__title">Knock-In Posts U-Channel with fastening clips</h4>
     </div>
         <!-- Content -->
@@ -277,7 +286,7 @@
             <!-- Left Image -->
             <div class="col-md-2 text-center mb-4 mb-md-0">
             <div class="card shadow-sm">
-                <div class="card-header bg-danger text-white fw-bold py-1 rounded">
+                <div class="card-header bg-secondary text-white fw-bold py-1 rounded">
                     <img src="/resources/images/image 104.png" alt="Knock-In Posts" class="img-fluid rounded product_img" >
                     <div class="mt-1">U-Channel</div>
                 </div>
@@ -307,7 +316,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @dump($knockinpostproducts)
                             @foreach ($knockinpostproducts as $product)
                                 <tr>
                                     <td>
@@ -326,10 +334,10 @@
                                             <span>{{ $product->weight_lbs }}</span>
                                         </div>
                                     </td>
-                                    <td>
-                                        <select class="form-select form-select-sm">
-                                            <option selected>{{ $product->color }}</option>
-                                        </select>
+                                    <td class="black">
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <span>{{ $product->color }}</span>
+                                        </div>
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex align-items-center justify-content-center">
@@ -389,8 +397,402 @@
         </div>
     </div>
 
+    <!-- Additional Product Sections in 2-Column Layout -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Vinyl Black Fence Piping Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Vinyl Black Fence Piping - 1 5/8in O.D.</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center">
+                        {{-- @if(count($vinylPipingProducts) > 0)
+                        <img src="{{ $vinylPipingProducts->first()->img_url }}" alt="Vinyl Black Fence Piping" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                        @else --}}
+                        <img src="https://images.thdstatic.com/productImages/a1002a60-e0c7-403b-8a32-5844e8b81df4/svn/black-hydromaxx-hydroponic-irrigation-tubing-1402014100-64_1000.jpg" alt="Vinyl Black Fence Piping" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                        {{-- @endif --}}
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($vinylPipingProducts as $product)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number">{{ $product->item_no }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->size }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->weight_lbs ?? 'N/A' }} lbs</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>${{ number_format($product->price, 2) }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                    data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
+                                                    data-price="{{ $product->price }}" data-color="{{ $product->color }}"
+                                                    data-size="{{ $product->size }}" data-weight="{{ $product->weight_lbs }}"
+                                                    data-image="{{ $product->img_url }}">
+                                                    Add to Cart
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No vinyl piping products found</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Mobile Cards (Visible only on Mobile) -->
+                            <div class="d-md-none">
+                                @forelse($vinylPipingProducts as $product)
+                                <div class="card mb-3 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">{{ $product->item_no }}</span>
+                                            <span class="badge bg-primary">{{ $product->color }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Size:</div>
+                                            <div class="col-6">{{ $product->size }}</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Weight:</div>
+                                            <div class="col-6">{{ $product->weight_lbs ?? 'N/A' }} lbs</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6 fw-bold">Price:</div>
+                                            <div class="col-6">${{ number_format($product->price, 2) }}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-outline-secondary btn-sm quantity-decrease">-</button>
+                                                <input type="number" class="quantity-input text-center mx-2" value="1"
+                                                    min="1" style="width: 40px;" data-price="{{ $product->price }}" />
+                                                <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
+                                            </div>
+                                            <button class="btn btn-danger text-white add-to-cart-btn"
+                                                data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
+                                                data-price="{{ $product->price }}" data-color="{{ $product->color }}"
+                                                data-size="{{ $product->size }}" data-weight="{{ $product->weight_lbs }}"
+                                                data-image="{{ $product->img_url }}">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="alert alert-info">No vinyl piping products found</div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Header Section -->
+            <!-- Round Cedar Non Tapered Wood Fence Post Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Round Cedar Non Tapered Wood Fence Post</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center mb-3">
+                        <img src="https://www.academyfence.com/images/roundrailbundle.jpg" alt="Round Cedar Wood Fence Post" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($cedarPostProducts as $product)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number">{{ $product->item_no }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->size }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->weight_lbs ?? 'N/A' }} lbs</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>${{ number_format($product->price, 2) }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                    data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
+                                                    data-price="{{ $product->price }}" data-color="{{ $product->color }}"
+                                                    data-size="{{ $product->size }}" data-weight="{{ $product->weight_lbs }}"
+                                                    data-image="{{ $product->img_url }}">
+                                                    Add to Cart
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No cedar post products found</td>
+                                        </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Mobile Cards (Visible only on Mobile) -->
+                            <div class="d-md-none">
+                                @forelse($cedarPostProducts as $product)
+                                <div class="card mb-3 shadow-sm">
+                                    <div class="card-header bg-light">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">{{ $product->item_no }}</span>
+                                            <span class="badge bg-primary">{{ $product->color ?: 'Cedar' }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Size:</div>
+                                            <div class="col-6">{{ $product->size }}</div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col-6 fw-bold">Weight:</div>
+                                            <div class="col-6">{{ $product->weight_lbs ?? 'N/A' }} lbs</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6 fw-bold">Price:</div>
+                                            <div class="col-6">${{ number_format($product->price, 2) }}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-outline-secondary btn-sm quantity-decrease">-</button>
+                                                <input type="number" class="quantity-input text-center mx-2" value="1"
+                                                    min="1" style="width: 40px;" data-price="{{ $product->price }}" />
+                                                <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
+                                            </div>
+                                            <button class="btn btn-danger text-white add-to-cart-btn"
+                                                data-item="{{ $product->item_no }}" data-name="{{ $product->product_name }}"
+                                                data-price="{{ $product->price }}" data-color="{{ $product->color }}"
+                                                data-size="{{ $product->size }}" data-weight="{{ $product->weight_lbs }}"
+                                                data-image="{{ $product->img_url }}">
+                                                Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @empty
+                                <div class="alert alert-info">No cedar post products found</div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Bazooka Knock-In Post Driver Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Bazooka Knock-In Post Driver</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center mb-3">
+                        <img src="https://www.academyfence.com/images/xy/670post_driver_new.jpg" alt="Bazooka Knock-In Post Driver" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        @foreach ($postDriverProducts as $product)
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th>Color</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number">{{ $product->item_no }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->size }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->weight_lbs }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->price }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->color }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Round Pressure Treated Fence Post Section -->
+            <div class="col-md-6 mb-4">
+                <div class="mt-0">
+                    <!-- Section Title -->
+                    <div class="bg-secondary text-white text-center py-2 rounded">
+                        <h4 class="m-0 mesh__title">Round Pressure Treated Fence Post</h4>
+                    </div>
+                    
+                    <!-- Product Image -->
+                    <div class="text-center mb-3">
+                        <img src="https://www.academyfence.com/images/5in-round-pt-post.jpg" alt="Round Pressure Treated Fence Post" class="img-fluid rounded product_img" style="max-height: 150px; max-width: 150px;">
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="row mt-1">
+                        <!-- Table -->
+                        <div class="col-12">
+                            <p class="text-danger mb-1" style="font-size: 12px;"><strong>note:</strong> call ahead for local pickup!</p>
+                            
+                            <!-- Desktop Table (Hidden on Mobile) -->
+                            <div class="d-none d-md-block">
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item Number</th>
+                                            <th>Size</th>
+                                            <th>Weight</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($treatedPostProducts as $product)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span class="item-number">{{ $product->item_no }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->size }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->weight_lbs }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                                    <span>{{ $product->price }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
 
     <div class="text-center py-2 mb-4 border-bottom">
         <p class="mb-0">Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded wire prices
@@ -486,4 +888,3 @@
         });
     });
 </script>
-

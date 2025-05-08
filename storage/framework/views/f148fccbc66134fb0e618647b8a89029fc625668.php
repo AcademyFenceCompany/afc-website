@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'OnGuard Aluminum Fence - ' . $type . ' ' . $model); ?>
 
 <?php $__env->startSection('styles'); ?>

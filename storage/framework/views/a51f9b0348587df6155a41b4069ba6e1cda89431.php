@@ -92,6 +92,23 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Cap Opening</label>
+                                <input type="text" name="cap_opening" value="<?php echo e($product->nominal_length); ?>" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Fits Post Size</label>
+                                <input type="text" name="size3" value="<?php echo e($product->nominal_width); ?>" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Display Size</label>
+                                <input type="number" step="0.01" name="display_size" value="<?php echo e($product->display_size_2); ?>" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Material</label>
                                 <input type="text" name="material" value="<?php echo e($product->material); ?>" class="form-control">

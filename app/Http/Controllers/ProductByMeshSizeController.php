@@ -160,7 +160,114 @@ class ProductByMeshSizeController extends Controller
             'meshSize_products' => $meshSize_products,
             'groupedByGauge' => $groupedByDisplay,
             'knockinpostproducts' => $kproduct,
+            'vinylPipingProducts' => $this->getVinylBlackFencePiping(),
+            'cedarPostProducts' => $this->getRoundCedarFencePosts(),
+            'postDriverProducts' => $this->getBazookaPostDrivers(),
+            'treatedPostProducts' => $this->getPressureTreatedPosts(),
             'breadcrumbs' => $breadcrumbs,
         ]);
+    }
+
+    /**
+     * Get Vinyl Black Fence Piping products
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    private function getVinylBlackFencePiping()
+    {
+        $products = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('categories_id', 205)
+            ->where('color', 'like', 'vinyl')
+            ->where('size', 'like', '1 5/8in x%')
+            ->where('product_name', 'like', 'Residential Tubing%')
+            ->where('weight_lbs', '>', 0)
+            ->orderBy('id', 'asc')
+            ->get();
+        
+        // Add image URL paths for convenience
+        $products = $products->map(function($product) {
+            $product->img_url = $product->img_large 
+                ? url('storage/products/' . $product->img_large) 
+                : url('storage/products/default.jpg');
+            return $product;
+        });
+
+        return $products;
+    }
+
+    /**
+     * Get Round Cedar Non Tapered Wood Fence Post products
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    private function getRoundCedarFencePosts()
+    {
+        $products = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('categories_id', 163)
+            ->where('parent', 'like', 'afcrwp')
+            ->where('enabled', 1)
+            ->where('weight_lbs', '>', 0)
+            ->orderBy('size', 'asc')
+            ->get();
+        
+        // Add image URL paths for convenience
+        $products = $products->map(function($product) {
+            $product->img_url = $product->img_large 
+                ? url('storage/products/' . $product->img_large) 
+                : url('storage/products/default.jpg');
+            return $product;
+        });
+
+        return $products;
+    }
+
+    /**
+     * Get Bazooka Knock-In Post Driver products
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    private function getBazookaPostDrivers()
+    {
+        $products = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('item_no', 'WWFBPDR')
+            ->where('enabled', 1)
+            ->get();
+        
+        // Add image URL paths for convenience
+        $products = $products->map(function($product) {
+            $product->img_url = $product->img_large 
+                ? url('storage/products/' . $product->img_large) 
+                : url('storage/products/default.jpg');
+            return $product;
+        });
+
+        return $products;
+    }
+
+    /**
+     * Get Round Pressure Treated Fence Post products
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    private function getPressureTreatedPosts()
+    {
+        $products = DB::connection('mysql_second')
+            ->table('productsqry')
+            ->where('item_no', 'PSRWFT')
+            ->where('enabled', 1)
+            ->get();
+        
+        // Add image URL paths for convenience
+        $products = $products->map(function($product) {
+            $product->img_url = $product->img_large 
+                ? url('storage/products/' . $product->img_large) 
+                : url('storage/products/default.jpg');
+            return $product;
+        });
+
+        return $products;
     }
 }
