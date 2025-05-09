@@ -198,9 +198,9 @@
                                     <tr>
                                         <td>{{ $product->item_no }}</td>
                                         <td>{{ $product->product_name }}</td>
-                                        <td>{{ $product->alt_length }}in</td>
-                                        <td>{{ $product->size }}</td>
-                                        <td>{{ $product->size3 }}</td>
+                                        <td>{{ $product->display_size_2 }}</td>
+                                        <td>{{ $product->nominal_length }}</td>
+                                        <td>{{ $product->nominal_width }}</td>
                                         <td>{{ $product->color ?? 'Pressure Treated' }}</td>
                                         <td class="text-center">
                                             <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
