@@ -31,16 +31,15 @@ class ChainLinkFenceController extends Controller
                 'description' => 'Complete 6ft chain link fence system with all necessary components.'
             ]
         ];
-        
+
         // Get chain link categories from the database
         $chainlinkCategories = DB::connection('mysql_second')
             ->table('categories')
-            ->where('majorcategories_id', 17) // Chain Link fence major category ID
+            ->where('majorcategories_id', 17)
             ->where('web_enabled', 1)
             ->select('id', 'cat_name as family_category_name', 'cat_desc_long', 'seo_name')
             ->get();
-            
-        // Format the categories with images
+
         $formattedCategories = [];
         foreach ($chainlinkCategories as $category) {
             $formattedCategories[] = [
@@ -50,36 +49,41 @@ class ChainLinkFenceController extends Controller
                 'seo_name' => $category->seo_name,
             ];
         }
-        
+
         return view('categories.chainlink.main', [
             'parentGroups' => $parentGroups,
             'chainlink_categories' => collect($formattedCategories),
             'headerImage' => url('storage/products/chainlinkmain_1.jpg')
         ]);
     }
-    
+
     public function heightCategory($height, $system = 1)
     {
-        // Validate height parameter
         if (!in_array($height, ['4ft', '5ft', '6ft'])) {
             abort(404);
         }
-        
-        // Validate system parameter
-        $system = (int)$system;
+
+        $system = (int) $system;
         if ($system < 1 || $system > 5) {
-            $system = 1; // Default to System 1
+            $system = 1;
         }
-        
-        // Define the systems
+
+        $fallbackImages = [
+            1 => 'chainlinks/chainlink_fence_galvframe_g.gif',
+            2 => 'chainlinks/galvframe_blackwire.gif',
+            3 => 'chainlinks/blackframe_blackwire.gif',
+            4 => 'chainlinks/galvframe_blackwirepc.gif',
+            5 => 'chainlinks/blackframe_blackwirepc.gif',
+        ];
+
         $systems = [
             1 => [
                 'name' => 'System 1',
                 'frame' => 'Galvanized Pipe',
                 'wire' => 'Galv 2" Mesh-9 Ga',
                 'description' => 'Galv/Galv-2x4',
-                'parent_suffix' => '', // Default system uses base parent code
-                'image' => url('storage/products/chainlinks/chainlink_fence_galvframe_g.gif'),
+                'parent_suffix' => '',
+                'image' => null,
                 'type' => 'Standard',
             ],
             2 => [
@@ -88,7 +92,7 @@ class ChainLinkFenceController extends Controller
                 'wire' => 'Blk 2" Mesh-9 Ga',
                 'description' => 'Galv/Vinyl-2x4',
                 'parent_suffix' => 'S2',
-                'image' => url('storage/products/chainlinks/galvframe_blackwire.gif'),
+                'image' => null,
                 'type' => 'Standard',
             ],
             3 => [
@@ -97,7 +101,7 @@ class ChainLinkFenceController extends Controller
                 'wire' => 'Blk 2" Mesh-9 Ga',
                 'description' => 'Vinyl/Vinyl-2x4',
                 'parent_suffix' => 'S3',
-                'image' => url('storage/products/chainlinks/blackframe_blackwire.gif'),
+                'image' => null,
                 'type' => 'Standard',
             ],
             4 => [
@@ -106,7 +110,7 @@ class ChainLinkFenceController extends Controller
                 'wire' => 'Blk 1 1/4" Mesh-11 Ga',
                 'description' => 'Galv/Vinyl-1 1/4',
                 'parent_suffix' => 'S4',
-                'image' => url('storage/products/chainlinks/galvframe_blackwirepc.gif'),
+                'image' => null,
                 'type' => 'Non-Climbable',
             ],
             5 => [
@@ -115,139 +119,99 @@ class ChainLinkFenceController extends Controller
                 'wire' => 'Blk 1 1/4" Mesh-11 Ga',
                 'description' => 'Vinyl/Vinyl-1 1/4',
                 'parent_suffix' => 'S5',
-                'image' => url('storage/products/chainlinks/blackframe_blackwirepc.gif'),
+                'image' => null,
                 'type' => 'Non-Climbable',
-            ]
+            ],
         ];
-        
-        // Get parent code based on height
-        $parentCode = '';
-        if ($height === '4ft') {
-            $parentCode = 'AFCCLC4';
-        } elseif ($height === '5ft') {
-            $parentCode = 'AFCCLC5';
-        } elseif ($height === '6ft') {
-            $parentCode = 'AFCCLC6';
+
+        $baseParentCode = 'AFCCLC' . substr($height, 0, 1);
+
+        foreach ($systems as $id => &$sys) {
+            $parentCode = $baseParentCode . $sys['parent_suffix'];
+
+            $img = DB::connection('mysql_second')
+                ->table('productsqry')
+                ->where('parent', 'like', $parentCode . '%')
+                ->whereNotNull('img_large')
+                ->where('img_large', '!=', '')
+                ->orderBy('id')
+                ->value('img_large');
+
+            $sys['image'] = $img
+                ? url('storage/products/' . $img)
+                : url('storage/products/' . $fallbackImages[$id]);
         }
-        
-        // Add system suffix if not system 1
-        if ($system > 1) {
-            $parentCode .= $systems[$system]['parent_suffix'];
-        }
-        
-        // Define style patterns for each system and height
-        $heightPrefix = strtolower(substr($height, 0, 1)); // Get first character of height (4, 5, or 6)
-        
-        // Define frame types for each system
+        unset($sys);
+
+        $parentCode = $baseParentCode . ($system > 1 ? $systems[$system]['parent_suffix'] : '');
+
+        $heightPrefix = strtolower(substr($height, 0, 1));
+
         $frameTypes = [
-            1 => 'galv', // System 1: Galvanized frame and wire
-            2 => 'galv', // System 2: Galvanized frame, black wire
-            3 => 'vinyl', // System 3: Vinyl frame and wire
-            4 => 'galv', // System 4: Galvanized frame, black wire (non-climbable)
-            5 => 'vinyl', // System 5: Vinyl frame and wire (non-climbable)
+            1 => 'galv',
+            2 => 'galv',
+            3 => 'vinyl',
+            4 => 'galv',
+            5 => 'vinyl',
         ];
-        
-        // Style pattern for the current height and system
+
         $stylePattern = $heightPrefix . 'ftsys' . $system;
-        
-        // Terminal post style pattern based on frame type for the current system
         $terminalPostPattern = $heightPrefix . 'ftsys' . $frameTypes[$system];
-        
-        // Log the patterns we're searching for
-        \Illuminate\Support\Facades\Log::info("Searching for products with patterns: {$stylePattern}, {$terminalPostPattern}");
-        
-        // Get products for this height and system using style patterns
+
+        Log::info("Searching for products with patterns: {$stylePattern}, {$terminalPostPattern}");
+
         $products = DB::connection('mysql_second')
             ->table('products')
-            ->where(function($query) use ($stylePattern, $terminalPostPattern) {
-                // Match by style pattern for the specific height and system
+            ->where(function ($query) use ($stylePattern, $terminalPostPattern) {
                 $query->where('style', 'LIKE', "%{$stylePattern}%")
-                    // Or match terminal posts by frame type for this height
-                    ->orWhere('style', 'LIKE', "%{$terminalPostPattern}%");
+                      ->orWhere('style', 'LIKE', "%{$terminalPostPattern}%");
             })
             ->where('enabled', 1)
-            ->select('id', 'product_name', 'seo_name', 'desc_short', 'color', 'item_no', 
-            'parent', 'cat_id_fk','price','weight_lbs', 'shipable', 'size', 'size_ln', 'size_wt', 'size_ht', 
-            'inv_stocked', 'inv_eastorange', 'inv_orange', 'inv_processing', 'inv_ordered', 
-            'inv_ordered_expect', 'img_small', 'img_large', 'supplier', 'ext_domain', 'featured',
-             'creation', 'modified', 'inv_mod', 'mod_by', 'product_assoc', 'product_accessories', 
-             'alt_length', 'alt_width', 'alt_height', 'ship_length', 'ship_width', 'ship_height', 
-             'nominal_length', 'nominal_width', 'nominal_height', 'product_relatives', 'meta_title', 
-             'meta_keywords', 'add_keywords', 'meta_description', 'display_size_2', 'free_shipping', 
-             'special_shipping', 'amount_per_box', 'class', 'inv_stocked', 'producttree', 'gauge', 'size2',
-             'size3', 'spacing', 'coating', 'material', 'style', 'speciality', 'shippable', 'notes', 
-             'enabled', 'categories_id', 'shipping_method')
             ->get();
-            
-        // Log how many products were found
-        \Illuminate\Support\Facades\Log::info("Found " . $products->count() . " products for {$height} System {$system}");
-        
-        // Define product categories
+
+        Log::info("Found " . $products->count() . " products for {$height} System {$system}");
+
         $productCategories = [
             'fence_section' => 'Fence Custom Complete (Price per Linear Foot)',
             'terminal_posts' => 'Terminal Posts',
             'gates' => 'Gates w/hardware',
         ];
-        
-        // Group products by category
+
         $productGroups = [];
-        foreach ($productCategories as $categoryKey => $categoryName) {
-            $productGroups[$categoryKey] = [
-                'title' => $categoryName,
-                'products' => []
-            ];
+        foreach ($productCategories as $key => $name) {
+            $productGroups[$key] = ['title' => $name, 'products' => []];
         }
-        
-        // Process each product
+
         foreach ($products as $product) {
-            // Add image URL
             $product->img_url = $product->img_large 
                 ? url('storage/products/' . $product->img_large) 
                 : ($product->img_small 
                     ? url('storage/products/' . $product->img_small) 
                     : url('storage/products/default.png'));
-            
-            // Determine product category based on style pattern and product name
-            $category = null;
-            
-            // Convert style and product name to lowercase for easier matching
+
             $style = strtolower($product->style ?? '');
             $productName = strtolower($product->product_name ?? '');
-            
-            // Check for gates first (they're most specific)
-            if (strpos($style, 'gate') !== false || 
-                strpos($productName, 'gate') !== false ||
-                strpos($productName, 'walk') !== false ||
-                strpos($productName, 'drive') !== false) {
+
+            $category = null;
+            if (strpos($style, 'gate') !== false || strpos($productName, 'gate') !== false || strpos($productName, 'walk') !== false || strpos($productName, 'drive') !== false) {
                 $category = 'gates';
-            }
-            // Check for terminal posts
-            elseif (strpos($style, 'post') !== false || 
-                   strpos($style, 'terminal') !== false ||
-                   strpos($productName, 'post') !== false ||
-                   strpos($productName, 'terminal') !== false ||
-                   strpos($productName, 'corner') !== false ||
-                   strpos($productName, 'end post') !== false) {
+            } elseif (strpos($style, 'post') !== false || strpos($style, 'terminal') !== false || strpos($productName, 'post') !== false || strpos($productName, 'terminal') !== false || strpos($productName, 'corner') !== false || strpos($productName, 'end post') !== false) {
                 $category = 'terminal_posts';
-            }
-            // Default to fence section for remaining products
-            else {
+            } else {
                 $category = 'fence_section';
             }
-            
-            // Only add product if it belongs to a defined category
+
             if ($category !== null && isset($productGroups[$category])) {
                 $productGroups[$category]['products'][] = $product;
             }
         }
-        
-        // Remove empty categories
+
         foreach ($productGroups as $key => $group) {
             if (empty($group['products'])) {
                 unset($productGroups[$key]);
             }
         }
-        
+
         return view('categories.chainlink.height', [
             'height' => $height,
             'system' => $system,
@@ -255,30 +219,5 @@ class ChainLinkFenceController extends Controller
             'productGroups' => $productGroups,
             'pageTitle' => "{$height} Chain Link Fence - {$systems[$system]['description']}"
         ]);
-    }
-    
-    /**
-     * Determine the product type based on its attributes
-     * 
-     * @param object $product
-     * @return string
-     */
-    private function determineProductType($product)
-    {
-        $name = strtolower($product->product_name);
-        
-        if (strpos($name, 'post') !== false) {
-            return 'Posts';
-        } elseif (strpos($name, 'gate') !== false) {
-            return 'Gates';
-        } elseif (strpos($name, 'fabric') !== false || strpos($name, 'mesh') !== false) {
-            return 'Fabric & Mesh';
-        } elseif (strpos($name, 'rail') !== false) {
-            return 'Rails';
-        } elseif (strpos($name, 'fitting') !== false || strpos($name, 'hardware') !== false) {
-            return 'Fittings & Hardware';
-        } else {
-            return 'Other Components';
-        }
     }
 }
