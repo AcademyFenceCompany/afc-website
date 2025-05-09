@@ -246,26 +246,33 @@
                                                 min="1" style="width: 40px;" data-price="<?php echo e($product->price); ?>" />
                                             <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                         </div>
-                                        <button class="btn btn-danger text-white add-to-cart-btn"
-                                            data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
-                                            data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
-                                            data-size="<?php echo e($product->size); ?>" data-size2="<?php echo e($product->size2); ?>"
-                                            
-                                            data-material="<?php echo e($product->material); ?>"
-                                            data-spacing="<?php echo e($product->spacing); ?>" data-coating="<?php echo e($product->coating); ?>"
-                                            data-weight_lbs="<?php echo e($product->weight_lbs); ?>"
-                                            data-family_category="<?php echo e($product->majorcategories_id ?? $product->family_category_id); ?>"
-                                            data-general_image="<?php echo e($product->img_url); ?>"
-                                            data-small_image="<?php echo e($product->img_small ? url('storage/products/' . $product->img_small) : url('storage/products/default.jpg')); ?>"
-                                            data-large_image="<?php echo e($product->img_large ? url('storage/products/' . $product->img_large) : url('storage/products/default.jpg')); ?>"
-                                            data-free_shipping="<?php echo e($product->free_shipping); ?>"
-                                            data-special_shipping="<?php echo e($product->special_shipping); ?>"
-                                            data-amount_per_box="<?php echo e($product->amount_per_box); ?>"
-                                            data-description="<?php echo e($product->desc_short); ?>"
-                                            data-shipping_length="<?php echo e($product->ship_length); ?>"
-                                            data-shipping_width="<?php echo e($product->ship_width); ?>"
-                                            data-shipping_height="<?php echo e($product->ship_height); ?>"
-                                            data-shipping_class="<?php echo e($product->class); ?>">
+                                        <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn" 
+                                            data-id="<?php echo e($product->id); ?>"
+                                            data-item_no="<?php echo e($product->item_no); ?>" 
+                                            data-product_name="<?php echo e($product->product_name); ?>"
+                                            data-price="<?php echo e($product->price); ?>"
+                                            data-color="<?php echo e($product->color ?? ''); ?>"
+                                            data-size="<?php echo e($product->size ?? ''); ?>"
+                                            data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                            data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                            data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                            data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                            data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                            data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                            data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                            data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                            data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                            data-material="<?php echo e($product->material ?? ''); ?>"
+                                            data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                            data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                            data-style="<?php echo e($product->style ?? ''); ?>"
+                                            data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                            data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                            data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                            data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                            data-class="<?php echo e($product->class ?? ''); ?>"
+                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                            data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                             Add to Cart
                                         </button>
                                     </div>
@@ -355,7 +362,35 @@
                                     <td>
                                         <div class="d-flex align-items-center justify-content-between">
                                             <span><?php echo e($product->price); ?></span>
-                                            <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                            <button class="btn btn-sm btn-danger text-white ms-2 btn-add-cart add-to-cart-btn" 
+                                            data-id="<?php echo e($product->id); ?>"
+                                            data-item_no="<?php echo e($product->item_no); ?>" 
+                                            data-product_name="<?php echo e($product->product_name); ?>"
+                                            data-price="<?php echo e($product->price); ?>"
+                                            data-color="<?php echo e($product->color ?? ''); ?>"
+                                            data-size="<?php echo e($product->size ?? ''); ?>"
+                                            data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                            data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                            data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                            data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                            data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                            data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                            data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                            data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                            data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                            data-material="<?php echo e($product->material ?? ''); ?>"
+                                            data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                            data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                            data-style="<?php echo e($product->style ?? ''); ?>"
+                                            data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                            data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                            data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                            data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                            data-class="<?php echo e($product->class ?? ''); ?>"
+                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                            data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
+                                            Add to Cart
+                                            </button>   
                                         </div>
                                     </td>
                                 </tr>
@@ -393,7 +428,35 @@
                                         <span class="mx-2">1</span>
                                         <button class="btn btn-outline-secondary btn-sm">+</button>
                                     </div>
-                                    <button class="btn btn-danger text-white">Add to Cart</button>
+                                    <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn" 
+                                            data-id="<?php echo e($product->id); ?>"
+                                            data-item_no="<?php echo e($product->item_no); ?>" 
+                                            data-product_name="<?php echo e($product->product_name); ?>"
+                                            data-price="<?php echo e($product->price); ?>"
+                                            data-color="<?php echo e($product->color ?? ''); ?>"
+                                            data-size="<?php echo e($product->size ?? ''); ?>"
+                                            data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                            data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                            data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                            data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                            data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                            data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                            data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                            data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                            data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                            data-material="<?php echo e($product->material ?? ''); ?>"
+                                            data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                            data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                            data-style="<?php echo e($product->style ?? ''); ?>"
+                                            data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                            data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                            data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                            data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                            data-class="<?php echo e($product->class ?? ''); ?>"
+                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                            data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
+                                            Add to Cart
+                                            </button>   
                                 </div>
                             </div>
                         </div>
@@ -464,10 +527,32 @@
                                             </td>
                                             <td>
                                                 <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
-                                                    data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
-                                                    data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
-                                                    data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
-                                                    data-image="<?php echo e($product->img_url); ?>">
+                                                    data-id="<?php echo e($product->id); ?>"
+                                                    data-item_no="<?php echo e($product->item_no); ?>" 
+                                                    data-product_name="<?php echo e($product->product_name); ?>"
+                                                    data-price="<?php echo e($product->price); ?>"
+                                                    data-color="<?php echo e($product->color ?? ''); ?>"
+                                                    data-size="<?php echo e($product->size ?? ''); ?>"
+                                                    data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                                    data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                                    data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                                    data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                                    data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                                    data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                                    data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                                    data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                                    data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                                    data-material="<?php echo e($product->material ?? ''); ?>"
+                                                    data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                                    data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                                    data-style="<?php echo e($product->style ?? ''); ?>"
+                                                    data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                                    data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                                    data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                                    data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                                    data-class="<?php echo e($product->class ?? ''); ?>"
+                                                    data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                                    data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                                     Add to Cart
                                                 </button>
                                             </td>
@@ -511,11 +596,33 @@
                                                     min="1" style="width: 40px;" data-price="<?php echo e($product->price); ?>" />
                                                 <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                             </div>
-                                            <button class="btn btn-danger text-white add-to-cart-btn"
-                                                data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
-                                                data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
-                                                data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
-                                                data-image="<?php echo e($product->img_url); ?>">
+                                            <button class="btn btn-danger text-white add-to-cart-btn"   
+                                                data-id="<?php echo e($product->id); ?>"
+                                                data-item_no="<?php echo e($product->item_no); ?>" 
+                                                data-product_name="<?php echo e($product->product_name); ?>"
+                                                data-price="<?php echo e($product->price); ?>"
+                                                data-color="<?php echo e($product->color ?? ''); ?>"
+                                                data-size="<?php echo e($product->size ?? ''); ?>"
+                                                data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                                data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                                data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                                data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                                data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                                data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                                data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                                data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                                data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                                data-material="<?php echo e($product->material ?? ''); ?>"
+                                                data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                                data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                                data-style="<?php echo e($product->style ?? ''); ?>"
+                                                data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                                data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                                data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                                data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                                data-class="<?php echo e($product->class ?? ''); ?>"
+                                                data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                                data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                                 Add to Cart
                                             </button>
                                         </div>
@@ -585,11 +692,33 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
-                                                    data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
-                                                    data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
-                                                    data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
-                                                    data-image="<?php echo e($product->img_url); ?>">
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"   
+                                                    data-id="<?php echo e($product->id); ?>"
+                                                    data-item_no="<?php echo e($product->item_no); ?>" 
+                                                    data-product_name="<?php echo e($product->product_name); ?>"
+                                                    data-price="<?php echo e($product->price); ?>"
+                                                    data-color="<?php echo e($product->color ?? ''); ?>"
+                                                    data-size="<?php echo e($product->size ?? ''); ?>"
+                                                    data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                                    data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                                    data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                                    data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                                    data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                                    data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                                    data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                                    data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                                    data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                                    data-material="<?php echo e($product->material ?? ''); ?>"
+                                                    data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                                    data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                                    data-style="<?php echo e($product->style ?? ''); ?>"
+                                                    data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                                    data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                                    data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                                    data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                                    data-class="<?php echo e($product->class ?? ''); ?>"
+                                                    data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                                    data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                                     Add to Cart
                                                 </button>
                                             </td>
@@ -633,11 +762,33 @@
                                                     min="1" style="width: 40px;" data-price="<?php echo e($product->price); ?>" />
                                                 <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                             </div>
-                                            <button class="btn btn-danger text-white add-to-cart-btn"
-                                                data-item="<?php echo e($product->item_no); ?>" data-name="<?php echo e($product->product_name); ?>"
-                                                data-price="<?php echo e($product->price); ?>" data-color="<?php echo e($product->color); ?>"
-                                                data-size="<?php echo e($product->size); ?>" data-weight="<?php echo e($product->weight_lbs); ?>"
-                                                data-image="<?php echo e($product->img_url); ?>">
+                                            <button class="btn btn-danger text-white add-to-cart-btn"   
+                                                data-id="<?php echo e($product->id); ?>"
+                                                data-item_no="<?php echo e($product->item_no); ?>" 
+                                                data-product_name="<?php echo e($product->product_name); ?>"
+                                                data-price="<?php echo e($product->price); ?>"
+                                                data-color="<?php echo e($product->color ?? ''); ?>"
+                                                data-size="<?php echo e($product->size ?? ''); ?>"
+                                                data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                                data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                                data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                                data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                                data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                                data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                                data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                                data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                                data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                                data-material="<?php echo e($product->material ?? ''); ?>"
+                                                data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                                data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                                data-style="<?php echo e($product->style ?? ''); ?>"
+                                                data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                                data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                                data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                                data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                                data-class="<?php echo e($product->class ?? ''); ?>"
+                                                data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                                data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                                 Add to Cart
                                             </button>
                                         </div>
@@ -715,7 +866,35 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"   
+                                                    data-id="<?php echo e($product->id); ?>"
+                                                    data-item_no="<?php echo e($product->item_no); ?>" 
+                                                    data-product_name="<?php echo e($product->product_name); ?>"
+                                                    data-price="<?php echo e($product->price); ?>"
+                                                    data-color="<?php echo e($product->color ?? ''); ?>"
+                                                    data-size="<?php echo e($product->size ?? ''); ?>"
+                                                    data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                                    data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                                    data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                                    data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                                    data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                                    data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                                    data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                                    data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                                    data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                                    data-material="<?php echo e($product->material ?? ''); ?>"
+                                                    data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                                    data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                                    data-style="<?php echo e($product->style ?? ''); ?>"
+                                                    data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                                    data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                                    data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                                    data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                                    data-class="<?php echo e($product->class ?? ''); ?>"
+                                                    data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                                    data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
+                                                    Add to Cart
+                                                </button>   
                                             </td>
                                         </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -782,7 +961,35 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger text-white ms-2">Add to Cart</button>
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"   
+                                                    data-id="<?php echo e($product->id); ?>"
+                                                    data-item_no="<?php echo e($product->item_no); ?>" 
+                                                    data-product_name="<?php echo e($product->product_name); ?>"
+                                                    data-price="<?php echo e($product->price); ?>"
+                                                    data-color="<?php echo e($product->color ?? ''); ?>"
+                                                    data-size="<?php echo e($product->size ?? ''); ?>"
+                                                    data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                                    data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                                    data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                                    data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                                    data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                                    data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                                    data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                                    data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                                    data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                                    data-material="<?php echo e($product->material ?? ''); ?>"
+                                                    data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                                    data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                                    data-style="<?php echo e($product->style ?? ''); ?>"
+                                                    data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                                    data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                                    data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                                    data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                                    data-class="<?php echo e($product->class ?? ''); ?>"
+                                                    data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                                    data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
+                                                    Add to Cart
+                                                </button>   
                                             </td>
                                         </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
