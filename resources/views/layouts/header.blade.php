@@ -141,62 +141,62 @@
                     </div>
                     
                     <div class="dropdown">
-                        <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WELDED WIRE</a>
+                        <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">WELDED WIRE</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC">4"
+                                    href="/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC">4"
                                     x 4"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC">3"
+                                    href="/wwf-product?meshSize=3%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC">3"
                                     x 3"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC">2"
+                                    href="/wwf-product?meshSize=2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC">2"
                                     x 4"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">2"
+                                    href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">2"
                                     x 2"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">1
+                                    href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">1
                                     1/2" x 1 1/2"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC">1
+                                    href="/wwf-product?meshSize=1%2B1%252F2%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC">1
                                     1/2" x 4"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">3"
+                                    href="/wwf-product?meshSize=3%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">3"
                                     x 2"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC">1"
+                                    href="/wwf-product?meshSize=1%2Bin.%2Bx%2B3%2Bin.&amp;coating=Vinyl%20PVC">1"
                                     x 3"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">1"
+                                    href="/wwf-product?meshSize=1%2Bin.%2Bx%2B2%2Bin.&amp;coating=Vinyl%20PVC">1"
                                     x 2"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC">1"
+                                    href="/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC">1"
                                     x 1"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC">1/2"
+                                    href="/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%2Bin.&amp;coating=Vinyl%20PVC">1/2"
                                     x 1"</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Vinyl%20PVC">1/2"
+                                    href="/wwf-product?meshSize=1%252F2%2Bin.%2Bx%2B1%252F2%2Bin.&amp;coating=Vinyl%20PVC">1/2"
                                     Hardware Cloth</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Vinyl%20PVC">1/4"
+                                    href="/wwf-product?meshSize=1%252F4%2Bin.%2Bx%2B1%252F4%2Bin.&amp;coating=Vinyl%20PVC">1/4"
                                     Hardware Cloth</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Vinyl%20PVC">1/8"
+                                    href="/wwf-product?meshSize=1%252F8%2Bin.%2Bx%2B1%252F8%2Bin.&amp;coating=Vinyl%20PVC">1/8"
                                     Hardware Cloth</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Vinyl%20PVC">1"
+                                    href="/wwf-product?meshSize=1%2Bin.%2Bx%2B1%2Bin.&coating=Vinyl%20PVC">1"
                                     Hex Netting/Chicken Wire</a></li>
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Vinyl%20PVC">2"
+                                    href="/wwf-product?meshSize=2%2Bin.%2Bx%2B2%2Bin.&coating=Vinyl%20PVC">2"
                                     Hex Netting/Chicken Wire</a></li>
                             <!-- <li><a class="dropdown-item" href="#">Deer Fence</a></li> -->
                             <!-- <li><a class="dropdown-item" href="#">Welded Wire Gates</a></li> -->
                             <!-- <li><a class="dropdown-item" href="#">Silt/Erosion Fence</a></li> -->
                             <!-- <li><a class="dropdown-item" href="#">Snow Fence</a></li> -->
                             <li><a class="dropdown-item"
-                                    href="http://192.168.0.135/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized">Knock-In
+                                    href="/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized">Knock-In
                                     Post</a></li>
                             <!-- <li><a class="dropdown-item" href="#">Specialty Wire</a></li> -->
                             <li><a class="dropdown-item" href="#">Fence Pen Kits</a></li>

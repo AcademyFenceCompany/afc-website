@@ -196,7 +196,18 @@ Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('pro
 Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
-Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+// Routes for welded wire products with proper hierarchy for breadcrumbs
+Route::get('/weldedwire/{coating}/{meshSize}', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+// Redirect old route to new URL format for proper breadcrumb display
+Route::get('/wwf-product', function(\Illuminate\Http\Request $request) {
+    $coating = $request->input('coating');
+    $meshSize = $request->input('meshSize');
+    if ($coating && $meshSize) {
+        return redirect('/weldedwire/' . $coating . '/' . $meshSize);
+    }
+    return redirect('/weldedwire');
+})->name('meshsize.products.legacy');
+Route::get('/knockin-posts', [ProductByMeshSizeController::class, 'knockinpostProduct'])->name('knockin.posts');
 
 Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])

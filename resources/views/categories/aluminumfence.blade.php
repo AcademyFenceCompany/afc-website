@@ -349,7 +349,7 @@
                         <img src="{{ url('storage/products/' . strtolower($typeName) . '.jpg') }}" 
                              alt="{{ $typeName }} Fence" 
                              class="img-fluid"
-                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                             onerror="this.src='{{ url('storage/products/default.jpg') }}'">
                     </div>
                 </div>
                 
@@ -361,13 +361,19 @@
                             <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
-                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                        @php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? $defaultImage;
+                                            $hoverImage = $representativeImages[$typeName][$modelName]['hover'] ?? $mainImage;
+                                        @endphp
+                                        <img src="{{ $mainImage }}" 
                                              alt="{{ $modelName }} {{ $typeName }}" 
                                              class="primary-image"
-                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                        <img src="{{ $hoverImage }}" 
                                              alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                             class="hover-image">
+                                             class="hover-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center">{{ $modelName }}</div>
@@ -388,13 +394,19 @@
                             <div class="col-md-2.4 model-column" style="flex: 0 0 20%; max-width: 20%;">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
-                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                        @php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? $defaultImage;
+                                            $hoverImage = $representativeImages[$typeName][$modelName]['hover'] ?? $mainImage;
+                                        @endphp
+                                        <img src="{{ $mainImage }}" 
                                              alt="{{ $modelName }} {{ $typeName }}" 
                                              class="primary-image"
-                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                        <img src="{{ $hoverImage }}" 
                                              alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                             class="hover-image">
+                                             class="hover-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center">{{ $modelName }}</div>
@@ -411,45 +423,24 @@
                 <!-- Puppy Pickets Section -->
                 <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
                 <div class="row mb-4">
-                    @foreach(['Finch', 'Sparrow'] as $modelName)
-                        @if(isset($typeData['models'][$modelName]))
-                            <div class="col-md-3 col-6 mb-3">
-                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
-                                    <div class="model-image">
-                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
-                                             alt="{{ $modelName }} {{ $typeName }}" 
-                                             class="primary-image"
-                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
-                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                             class="hover-image">
-                                    </div>
-                                    <div class="model-info">
-                                        <div class="model-name text-center">{{ $modelName }}</div>
-                                        <div class="text-center mb-2">
-                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-                
-                <!-- All Other Models (if any) -->
-                <div class="row mb-4">
                     @foreach($typeData['models'] as $modelName => $model)
-                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Finch', 'Sparrow']))
+                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet']))
                             <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
-                                        <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                        @php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $model['image'] ?? $defaultImage;
+                                            $hoverImage = $model['hover_image'] ?? $mainImage; // Use the hover_image added to the controller
+                                        @endphp
+                                        <img src="{{ $mainImage }}" 
                                              alt="{{ $modelName }} {{ $typeName }}" 
                                              class="primary-image"
-                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
-                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                        <img src="{{ $hoverImage }}" 
                                              alt="{{ $modelName }} {{ $typeName }} Hover" 
-                                             class="hover-image">
+                                             class="hover-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center">{{ $modelName }}</div>
