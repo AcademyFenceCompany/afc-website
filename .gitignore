@@ -1,7 +1,8 @@
 /node_modules
 /public/build
 /public/hot
-# /public/storage
+/public/storage
+/storage/logs
 /storage/*.key
 /vendor
 .env
@@ -18,3 +19,7 @@ yarn-error.log
 /.vscode
 storage/clockwork/*
 storage/clockwork/index
+storage/logs/*.log
+/storage/framework/cache/
+/storage/framework/sessions/
+/storage/framework/views/

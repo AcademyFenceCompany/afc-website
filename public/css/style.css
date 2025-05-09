@@ -557,7 +557,7 @@ table th {
 
 /* Table Body */
 table td {
-    font-size: 14px; /* Font size for table values */
+    font-size: 13px; /* Font size for table values */
     text-align: center; /* Center align values */
     padding: 6px; /* Adjust padding for compactness */
 }
