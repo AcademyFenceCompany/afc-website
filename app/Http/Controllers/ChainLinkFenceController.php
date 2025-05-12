@@ -128,11 +128,30 @@ class ChainLinkFenceController extends Controller
 
         foreach ($systems as $id => &$sys) {
             $parentCode = $baseParentCode . $sys['parent_suffix'];
-
-            $img = DB::connection('mysql_second')
-                ->table('productsqry')
-                ->where('parent', 'like', $parentCode . '%')
-                ->whereNotNull('img_large')
+            
+            // More flexible search for system images
+            $query = DB::connection('mysql_second')
+                ->table('productsqry');
+                
+            // For System 1, use exact parent match
+            if ($id == 1) {
+                $query->where('parent', 'like', $parentCode . '%');
+            } else {
+                // For Systems 2-5, try alternative search patterns
+                $heightNumber = substr($height, 0, 1);
+                $systemNumber = $id;
+                $query->where(function($q) use ($parentCode, $heightNumber, $systemNumber) {
+                    $q->where('parent', 'like', $parentCode . '%')
+                      // Try searching by height and system in product name
+                      ->orWhere('product_name', 'like', "%{$heightNumber}ft%system {$systemNumber}%")
+                      ->orWhere('product_name', 'like', "%{$heightNumber}' %system {$systemNumber}%")
+                      // Try searching by system type in style field
+                      ->orWhere('style', 'like', "%sys{$systemNumber}%")
+                      ->orWhere('style', 'like', "%system{$systemNumber}%");
+                });
+            }
+            
+            $img = $query->whereNotNull('img_large')
                 ->where('img_large', '!=', '')
                 ->orderBy('id')
                 ->value('img_large');

@@ -506,6 +506,7 @@
         
         <div class="system-bundle-content">
             <!-- Bundle Image -->
+            
             <div class="bundle-image">
                 <h4 class="text-center"><?php echo e($height); ?> High-<?php echo e($systems[$system]['name']); ?></h4>
                 <img src="<?php echo e($systems[$system]['image']); ?>" alt="<?php echo e($height); ?> Chain Link Fence System">
