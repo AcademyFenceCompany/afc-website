@@ -557,7 +557,11 @@ table th {
 
 /* Table Body */
 table td {
+<<<<<<< HEAD
     font-size: 14px; /* Font size for table values */
+=======
+    font-size: 13px; /* Font size for table values */
+>>>>>>> origin/ready-push-main
     text-align: center; /* Center align values */
     padding: 6px; /* Adjust padding for compactness */
 }
@@ -649,10 +653,17 @@ h1.page-title,
 .container .page-title,
 main .rounded .page-title,
 .rounded .page-title {
+<<<<<<< HEAD
     font-size: 24px !important;
     color: #fff !important;
     font-weight: bold !important;
     padding: 10px 0 !important;
+=======
+    font-size: 24px;
+    color: #fff !important;
+    font-weight: bold !important;
+    padding: 10px 0;
+>>>>>>> origin/ready-push-main
     margin-bottom: 0 !important;
 }
 

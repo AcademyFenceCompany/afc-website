@@ -26,7 +26,11 @@
                         <th>Price</th>
                         <th>Color</th>
                         <th>Style</th>
+<<<<<<< HEAD
                         <th>Specialty</th>
+=======
+                        <th>speciality</th>
+>>>>>>> origin/ready-push-main
                         <th>Size 1</th>
                         <th>Size 2</th>
                         <th>Size 3</th>
@@ -76,7 +80,11 @@
                         <td>${product.price_per_unit}</td>
                         ${product.color !== null ? `<td>${product.color}</td>` : '<td></td>'}
                         ${product.style !== null ? `<td>${product.style}</td>` : '<td></td>'}
+<<<<<<< HEAD
                         ${product.specialty !== null ? `<td>${product.specialty}</td>` : '<td></td>'}
+=======
+                        ${product.speciality !== null ? `<td>${product.speciality}</td>` : '<td></td>'}
+>>>>>>> origin/ready-push-main
                         ${product.size1 !== null ? `<td>${product.size1}</td>` : '<td></td>'}
                         ${product.size2 !== null ? `<td>${product.size2}</td>` : '<td></td>'}
                         ${product.size3 !== null ? `<td>${product.size3}</td>` : '<td></td>'}

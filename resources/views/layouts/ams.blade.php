@@ -27,6 +27,7 @@
             Orders <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="ordersMenu">
+            <a href="{{ route('ams.orders.create') }}" class="menu-item">Create New Order</a>
             <a href="{{ route('ams.activity') }}" class="menu-item">Today's Activity</a>
             <a href="#" class="menu-item">Test Account</a>
         </div>
@@ -34,16 +35,23 @@
         <!-- Products -->
         <a class="menu-item" data-bs-toggle="collapse" href="#productsMenu" role="button" aria-expanded="false"
             aria-controls="productsMenu">
-            Products <i class="bi bi-caret-down-fill"></i>
+            Products Management <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="productsMenu">
-            <a href="{{ route('ams.products.add') }}" class="menu-item">Add Product</a>
-            <a href="{{ route('products.index') }}" class="menu-item">View Products</a>
-            <a href="{{ route('categories.display') }}" class="menu-item">Category Management</a>
-            <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">AFC Category Management</a>
-            <a href="{{ route('ams.product-query.index') }}" class="menu-item">Product Query</a>
+            <a href="{{ route('ams.product-query.create') }}" class="menu-item">Add Product</a>
+            <a href="{{ route('ams.product-query.index') }}" class="menu-item">View Product</a>
         </div>
-
+        
+        <!-- Categories -->
+        <a class="menu-item" data-bs-toggle="collapse" href="#categoriesMenu" role="button" aria-expanded="false"
+        aria-controls="categoriesMenu">
+    Category Management <i class="bi bi-caret-down-fill"></i>
+    </a>
+    <div class="collapse submenu" id="categoriesMenu">
+        <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">View Categories</a>
+        <a href="{{ route('ams.mysql-categories.create') }}" class="menu-item">Add Category</a>
+        <a href="{{ route('ams.mysql-majorcategories.create') }}" class="menu-item">Add Major Category</a>
+    </div>
         <!-- Customers -->
         <a class="menu-item" data-bs-toggle="collapse" href="#customersMenu" role="button" aria-expanded="false"
             aria-controls="customersMenu">
@@ -116,6 +124,9 @@
         <div class="header">
             <h2>@yield('title')</h2>
             <div class="header-buttons">
+                <a href="{{ route('ams.orders.create') }}" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-circle"></i> Create New Order
+                </a>
                 <a href="{{ route('ams.home') }}" class="btn btn-outline-light">
                     <i class="bi bi-house-fill"></i> Home
                 </a>
@@ -141,8 +152,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Set up CSRF token for all AJAX requests
         $.ajaxSetup({

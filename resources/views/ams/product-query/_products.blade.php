@@ -23,9 +23,23 @@
                     <td>{{ $product->enabled ? 'Yes' : 'No' }}</td>
                     <td>{{ $product->inv_orange }}</td>
                     <td>
+<<<<<<< HEAD
                         <a href="{{ route('ams.product-query.edit', $product->id) }}" class="btn btn-sm btn-primary">
                             <i class="bi bi-pencil"></i> Edit
                         </a>
+=======
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{ route('ams.product-query.edit', $product->id) }}" class="btn btn-primary">
+                                <i class="bi bi-pencil"></i> Edit
+                            </a>
+                            <a href="{{ route('ams.product-query.duplicate', $product->id) }}" class="btn btn-success">
+                                <i class="bi bi-files"></i> Duplicate
+                            </a>
+                            <button type="button" class="btn btn-danger delete-product" data-id="{{ $product->id }}" data-name="{{ $product->product_name }}">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+>>>>>>> origin/ready-push-main
                     </td>
                 </tr>
                 @endforeach
@@ -36,3 +50,49 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProductModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <span id="productNameToDelete"></span>?</p>
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteProductForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set up delete product buttons
+        document.querySelectorAll('.delete-product').forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.getAttribute('data-id');
+                const productName = this.getAttribute('data-name');
+                
+                document.getElementById('productNameToDelete').textContent = productName;
+                document.getElementById('deleteProductForm').action = "{{ route('ams.product-query.destroy', '') }}/" + productId;
+                
+                // Show the modal
+                const deleteModal = new bootstrap.Modal(document.getElementById('deleteProductModal'));
+                deleteModal.show();
+            });
+        });
+    });
+</script>
+>>>>>>> origin/ready-push-main

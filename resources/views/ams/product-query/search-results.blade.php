@@ -84,6 +84,13 @@
                                                    class="btn btn-sm btn-primary">
                                                     <i class="bi bi-pencil-square"></i> Edit
                                                 </a>
+<<<<<<< HEAD
+=======
+                                                <a href="{{ route('ams.product-query.duplicate', $product->id) }}" 
+                                                   class="btn btn-sm btn-success">
+                                                    <i class="bi bi-files"></i> Duplicate
+                                                </a>
+>>>>>>> origin/ready-push-main
                                                 <a href="{{ route('product.show', $product->id) }}" 
                                                    class="btn btn-sm btn-info" target="_blank">
                                                     <i class="bi bi-eye"></i> View

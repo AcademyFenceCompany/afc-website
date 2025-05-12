@@ -7,8 +7,16 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card">
+<<<<<<< HEAD
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">Product Search</h5>
+=======
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Product Management</h5>
+                    <a href="{{ route('ams.product-query.create') }}" class="btn btn-light btn-sm">
+                        <i class="bi bi-plus-circle"></i> Add New Product
+                    </a>
+>>>>>>> origin/ready-push-main
                 </div>
                 <div class="card-body">
                     <form action="{{ route('ams.product-query.search') }}" method="GET" id="product-search-form">

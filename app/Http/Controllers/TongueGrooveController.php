@@ -59,7 +59,7 @@ class TongueGrooveController extends Controller
         }
         
         foreach ($products as $product) {
-            $speciality = $product->specialty ?? ($product->speciality ?? 'Standard');
+            $speciality = $product->speciality ?? ($product->speciality ?? 'Standard');
             
             // Clean up speciality values - using independent if statements to catch all matches
             if (stripos($speciality, 'diagonal') !== false && stripos($speciality, 'lattice') !== false) {

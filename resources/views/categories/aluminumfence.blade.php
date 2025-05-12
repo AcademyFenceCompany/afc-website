@@ -97,7 +97,11 @@
     }
     
     .model-card {
+<<<<<<< HEAD
         width: calc(25% - 20px);
+=======
+        /* width: calc(25% - 20px); */
+>>>>>>> origin/ready-push-main
         border: 1px solid #ddd;
         border-radius: 8px;
         overflow: hidden;
@@ -111,20 +115,61 @@
     }
     
     .model-image {
+<<<<<<< HEAD
         width: 100%;
         height: 150px;
+=======
+        height: 150px;
+        width: 100%;
+>>>>>>> origin/ready-push-main
         background-color: #f8f9fa;
         display: flex;
         align-items: center;
         justify-content: center;
+<<<<<<< HEAD
+=======
+        position: relative;
+        overflow: hidden;
+>>>>>>> origin/ready-push-main
     }
     
     .model-image img {
         max-width: 100%;
         max-height: 100%;
+<<<<<<< HEAD
         object-fit: cover;
     }
     
+=======
+    }
+    
+    .primary-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 0.3s ease;
+    }
+    
+    .hover-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .model-card:hover .primary-image {
+        opacity: 0;
+    }
+    
+    .model-card:hover .hover-image {
+        opacity: 1;
+    }
+>>>>>>> origin/ready-push-main
     
     .model-name {
         font-weight: bold;
@@ -195,11 +240,67 @@
             width: 100%;
         }
     }
+<<<<<<< HEAD
+=======
+    
+    .accessories-button {
+        background-color: #001755;
+        border-color: #001755;
+        font-size: 1.25rem;
+        padding: 15px 30px;
+        transition: all 0.3s ease;
+    }
+    
+    .accessories-button:hover {
+        background-color: #002b80;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 767.98px) {
+        .page-title {
+            font-size: 15px !important;
+        }
+        .about-flex {
+            flex-direction: column;
+            align-items: center;
+        }
+        .type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            padding: 10px 0;
+        }
+        .type-button {
+            width: 50%;
+        }
+        .model-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .model-image {
+            width: 120px;
+            height: 120px;
+        }
+        .model-info {
+            width: 100%;
+            text-align: center;
+        }
+        /* Adjust column width for mobile */
+        .model-column {
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
+            padding: 0 5px;
+        }
+    }
+>>>>>>> origin/ready-push-main
 </style>
 @endsection
 
 @section('content')
 <div class="container">
+<<<<<<< HEAD
     <!-- OnGuard Header -->
     <div class="row">
         <div class="col-12">
@@ -228,6 +329,43 @@
                         <a href="{{ route('aluminumfence.pickup') }}" class="btn btn-danger mt-2">See what's available for pickup</a>
                     </div>
                 </div>
+=======
+    <div class="rounded bg-brown mb-2">
+        <h1 class="page-title text-center mb-0">OnGuard Aluminum Fence</h1>
+    </div>
+    <!-- Info Section -->
+    <div class="row g-4 mb-6">
+        <!-- Left Section - About -->
+        <div class="col-md-8 wf-about mb-2">
+            <div class="d-flex about-flex">
+                <img src="{{ url('storage/products/onguard-fencetown-400x400.jpg') }}" alt="OnGuard Fence" style="width: 180px; height: 180px; object-fit: cover;" class="me-4 rounded about-image-onguard">
+                <div>
+                    <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
+                    <p class="page-description mb-2">
+                        OnGuard extrudes and manufactures high-quality aluminum fence components for residential and commercial applications where
+                        long-lasting durability and beauty are required. OnGuard products are 
+                        easy to install, come in classic colors and are offered in a wide array of
+                        beautiful designs and classic finish options.
+                    </p>
+                    <a href="{{ route('aluminumfence.pickup') }}" class="btn btn-danger">See what's available for pickup</a>
+
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Section - Manufacturer Info -->
+        <div class="col-md-4">
+            <div class="p-3 rounded bg-light-yellow">
+                <ul class="small-font mb-0">
+                    <li><strong><i class="bi bi-currency-dollar text-brown me-2"></i>Delivered in 2–6 Weeks</strong></li>
+                    <li><strong><i class="bi bi-truck text-brown me-2"></i>Unbeatable Low Price</strong></li>
+                    <li><strong><i class="bi bi-plus-circle text-brown me-2"></i>Backed by a Lifetime Warranty</strong></li>
+                    <li><strong><i class="bi bi-star text-brown me-2"></i>Add-On Puppy Picket Option for Extra Safety</strong></li>
+                    <li><strong><i class="bi bi-check-circle text-brown me-2"></i>Sleek Beveled Rail for a Refined Look</strong></li>
+                </ul>
+
+>>>>>>> origin/ready-push-main
             </div>
         </div>
     </div>
@@ -263,6 +401,7 @@
                         <img src="{{ url('storage/products/' . strtolower($typeName) . '.jpg') }}" 
                              alt="{{ $typeName }} Fence" 
                              class="img-fluid"
+<<<<<<< HEAD
                              onerror="this.src='{{ url('storage/products/default.png') }}'">
                     </div>
                 </div>
@@ -284,12 +423,117 @@
                                 </div>
                             </a>
                         </div>
+=======
+                             onerror="this.src='{{ url('storage/products/default.jpg') }}'">
+                    </div>
+                </div>
+                
+                <!-- The Most Popular Section -->
+                <h4 class="section-title mt-4 mb-3">The Most Popular</h4>
+                <div class="row mb-4">
+                    @foreach(['Starling', 'Siskin', 'Longspur', 'Heron'] as $modelName)
+                        @if(isset($typeData['models'][$modelName]))
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        @php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? $defaultImage;
+                                            $hoverImage = $representativeImages[$typeName][$modelName]['hover'] ?? $mainImage;
+                                        @endphp
+                                        <img src="{{ $mainImage }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                        <img src="{{ $hoverImage }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- Other Models Section -->
+                <div class="row mb-4">
+                    @foreach(['Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet'] as $modelName)
+                        @if(isset($typeData['models'][$modelName]))
+                            <div class="col-md-2.4 model-column" style="flex: 0 0 20%; max-width: 20%;">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        @php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? $defaultImage;
+                                            $hoverImage = $representativeImages[$typeName][$modelName]['hover'] ?? $mainImage;
+                                        @endphp
+                                        <img src="{{ $mainImage }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                        <img src="{{ $hoverImage }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- Puppy Pickets Section -->
+                <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
+                <div class="row mb-4">
+                    @foreach($typeData['models'] as $modelName => $model)
+                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet']))
+                            <div class="col-md-3 col-6 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        @php
+                                            $defaultImage = url('storage/products/default.jpg');
+                                            $mainImage = $model['image'] ?? $defaultImage;
+                                            $hoverImage = $model['hover_image'] ?? $mainImage; // Use the hover_image added to the controller
+                                        @endphp
+                                        <img src="{{ $mainImage }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                        <img src="{{ $hoverImage }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image"
+                                             onerror="this.src='{{ $defaultImage }}'">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+>>>>>>> origin/ready-push-main
                     @endforeach
                 </div>
             </div>
         @endforeach
     </div>
     
+<<<<<<< HEAD
     <!-- Product Section - Initially hidden -->
     <div id="product-section" class="product-section" style="{{ count($products) > 0 ? '' : 'display: none;' }}">
         <div class="product-header">
@@ -347,6 +591,18 @@
                 Please select a fence model to view available products.
             </div>
         @endif
+=======
+    <!-- OnGuard Accessories Button -->
+    <div class="row mt-5 mb-5">
+        <div class="col-12 text-center">
+            <div class="section-title">OnGuard Accessories</div>
+            <p class="mb-4">Complete your OnGuard aluminum fence with essential accessories designed to work perfectly with all fence systems.</p>
+            
+            <a href="{{ route('aluminumfence.accessories') }}" class="btn btn-primary btn-lg accessories-button">
+                <i class="bi bi-tools me-2"></i> View All OnGuard Accessories
+            </a>
+        </div>
+>>>>>>> origin/ready-push-main
     </div>
 </div>
 @endsection
@@ -376,8 +632,15 @@
             var type = $(this).data('type');
             var model = $(this).data('model');
             
+<<<<<<< HEAD
             // Redirect to the product page for the selected type and model
             window.location.href = '/aluminum-fence/onguard/' + type + '-' + model;
+=======
+            console.log("Clicked model card:", type, model);
+            
+            // Navigate to product page with separate path parameters
+            window.location.href = "/aluminum-fence/onguard/" + type + "/" + model;
+>>>>>>> origin/ready-push-main
         });
         
         // Handle view products button clicks
@@ -388,8 +651,15 @@
             var type = card.data('type');
             var model = card.data('model');
             
+<<<<<<< HEAD
             // Redirect to the product page for the selected type and model
             window.location.href = '/aluminum-fence/onguard/' + type + '-' + model;
+=======
+            console.log("Clicked view products button:", type, model);
+            
+            // Navigate to product page with separate path parameters
+            window.location.href = "/aluminum-fence/onguard/" + type + "/" + model;
+>>>>>>> origin/ready-push-main
         });
         
         // Handle quantity plus button clicks
@@ -448,7 +718,11 @@
         });
         
         // Set default type to Residential
+<<<<<<< HEAD
         @if($selectedFenceType)
+=======
+        @if(isset($selectedFenceType) && $selectedFenceType)
+>>>>>>> origin/ready-push-main
             // If there's a selected type from the URL, activate that button
             $('.type-button[data-type="{{ $selectedFenceType }}"]').click();
         @else

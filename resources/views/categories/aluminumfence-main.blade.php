@@ -9,7 +9,11 @@
         background-color: #8B4513 !important;
     }
     .page-title {
+<<<<<<< HEAD
         font-size: 24px !important;
+=======
+        font-size: 24px ;
+>>>>>>> origin/ready-push-main
         color: #fff !important;
         font-weight: bold !important;
         padding: 10px 0 !important;
@@ -69,6 +73,18 @@
         font-size: 14px;
         margin-bottom: 15px;
     }
+<<<<<<< HEAD
+=======
+    @media (max-width: 767.98px) {
+        .about-flex {
+            flex-direction: column;
+            align-items: center;
+        }
+        .page-title {
+            font-size: 15px !important;
+        }
+    }
+>>>>>>> origin/ready-push-main
 </style>
 @endsection
 
@@ -85,7 +101,11 @@
         <div class="row g-4 mb-4">
             <!-- Left Section - About -->
             <div class="col-md-6 wf-about">
+<<<<<<< HEAD
                 <div class="d-flex">
+=======
+                <div class="d-flex about-flex">
+>>>>>>> origin/ready-push-main
                     <img src="{{ url('storage/products/homepage2.jpg') }}" alt="Aluminum Fence" class="me-4 rounded about-image">
                     <div>
                         <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
@@ -136,7 +156,11 @@
         <!-- Brand Section -->
         <div class="row mb-5">
             <!-- OnGuard Section (First Half) -->
+<<<<<<< HEAD
             <div class="col-md-6">
+=======
+            <div class="col-md-8">
+>>>>>>> origin/ready-push-main
                 @foreach ($aluminum_categories as $category)
                     @if ($category['family_category_id'] == 1055)
                         <div class="card">
@@ -154,7 +178,11 @@
             </div>
             
             <!-- Other Brands Section (Second Half) -->
+<<<<<<< HEAD
             <div class="col-md-6">
+=======
+            <div class="col-md-4">
+>>>>>>> origin/ready-push-main
                 <div class="row g-4">
                     @foreach ($aluminum_categories as $category)
                         @if ($category['family_category_id'] != 1055)
@@ -162,7 +190,12 @@
                                 <div class="card h-100 border-0 shadow-sm">
                                     <div class="text-center p-2">
                                         @if (isset($category['image']))
+<<<<<<< HEAD
                                             <img src="{{ $category['image'] }}" class="rounded" style="width: 100%; height: 150px; object-fit: cover;">
+=======
+
+                                        <img src="{{ $category['image'] }}" class="rounded" style="width: 100%; height: 150px; object-fit: cover;">
+>>>>>>> origin/ready-push-main
                                         @endif
                                         <div class="text-center pt-2">
                                             <h6 class="card-title text-brown fw-bold">{{ $category['family_category_name'] }}</h6>

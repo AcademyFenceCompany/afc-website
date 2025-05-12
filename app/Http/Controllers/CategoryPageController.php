@@ -163,13 +163,13 @@ class CategoryPageController extends Controller
                     'subgroups' => []
                 ];
 
-                // Group by specialty within style
-                $specialtyGroups = $styleProducts->whereNotNull('specialty')->groupBy('specialty');
+                // Group by speciality within style
+                $specialityGroups = $styleProducts->whereNotNull('speciality')->groupBy('speciality');
                 
-                foreach ($specialtyGroups as $specialty => $specialtyProducts) {
-                    // Group same products with different colors within each specialty
-                    $uniqueProducts = $specialtyProducts->groupBy(function($product) {
-                        return $product->style . '-' . $product->specialty . '-' . $product->size1 . '-' . $product->size2;
+                foreach ($specialityGroups as $speciality => $specialityProducts) {
+                    // Group same products with different colors within each speciality
+                    $uniqueProducts = $specialityProducts->groupBy(function($product) {
+                        return $product->style . '-' . $product->speciality . '-' . $product->size1 . '-' . $product->size2;
                     })->map(function($sameProducts) {
                         $baseProduct = $sameProducts->first();
                         $colors = $sameProducts->pluck('color')->filter();
@@ -187,15 +187,15 @@ class CategoryPageController extends Controller
                     })->values();
 
                     $group['subgroups'][] = [
-                        'title' => $specialty ?: 'Other',
+                        'title' => $speciality ?: 'Other',
                         'products' => $uniqueProducts
                     ];
                 }
 
-                // Handle products without specialty
-                $noSpecialtyProducts = $styleProducts->whereNull('specialty');
-                if ($noSpecialtyProducts->isNotEmpty()) {
-                    $uniqueProducts = $noSpecialtyProducts->groupBy(function($product) {
+                // Handle products without speciality
+                $nospecialityProducts = $styleProducts->whereNull('speciality');
+                if ($nospecialityProducts->isNotEmpty()) {
+                    $uniqueProducts = $nospecialityProducts->groupBy(function($product) {
                         return $product->style . '-' . $product->size1 . '-' . $product->size2;
                     })->map(function($sameProducts) {
                         $baseProduct = $sameProducts->first();
@@ -224,20 +224,20 @@ class CategoryPageController extends Controller
                 }
             }
 
-            // If no style groups, show all products grouped by specialty
+            // If no style groups, show all products grouped by speciality
             if (empty($groups)) {
-                $specialtyGroups = $products->whereNotNull('specialty')->groupBy('specialty');
+                $specialityGroups = $products->whereNotNull('speciality')->groupBy('speciality');
                 
-                if ($specialtyGroups->isNotEmpty()) {
+                if ($specialityGroups->isNotEmpty()) {
                     $mainGroup = [
                         'title' => $mainCategory->family_category_name,
                         'image' => $products->first()->large_image ?? null,
                         'subgroups' => []
                     ];
 
-                    foreach ($specialtyGroups as $specialty => $specialtyProducts) {
-                        $uniqueProducts = $specialtyProducts->groupBy(function($product) {
-                            return $product->specialty . '-' . $product->size1 . '-' . $product->size2;
+                    foreach ($specialityGroups as $speciality => $specialityProducts) {
+                        $uniqueProducts = $specialityProducts->groupBy(function($product) {
+                            return $product->speciality . '-' . $product->size1 . '-' . $product->size2;
                         })->map(function($sameProducts) {
                             $baseProduct = $sameProducts->first();
                             $colors = $sameProducts->pluck('color')->filter();
@@ -255,7 +255,7 @@ class CategoryPageController extends Controller
                         })->values();
 
                         $mainGroup['subgroups'][] = [
-                            'title' => $specialty ?: 'Other',
+                            'title' => $speciality ?: 'Other',
                             'products' => $uniqueProducts
                         ];
                     }

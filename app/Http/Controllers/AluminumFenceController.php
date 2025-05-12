@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AluminumFenceController extends Controller
 {
@@ -14,7 +15,7 @@ class AluminumFenceController extends Controller
             ->table('categories')
             ->where('majorcategories_id', 43) // Aluminum fence major category ID
             ->where('web_enabled', 1)
-            ->select('id', 'cat_name as family_category_name', 'cat_desc_long', 'seo_name', 'img')
+            ->select('id', 'cat_name as family_category_name', 'cat_desc_long', 'seo_name', 'image')
             ->get();
             
         // Format the categories with images
@@ -25,7 +26,7 @@ class AluminumFenceController extends Controller
                 'family_category_name' => $category->family_category_name,
                 'cat_desc_long' => $category->cat_desc_long,
                 'seo_name' => $category->seo_name,
-                'image' => $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png'),
+                'image' => $category->image ? url('storage/categories/' . $category->image) : url('storage/categories/default.png'),
             ];
         }
         
@@ -36,12 +37,16 @@ class AluminumFenceController extends Controller
     
     public function index(Request $request, $style = null)
     {
+        // Initialize selected fence type
+        $selectedFenceType = null;
+        
         // Get selected fence type and model from the request
         $selectedType = $request->input('type', $style);
+        $selectedModel = $request->input('model');
         
         // Base query for aluminum fence products
         $baseQuery = DB::connection('mysql_second')
-            ->table('productsqry')
+            ->table('products')
             ->where(function($query) {
                 $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
                       ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
@@ -49,26 +54,25 @@ class AluminumFenceController extends Controller
             })
             ->where('enabled', 1);
             
-        // Get all fence types and models using the query
+        // Get all fence types and models using the material and style columns
         $typesAndModels = DB::connection('mysql_second')
             ->select("
                 SELECT 
-                    CASE 
-                        WHEN product_name LIKE '%Residential%' THEN 'Residential'
-                        WHEN product_name LIKE '%Commercial%' THEN 'Commercial'
-                        WHEN product_name LIKE '%Industrial%' THEN 'Industrial'
-                        ELSE 'Unknown'
-                    END AS fence_type,
-                    TRIM(SUBSTRING_INDEX(product_name, '-', -1)) AS model_name,
+                    material AS fence_type,
+                    style AS model_name,
                     COUNT(*) AS total
-                FROM productsqry
+                FROM products
                 WHERE (product_name LIKE 'OnGuard Aluminum Fence%'
                    OR product_name LIKE 'OnGuard Ornamental Aluminum Fence%'
                    OR product_name LIKE 'On Guard Ornamental Aluminum Fence%')
                    AND enabled = 1
-                GROUP BY fence_type, model_name
-                ORDER BY fence_type, model_name
+                   AND material IN ('Residential', 'Commercial', 'Industrial')
+                GROUP BY material, style
+                ORDER BY material, style
             ");
+        
+        // Get OnGuard accessories
+        $accessories = $this->getOnGuardAccessories();
         
         // Organize types and models into a structured array
         $fenceTypes = [
@@ -101,26 +105,45 @@ class AluminumFenceController extends Controller
             }
         }
         
-        // Manually add Puppy Picket models to each fence type
+        // Get Puppy Picket models from database
+        $puppyPickets = DB::connection('mysql_second')
+            ->table('products')
+            ->select('speciality', 'material', 'style', 'item_no', 'img_large')
+            ->where('speciality', 'LIKE', 'puppy picket%')
+            ->where('item_no', 'LIKE', '%PP')
+            ->where('enabled', 1)
+            ->orderBy('speciality')
+            ->get();
+        
+        // Group puppy pickets by speciality
+        $puppyPicketGroups = [];
+        foreach ($puppyPickets as $picket) {
+            $speciality = ucwords($picket->speciality); // Capitalize first letter of each word
+            if (!isset($puppyPicketGroups[$speciality])) {
+                $puppyPicketGroups[$speciality] = [
+                    'name' => $speciality,
+                    'total' => 0,
+                    'material' => $picket->material,
+                    'style' => $picket->style,
+                    'item_no' => $picket->item_no,
+                    'image' => $picket->img_large ? url('storage/products/' . $picket->img_large) : url('storage/products/default.jpg')
+                ];
+            }
+            $puppyPicketGroups[$speciality]['total']++;
+        }
+        
+        // Add puppy picket models to each fence type
         foreach ($fenceTypes as $type => &$fenceType) {
-            // Add Puppy Picket models
-            $fenceType['models']['Puppy Picket 1*'] = [
-                'name' => 'Puppy Picket 1*',
-                'total' => 1,
-                'image' => url('storage/products/puppy1.jpg')
-            ];
-            
-            $fenceType['models']['Puppy Picket 2*'] = [
-                'name' => 'Puppy Picket 2*',
-                'total' => 1,
-                'image' => url('storage/products/puppy2.jpg')
-            ];
-            
-            $fenceType['models']['Puppy Picket 3*'] = [
-                'name' => 'Puppy Picket 3*',
-                'total' => 1,
-                'image' => url('storage/products/puppy3.jpg')
-            ];
+            foreach ($puppyPicketGroups as $speciality => $picketData) {
+                $modelName = $speciality;
+                $fenceType['models'][$modelName] = [
+                    'name' => $modelName,
+                    'total' => $picketData['total'],
+                    'image' => $picketData['image'],
+                    'hover_image' => $picketData['image'], // Use the same image for hover
+                    'item_no' => $picketData['item_no']
+                ];
+            }
         }
         
         // Get products based on selected type and model
@@ -134,9 +157,15 @@ class AluminumFenceController extends Controller
             if ($selectedFenceType && $selectedModel) {
                 // Query products for the selected type and model
                 $products = $baseQuery
-                    ->where('product_name', 'LIKE', '%' . $selectedFenceType . '%')
-                    ->where('product_name', 'LIKE', '%' . $selectedModel . '%')
+                    ->where('material', $selectedFenceType)
+                    ->where('style', $selectedModel)
                     ->get();
+                    
+                // Add debug logging for products query
+                Log::info('Products query results:', [
+                    'count' => $products->count(),
+                    'first_product' => $products->first() ? $products->first()->item_no : 'No products found'
+                ]);
             }
         }
         
@@ -147,18 +176,26 @@ class AluminumFenceController extends Controller
             foreach ($typeData['models'] as $modelName => $modelData) {
                 // Find a product from this model to get its image
                 $representativeProduct = DB::connection('mysql_second')
-                    ->table('productsqry')
-                    ->where('product_name', 'LIKE', '%' . $typeName . '%')
-                    ->where('product_name', 'LIKE', '%' . $modelName . '%')
-                    ->select('img_large')
+                    ->table('products')
+                    ->where('material', $typeName)
+                    ->where('style', $modelName)
+                    ->select('img_large', 'img_small')
                     ->first();
                 
                 if ($representativeProduct && $representativeProduct->img_large) {
-                    $representativeImages[$typeName][$modelName] = url('storage/products/' . $representativeProduct->img_large);
+                    $representativeImages[$typeName][$modelName] = [
+                        'main' => url('storage/products/' . $representativeProduct->img_large),
+                        'hover' => $representativeProduct->img_small 
+                            ? url('storage/products/' . $representativeProduct->img_small) 
+                            : url('storage/products/default.jpg')
+                    ];
                 }
                 else {
                     // Fallback to default image
-                    $representativeImages[$typeName][$modelName] = url('storage/products/default.png');
+                    $representativeImages[$typeName][$modelName] = [
+                        'main' => url('storage/products/default.jpg'),
+                        'hover' => url('storage/products/default.jpg')
+                    ];
                 }
             }
         }
@@ -166,11 +203,11 @@ class AluminumFenceController extends Controller
         // Return the view with data
         return view('categories.aluminumfence', [
             'fenceTypes' => $fenceTypes,
-            'representativeImages' => $representativeImages,
-            'products' => $products,
-            'selectedType' => $selectedType,
             'selectedFenceType' => $selectedFenceType ?? null,
-            'selectedModel' => $selectedModel ?? null
+            'selectedModel' => $selectedModel,
+            'products' => $products,
+            'representativeImages' => $representativeImages,
+            'accessories' => $accessories
         ]);
     }
     
@@ -184,203 +221,331 @@ class AluminumFenceController extends Controller
      */
     public function productDetails(Request $request, $type, $model)
     {
-        // Get the product details from the database
-        $baseQuery = DB::connection('mysql_second')
-            ->table('productsqry')
-            ->where(function($query) {
-                $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
-                      ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
-                      ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
-            })
-            ->where('enabled', 1);
+        // Enhanced debug information
+        Log::info('AluminumFenceController::productDetails called', [
+            'type' => $type,
+            'model' => $model,
+            'url' => $request->fullUrl(),
+            'request_method' => $request->method(),
+            'request_ip' => $request->ip()
+        ]);
         
-        // Get products based on selected type and model
-        $products = $baseQuery
-            ->where('product_name', 'LIKE', '%' . $type . '%')
-            ->where('product_name', 'LIKE', '%' . $model . '%')
-            ->get();
-        
-        // Select a representative product for display
-        $selectedProduct = $products->first();
-        
-        // Get available colors
-        $colors = $baseQuery
-            ->where('product_name', 'LIKE', '%' . $type . '%')
-            ->where('product_name', 'LIKE', '%' . $model . '%')
-            ->select('color')
-            ->distinct()
-            ->pluck('color')
-            ->filter()
-            ->toArray();
-        
-        // Get available sizes
-        $sizes = $baseQuery
-            ->where('product_name', 'LIKE', '%' . $type . '%')
-            ->where('product_name', 'LIKE', '%' . $model . '%')
-            ->select('size')
-            ->distinct()
-            ->pluck('size')
-            ->filter()
-            ->toArray();
-        
-        // Get representative image for the model
-        $representativeImage = DB::connection('mysql_second')
-            ->table('productsqry')
-            ->where('product_name', 'LIKE', '%' . $type . '%')
-            ->where('product_name', 'LIKE', '%' . $model . '%')
-            ->whereNotNull('img_large')
-            ->value('img_large');
-        
-        // If no image found, use default
-        $modelImage = $representativeImage 
-            ? url('storage/products/' . $representativeImage) 
-            : url('storage/products/default.png');
-        
-        // Get model description
-        $modelDescription = $this->getModelDescription($model);
-        
-        // Process associated products from product_assoc field
-        $associatedSections = [];
-        if ($selectedProduct && !empty($selectedProduct->product_assoc)) {
-            $assocData = $selectedProduct->product_assoc;
-            $sections = [];
-            $currentTitle = null;
-            $currentItems = [];
+        try {
+            // Check if this is a puppy picket model
+            $isPuppyPicket = stripos($model, 'puppy picket') !== false;
             
-            // Split the string using comma as delimiter
-            $parts = explode(',', $assocData);
-            
-            foreach ($parts as $part) {
-                // Check if it's a section title (enclosed in --)
-                if (preg_match('/--(.+?)--/', $part, $matches)) {
-                    // If we already have a title and items, save them
-                    if ($currentTitle !== null && count($currentItems) > 0) {
-                        $sections[] = [
-                            'title' => $currentTitle,
-                            'items' => $currentItems
-                        ];
-                        $currentItems = []; // Reset items array
-                    }
-                    $currentTitle = $matches[1]; // Save the new title
-                } else {
-                    // It's an item number, add to current section
-                    $currentItems[] = trim($part);
-                }
-            }
-            
-            // Add the last section if it exists
-            if ($currentTitle !== null && count($currentItems) > 0) {
-                $sections[] = [
-                    'title' => $currentTitle,
-                    'items' => $currentItems
-                ];
-            }
-            
-            // Now fetch all these products from database
-            foreach ($sections as $section) {
-                $sectionProducts = DB::connection('mysql_second')
-                    ->table('productsqry')
-                    ->whereIn('item_no', $section['items'])
-                    ->where('enabled', 1)
-                    ->get();
+            // Base query for aluminum fence products
+            $baseQuery = DB::connection('mysql_second')
+                ->table('products')
+                ->where(function($query) {
+                    $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
+                          ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
+                          ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
+                })
+                ->where('enabled', 1);
                 
-                if ($sectionProducts->count() > 0) {
-                    $associatedSections[] = [
-                        'title' => $section['title'],
-                        'products' => $sectionProducts
+            // Log the SQL query being executed
+            $querySql = $baseQuery->toSql();
+            Log::info('Base query SQL', ['sql' => $querySql, 'bindings' => $baseQuery->getBindings()]);
+                
+            if ($isPuppyPicket) {
+                // For puppy picket, use speciality field
+                $speciality = strtolower($model); // Convert to lowercase for comparison
+                $baseQuery->where('speciality', 'LIKE', $speciality)
+                         ->where('item_no', 'LIKE', '%PP');
+                
+                // Get products based on selected type and puppy picket speciality
+                $products = $baseQuery->get();
+            } else {
+                // For regular models, use the standard query
+                $baseQuery->where(function($query) {
+                    $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
+                          ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
+                          ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
+                });
+                
+                // Get products based on selected type and model
+                $products = $baseQuery
+                    ->where('material', $type)
+                    ->where('style', $model)
+                    ->get();
+            }
+            
+            // Add detailed debug logging for products query
+            Log::info('Products query results in productDetails:', [
+                'count' => $products->count(),
+                'first_product' => $products->first() ? json_encode($products->first()) : 'No products found',
+                'type' => $type,
+                'model' => $model,
+                'query_sql' => $baseQuery->toSql(),
+                'query_bindings' => $baseQuery->getBindings()
+            ]);
+            
+            // If no products found, throw an exception
+            if ($products->count() === 0) {
+                throw new \Exception("No products found for type: {$type}, model: {$model}");
+            }
+            
+            // Select a representative product for display
+            $selectedProduct = $products->first();
+            
+            // Get available colors
+            $colors = $products
+                ->pluck('color')
+                ->filter()
+                ->unique()
+                ->values()
+                ->toArray();
+            
+            // Get available sizes
+            $sizes = $products
+                ->pluck('size')
+                ->filter()
+                ->unique()
+                ->values()
+                ->toArray();
+            
+            // Get representative image for the model
+            $representativeImage = null;
+            
+            if ($isPuppyPicket) {
+                // For puppy picket, get the image from the first product
+                $representativeImage = $selectedProduct->img_large ?? null;
+            } else {
+                // For regular models, use the standard query
+                $representativeImage = DB::connection('mysql_second')
+                    ->table('products')
+                    ->where('material', $type)
+                    ->where('style', $model)
+                    ->whereNotNull('img_large')
+                    ->value('img_large');
+            }
+            
+            // If no image found, use default
+            $modelImage = $representativeImage 
+                ? url('storage/products/' . $representativeImage) 
+                : url('storage/products/default.jpg');
+            
+            // Get model description
+            $modelDescription = $this->getModelDescription($model);
+            
+            // Get all fence types and models for the navigation
+            $allModels = DB::connection('mysql_second')
+                ->select("
+                    SELECT 
+                        material AS fence_type,
+                        style AS model_name,
+                        COUNT(*) AS total
+                    FROM products
+                    WHERE (product_name LIKE 'OnGuard Aluminum Fence%'
+                       OR product_name LIKE 'OnGuard Ornamental Aluminum Fence%'
+                       OR product_name LIKE 'On Guard Ornamental Aluminum Fence%')
+                       AND enabled = 1
+                       AND material IN ('Residential', 'Commercial', 'Industrial')
+                    GROUP BY material, style
+                    ORDER BY material, style
+                ");
+            
+            // Organize models by type
+            $fenceTypes = [
+                'Residential' => [
+                    'title' => 'Residential',
+                    'models' => [],
+                ],
+                'Commercial' => [
+                    'title' => 'Commercial',
+                    'models' => [],
+                ],
+                'Industrial' => [
+                    'title' => 'Industrial',
+                    'models' => [],
+                ]
+            ];
+            
+            foreach ($allModels as $item) {
+                if (isset($fenceTypes[$item->fence_type])) {
+                    $fenceTypes[$item->fence_type]['models'][$item->model_name] = [
+                        'name' => $item->model_name,
+                        'total' => $item->total
                     ];
                 }
             }
-        }
-        
-        // Get all available models for the sidebar
-        $allModels = DB::connection('mysql_second')
-            ->select("
-                SELECT 
-                    CASE 
-                        WHEN product_name LIKE '%Residential%' THEN 'Residential'
-                        WHEN product_name LIKE '%Commercial%' THEN 'Commercial'
-                        WHEN product_name LIKE '%Industrial%' THEN 'Industrial'
-                        ELSE 'Unknown'
-                    END AS fence_type,
-                    TRIM(SUBSTRING_INDEX(product_name, '-', -1)) AS model_name,
-                    COUNT(*) AS total
-                FROM productsqry
-                WHERE (product_name LIKE 'OnGuard Aluminum Fence%'
-                   OR product_name LIKE 'OnGuard Ornamental Aluminum Fence%'
-                   OR product_name LIKE 'On Guard Ornamental Aluminum Fence%')
-                   AND enabled = 1
-                GROUP BY fence_type, model_name
-                ORDER BY fence_type, model_name
-            ");
-        
-        // Organize models by type
-        $fenceTypes = [
-            'Residential' => [
-                'title' => 'Residential',
-                'models' => [],
-            ],
-            'Commercial' => [
-                'title' => 'Commercial',
-                'models' => [],
-            ],
-            'Industrial' => [
-                'title' => 'Industrial',
-                'models' => [],
-            ]
-        ];
-        
-        foreach ($allModels as $item) {
-            if (isset($fenceTypes[$item->fence_type])) {
-                $fenceTypes[$item->fence_type]['models'][$item->model_name] = [
-                    'name' => $item->model_name,
-                    'total' => $item->total
-                ];
+            
+            // Process associated products from product_assoc field
+            $associatedSections = [];
+            if ($selectedProduct && !empty($selectedProduct->product_assoc)) {
+                $assocData = $selectedProduct->product_assoc;
+                $sections = [];
+                $currentTitle = null;
+                $currentItems = [];
+                
+                // Split the string using comma as delimiter
+                $parts = explode(',', $assocData);
+                
+                foreach ($parts as $part) {
+                    // Check if it's a section title (enclosed in --)
+                    if (preg_match('/--(.+?)--/', $part, $matches)) {
+                        // If we already have a title and items, save them
+                        if ($currentTitle !== null && count($currentItems) > 0) {
+                            $sections[] = [
+                                'title' => $currentTitle,
+                                'items' => $currentItems
+                            ];
+                            $currentItems = []; // Reset items array
+                        }
+                        $currentTitle = $matches[1]; // Save the new title
+                    } else {
+                        // It's an item number, add to current section
+                        $currentItems[] = trim($part);
+                    }
+                }
+                
+                // Add the last section if it exists
+                if ($currentTitle !== null && count($currentItems) > 0) {
+                    $sections[] = [
+                        'title' => $currentTitle,
+                        'items' => $currentItems
+                    ];
+                }
+                
+                // Now fetch all these products from database
+                foreach ($sections as $section) {
+                    $sectionProducts = DB::connection('mysql_second')
+                        ->table('products')
+                        ->whereIn('item_no', $section['items'])
+                        ->where('enabled', 1)
+                        ->get();
+                    
+                    if ($sectionProducts->count() > 0) {
+                        $associatedSections[] = [
+                            'title' => $section['title'],
+                            'products' => $sectionProducts
+                        ];
+                    }
+                }
             }
+            
+            return view('categories.aluminumfence-product', [
+                'products' => $products,
+                'selectedProduct' => $selectedProduct,
+                'type' => $type,
+                'model' => $model,
+                'colors' => $colors,
+                'sizes' => $sizes,
+                'modelImage' => $modelImage,
+                'modelDescription' => $modelDescription,
+                'associatedSections' => $associatedSections,
+                'fenceTypes' => $fenceTypes
+            ]);
+        } catch (\Exception $e) {
+            // Log the exception
+            Log::error('Error in AluminumFenceController::productDetails', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'type' => $type,
+                'model' => $model
+            ]);
+            
+            // Redirect back with error message
+            return redirect()->route('aluminumfence.index')
+                ->with('error', 'Error loading product. Please try again.');
         }
-        
-        return view('categories.aluminumfence-product', [
-            'products' => $products,
-            'selectedProduct' => $selectedProduct,
-            'type' => $type,
-            'model' => $model,
-            'colors' => $colors,
-            'sizes' => $sizes,
-            'modelImage' => $modelImage,
-            'modelDescription' => $modelDescription,
-            'associatedSections' => $associatedSections,
-            'fenceTypes' => $fenceTypes
-        ]);
     }
     
     /**
-     * Filter products by size for AJAX requests
+     * Filter products by size and color for AJAX requests
      * 
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function filterProducts(Request $request)
     {
+        // Log the request for debugging
+        Log::info('Filter request:', $request->all());
+        
         $type = $request->input('type');
         $model = $request->input('model');
         $size = $request->input('size');
+        $color = $request->input('color');
+        
+        // Check if this is a puppy picket model
+        $isPuppyPicket = stripos($model, 'puppy picket') !== false;
         
         // Get the product details from the database
         $baseQuery = DB::connection('mysql_second')
-            ->table('productsqry')
-            ->where(function($query) {
+            ->table('products')
+            ->where('enabled', 1);
+            
+        if ($isPuppyPicket) {
+            // For puppy picket, use speciality field
+            $speciality = strtolower($model); // Convert to lowercase for comparison
+            $baseQuery->where('speciality', 'LIKE', $speciality)
+                     ->where('item_no', 'LIKE', '%PP');
+        } else {
+            // For regular models, use the standard query
+            $baseQuery->where(function($query) {
                 $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
                       ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
                       ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
-            })
-            ->where('enabled', 1);
+            });
+            
+            // Add type and model filters
+            $baseQuery->where('material', $type)
+                     ->where('style', $model);
+        }
         
-        // Get product based on selected type, model and size
-        $product = $baseQuery
-            ->where('product_name', 'LIKE', '%' . $type . '%')
-            ->where('product_name', 'LIKE', '%' . $model . '%')
-            ->where('size', $size)
-            ->first();
+        // Create a copy of the base query for debugging
+        $countQuery = clone $baseQuery;
+        $totalProducts = $countQuery->count();
+        Log::info("Total products before size/color filters: {$totalProducts}");
+        
+        // Add size filter if provided
+        if ($size) {
+            $baseQuery->where('size', $size);
+        }
+        
+        // Add color filter if provided
+        if ($color) {
+            $baseQuery->where('color', $color);
+        }
+        
+        // Get the filtered product
+        $product = $baseQuery->first();
+        
+        // Log the product found (if any)
+        Log::info('Product found:', ['product' => $product ? $product->item_no : 'None']);
+        
+        // If no product found with both filters, try with just size
+        if (!$product && $size && $color) {
+            Log::info('No product found with both size and color, trying with just size');
+            
+            // Reset the query
+            $baseQuery = DB::connection('mysql_second')
+                ->table('productsqry')
+                ->where('enabled', 1);
+                
+            if ($isPuppyPicket) {
+                $baseQuery->where('speciality', 'LIKE', $speciality)
+                         ->where('item_no', 'LIKE', '%PP');
+            } else {
+                $baseQuery->where(function($query) {
+                    $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
+                          ->orWhere('product_name', 'LIKE', 'OnGuard Ornamental Aluminum Fence%')
+                          ->orWhere('product_name', 'LIKE', 'On Guard Ornamental Aluminum Fence%');
+                });
+                
+                $baseQuery->where('material', $type)
+                         ->where('style', $model);
+            }
+            
+            // Only filter by size
+            if ($size) {
+                $baseQuery->where('size', $size);
+            }
+            
+            $product = $baseQuery->first();
+            Log::info('Product found with just size:', ['product' => $product ? $product->item_no : 'None']);
+        }
         
         // Process associated products from product_assoc field
         $associatedSections = [];
@@ -425,7 +590,14 @@ class AluminumFenceController extends Controller
                     ->table('productsqry')
                     ->whereIn('item_no', $section['items'])
                     ->where('enabled', 1)
-                    ->get();
+                    ->get()
+                    ->map(function($product) {
+                        // Add image URL using the proper format
+                        $product->img_url = $product->img_large 
+                            ? url('storage/products/' . $product->img_large) 
+                            : url('storage/products/default.jpg');
+                        return $product;
+                    });
                 
                 if ($sectionProducts->count() > 0) {
                     $associatedSections[] = [
@@ -434,6 +606,13 @@ class AluminumFenceController extends Controller
                     ];
                 }
             }
+        }
+        
+        // Add image URL to the main product using the proper format
+        if ($product) {
+            $product->img_url = $product->img_large 
+                ? url('storage/products/' . $product->img_large) 
+                : url('storage/products/default.jpg');
         }
         
         return response()->json([
@@ -659,5 +838,179 @@ class AluminumFenceController extends Controller
         return view('categories.aluminumfence-pickup', [
             'pickupProducts' => $pickupProducts
         ]);
+    }
+    
+    /**
+     * Get OnGuard accessories
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    private function getOnGuardAccessories()
+    {
+        return DB::connection('mysql_second')
+            ->table('products')
+            ->where('parent', 'LIKE', 'ONGAMM%')
+            ->where('enabled', 1)
+            ->select('id', 'item_no', 'product_name', 'price', 'size', 'color', 'img_large')
+            ->get()
+            ->map(function($product) {
+                $product->img_url = $product->img_large 
+                    ? url('storage/products/' . $product->img_large) 
+                    : url('storage/products/default.jpg');
+                return $product;
+            });
+    }
+    
+    /**
+     * Display OnGuard accessories
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function accessories()
+    {
+        // Get OnGuard accessories
+        $accessories = $this->getOnGuardAccessories();
+        
+        // Group accessories by similar product names
+        $groupedAccessories = [];
+        $processedIds = [];
+        
+        foreach ($accessories as $accessory) {
+            // Skip if already processed
+            if (in_array($accessory->id, $processedIds)) {
+                continue;
+            }
+            
+            $similarProducts = [];
+            $similarProducts[] = $accessory;
+            $processedIds[] = $accessory->id;
+            
+            // Find similar products
+            foreach ($accessories as $compareAccessory) {
+                if ($accessory->id !== $compareAccessory->id && !in_array($compareAccessory->id, $processedIds)) {
+                    // Calculate similarity between product names
+                    $similarity = $this->calculateSimilarity($accessory->product_name, $compareAccessory->product_name);
+                    
+                    // If similarity is above threshold, add to group
+                    if ($similarity >= 0.7) { // 70% similarity threshold
+                        $similarProducts[] = $compareAccessory;
+                        $processedIds[] = $compareAccessory->id;
+                    }
+                }
+            }
+            
+            // Create a group name from the common part of the product names
+            $groupName = $this->extractCommonName($similarProducts);
+            
+            // Add to grouped accessories
+            $groupedAccessories[$groupName] = [
+                'title' => $groupName,
+                'products' => $similarProducts,
+                'image' => $similarProducts[0]->img_url,
+                'total' => count($similarProducts)
+            ];
+        }
+        
+        return view('categories.aluminumfence-accessories', [
+            'accessoryGroups' => $groupedAccessories,
+            'pageTitle' => 'OnGuard Aluminum Fence Accessories'
+        ]);
+    }
+    
+    /**
+     * Calculate similarity between two strings
+     * 
+     * @param string $str1
+     * @param string $str2
+     * @return float
+     */
+    private function calculateSimilarity($str1, $str2)
+    {
+        // Convert to lowercase for case-insensitive comparison
+        $str1 = strtolower($str1);
+        $str2 = strtolower($str2);
+        
+        // Calculate Levenshtein distance
+        $levenshtein = levenshtein($str1, $str2);
+        
+        // Calculate similarity as a percentage
+        $maxLength = max(strlen($str1), strlen($str2));
+        if ($maxLength === 0) {
+            return 1.0; // Both strings are empty
+        }
+        
+        return 1.0 - ($levenshtein / $maxLength);
+    }
+    
+    /**
+     * Extract common name from a group of products
+     * 
+     * @param array $products
+     * @return string
+     */
+    private function extractCommonName($products)
+    {
+        if (count($products) === 1) {
+            return $products[0]->product_name;
+        }
+        
+        // Extract common words from product names
+        $names = array_map(function($product) {
+            return $product->product_name;
+        }, $products);
+        
+        // Find the longest common substring
+        $commonName = $this->findLongestCommonSubstring($names);
+        
+        // If common name is too short, use the first product's name
+        if (strlen($commonName) < 10) {
+            return $products[0]->product_name;
+        }
+        
+        return trim($commonName);
+    }
+    
+    /**
+     * Find the longest common substring among an array of strings
+     * 
+     * @param array $strings
+     * @return string
+     */
+    private function findLongestCommonSubstring($strings)
+    {
+        if (empty($strings)) {
+            return '';
+        }
+        
+        $shortest = min(array_map('strlen', $strings));
+        $result = '';
+        
+        // Use the first string as reference
+        $reference = $strings[0];
+        
+        for ($len = $shortest; $len > 0; $len--) {
+            for ($pos = 0; $pos <= strlen($reference) - $len; $pos++) {
+                $candidate = substr($reference, $pos, $len);
+                $allContain = true;
+                
+                // Check if all strings contain this substring
+                foreach ($strings as $str) {
+                    if (stripos($str, $candidate) === false) {
+                        $allContain = false;
+                        break;
+                    }
+                }
+                
+                if ($allContain && strlen($candidate) > strlen($result)) {
+                    $result = $candidate;
+                }
+            }
+            
+            if (!empty($result)) {
+                break;
+            }
+        }
+        
+        return $result;
     }
 }

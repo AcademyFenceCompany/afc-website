@@ -36,12 +36,12 @@ try {
         $products = DB::connection('mysql_second')
             ->table('productsqry')
             ->where('categories_id', $firstCategoryId)
-            ->select('product_id', 'item_no', 'product_name', 'style', 'specialty', 'spacing', 'size')
+            ->select('product_id', 'item_no', 'product_name', 'style', 'speciality', 'spacing', 'size')
             ->limit(3)
             ->get();
         foreach ($products as $product) {
             echo "ID: {$product->product_id}, Name: {$product->product_name}\n";
-            echo "  Style: " . ($product->style ?? 'N/A') . ", Specialty: " . ($product->specialty ?? 'N/A') . "\n";
+            echo "  Style: " . ($product->style ?? 'N/A') . ", speciality: " . ($product->speciality ?? 'N/A') . "\n";
             echo "  Spacing: " . ($product->spacing ?? 'N/A') . ", Size: " . ($product->size ?? 'N/A') . "\n\n";
         }
     }

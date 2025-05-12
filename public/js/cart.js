@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (event) => {
         if (event.target.classList.contains("add-to-cart-btn")) {
             const button = event.target;
+<<<<<<< HEAD
             const itemNo = button.dataset.item;
             const productName = button.dataset.name;
             const price = button.dataset.price;
@@ -81,16 +82,52 @@ document.addEventListener("DOMContentLoaded", () => {
             const shippingWidth = button.dataset.shipping_width || "";
             const shippingHeight = button.dataset.shipping_height || "";
             const shippingClass = button.dataset.shipping_class || "";
+=======
+            const id = button.dataset.id || "";
+            const itemNo = button.dataset.item_no;
+            const productName = button.dataset.product_name;
+            const price = button.dataset.price;
+            const color = button.dataset.color || "";
+            const size = button.dataset.size || "";
+            const sizeIn = button.dataset.size_in || "";
+            const sizeWt = button.dataset.size_wt || "";
+            const sizeHt = button.dataset.size_ht || "";
+            const size2 = button.dataset.size2 || "";
+            const size3 = button.dataset.size3 || "";
+            const speciality = button.dataset.speciality || "";
+            const material = button.dataset.material || "";
+            const spacing = button.dataset.spacing || "";
+            const coating = button.dataset.coating || "";
+            const weightLbs = button.dataset.weight_lbs || "";
+            const catIdFk = button.dataset.cat_id_fk || "";
+            const imgSmall = button.dataset.img_small || "";
+            const imgLarge = button.dataset.img_large || "";
+            const freeShipping = button.dataset.free_shipping || "0";
+            const specialShipping = button.dataset.special_shipping || "0";
+            const amountPerBox = button.dataset.amount_per_box || "1";
+            const descShort = button.dataset.desc_short || "";
+            const descLong = button.dataset.desc_long || "";
+            const shipLength = button.dataset.ship_length || "";
+            const shipWidth = button.dataset.ship_width || "";
+            const shipHeight = button.dataset.ship_height || "";
+            const categoriesId = button.dataset.categories_id || "";
+            const shippingMethod = button.dataset.shipping_method || "";
+>>>>>>> origin/ready-push-main
             const quantityInput =
                 button.closest("tr")?.querySelector(".quantity-input") ||
                 document.querySelector(".quantity-input");
             const quantity = parseInt(quantityInput?.value || 1);
 
             console.log("Add to Cart:", {
+<<<<<<< HEAD
+=======
+                id,
+>>>>>>> origin/ready-push-main
                 itemNo,
                 productName,
                 price,
                 color,
+<<<<<<< HEAD
                 size1,
                 size2,
                 size3,
@@ -112,6 +149,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 shippingWidth,
                 shippingHeight,
                 shippingClass,
+=======
+                size,
+                sizeIn,
+                sizeWt, 
+                sizeHt,
+                size2,
+                size3,
+                speciality,
+                material,
+                spacing,
+                coating,
+                weightLbs,
+                catIdFk,
+                imgSmall,
+                imgLarge,
+                freeShipping,
+                specialShipping,
+                amountPerBox,
+                descShort,
+                descLong,
+                shipLength,
+                shipWidth,
+                shipHeight,
+                categoriesId,
+                shippingMethod,
+>>>>>>> origin/ready-push-main
                 quantity,
             });
 
@@ -124,10 +187,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     ).content,
                 },
                 body: JSON.stringify({
+<<<<<<< HEAD
+=======
+                    id: id,
+>>>>>>> origin/ready-push-main
                     item_no: itemNo,
                     product_name: productName,
                     price,
                     color,
+<<<<<<< HEAD
                     size1,
                     size2,
                     size3,
@@ -149,6 +217,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     shipping_width: shippingWidth,
                     shipping_height: shippingHeight,
                     shipping_class: shippingClass,
+=======
+                    size,
+                    size_in: sizeIn,
+                    size_wt: sizeWt,
+                    size_ht: sizeHt,
+                    size2,
+                    size3,
+                    speciality,
+                    material,
+                    spacing,
+                    coating,
+                    weight_lbs: weightLbs,
+                    cat_id_fk: catIdFk,
+                    img_small: imgSmall,
+                    img_large: imgLarge,
+                    free_shipping: freeShipping,
+                    special_shipping: specialShipping,
+                    amount_per_box: amountPerBox,
+                    desc_short: descShort,
+                    desc_long: descLong,
+                    ship_length: shipLength,
+                    ship_width: shipWidth,
+                    ship_height: shipHeight,
+                    categories_id: categoriesId,
+                    shipping_method: shippingMethod,
+>>>>>>> origin/ready-push-main
                     quantity,
                 }),
             })

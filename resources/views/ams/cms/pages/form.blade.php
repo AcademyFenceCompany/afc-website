@@ -81,7 +81,11 @@
 <div class="container-fluid py-4">
     <div class="card">
         <div class="card-body">
+<<<<<<< HEAD
             <form action="{{ isset($page) ? route('ams.cms.pages.update', $page) : route('ams.cms.pages.store') }}" 
+=======
+            <form action="{{ isset($page) ? route('ams.cms.pages.update', $page->id) : route('ams.cms.pages.store') }}" 
+>>>>>>> origin/ready-push-main
                   method="POST" 
                   enctype="multipart/form-data"
                   class="needs-validation"
@@ -98,9 +102,15 @@
                             <select name="family_category_id" id="family_category_id" class="form-control" required>
                                 <option value="">Select Category</option>
                                 @foreach($categories as $category)
+<<<<<<< HEAD
                                     <option value="{{ $category->family_category_id }}" 
                                         {{ (isset($page) && $page->family_category_id == $category->family_category_id) ? 'selected' : '' }}>
                                         {{ $category->family_category_name }}
+=======
+                                    <option value="{{ $category->id }}" 
+                                        {{ (isset($page) && $page->family_category_id == $category->id) ? 'selected' : '' }}>
+                                        {{ $category->cat_name }}
+>>>>>>> origin/ready-push-main
                                     </option>
                                 @endforeach
                             </select>
@@ -253,6 +263,10 @@
                                 <img src="{{ Storage::url($page->footer_product_image) }}" class="preview-image" alt="Footer Product Image">
                             @endif
                         </div>
+<<<<<<< HEAD
+=======
+                    
+>>>>>>> origin/ready-push-main
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">

@@ -14,6 +14,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\Ams\OrderController;
+use App\Http\Controllers\OrderCategoryController;
 use App\Models\Order;
 use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
@@ -27,9 +28,34 @@ use App\Http\Controllers\PostRailController;
 use App\Http\Controllers\StockadeFenceController;
 use App\Http\Controllers\WoodPostCapsController;
 use App\Http\Controllers\AluminumFenceController;
+use App\Http\Controllers\ChainLinkFenceController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/', function () {
+        return view('ams.dashboard');
+    })->name('ams.home');
+    
+    // Order Routes
+    Route::prefix('orders')->name('ams.orders.')->group(function () {
+        Route::get('/create', [OrderController::class, 'create'])->name('create');
+        Route::post('/', [OrderController::class, 'store'])->name('store');
+        Route::get('/{order}', [OrderController::class, 'show'])->name('show');
+        Route::get('/{order}/edit', [OrderController::class, 'edit'])->name('edit');
+        Route::put('/{order}', [OrderController::class, 'update'])->name('update');
+        Route::delete('/{order}', [OrderController::class, 'destroy'])->name('destroy');
+        Route::post('/{order}/status', [OrderController::class, 'updateStatus'])->name('update-status');
+    });
+    
+    // Order Categories
+    Route::get('/categories', [OrderController::class, 'categories'])->name('ams.categories');
+    Route::get('/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.categories.show');
+    Route::get('/all-products', [OrderController::class, 'getAllProducts'])->name('ams.all-products');
+    
+    // Order Activity
+    Route::get('/activity', [OrderController::class, 'activity'])->name('ams.activity');
+    
     // Product Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -42,10 +68,15 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     // Product Query routes for demodb testing
     Route::prefix('product-query')->name('ams.product-query.')->group(function () {
         Route::get('/', [ProductQueryController::class, 'index'])->name('index');
+        Route::get('/create', [ProductQueryController::class, 'create'])->name('create');
+        Route::post('/', [ProductQueryController::class, 'store'])->name('store');
         Route::get('/search', [ProductQueryController::class, 'search'])->name('search');
         Route::get('/category/{id}', [ProductQueryController::class, 'loadCategory'])->name('category');
         Route::get('/{id}/edit', [ProductQueryController::class, 'edit'])->name('edit');
         Route::post('/{id}/update', [ProductQueryController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ProductQueryController::class, 'destroy'])->name('destroy');
+        Route::post('/{id}/delete-image/{type}', [ProductQueryController::class, 'deleteImage'])->name('delete-image');
+        Route::get('/{id}/duplicate', [ProductQueryController::class, 'duplicate'])->name('duplicate');
     });
 
     // MySQL Category Management
@@ -53,8 +84,6 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
  
     // Other AMS routes...
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
-    Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
     Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
     Route::get('/orders/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.orders.category.show');
     Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
@@ -69,6 +98,14 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         Route::delete('/{address}', [OrderController::class, 'deleteAddress'])->name('ams.customers.addresses.delete');
     });
     
+    // Order Category Routes
+    Route::prefix('api/order-categories')->group(function () {
+        Route::get('/', [OrderCategoryController::class, 'ajaxGetCategories']);
+        Route::get('/products/{categoryId}', [OrderCategoryController::class, 'ajaxGetProducts']);
+        Route::get('/product/{productId}', [OrderCategoryController::class, 'ajaxGetProductDetails']);
+        Route::get('/search', [OrderCategoryController::class, 'ajaxSearchProducts']);
+    });
+
     // Debug route
     Route::get('/debug/products', function() {
         $products = \App\Models\Product::with(['details', 'familyCategory'])->get();
@@ -159,7 +196,18 @@ Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('pro
 Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
-Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+// Routes for welded wire products with proper hierarchy for breadcrumbs
+Route::get('/weldedwire/{coating}/{meshSize}', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+// Redirect old route to new URL format for proper breadcrumb display
+Route::get('/wwf-product', function(\Illuminate\Http\Request $request) {
+    $coating = $request->input('coating');
+    $meshSize = $request->input('meshSize');
+    if ($coating && $meshSize) {
+        return redirect('/weldedwire/' . $coating . '/' . $meshSize);
+    }
+    return redirect('/weldedwire');
+})->name('meshsize.products.legacy');
+Route::get('/knockin-posts', [ProductByMeshSizeController::class, 'knockinpostProduct'])->name('knockin.posts');
 
 Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
@@ -177,16 +225,24 @@ Route::get('/wood-fence/post-rail', [PostRailController::class, 'index'])->name(
 Route::get('/wood-fence/post-rail/{style?}', [PostRailController::class, 'index'])->name('postrail.style');
 Route::get('/wood-fence/stockade', [StockadeFenceController::class, 'index'])->name('stockade.index');
 Route::get('/wood-fence/wood-post-caps', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.index');
-Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index']);
-
+Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.style');
 
 // Aluminum Fence Routes
 Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
-Route::get('/aluminum-fence/onguard', [AluminumFenceController::class, 'index'])->name('aluminumfence.index');
-Route::get('/aluminum-fence/onguard/pickup', [AluminumFenceController::class, 'pickup'])->name('aluminumfence.pickup');
+Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence.index');
 Route::get('/aluminum-fence/onguard/{type}/{model}', [AluminumFenceController::class, 'productDetails'])->name('aluminumfence.product');
-Route::get('/aluminum-fence/filter', [AluminumFenceController::class, 'filterProducts'])->name('aluminumfence.filter');
-Route::get('/aluminum-fence/onguard/{style?}', [AluminumFenceController::class, 'index'])->name('aluminumfence.style');
+Route::get('/aluminum-fence/pickup', [AluminumFenceController::class, 'pickup'])->name('aluminumfence.pickup');
+Route::get('/aluminum-fence/accessories', [AluminumFenceController::class, 'accessories'])->name('aluminumfence.accessories');
+Route::post('/aluminum-fence/filter-products', [AluminumFenceController::class, 'filterProducts'])->name('aluminumfence.filter');
+
+// Chain Link Fence Routes
+Route::get('/chain-link-fence', [ChainLinkFenceController::class, 'main'])->name('chainlink.main');
+Route::get('/chain-link-fence/complete/{height}', [ChainLinkFenceController::class, 'heightCategoryWithOption'])
+    ->name('chainlink.complete.height');
+Route::get('/chain-link-fence/package/{height}', [ChainLinkFenceController::class, 'heightCategoryWithOption'])
+    ->name('chainlink.package.height');
+Route::get('/chain-link-fence/{height}', [ChainLinkFenceController::class, 'heightCategory'])->name('chainlink.height');
+Route::get('/chain-link-fence/{height}/system/{system}', [ChainLinkFenceController::class, 'heightCategory'])->name('chainlink.height.system');
 
 // Cart Routes
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -264,9 +320,7 @@ Route::get('/ams', function () {
 })->middleware('auth')->name('ams.home');
 
 
-Route::get('/ams/activity', function () {
-    return view('ams.activity');
-})->name('ams.activity');
+Route::get('/ams/activity', [OrderController::class, 'activity'])->name('ams.activity');
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
@@ -288,6 +342,11 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
+// API Routes
+Route::get('/api/products/search', [App\Http\Controllers\ProductApiController::class, 'search']);
+Route::get('/api/products/item/{itemNumber}', [App\Http\Controllers\ProductApiController::class, 'getByItemNumber']);
+Route::get('/api/order-categories', [App\Http\Controllers\OrderCategoryController::class, 'getCategories']);
+Route::get('/api/order-products/{categoryId}', [App\Http\Controllers\OrderCategoryController::class, 'ajaxGetProducts']);
 
 Route::get('/post-caps', function () {
     return view('post-caps');

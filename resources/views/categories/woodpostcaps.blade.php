@@ -215,12 +215,41 @@
                                                     data-base-price="{{ $product->price }}">{{ number_format($product->price, 2) }}</span>
                                             </div>
 
-                                            <button class="btn btn-danger btn-sm add-to-cart-btn" data-item="{{ $product->item_no }}"
+                                            {{-- <button class="btn btn-danger btn-sm add-to-cart-btn" data-item="{{ $product->item_no }}"
                                                 data-name="{{ $product->product_name }}" data-price="{{ $product->price }}"
                                                 data-product-id="{{ $product->id ?? 'unknown' }}"
                                                 style="padding: 1px 5px;font-size: 12px;">
                                                 Add to Cart
-                                            </button>
+                                            </button> --}}
+                                            <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
+                                                data-id="{{ $product->id }}"
+                                                data-item_no="{{ $product->item_no }}" 
+                                                data-product_name="{{ $product->product_name }}"
+                                                data-price="{{ $product->price }}"
+                                                data-color="{{ $product->color ?? '' }}"
+                                                data-size="{{ $product->size ?? '' }}"
+                                                data-size_in="{{ $product->size_in ?? '' }}"
+                                                data-size_wt="{{ $product->size_wt ?? '' }}"
+                                                data-size_ht="{{ $product->size_ht ?? '' }}"
+                                                data-weight_lbs="{{ $product->weight_lbs ?? '' }}"
+                                                data-img_small="{{ $product->img_small ?? '' }}"
+                                                data-img_large="{{ $product->img_large ?? '' }}"
+                                                data-display_size_2="{{ $product->display_size_2 ?? '' }}"
+                                                data-size2="{{ $product->size2 ?? '' }}"
+                                                data-size3="{{ $product->size3 ?? '' }}"
+                                                data-material="{{ $product->material ?? '' }}"
+                                                data-spacing="{{ $product->spacing ?? '' }}"
+                                                data-coating="{{ $product->coating ?? '' }}"
+                                                data-style="{{ $product->style ?? '' }}"
+                                                data-speciality="{{ $product->speciality ?? '' }}"
+                                                data-free_shipping="{{ $product->free_shipping ?? '0' }}"
+                                                data-special_shipping="{{ $product->special_shipping ?? '0' }}"
+                                                data-amount_per_box="{{ $product->amount_per_box ?? '1' }}"
+                                                data-class="{{ $product->class ?? '' }}"
+                                                data-categories_id="{{ $product->categories_id ?? '' }}"
+                                                data-shipping_method="{{ $product->shipping_method ?? '' }}">
+                                                Add
+                                        </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -235,8 +264,8 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="{{ asset('js/mini-cart.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('js/mini-cart.js') }}"></script> --}}
     <script>
         $(document).ready(function () {
             // Handle cap box clicks
@@ -319,47 +348,47 @@
             });
 
             // Add to cart AJAX
-            $(document).on('click', '.add-to-cart-btn', function () {
-                var $button = $(this);
-                var $row = $button.closest('tr');
-                var itemNo = $button.data('item');
-                var name = $button.data('name');
-                var price = $button.data('price');
-                var quantity = $row.find('.quantity-input').val();
+            // $(document).on('click', '.add-to-cart-btn', function () {
+            //     var $button = $(this);
+            //     var $row = $button.closest('tr');
+            //     var itemNo = $button.data('item');
+            //     var name = $button.data('name');
+            //     var price = $button.data('price');
+            //     var quantity = $row.find('.quantity-input').val();
 
-                $.ajax({
-                    url: '{{ route("cart.add") }}',
-                    method: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        item_no: itemNo,
-                        product_name: name,
-                        price: price,
-                        quantity: quantity
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            toastr.success(name + ' added to cart!');
+            //     $.ajax({
+            //         url: '{{ route("cart.add") }}',
+            //         method: 'POST',
+            //         data: {
+            //             _token: '{{ csrf_token() }}',
+            //             item_no: itemNo,
+            //             product_name: name,
+            //             price: price,
+            //             quantity: quantity
+            //         },
+            //         success: function (response) {
+            //             if (response.success) {
+            //                 toastr.success(name + ' added to cart!');
 
-                            // ✅ Update cart count badge
-                            if ($('.cart-count').length > 0) {
-                                $('.cart-count').text(response.cartCount);
-                            }
+            //                 // ✅ Update cart count badge
+            //                 if ($('.cart-count').length > 0) {
+            //                     $('.cart-count').text(response.cartCount);
+            //                 }
 
-                            // ✅ Dynamically update mini cart if data is present and function exists
-                            if (typeof updateMiniCart === 'function' && response.cart) {
-                                updateMiniCart(response.cart);
-                            }
-                        } else {
-                            toastr.error('Error adding item to cart');
-                        }
-                    },
-                    error: function (xhr) {
-                        toastr.error('Error adding item to cart');
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
+            //                 // ✅ Dynamically update mini cart if data is present and function exists
+            //                 if (typeof updateMiniCart === 'function' && response.cart) {
+            //                     updateMiniCart(response.cart);
+            //                 }
+            //             } else {
+            //                 toastr.error('Error adding item to cart');
+            //             }
+            //         },
+            //         error: function (xhr) {
+            //             toastr.error('Error adding item to cart');
+            //             console.error(xhr.responseText);
+            //         }
+            //     });
+            // });
 
 
             // Trigger selected parent cap on load

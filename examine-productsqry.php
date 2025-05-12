@@ -16,7 +16,7 @@ try {
     $products = DB::connection('mysql_second')
         ->table('productsqry')
         ->where('categories_id', 4)
-        ->select('product_id', 'item_no', 'product_name', 'style', 'specialty', 'spacing', 'size', 'color', 'price')
+        ->select('product_id', 'item_no', 'product_name', 'style', 'speciality', 'spacing', 'size', 'color', 'price')
         ->limit(3)
         ->get();
     
@@ -24,7 +24,7 @@ try {
         foreach ($products as $product) {
             echo "ID: {$product->product_id}, Item #: {$product->item_no}\n";
             echo "Name: {$product->product_name}\n";
-            echo "Style: " . ($product->style ?? 'N/A') . ", Specialty: " . ($product->specialty ?? 'N/A') . "\n";
+            echo "Style: " . ($product->style ?? 'N/A') . ", speciality: " . ($product->speciality ?? 'N/A') . "\n";
             echo "Spacing: " . ($product->spacing ?? 'N/A') . ", Size: " . ($product->size ?? 'N/A') . "\n";
             echo "Color: " . ($product->color ?? 'N/A') . ", Price: $" . ($product->price ?? 'N/A') . "\n\n";
         }
@@ -36,7 +36,7 @@ try {
         $products = DB::connection('mysql_second')
             ->table('productsqry')
             ->where('categories_id', 5)
-            ->select('product_id', 'item_no', 'product_name', 'style', 'specialty', 'spacing', 'size', 'color', 'price')
+            ->select('product_id', 'item_no', 'product_name', 'style', 'speciality', 'spacing', 'size', 'color', 'price')
             ->limit(3)
             ->get();
             
@@ -44,7 +44,7 @@ try {
             foreach ($products as $product) {
                 echo "ID: {$product->product_id}, Item #: {$product->item_no}\n";
                 echo "Name: {$product->product_name}\n";
-                echo "Style: " . ($product->style ?? 'N/A') . ", Specialty: " . ($product->specialty ?? 'N/A') . "\n";
+                echo "Style: " . ($product->style ?? 'N/A') . ", speciality: " . ($product->speciality ?? 'N/A') . "\n";
                 echo "Spacing: " . ($product->spacing ?? 'N/A') . ", Size: " . ($product->size ?? 'N/A') . "\n";
                 echo "Color: " . ($product->color ?? 'N/A') . ", Price: $" . ($product->price ?? 'N/A') . "\n\n";
             }
