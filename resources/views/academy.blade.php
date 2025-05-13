@@ -546,24 +546,6 @@
         </div>
     </section>
 
-    <section class="image-watermark d-none">
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="section-title">Image watermark</h2>
-                </div>
-                <div class="col-md-12">
-                <form action="{{ route('image.watermark') }}" method="POST" enctype="multipart/form-data">
-                  @csrf
-                  <img src="{{ session('uploaded_image') ? asset('storage/' . session('uploaded_image')) : asset('assets/images/watermarkimage.png') }}" alt="Product" class="img-fluid rounded mb-3 product-image img-thumbnail" id="mainImage">
-                  <input type="file" name="image">
-                  <button type="submit">Upload & Watermark</button>
-                </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- <x-fencesyscustom/> -->
     <!-- <x-chainlink-byparts /> -->
 

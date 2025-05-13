@@ -334,4 +334,43 @@ section {
 
 .testimonials {
   background-color: #f2e9e4;
+}
+
+.db-table-header {
+  color: #757575 !important;
+}
+
+.filter-box .form-check-inline {
+  background-color: #eaeaea;
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+}
+.filter-box .form-check-inline label {
+  font-size: 0.8rem;
+}
+.filter-box .form-check-inline .form-check-input {
+  margin-left: auto !important;
+  margin-right: 0.5rem;
+}
+.filter-box .card-title {
+  font-size: 0.9rem;
+}
+
+.admin .form-control {
+  border: 2px solid #9d9d9d !important;
+}
+.admin .form-control-feedback {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.modal .modal-content {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.modal .card {
+  background-color: #ececec;
 }/*# sourceMappingURL=style.css.map */

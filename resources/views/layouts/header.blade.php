@@ -141,22 +141,22 @@
                     </div>
                     
                     <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
-                    @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
+                    <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                         <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
-                    @endforeach
+                    @endforeach -->
                     <a href='{{ route('contact') }}' class="nav-link btn nav-btn">CONTACT US</a>
                     <div class="dropdown">
                         <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-list"></i> Quick Menu
                         </a>
                         <ul class="dropdown-menu">
-                            @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
+                            <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
                                 <li>
                                     <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
                                         {{ $page->title ?: $page->category->family_category_name }}
                                     </a>
                                 </li>
-                            @endforeach
+                            @endforeach -->
                         </ul>
                     </div>
                 </nav>
@@ -196,22 +196,22 @@
                         </div>
                         
                         <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn mb-2">WELDED WIRE</a>
-                        @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
+                        <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                             <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn mb-2">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
-                        @endforeach
+                        @endforeach -->
                         <a href='{{ route('contact') }}' class="nav-link btn nav-btn mb-2">CONTACT US</a>
                         <div class="dropdown">
                             <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="bi bi-list"></i> Quick Menu
                             </a>
                             <ul class="dropdown-menu">
-                                @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
+                                <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
                                     <li>
                                         <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
                                             {{ $page->title ?: $page->category->family_category_name }}
                                         </a>
                                     </li>
-                                @endforeach
+                                @endforeach -->
                             </ul>
                         </div>
                     </div>

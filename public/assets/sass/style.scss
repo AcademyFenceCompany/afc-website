@@ -343,3 +343,45 @@ section{
 .testimonials{
     background-color: #f2e9e4;
 }
+// AMS Design
+.db-table-header{
+    color: #757575 !important
+}
+.filter-box{
+    .form-check-inline{
+        background-color: #eaeaea;
+        padding: .2rem 1rem;
+        border-radius: 1rem;
+        label{
+            font-size: .8rem;
+        }
+        .form-check-input{
+            margin-left: auto !important;
+            margin-right: .5rem;
+        }
+    }
+    .card-title{
+        font-size: .9rem;
+    }
+}
+.admin{
+    .form-control{
+        border: 2px solid #9d9d9d !important;
+    }
+    .form-control-feedback{
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        color: #888;
+    }
+}
+.modal {
+    .modal-content{
+        border-radius:1rem;
+        overflow:hidden;
+    }
+    .card{
+        background-color: #ececec
+    }
+}

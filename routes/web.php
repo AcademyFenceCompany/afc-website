@@ -30,6 +30,8 @@ use App\Http\Controllers\StockadeFenceController;
 use App\Http\Controllers\WoodPostCapsController;
 use App\Http\Controllers\AluminumFenceController;
 use App\Http\Controllers\ChainLinkFenceController;
+use App\Http\Controllers\Ams\InstallJobsController;
+use App\Http\Controllers\Ams\ProductReportController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -127,10 +129,19 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         ]);
     });
     // Development route for testing: Colin
-    Route::get('/install_upload', function () {
-        return view('ams.install_upload');
-    })->name('ams.install_upload');
+    Route::get('/install_upload', [InstallJobsController::class, 'index'])->name('ams.install_upload');
+    Route::get('/product-reports', [ProductReportController::class, 'index'])->name('ams.product-report');
+    Route::post('/install_upload', [InstallJobsController::class, 'add'])->name('ams.install_upload');
+    Route::post('/products-report/filter', [ProductReportController::class, 'getProductByFilter'])->name('ams.product-report.filter');
+    Route::post('/products-report/edit', [ProductReportController::class, 'update'])->name('ams.product-report.edit');
 });
+// Development route for testing: Colin
+Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
+Route::get('/products-report/cat/{id}', [ProductReportController::class, 'getProductsByCategoryId'])->name('ams.getAllByCatId');
+Route::get('/products-report/search/{str}', [ProductReportController::class, 'getProductBySearch'])->name('ams.getAllBySearch');
+Route::get('/products-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
+
+//Route::get('/product-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
 
 Route::get('/', function () {
     return view('index');
@@ -280,12 +291,12 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 
 // AMS Routes
 Route::get('/ams', function () {
-    return redirect()->route('ams.activity');
+    //return redirect()->route('ams.activity');
 })->middleware('auth')->name('ams.home');
 
 
 Route::get('/ams/activity', function () {
-    return view('ams.activity');
+    //return view('ams.activity');
 })->name('ams.activity');
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
@@ -331,7 +342,7 @@ Route::get('/academytest/height/{height}', function ($height) {
 })->name('academytest.height');
 use App\Http\Controllers\ImageController;
 
-Route::post('/watermark', [ImageController::class, 'addWatermark'])->name('image.watermark');
+
 Route::get('/theme', function () {
     return view('theme');
 })->name('theme');
