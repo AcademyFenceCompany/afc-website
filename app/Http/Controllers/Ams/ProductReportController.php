@@ -140,8 +140,17 @@ class ProductReportController extends Controller
         $product = \DB::table('products')
             ->where('id', $id)
             ->first();
-
-        return view('components.product-report-edit', compact('product', 'subCategories'));
+        $productsOb = new Products();
+        $size = $productsOb->uniqueValsColumn($product->categories_id, 'size');
+        $size2 = $productsOb->uniqueValsColumn($product->categories_id, 'size2');
+        $size3 = $productsOb->uniqueValsColumn($product->categories_id, 'size3');
+        $color = $productsOb->uniqueValsColumn($product->categories_id, 'color');
+        $style = $productsOb->uniqueValsColumn($product->categories_id, 'style');
+        $spacing = $productsOb->uniqueValsColumn($product->categories_id, 'spacing');
+        $speciality = $productsOb->uniqueValsColumn($product->categories_id, 'speciality');
+        $coating = $productsOb->uniqueValsColumn($product->categories_id, 'coating');
+        $material = $productsOb->uniqueValsColumn($product->categories_id, 'material');
+        return view('components.product-report-edit', compact('product', 'subCategories','size', 'size2', 'size3', 'color', 'style', 'spacing', 'speciality', 'coating', 'material'));
     }
     // This function is used to update a product
     public function update(Request $request){

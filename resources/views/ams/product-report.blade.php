@@ -16,7 +16,14 @@
     .breadcrumb-item + .breadcrumb-item::before{
         content: ">";
     }
-    
+    @media print {
+        form{
+            display: none;
+        }
+        .d-print-none {
+           display: none;
+       }
+    }
 </style>
 @endsection
 @section('content')

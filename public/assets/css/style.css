@@ -373,4 +373,21 @@ section {
 }
 .modal .card {
   background-color: #ececec;
+}
+.modal #alert-container {
+  position: relative;
+  z-index: 1;
+}
+.modal #alert-container .alert {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  filter: drop-shadow(4px 4px 19px #afafaf);
+}
+
+@media print {
+  form {
+    display: none;
+  }
 }/*# sourceMappingURL=style.css.map */

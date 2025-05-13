@@ -50,4 +50,12 @@ class Products extends Model
     ];
     // Enable timestamps but use 'modified' as the updated_at column
     const UPDATED_AT = 'modified';
+    // This function is used to get all distinct values for a column
+    public function uniqueValsColumn($id, $column)
+    {
+        return \DB::table('products')
+            ->where('categories_id', $id)
+            ->distinct()
+            ->pluck($column);
+    }
 }

@@ -180,13 +180,21 @@ $(document).ready(function() {
     });
     // Print products report result table when the button is clicked
     $("#print-prod-report").on("click", function() {
+        // Hide the form and other elements you don't want to print
+        const formElement = $("#product-report-form-filter");
+        formElement.hide();
+
         const printContent = document.getElementById("product-report-table").innerHTML;
         const printWindow = window.open("", "_blank", "width=800,height=600");
         printWindow.document.write("<html><head><title>Print Report</title></head><body>");
         printWindow.document.write(printContent);
         printWindow.document.write("</body></html>");
+
         printWindow.document.close();
         printWindow.print();
+
+        // Show the form again after printing
+        formElement.show();
     });
     // Reset the subcategory select element when the page loads
     $("#subcat_id").empty().append('<option>-- Sub-Category --</option>');

@@ -384,4 +384,20 @@ section{
     .card{
         background-color: #ececec
     }
+    #alert-container{
+        position: relative;
+        z-index: 1;
+        .alert{
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+            filter: drop-shadow(4px 4px 19px #afafaf);
+        }
+    }
+}
+@media print {
+    form{
+        display: none;
+    }
 }

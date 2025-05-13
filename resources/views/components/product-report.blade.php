@@ -1,7 +1,7 @@
 @if(!empty($filters))
     <x-prod-report-producttree :filters="$filters" :products="$products" :id="$id" :categoryqry="$categoryqry" />
 @endif
-<p>Use the filters below to narrow down your search.</p>
+<p class="d-print-none">Use the filters below to narrow down your search.</p>
 <form id="product-report-form-filter" class="d-print-none" method="POST" action="{{ route('ams.product-report.filter') }}" onchange="App.getFilter(this)">
     @if(!empty($filters['size']))
         <x-prod-report-filter-list :filters="$filters['size']['size']" :selected="$filters['size']['selected']" :filtername="$columnHeaders['size']" :colname="'size1'" :inputname="'size'"/>

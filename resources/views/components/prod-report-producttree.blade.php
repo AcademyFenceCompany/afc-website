@@ -1,7 +1,7 @@
 <nav aria-label="breadcrumb" class="bg-light p-3">
   <ol class="breadcrumb mt-2 float-start">
     <li class="breadcrumb-item text-primary"><strong>{{ $categoryqry->firstWhere('id', $id)->maj_cat_name ?? 'N/A' }}</strong></li>
-    <li class="breadcrumb-item text-primary"><strong>{{ $categoryqry->firstWhere('id', $id)->cat_name ?? 'N/A' }}</strong></li>
+    <li class="breadcrumb-item text-primary"><strong>{{ $categoryqry->firstWhere('id', $id)->cat_name ?? 'N/A' }}</strong> ({{$id}})</li>
     @if(!empty($filters['size']['selected']))
         <li class="breadcrumb-item text-primary">{{ $filters['size']['selected'] }}</li>
     @endif

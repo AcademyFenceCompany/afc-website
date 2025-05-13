@@ -49,7 +49,16 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="size2" class="form-label">Size 2</label>
-                                    <input type="text" name="size2" id="size2" class="form-control" placeholder="Enter size 2" value="{{ $product->size2 }}">
+                                    
+                                    <select name="size2" id="size2" class="form-control">
+                                        @foreach ($size2 as $ob)
+                                            @if ($product->size2 == $ob)
+                                                <option value="{{$product->size2}}" selected>{{$product->size2}}</option>
+                                            @else
+                                                <option value="{{$ob}}">{{$ob}}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-6">
@@ -92,6 +101,7 @@
                             <label for="img_large" class="form-label">Large Image</label>
                             <input type="file" name="img_large" id="img_large" class="form-control">
                             @if($product->img_large)
+                                <img src="http://192.168.0.8/storage/products/{{$product->img_large}}" class="img-thumbnail" alt="...">
                                 <small>Current Image: {{ $product->img_large }}</small>
                             @endif
                         </div>
@@ -112,11 +122,27 @@
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <label for="spacing" class="form-label">Spacing</label>
-                                        <input type="text" name="spacing" id="spacing" class="form-control" placeholder="Enter spacing" value="{{ $product->spacing }}">
+                                        <select name="spacing" id="spacing" class="form-control">
+                                            @foreach ($spacing as $ob)
+                                                @if ($product->spacing == $ob)
+                                                    <option value="{{$product->spacing}}" selected>{{$product->spacing}}</option>
+                                                @else
+                                                    <option value="{{$ob}}">{{$ob}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="coating" class="form-label">Coating</label>
-                                        <input type="text" name="coating" id="coating" class="form-control" placeholder="Enter coating" value="{{ $product->coating }}">
+                                        <select name="coating" id="coating" class="form-control">
+                                            @foreach ($coating as $ob)
+                                                @if ($product->coating == $ob)
+                                                    <option value="{{$product->coating}}" selected>{{$product->coating}}</option>
+                                                @else
+                                                    <option value="{{$ob}}">{{$ob}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -124,7 +150,15 @@
                                 <div class="mb-3">
                                     <div class="mb-3">
                                         <label for="material" class="form-label">Material</label>
-                                        <input type="text" name="material" id="material" class="form-control" placeholder="Enter material" value="{{ $product->material }}">
+                                        <select name="material" id="material" class="form-control">
+                                            @foreach ($material as $ob)
+                                                @if ($product->material == $ob)
+                                                    <option value="{{$product->material}}" selected>{{$product->material}}</option>
+                                                @else
+                                                    <option value="{{$ob}}">{{$ob}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="speciality" class="form-label">Speciality</label>
