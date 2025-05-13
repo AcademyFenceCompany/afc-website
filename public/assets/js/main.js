@@ -66,31 +66,36 @@ const App = {
         modal.show();
     },
     // This function is used to submit the form in the modal
-    submitForm: function(event, triggerElement) {
-        //event.preventDefault(); // Prevent the default form submission
+    submitForm: function(triggerElement) {
         const formElement = $(triggerElement);
+        // formElement.on("submit", function(event) {
+        //     event.preventDefault(); // Prevent the default form submission
+        // });
+        //const formElement = $(triggerElement);
         const formData = formElement.serialize(); // Serialize the form data
         console.log("Serialized form data:", formData);
-        
+        if (!formData) {
+            console.warn("Form data is empty. Ensure the form has valid input fields with values.");
+        }
         $.ajax({
             url: `${this.url}/ams/products-report/edit/`,
             type: "POST",
             data: formData,
             contentType: "application/x-www-form-urlencoded",
-            dataType: "html",
+            dataType: "JSON",
             success: function(data) {
                 // Populate the element with id 'product-list' with the received data
-                const modalBody = $(".modal-body");
-                modalBody.prepend('<div class="alert alert-success" role="alert">A simple success alert with.</div>');
-                const alert = modalBody.find(".alert");
-                alert.fadeIn().delay(1000).fadeOut();
+                $("#alert-container").html('<div class="alert alert-success" role="alert">' + data.message + '</div>');
+                $("#alert-container").fadeIn().delay(1000).fadeOut();
             },
-            error: function(xhr, status, error) {
-                console.error("Error fetching products:", error);
+            error: function(xhr, status, error, data) {
+                console.error("Error fetching products:", xhr, status, error);
                 // Optionally clear the loading message or show an error message
-                $("#product-list").html('<p class="text-danger">An error occurred. Please try again.</p>');
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                $("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
             }
         });
+        
     }
 };
 

@@ -3,18 +3,15 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Now editing: {{$product->product_name}}</h1>
         <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <form action="{{ route('ams.product-report.edit') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('ams.product-report.edit') }}" method="POST" enctype="multipart/form-data" onchange="App.submitForm(this)">
     @csrf
     <div class="modal-body p-4">
+        <div id="alert-container"></div>
         <div class="row">  
             <div class="col-4">
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">General Product Details</h5>
-                        <div class="mb-3">
-                            <label for="enabled" class="form-label">Enabled</label>
-                            <input type="checkbox" name="enabled" id="enabled" class="form-check-input" value="1" {{ $product->enabled ? 'checked' : '' }}>
-                        </div>
                         <div class="mb-3">
                             <label for="product_name" class="form-label">Product Name</label>
                             <input type="text" name="product_name" id="product_name" class="form-control" placeholder="Enter product name" value="{{ $product->product_name }}" required>
@@ -87,10 +84,6 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Product Details</h5>
-                        <div class="mb-3">
-                            <label for="shippable" class="form-label">Shippable</label>
-                            <input type="checkbox" name="shippable" id="shippable" class="form-check-input" {{ $product->shippable ? 'checked' : '' }}>
-                        </div>
                         <div class="mb-3">
                             <label for="notes" class="form-label">Notes</label>
                             <textarea name="notes" id="notes" class="form-control" placeholder="Enter notes">{{ $product->notes }}</textarea>
@@ -194,7 +187,25 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Product Details</h5>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="mb-3">
+                                    <label for="enabled" class="form-label">Enabled</label>
+                                    <input type="checkbox" name="enabled" id="enabled" class="form-check-input" value="1" {{ $product->enabled ? 'checked' : '' }}>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="mb-3">
+                                <label for="shippable" class="form-label">Shippable</label>
+                                <input type="checkbox" name="shippable" id="shippable" class="form-check-input" {{ $product->shippable ? 'checked' : '' }}>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -202,7 +213,7 @@
     <div class="modal-footer">
         <input type="hidden" name="id" value="{{ $product->id }}">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="App.submitForm(event, this)">Save</button>
+        <!-- <button type="submit" class="btn btn-primary" >Save</button> -->
     </div>
     </form>
 </div>
