@@ -5,9 +5,8 @@
 @section('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
-        .page-title {
-            text-align: center;
-            margin-bottom: 30px;
+        body {
+            background-color: var(--bg-color);
         }
 
         .main-header {
@@ -16,103 +15,164 @@
             text-align: center;
             padding: 10px;
             margin-bottom: 20px;
-            font-weight: bold;
         }
 
         .cap-box {
-            border: 1px solid #ddd;
+            border: 3px solid #ccc;
             border-radius: 5px;
             padding: 10px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .cap-box:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .cap-box.active {
-            border-color: #8B4513;
-            box-shadow: 0 0 10px rgba(139, 69, 19, 0.3);
+            border-color: var(--primary-color);
+            background-color: rgba(0, 85, 128, 0.05);
         }
 
         .cap-box img {
             max-width: 100%;
-            height: 100px;
+            height: auto;
             margin-bottom: 10px;
+            max-height: 80px;
+            object-fit: contain;
         }
 
         .cap-box h5 {
-            font-size: 14px;
-            margin-bottom: 0;
+            font-size: 0.9rem;
+            margin: 0;
+            color: #333;
         }
-
-        .product-table {
-            width: 100%;
-            margin-top: 30px;
-            border-collapse: collapse;
-        }
-
-        .product-table th,
-        .product-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        .quantity-input {
+            width: 15px !important;
             text-align: center;
+            margin:4px;
         }
 
-        .product-table th {
-            background-color: #8B4513;
-            color: white;
-        }
-
-        .product-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .btn-add {
-            background-color: #8B4513;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        .btn-add:hover {
-            background-color: #6B3100;
-        }
-
-        .product-image {
-            max-height: 200px;
-            max-width: 100%;
-            object-fit: contain;
+        @media (max-width: 767px) {
+            .cap-box img {
+                max-height: 60px;
+            }
+            .cap-box h5 {
+                font-size: 0.8rem;
+            }
         }
 
         .note-box {
             background-color: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
+            border: 1px solid #dee2e6;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px;
             margin-bottom: 20px;
-            border-left: 4px solid #8B4513;
+            font-style: italic;
+            color: #495057;
+        }
+
+        .product-section {
+            margin-top: 20px;
+            margin-bottom: 40px;
         }
 
         .product-header {
-            background-color: #6C757D;
+            background-color: var(--gray-color);
             color: white;
             padding: 10px;
             text-align: center;
             margin-bottom: 20px;
-            border-radius: 5px;
+            border-radius: 3px;
         }
 
-        .table th {
-            background-color: #f8f9fa;
+        .responsive-table {
+            width: 100%;
+            overflow-x: auto;
         }
 
-        .quantity-input {
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .product-table th, .product-table td {
+            padding: 1px;
+            border: 1px solid #dee2e6;
             text-align: center;
+        }
+
+        .product-table th {
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        @media (max-width: 767px) {
+            .product-table th, .product-table td {
+                padding: 5px;
+                font-size: 0.85rem;
+            }
+            
+            .input-group-sm {
+                width: 100% !important;
+            }
+            
+            .btn-add-cart {
+                padding: 0.2rem 0.5rem !important;
+                font-size: 0.75rem !important;
+            }
+        }
+        
+        /* For extra small screens */
+        @media (max-width: 575px) {
+            .product-table {
+                display: block;
+            }
+            
+            .product-table thead {
+                display: none;
+            }
+            
+            .product-table tbody, 
+            .product-table tr {
+                display: block;
+            }
+            
+            .product-table tr {
+                margin-bottom: 15px;
+                border: 1px solid #dee2e6;
+            }
+            
+            .product-table td {
+                display: block;
+                text-align: right;
+                border: none;
+                border-bottom: 1px solid #f0f0f0;
+                position: relative;
+                padding-left: 50%;
+            }
+            
+            .product-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 8px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+            }
         }
     </style>
 @endsection
@@ -134,15 +194,15 @@
             @php
                 $parentCodeToSlug = [
                     'AFCWPCP' => 'standard-pyramid',
+                    'AFCWPCPD' => 'dentil-pyramid',
+                    'AFCWPCPC' => 'copper-pyramid',
                     'AFCWPCF' => 'standard-flat',
-                    'AFCWPCPD' => 'ball-top',
-                    'AFCWPCPC' => 'ball-only',
                     'AFCWPCFD' => 'dentil-flat',
                     'AFCWPCFC' => 'copper-flat',
                     'AFCWPCB3' => '3-ball',
                     'AFCWPCBD3' => '3-ball-dentil',
                     'AFCWPCB5' => '5-ball',
-                    'AFCWPCBC5' => '5-ball-copper',
+                    'AFCWPCBC5' => '5-ball-copper'
                 ];
 
                 $allParentCodes = array_keys($parentCodeToSlug);
@@ -175,18 +235,19 @@
             @foreach ($productsByParent as $parentCode => $products)
                 @if(count($products) > 0)
                     <div class="product-section" id="products-{{ $parentCode }}" style="display: none;">
-                        <div class="product-header">
+                        <div class="product-header" style="background-color: #6c757d;">
                             <h5 class="mb-0">{{ strtoupper($parentGroups[$parentCode] ?? 'WOOD POST CAPS') }}</h5>
                         </div>
 
-                        <table class="table table-bordered">
-                            <thead>
+                        <div class="responsive-table">
+                            <table class="product-table">
+                                <thead>
                                 <tr>
-                                    <th>Item Number</th>
-                                    <th>Name</th>
-                                    <th>Nominal Post Size</th>
+                                    <th>Item No</th>
+                                    <th>Product Name</th>
+                                    <th>Nominal Size</th>
                                     <th>Cap Opening</th>
-                                    <th>Fits to Post Size</th>
+                                    <th>Fits Post Size</th>
                                     <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
@@ -196,26 +257,32 @@
                             <tbody>
                                 @foreach($products as $product)
                                     <tr>
-                                        <td>{{ $product->item_no }}</td>
-                                        <td>{{ $product->product_name }}</td>
-                                        <td>{{ $product->size }}</td>
-                                        <td>{{ $product->size2 }}</td>
-                                        <td>{{ $product->size3 }}</td>
-                                        <td>{{ $product->color ?? 'Pressure Treated' }}</td>
-                                        <td class="text-center">
+                                        <td data-label="Item No">{{ $product->item_no }}</td>
+                                        <td data-label="Product Name">{{ $product->product_name }}</td>
+                                        <td data-label="Size">{{ $product->size }}</td>
+                                        <td data-label="Fits to Post Size">{{ $product->size2 }}</td>
+                                        <td data-label="Post Size">{{ $product->size3 }}</td>
+                                        <td data-label="Color">{{ $product->color ?? 'Pressure Treated' }}</td>
+                                        <td class="text-center" data-label="Quantity">
                                             <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
-                                                <button class="btn btn-outline-secondary quantity-minus" type="button">-</button>
-                                                <input type="text" class="form-control text-center quantity-input" value="1">
-                                                <button class="btn btn-outline-secondary quantity-plus" type="button">+</button>
+                                                <div class="input-group-prepend">
+                                                    <button class="btn minus-btn" type="button">-</button>
+                                                </div>
+                                                <input type="text" class="form-control text-center quantity-input" value="1"
+                                                    min="1" data-price="{{ $product->price }}"
+                                                    style="text-align: center;">
+                                                <div class="input-group-append">
+                                                    <button class="btn plus-btn" type="button">+</button>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td class="text-center">
-                                            <div>
+                                        <td class="text-center" data-label="Price">
+                                            <div class="price-display">
                                                 $<span class="product-price"
                                                     data-base-price="{{ $product->price }}">{{ number_format($product->price, 2) }}</span>
                                             </div>
                                         </td>
-                                        <td> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
+                                        <td data-label=""> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
                                             data-id="{{ $product->id }}"
                                             data-item_no="{{ $product->item_no }}" 
                                             data-product_name="{{ $product->product_name }}"
@@ -282,7 +349,7 @@
                 if (history.pushState) {
                     const parentCodeToSlug = {
                         'AFCWPCP': 'standard-pyramid',
-                        'AFCWPCPD': 'ball-top',
+                        'AFCWPCPD': 'dentil-pyramid',
                         'AFCWPCPC': 'copper-pyramid',
                         'AFCWPCF': 'standard-flat',
                         'AFCWPCFD': 'dentil-flat',

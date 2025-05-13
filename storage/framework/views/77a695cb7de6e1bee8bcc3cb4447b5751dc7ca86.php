@@ -41,7 +41,7 @@
 
         .cap-box img {
             max-width: 100%;
-            height: auto;
+            height: 100px;
             margin-bottom: 10px;
         }
 
@@ -99,7 +99,7 @@
         }
 
         .product-header {
-            background-color: var(--gray-color);
+            background-color: #6C757D;
             color: white;
             padding: 10px;
             text-align: center;
@@ -134,9 +134,9 @@
             <?php
                 $parentCodeToSlug = [
                     'AFCWPCP' => 'standard-pyramid',
-                    'AFCWPCPD' => 'dentil-pyramid',
-                    'AFCWPCPC' => 'copper-pyramid',
                     'AFCWPCF' => 'standard-flat',
+                    'AFCWPCPD' => 'ball-top',
+                    'AFCWPCPC' => 'ball-only',
                     'AFCWPCFD' => 'dentil-flat',
                     'AFCWPCFC' => 'copper-flat',
                     'AFCWPCB3' => '3-ball',
@@ -281,7 +281,7 @@
                 if (history.pushState) {
                     const parentCodeToSlug = {
                         'AFCWPCP': 'standard-pyramid',
-                        'AFCWPCPD': 'dentil-pyramid',
+                        'AFCWPCPD': 'ball-top',
                         'AFCWPCPC': 'copper-pyramid',
                         'AFCWPCF': 'standard-flat',
                         'AFCWPCFD': 'dentil-flat',

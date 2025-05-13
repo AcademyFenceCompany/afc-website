@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
 
 //AMS ROUTES
 Route::middleware('auth')->group(function () {
-    Route::get('/ams-activity', [ActivityController::class, 'index'])->name('ams.activity');
+    Route::get('/ams/activity', [ActivityController::class, 'index'])->name('ams.activity');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 
