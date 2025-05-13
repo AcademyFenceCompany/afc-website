@@ -14,11 +14,19 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\StateMarkupController;
 use App\Http\Controllers\Ams\OrderController;
+<<<<<<< HEAD
 use App\Http\Controllers\OrderCategoryController;
+=======
+>>>>>>> afc-webdev-c
 use App\Models\Order;
 use App\Models\Customer;
 use App\Http\Controllers\CategoryPageController;
 use App\Http\Controllers\Ams\ProductQueryController;
+<<<<<<< HEAD
+=======
+use App\Http\Controllers\AcademyTestController;
+use App\Http\Controllers\ProductFilterController;
+>>>>>>> afc-webdev-c
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Ams\CategoryController;
 use App\Http\Controllers\SolidBoardController;
@@ -29,6 +37,7 @@ use App\Http\Controllers\StockadeFenceController;
 use App\Http\Controllers\WoodPostCapsController;
 use App\Http\Controllers\AluminumFenceController;
 use App\Http\Controllers\ChainLinkFenceController;
+<<<<<<< HEAD
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -56,6 +65,13 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     // Order Activity
     Route::get('/activity', [OrderController::class, 'activity'])->name('ams.activity');
     
+=======
+use App\Http\Controllers\Ams\InstallJobsController;
+use App\Http\Controllers\Ams\ProductReportController;
+
+// AMS Routes
+Route::prefix('ams')->middleware('auth')->group(function () {
+>>>>>>> afc-webdev-c
     // Product Routes
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
@@ -84,6 +100,11 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
  
     // Other AMS routes...
+<<<<<<< HEAD
+=======
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
+>>>>>>> afc-webdev-c
     Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
     Route::get('/orders/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.orders.category.show');
     Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
@@ -98,6 +119,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         Route::delete('/{address}', [OrderController::class, 'deleteAddress'])->name('ams.customers.addresses.delete');
     });
     
+<<<<<<< HEAD
     // Order Category Routes
     Route::prefix('api/order-categories')->group(function () {
         Route::get('/', [OrderCategoryController::class, 'ajaxGetCategories']);
@@ -106,6 +128,8 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         Route::get('/search', [OrderCategoryController::class, 'ajaxSearchProducts']);
     });
 
+=======
+>>>>>>> afc-webdev-c
     // Debug route
     Route::get('/debug/products', function() {
         $products = \App\Models\Product::with(['details', 'familyCategory'])->get();
@@ -155,7 +179,24 @@ Route::prefix('ams')->middleware('auth')->group(function () {
             'sample_data' => $sampleData
         ]);
     });
+<<<<<<< HEAD
 });
+=======
+    // Development route for testing: Colin
+    Route::get('/install_upload', [InstallJobsController::class, 'index'])->name('ams.install_upload');
+    Route::get('/product-reports', [ProductReportController::class, 'index'])->name('ams.product-report');
+    Route::post('/install_upload', [InstallJobsController::class, 'add'])->name('ams.install_upload');
+    Route::post('/products-report/filter', [ProductReportController::class, 'getProductByFilter'])->name('ams.product-report.filter');
+    Route::post('/products-report/edit', [ProductReportController::class, 'update'])->name('ams.product-report.edit');
+});
+// Development route for testing: Colin
+Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
+Route::get('/products-report/cat/{id}', [ProductReportController::class, 'getProductsByCategoryId'])->name('ams.getAllByCatId');
+Route::get('/products-report/search/{str}', [ProductReportController::class, 'getProductBySearch'])->name('ams.getAllBySearch');
+Route::get('/products-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
+
+//Route::get('/product-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
+>>>>>>> afc-webdev-c
 
 Route::get('/', function () {
     return view('index');
@@ -196,6 +237,7 @@ Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('pro
 Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
+<<<<<<< HEAD
 // Routes for welded wire products with proper hierarchy for breadcrumbs
 Route::get('/weldedwire/{coating}/{meshSize}', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
 // Redirect old route to new URL format for proper breadcrumb display
@@ -208,6 +250,9 @@ Route::get('/wwf-product', function(\Illuminate\Http\Request $request) {
     return redirect('/weldedwire');
 })->name('meshsize.products.legacy');
 Route::get('/knockin-posts', [ProductByMeshSizeController::class, 'knockinpostProduct'])->name('knockin.posts');
+=======
+Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+>>>>>>> afc-webdev-c
 
 Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
@@ -316,11 +361,21 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 
 // AMS Routes
 Route::get('/ams', function () {
+<<<<<<< HEAD
     return redirect()->route('ams.activity');
 })->middleware('auth')->name('ams.home');
 
 
 Route::get('/ams/activity', [OrderController::class, 'activity'])->name('ams.activity');
+=======
+    //return redirect()->route('ams.activity');
+})->middleware('auth')->name('ams.home');
+
+
+Route::get('/ams/activity', function () {
+    //return view('ams.activity');
+})->name('ams.activity');
+>>>>>>> afc-webdev-c
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
@@ -342,6 +397,7 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
+<<<<<<< HEAD
 // API Routes
 Route::get('/api/products/search', [App\Http\Controllers\ProductApiController::class, 'search']);
 Route::get('/api/products/item/{itemNumber}', [App\Http\Controllers\ProductApiController::class, 'getByItemNumber']);
@@ -358,4 +414,91 @@ Route::get('/temp-construction-fence', function () {
 
 
 
+=======
+//==================== Development Routes (Colin) ====================//
+
+Route::get('/academytest', [AcademyTestController::class, 'index']); //->middleware(['auth', 'verified'])->name('academytest');
+Route::get('/chainlinkfence', function(){
+ 
+    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+    $height = 100; //$h;
+    return view('chainlinkhome', compact('majCategories', 'subCategories', 'height'));
+})->name('chainlinkfence'); //->middleware(['auth', 'verified'])->name('academytest');
+//Route::get('/academytest/height/{height}', [AcademyTestController::class, 'height'])->name('academytest.height');
+Route::get('/academytest/height/{height}', function ($height) {
+    // return response()->json([
+    //     'message' => 'This is dummy JSON data for height 4',
+    //     'height' => $height,
+    //     'data' => [
+    //         'example_key' => 'example_value'
+    //     ]
+    // ]);
+    return app(ProductFilterController::class)->height($height);
+})->name('academytest.height');
+use App\Http\Controllers\ImageController;
+
+
+Route::get('/theme', function () {
+    return view('theme');
+})->name('theme');
+Route::get('/gallery', function () {
+    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+    $height = 100; //$h;
+    return view('gallery', compact('majCategories', 'subCategories', 'height'));
+})->name('gallery');
+Route::get('/codes-and-permits', function () {
+    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+    $height = 100; //$h;
+    return view('codesandpermits', compact('majCategories', 'subCategories', 'height'));
+})->name('gallery');
+Route::get('/category', function(){
+        
+    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+    $fenceCategories = [
+        ['id' => 1, 'name' => 'Wooden Fences', 'description' => 'Durable and classic wooden fences.'],
+        ['id' => 2, 'name' => 'Vinyl Fences', 'description' => 'Low-maintenance and long-lasting vinyl fences.'],
+        ['id' => 3, 'name' => 'Chain Link Fences', 'description' => 'Affordable and secure chain link fences.'],
+        ['id' => 4, 'name' => 'Wrought Iron Fences', 'description' => 'Elegant and sturdy wrought iron fences.'],
+        ['id' => 5, 'name' => 'Bamboo Fences', 'description' => 'Eco-friendly and stylish bamboo fences.'],
+        ['id' => 6, 'name' => 'Aluminum Fences', 'description' => 'Lightweight and rust-resistant aluminum fences.'],
+        ['id' => 7, 'name' => 'Composite Fences', 'description' => 'Sustainable and attractive composite fences.'],
+        ['id' => 8, 'name' => 'Electric Fences', 'description' => 'High-security electric fences for protection.'],
+        ['id' => 9, 'name' => 'Privacy Fences', 'description' => 'Tall and solid privacy fences for seclusion.'],
+        ['id' => 10, 'name' => 'Garden Fences', 'description' => 'Decorative garden fences for landscaping.'],
+
+    ];
+    return view('subcategory', compact('majCategories', 'subCategories', 'fenceCategories'));
+
+})->name('category');
+Route::get('/productdesc', function(){
+        
+    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+    $fenceCategories = [
+        ['id' => 1, 'name' => 'Wooden Fences', 'description' => 'Durable and classic wooden fences.'],
+        ['id' => 2, 'name' => 'Vinyl Fences', 'description' => 'Low-maintenance and long-lasting vinyl fences.'],
+        ['id' => 3, 'name' => 'Chain Link Fences', 'description' => 'Affordable and secure chain link fences.'],
+        ['id' => 4, 'name' => 'Wrought Iron Fences', 'description' => 'Elegant and sturdy wrought iron fences.'],
+        ['id' => 5, 'name' => 'Bamboo Fences', 'description' => 'Eco-friendly and stylish bamboo fences.'],
+        ['id' => 6, 'name' => 'Aluminum Fences', 'description' => 'Lightweight and rust-resistant aluminum fences.'],
+        ['id' => 7, 'name' => 'Composite Fences', 'description' => 'Sustainable and attractive composite fences.'],
+        ['id' => 8, 'name' => 'Electric Fences', 'description' => 'High-security electric fences for protection.'],
+        ['id' => 9, 'name' => 'Privacy Fences', 'description' => 'Tall and solid privacy fences for seclusion.'],
+        ['id' => 10, 'name' => 'Garden Fences', 'description' => 'Decorative garden fences for landscaping.'],
+
+    ];
+    return view('productdesc', compact('majCategories', 'subCategories', 'fenceCategories'));
+
+})->name('category');
+Route::get('/logintest', function(){
+    return view('login', [
+        'title' => 'AMS Login',
+        'header' => 'AMS Login'
+    ]);
+})->name('ams.login');
+>>>>>>> afc-webdev-c
 require __DIR__ . '/auth.php';

@@ -507,7 +507,10 @@
         
         <div class="system-bundle-content">
             <!-- Bundle Image -->
+<<<<<<< HEAD
             {{-- @dump($systems[$system]['image']) --}}
+=======
+>>>>>>> afc-webdev-c
             <div class="bundle-image">
                 <h4 class="text-center">{{ $height }} High-{{ $systems[$system]['name'] }}</h4>
                 <img src="{{ $systems[$system]['image'] }}" alt="{{ $height }} Chain Link Fence System">
@@ -565,6 +568,7 @@
                                                     <div class="total-price" id="total-price-{{ $product->id }}">${{ number_format($product->price, 2) }}</div>
                                                     <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
                                                             id="add-btn-{{ $product->id }}"
+<<<<<<< HEAD
                                                             data-id="{{ $product->id }}"
                                                             data-item_no="{{ $product->item_no }}" 
                                                             data-product_name="{{ $product->product_name }}" 
@@ -582,6 +586,13 @@
                                                             data-quantity="1"> Add to Cart
                                                     </button>
                                                     
+=======
+                                                            data-item="{{ $product->item_no }}" 
+                                                            data-name="{{ $product->product_name }}" 
+                                                            data-price="{{ $product->price }}"
+                                                            data-quantity="1"> Add to Cart
+                                                    </button>
+>>>>>>> afc-webdev-c
                                                 </div>
                                             </div>
                                         </div>
@@ -612,7 +623,10 @@
                                 @endphp
                                 
                                 @foreach($productTypes as $baseName => $products)
+<<<<<<< HEAD
                                 {{-- @dd($products) --}}
+=======
+>>>>>>> afc-webdev-c
                                     <div class="product-item">
                                         <div class="product-item-header">
                                             <div class="product-item-title" style="margin-right: 8px">{{ $baseName }}</div>
@@ -642,6 +656,7 @@
                                                     <div class="total-price" id="total-price-{{ $products[0]->id }}">${{ number_format($products[0]->price, 2) }}</div>
                                                     <button class="btn btn-danger btn-sm cart-btn add-to-cart-btn ms-3" 
                                                             id="add-btn-{{ $products[0]->id }}"
+<<<<<<< HEAD
                                                             data-id="{{ $products[0]->id }}"
                                                             data-item_no="{{ $products[0]->item_no }}" 
                                                             data-product_name="{{ $products[0]->product_name }}" 
@@ -668,6 +683,11 @@
                                                             data-class="{{ $products[0]->class ?? '' }}"
                                                             data-categories_id="{{ $products[0]->categories_id ?? '' }}"
                                                             data-shipping_method="{{ $products[0]->shipping_method ?? '' }}"
+=======
+                                                            data-item="{{ $products[0]->item_no }}" 
+                                                            data-name="{{ $baseName }}" 
+                                                            data-price="{{ $products[0]->price }}"
+>>>>>>> afc-webdev-c
                                                             data-quantity="1"> Add to Cart
                                                     </button>
                                                 </div>

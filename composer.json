@@ -10,6 +10,10 @@
         "doctrine/dbal": "^3.9",
         "gabrielbull/ups-api": "^2.1",
         "guzzlehttp/guzzle": "^7.9",
+<<<<<<< HEAD
+=======
+        "intervention/image": "^2.7",
+>>>>>>> afc-webdev-c
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7"

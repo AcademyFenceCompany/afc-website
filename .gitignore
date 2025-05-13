@@ -5,7 +5,9 @@
 /storage/logs
 /storage/*.key
 /vendor
+.gitignore
 .env
+.env.example
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -19,7 +21,10 @@ yarn-error.log
 /.vscode
 storage/clockwork/*
 storage/clockwork/index
+<<<<<<< HEAD
 storage/logs/*.log
 /storage/framework/cache/
 /storage/framework/sessions/
 /storage/framework/views/
+=======
+>>>>>>> afc-webdev-c

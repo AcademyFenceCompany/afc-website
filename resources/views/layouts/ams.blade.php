@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>AMS - @yield('title')</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+=======
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" >
+>>>>>>> afc-webdev-c
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
@@ -14,6 +19,44 @@
     
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<<<<<<< HEAD
+=======
+    <style>
+        @media print {
+            .table {
+            border-collapse: collapse;
+            font-size: 12px;
+            }
+            table, th, td {
+            border: 1px solid black;
+            }
+            th, td {
+                text-align: center;
+                vertical-align: middle;
+            }
+            p {
+                font-weight: bold;
+                margin-left:20px;
+            }
+            .table {
+                width: 94%;
+                margin-left: 3%;
+                margin-right: 3%;
+            }
+            div.bs-table-print {
+            text-align: center;
+            }
+            .d-print-none{
+                display:none;
+            }
+            #product-report-form-filter{
+                display:none;
+            }
+        }
+    </style>
+
+
+>>>>>>> afc-webdev-c
 </head>
 
 <body>
@@ -27,7 +70,10 @@
             Orders <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="ordersMenu">
+<<<<<<< HEAD
             <a href="{{ route('ams.orders.create') }}" class="menu-item">Create New Order</a>
+=======
+>>>>>>> afc-webdev-c
             <a href="{{ route('ams.activity') }}" class="menu-item">Today's Activity</a>
             <a href="#" class="menu-item">Test Account</a>
         </div>
@@ -117,6 +163,12 @@
         <a href="#" class="menu-item">Inventory</a>
         <a href="#" class="menu-item">Office Sheets</a>
         <a href="#" class="menu-item">Sales Reports</a>
+<<<<<<< HEAD
+=======
+        <a href="{{ route('ams.product-report') }}" class="menu-item">Products Report</a>
+        <a href="{{ route('ams.install_upload') }}" class="menu-item">Install Jobs Gallery</a>
+
+>>>>>>> afc-webdev-c
     </div>
 
     <!-- Main Content -->
@@ -124,9 +176,12 @@
         <div class="header">
             <h2>@yield('title')</h2>
             <div class="header-buttons">
+<<<<<<< HEAD
                 <a href="{{ route('ams.orders.create') }}" class="btn btn-primary me-2">
                     <i class="bi bi-plus-circle"></i> Create New Order
                 </a>
+=======
+>>>>>>> afc-webdev-c
                 <a href="{{ route('ams.home') }}" class="btn btn-outline-light">
                     <i class="bi bi-house-fill"></i> Home
                 </a>
@@ -152,8 +207,13 @@
     </div>
 
     <!-- Scripts -->
+<<<<<<< HEAD
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+=======
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+>>>>>>> afc-webdev-c
     <script>
         // Set up CSRF token for all AJAX requests
         $.ajaxSetup({

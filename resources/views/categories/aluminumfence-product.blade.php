@@ -3,7 +3,10 @@
 @section('title', 'OnGuard Aluminum Fence - ' . $type . ' ' . $model)
 
 @section('styles')
+<<<<<<< HEAD
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+=======
+>>>>>>> afc-webdev-c
 <style>
     .product-header {
         background-color: #8B4513;
@@ -184,6 +187,7 @@
         cursor: pointer;
     }
     
+<<<<<<< HEAD
     .size-options-desktop {
         display: none;
     }
@@ -315,6 +319,8 @@
         }
     }
     
+=======
+>>>>>>> afc-webdev-c
     .necessary-products-box {
         margin-top: 5px;
         border-radius: 5px;
@@ -322,15 +328,22 @@
     }
     
     .necessary-products-title {
+<<<<<<< HEAD
         background-color: #fff;
         color: #000;
         padding: 5px;
+=======
+        background-color: #8B4513;
+        color: white;
+        padding: 10px;
+>>>>>>> afc-webdev-c
         text-align: center;
         border-radius: 5px 5px 0 0;
     }
     
     .section-container {
         margin-bottom: 20px;
+<<<<<<< HEAD
         position: relative;
     }
     
@@ -377,6 +390,14 @@
     
     .font-size-12 {
         font-size: 12px;
+=======
+    }
+    
+    .section-title {
+        font-size: 13px;
+        padding: 10px;
+        border-radius: 5px 5px 0 0;
+>>>>>>> afc-webdev-c
     }
     
     .model-list {
@@ -419,6 +440,7 @@
     .model-list-item.active a {
         color: #8B4513;
     }
+<<<<<<< HEAD
     
     /* Accordion styles */
     .accordion-item {
@@ -547,6 +569,8 @@
         background: transparent;
         box-shadow: none;
     }
+=======
+>>>>>>> afc-webdev-c
 </style>
 @endsection
 
@@ -564,6 +588,7 @@
     <div class="row mb-4">
         <!-- Product Image and Size Selector -->
         <div class="col-md-3">
+<<<<<<< HEAD
             <p class="mobile-title">ONGUARD {{ strtoupper($type) }} ALUMINUM FENCE - {{ strtoupper($model) }}</p>
             <div class="product-image-container" id="product-image-container"> 
                 <img src="{{ $selectedProduct->img_large ? url('storage/products/' . $selectedProduct->img_large) : url('storage/products/default.jpg') }}" 
@@ -578,14 +603,23 @@
                      id="hover-product-image"
                      onerror="this.src='{{ url('storage/products/default.jpg') }}'" 
                      onclick="openImageModal(this.src, this.alt)">
+=======
+            <div class="product-image-container">
+                <img src="{{ $modelImage }}" alt="{{ $type }} {{ $model }}" class="primary-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
+                <img src="{{ $selectedProduct->img_small ? url('storage/products/' . $selectedProduct->img_small) : url('storage/products/default.png') }}" alt="{{ $type }} {{ $model }} Hover" class="hover-image" onerror="this.src='{{ url('storage/products/default.png') }}'">
+>>>>>>> afc-webdev-c
             </div>
             
             <!-- Size Filter -->
             <div class="size-selector">
                 <h5 class="mb-0">SELECT HEIGHT</h5>
+<<<<<<< HEAD
                 
                 <!-- Desktop size radio buttons -->
                 <div class="d-none d-md-block mt-3 size-options-desktop">
+=======
+                <div class="d-flex flex-column mt-3">
+>>>>>>> afc-webdev-c
                     @foreach($sizes as $size)
                         <div class="size-option">
                             <label>
@@ -595,6 +629,7 @@
                         </div>
                     @endforeach
                 </div>
+<<<<<<< HEAD
                 
                 <!-- Mobile size dropdown -->
                 <div class="d-block d-md-none size-dropdown-mobile">
@@ -604,6 +639,8 @@
                         @endforeach
                     </select>
                 </div>
+=======
+>>>>>>> afc-webdev-c
             </div>
             
             <!-- Color Dropdown -->
@@ -622,6 +659,7 @@
             <div class="model-list mt-4">
                 <div class="model-list-content">
                     @foreach($fenceTypes as $fenceType => $typeData)
+<<<<<<< HEAD
                         <div class="model-type-section mb-2">
                             <div class="model-type-header bg-secondary text-white p-2 {{ $type == $fenceType ? '' : 'collapsed' }}" data-fence-type="{{ $fenceType }}">
                                 <i class="fas fa-bars me-2"></i> {{ $fenceType }}
@@ -631,6 +669,17 @@
                                     <div class="model-list-item {{ ($type == $fenceType && $model == $modelName) ? 'active' : '' }}">
                                         <a href="{{ route('aluminumfence.product', ['type' => $fenceType, 'model' => $modelName]) }}">
                                             <i class="fas fa-angle-right me-2"></i> {{ $modelName }}
+=======
+                        <div class="model-type-section">
+                            <div class="model-type-header bg-secondary text-white p-2">
+                                {{ $fenceType }}
+                            </div>
+                            <div class="model-type-items">
+                                @foreach($typeData['models'] as $modelName => $modelData)
+                                    <div class="model-list-item {{ ($type == $fenceType && $model == $modelName) ? 'active' : '' }}">
+                                        <a href="{{ route('aluminumfence.product', ['type' => $fenceType, 'model' => $modelName]) }}">
+                                            {{ $modelName }}
+>>>>>>> afc-webdev-c
                                         </a>
                                     </div>
                                 @endforeach
@@ -648,11 +697,20 @@
                     <p class="text-center text-white mb-0">ONGUARD {{ strtoupper($type) }} ALUMINUM FENCE - {{ strtoupper($model) }}</p>
                 </div>
                 <div class="card-body p-0">
+<<<<<<< HEAD
                     <!-- Desktop table view -->
                     <table class="product-table" id="products-table">
                         <tbody>
                             @if($selectedProduct)
                                 <tr style="font-weight: bold">
+=======
+                    <table class="product-table" id="products-table">
+                        <tbody>
+                            @if($selectedProduct)
+                                <tr class="product-row" 
+                                    data-color="{{ $selectedProduct->color }}" 
+                                    data-size="{{ $selectedProduct->size }}">
+>>>>>>> afc-webdev-c
                                     <td>{{ $selectedProduct->item_no }}</td>
                                     <td>{{ $selectedProduct->product_name }}</td>
                                     <td>{{ $selectedProduct->size }}</td>
@@ -662,6 +720,7 @@
                                         <input type="number" class="quantity-input" value="1" min="1">
                                     </td>
                                     <td>
+<<<<<<< HEAD
                                         <button class="btn-add-cart add-to-cart-btn" 
                                             data-id="{{ $selectedProduct->id }}"
                                             data-item_no="{{ $selectedProduct->item_no }}" 
@@ -689,6 +748,12 @@
                                             data-class="{{ $selectedProduct->class ?? '' }}"
                                             data-categories_id="{{ $selectedProduct->categories_id ?? '' }}"
                                             data-shipping_method="{{ $selectedProduct->shipping_method ?? '' }}">
+=======
+                                        <button class="btn-add-cart" 
+                                            data-item="{{ $selectedProduct->item_no }}" 
+                                            data-name="{{ $selectedProduct->product_name }}" 
+                                            data-price="{{ $selectedProduct->price }}">
+>>>>>>> afc-webdev-c
                                             Add
                                         </button>
                                     </td>
@@ -696,6 +761,7 @@
                             @endif
                         </tbody>
                     </table>
+<<<<<<< HEAD
                     
                     <!-- Mobile card view -->
                     <div class="mobile-product-cards">
@@ -745,12 +811,15 @@
                             </div>
                         @endif
                     </div>
+=======
+>>>>>>> afc-webdev-c
                 </div>
             </div>
             
             <!-- Necessary Products Box -->
             @if(!empty($associatedSections))
             <div class="necessary-products-box">
+<<<<<<< HEAD
                 <!-- Desktop View -->
                 <div class="d-none d-md-block">
                     <h5 class="mt-3 text-center" style="font-size: 15px;">NECESSARY ASSOCIATED PRODUCTS</h5>
@@ -878,11 +947,43 @@
                         @endforeach
                     </div>
                 </div>
+=======
+                @foreach($associatedSections as $section)
+                <div class="section-container mb-2">
+                    <h6 class="section-title bg-secondary text-white p-2">{{ $section['title'] }}</h6>
+                    <table class="product-table">
+                        <tbody>
+                            @foreach($section['products'] as $product)
+                                <tr>
+                                    <td>{{ $product->item_no }}</td>
+                                    <td>{{ $product->product_name }}</td>
+                                    <td>{{ $product->size }}</td>
+                                    <td>{{ $product->color }}</td>
+                                    <td class="price">${{ number_format($product->price, 2) }}</td>
+                                    <td>
+                                        <input type="number" class="quantity-input" value="1" min="1">
+                                    </td>
+                                    <td>
+                                        <button class="btn-add-cart" 
+                                            data-item="{{ $product->item_no }}" 
+                                            data-name="{{ $product->product_name }}" 
+                                            data-price="{{ $product->price }}">
+                                            Add
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @endforeach
+>>>>>>> afc-webdev-c
             </div>
             @endif
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 
 <!-- Image Modal -->
 <div id="imageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -901,6 +1002,8 @@
     </div>
 </div>
 
+=======
+>>>>>>> afc-webdev-c
 @endsection
 
 @section('scripts')
@@ -916,6 +1019,7 @@
             
             const sizeInputs = $('input[name="size"]');
             const colorSelect = $('#color-select');
+<<<<<<< HEAD
             const sizeSelectMobile = $('#size-select-mobile');
             
             console.log('Size inputs found:', sizeInputs.length);
@@ -940,10 +1044,32 @@
             
             sizeInputs.on('change', function() {
                 console.log('Size changed (desktop)');
+=======
+            
+            console.log('Size inputs found:', sizeInputs.length);
+            console.log('Color select found:', colorSelect.length);
+            
+            const defaultSize = sizeInputs.filter(':checked').val();
+            const defaultColor = colorSelect.val();
+            
+            console.log('Default size:', defaultSize);
+            console.log('Default color:', defaultColor);
+            
+            if (defaultSize) {
+                console.log('Filtering with initial values');
+                filterProducts(defaultSize, defaultColor || '');
+            } else {
+                console.log('No default size found, skipping initial filter');
+            }
+            
+            sizeInputs.on('change', function() {
+                console.log('Size changed');
+>>>>>>> afc-webdev-c
                 const selectedSize = $(this).val();
                 const selectedColor = colorSelect.val() || '';
                 console.log('Selected size:', selectedSize);
                 console.log('Selected color:', selectedColor);
+<<<<<<< HEAD
                 
                 // Sync with mobile dropdown
                 sizeSelectMobile.val(selectedSize);
@@ -969,12 +1095,15 @@
                 $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
                 $('.mobile-product-cards').html('<div class="p-3 text-center">Loading...</div>');
                 
+=======
+>>>>>>> afc-webdev-c
                 filterProducts(selectedSize, selectedColor);
             });
             
             colorSelect.on('change', function() {
                 console.log('Color changed');
                 const selectedColor = $(this).val();
+<<<<<<< HEAD
                 const selectedSize = sizeInputs.filter(':checked').val() || sizeSelectMobile.val();
                 console.log('Selected size:', selectedSize);
                 console.log('Selected color:', selectedColor);
@@ -983,12 +1112,18 @@
                 $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
                 $('.mobile-product-cards').html('<div class="p-3 text-center">Loading...</div>');
                 
+=======
+                const selectedSize = sizeInputs.filter(':checked').val();
+                console.log('Selected size:', selectedSize);
+                console.log('Selected color:', selectedColor);
+>>>>>>> afc-webdev-c
                 filterProducts(selectedSize, selectedColor);
             });
             
             function filterProducts(size, color) {
                 console.log('Filtering products - Size:', size, 'Color:', color);
                 
+<<<<<<< HEAD
                 // Cache key for storing filtered results
                 const cacheKey = `${size}-${color}-{{ $type }}-{{ $model }}`;
                 
@@ -1002,6 +1137,18 @@
                     console.log('Using cached results for:', cacheKey);
                     updateProductDisplay(window.productCache[cacheKey]);
                     updateAssociatedProducts(window.productCache[cacheKey]);
+=======
+                // Show loading indicator
+                $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Loading...</td></tr>');
+                
+                // Cache key for storing filtered results
+                const cacheKey = `${size}-${color}-{{ $type }}-{{ $model }}`;
+                
+                // Check if we have cached results
+                if (window.productCache && window.productCache[cacheKey]) {
+                    console.log('Using cached results');
+                    processFilterResponse(window.productCache[cacheKey]);
+>>>>>>> afc-webdev-c
                     return;
                 }
                 
@@ -1010,6 +1157,7 @@
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
+<<<<<<< HEAD
                         size: size,
                         color: color,
                         type: '{{ $type }}',
@@ -1044,15 +1192,48 @@
                         
                         $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Error loading product. Please try again.</td></tr>');
                         $('.mobile-product-cards').html('<div class="p-3 text-center">Error loading product. Please try again.</div>');
+=======
+                        type: '{{ $type }}',
+                        model: '{{ $model }}',
+                        size: size,
+                        color: color
+                    },
+                    beforeSend: function() {
+                        console.log('AJAX request sending with data:', {
+                            type: '{{ $type }}',
+                            model: '{{ $model }}',
+                            size: size,
+                            color: color
+                        });
+                    },
+                    success: function(response) {
+                        console.log('AJAX success response:', response);
+                        
+                        // Cache the response
+                        if (!window.productCache) window.productCache = {};
+                        window.productCache[cacheKey] = response;
+                        
+                        // Process the response
+                        processFilterResponse(response);
+                    },
+                    error: function(error) {
+                        console.error('Error filtering products:', error);
+                        $('#products-table tbody').html('<tr><td colspan="7" class="text-center">Error loading product. Please try again.</td></tr>');
+>>>>>>> afc-webdev-c
                     }
                 });
             }
             
+<<<<<<< HEAD
             function updateProductDisplay(response) {
+=======
+            function processFilterResponse(response) {
+>>>>>>> afc-webdev-c
                 if (response.product) {
                     const product = response.product;
                     console.log('Product found:', product);
                     
+<<<<<<< HEAD
                     // Update the product images
                     updateProductImages(product);
                     
@@ -1061,6 +1242,12 @@
                         <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
                             <td>${product.item_no}</td>
                             <td>${product.product_name}- ${product.display_size_2}</td>
+=======
+                    const newRow = `
+                        <tr class="product-row" data-color="${product.color}" data-size="${product.size}">
+                            <td>${product.item_no}</td>
+                            <td>${product.product_name}</td>
+>>>>>>> afc-webdev-c
                             <td>${product.size}</td>
                             <td>${product.color}</td>
                             <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
@@ -1068,6 +1255,7 @@
                                 <input type="number" class="quantity-input" value="1" min="1">
                             </td>
                             <td>
+<<<<<<< HEAD
                                 <button class="btn-add-cart add-to-cart-btn" 
                                     data-id="${product.id}"
                                     data-item_no="${product.item_no}" 
@@ -1095,6 +1283,12 @@
                                     data-class="${product.class ?? '' }"
                                     data-categories_id="${product.categories_id ?? '' }"
                                     data-shipping_method="${product.shipping_method ?? '' }">
+=======
+                                <button class="btn-add-cart" 
+                                    data-item="${product.item_no}" 
+                                    data-name="${product.product_name}" 
+                                    data-price="${product.price}">
+>>>>>>> afc-webdev-c
                                     Add
                                 </button>
                             </td>
@@ -1102,6 +1296,7 @@
                     `;
                     
                     $('#products-table tbody').html(newRow);
+<<<<<<< HEAD
                     
                     // Update mobile card view
                     const mobileCard = `
@@ -1155,11 +1350,17 @@
                     console.log('No product found in response');
                     $('#products-table tbody').html('<tr><td colspan="7" class="text-center">No matching product found.</td></tr>');
                     $('.mobile-product-cards').html('<div class="p-3 text-center">No matching product found.</div>');
+=======
+                } else {
+                    console.log('No product found in response');
+                    $('#products-table tbody').html('<tr><td colspan="7" class="text-center">No matching product found.</td></tr>');
+>>>>>>> afc-webdev-c
                 }
                 
                 updateAssociatedProducts(response);
             }
             
+<<<<<<< HEAD
             // Function to update product images when product changes
             function updateProductImages(product) {
                 console.log('Updating product images for:', product);
@@ -1330,6 +1531,53 @@
                                         ${mobileProductsHtml}
                                     </div>
                                 </div>
+=======
+            function updateAssociatedProducts(response) {
+                if (response.associatedSections && response.associatedSections.length > 0) {
+                    let associatedHtml = '';
+                    
+                    response.associatedSections.forEach(function(section) {
+                        associatedHtml += `
+                            <div class="section-container mb-4">
+                                <h6 class="section-title bg-secondary text-white p-2">${section.title}</h6>
+                                <table class="product-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Item #</th>
+                                            <th>Name</th>
+                                            <th>Size</th>
+                                            <th>Color</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th>Add</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${section.products.map(function(product) {
+                                            return `
+                                                <tr>
+                                                    <td>${product.item_no}</td>
+                                                    <td>${product.product_name}</td>
+                                                    <td>${product.size}</td>
+                                                    <td>${product.color}</td>
+                                                    <td class="price">$${parseFloat(product.price).toFixed(2)}</td>
+                                                    <td>
+                                                        <input type="number" class="quantity-input" value="1" min="1">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn-add-cart" 
+                                                            data-item="${product.item_no}" 
+                                                            data-name="${product.product_name}" 
+                                                            data-price="${product.price}">
+                                                            Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+>>>>>>> afc-webdev-c
                             </div>
                         `;
                     });
@@ -1337,6 +1585,7 @@
                     if ($('.necessary-products-box').length === 0) {
                         const necessaryProductsBox = `
                             <div class="necessary-products-box mt-4">
+<<<<<<< HEAD
                                 <div class="d-none d-md-block">
                                     <div class="accordion" id="associatedProductsAccordion">
                                         ${associatedHtml}
@@ -1375,11 +1624,29 @@
                             });
                         });
                     }, 100);
+=======
+                                <div class="necessary-products-title">
+                                    <h5 class="mb-0">NECESSARY ASSOCIATED PRODUCTS</h5>
+                                </div>
+                                ${associatedHtml}
+                            </div>
+                        `;
+                        $('#products-table').closest('.card').after(necessaryProductsBox);
+                    } else {
+                        $('.necessary-products-box').html(`
+                            <div class="necessary-products-title">
+                                <h5 class="mb-0">NECESSARY ASSOCIATED PRODUCTS</h5>
+                            </div>
+                            ${associatedHtml}
+                        `);
+                    }
+>>>>>>> afc-webdev-c
                 } else {
                     $('.necessary-products-box').remove();
                 }
             }
             
+<<<<<<< HEAD
             $(document).on('click', '.model-type-header', function() {
                 const $this = $(this);
                 const $items = $this.next('.model-type-items');
@@ -1405,10 +1672,20 @@
                     $this.addClass('collapsed');
                     $content.addClass('d-none');
                 }
+=======
+            $(document).on('click', '.btn-add-cart', function() {
+                const item = $(this).data('item');
+                const name = $(this).data('name');
+                const price = $(this).data('price');
+                const quantity = $(this).closest('tr').find('.quantity-input').val();
+                
+                alert(`Added to cart: ${quantity} x ${name} (${item}) - $${price * quantity}`);
+>>>>>>> afc-webdev-c
             });
         })(jQuery);
     });
 </script>
+<<<<<<< HEAD
 
 <script>
     function openImageModal(src, alt) {
@@ -1428,3 +1705,6 @@
     });
 </script>
 @endsection
+=======
+@endsection
+>>>>>>> afc-webdev-c

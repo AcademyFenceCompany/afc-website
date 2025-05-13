@@ -36,12 +36,20 @@
     </div>
     <!-- Orders List -->
     <div class="orders-list">
+<<<<<<< HEAD
         @dump($orders)
         @forelse ($orders as $order)
             <!-- Order Header -->
             <div class="order-header">
                 <a href="{{ route('ams.orders.edit', $order->id) }}" class="order-id">
                     #{{ $order->id }}
+=======
+        @forelse ($orders as $order)
+            <!-- Order Header -->
+            <div class="order-header">
+                <a href="{{ route('orders.show', $order->original_order_id) }}" class="order-id">
+                    #{{ $order->original_order_id }}
+>>>>>>> afc-webdev-c
                 </a>
                 <span class="customer-name">
                     @if ($order->customer)
@@ -92,17 +100,30 @@
                     @if ($order->status->customer_confirmed_date)
                         <button class="status-button customer-confirmed" title="Customer Confirmed">CC</button>
                     @endif
+<<<<<<< HEAD
                     {{-- @if ($order->status->shipped_confirmed_date)
                         <button class="status-button shipped" title="Shipped">SC</button>
                     @endif --}}
                 </div>
                 <!-- Toggle Button -->
                 <button class="toggle-items-btn" type="button" data-id="{{ $order->id }}">
+=======
+                    @if ($order->status->shipped_confirmed_date)
+                        <button class="status-button shipped" title="Shipped">SC</button>
+                    @endif
+                </div>
+                <!-- Toggle Button -->
+                <button class="toggle-items-btn" type="button" data-id="{{ $order->original_order_id }}">
+>>>>>>> afc-webdev-c
                     Order Summary </button>
             </div>
 
             <!-- Order Items -->
+<<<<<<< HEAD
             <div class="order-items collapse" id="order-items-{{ $order->id }}">
+=======
+            <div class="order-items collapse" id="order-items-{{ $order->original_order_id }}">
+>>>>>>> afc-webdev-c
                 <table class="table table-sm">
                     <thead>
                         <tr>

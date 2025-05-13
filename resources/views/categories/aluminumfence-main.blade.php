@@ -9,7 +9,11 @@
         background-color: #8B4513 !important;
     }
     .page-title {
+<<<<<<< HEAD
         font-size: 24px ;
+=======
+        font-size: 24px !important;
+>>>>>>> afc-webdev-c
         color: #fff !important;
         font-weight: bold !important;
         padding: 10px 0 !important;
@@ -69,6 +73,7 @@
         font-size: 14px;
         margin-bottom: 15px;
     }
+<<<<<<< HEAD
     @media (max-width: 767.98px) {
         .about-flex {
             flex-direction: column;
@@ -78,6 +83,8 @@
             font-size: 15px !important;
         }
     }
+=======
+>>>>>>> afc-webdev-c
 </style>
 @endsection
 
@@ -94,7 +101,11 @@
         <div class="row g-4 mb-4">
             <!-- Left Section - About -->
             <div class="col-md-6 wf-about">
+<<<<<<< HEAD
                 <div class="d-flex about-flex">
+=======
+                <div class="d-flex">
+>>>>>>> afc-webdev-c
                     <img src="{{ url('storage/products/homepage2.jpg') }}" alt="Aluminum Fence" class="me-4 rounded about-image">
                     <div>
                         <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
@@ -145,7 +156,11 @@
         <!-- Brand Section -->
         <div class="row mb-5">
             <!-- OnGuard Section (First Half) -->
+<<<<<<< HEAD
             <div class="col-md-8">
+=======
+            <div class="col-md-6">
+>>>>>>> afc-webdev-c
                 @foreach ($aluminum_categories as $category)
                     @if ($category['family_category_id'] == 1055)
                         <div class="card">
@@ -163,7 +178,11 @@
             </div>
             
             <!-- Other Brands Section (Second Half) -->
+<<<<<<< HEAD
             <div class="col-md-4">
+=======
+            <div class="col-md-6">
+>>>>>>> afc-webdev-c
                 <div class="row g-4">
                     @foreach ($aluminum_categories as $category)
                         @if ($category['family_category_id'] != 1055)

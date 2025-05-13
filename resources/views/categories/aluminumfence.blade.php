@@ -236,6 +236,7 @@
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
+<<<<<<< HEAD
     @media (max-width: 767.98px) {
         .page-title {
             font-size: 15px !important;
@@ -274,6 +275,8 @@
             padding: 0 5px;
         }
     }
+=======
+>>>>>>> afc-webdev-c
 </style>
 @endsection
 
@@ -286,7 +289,11 @@
     <div class="row g-4 mb-6">
         <!-- Left Section - About -->
         <div class="col-md-8 wf-about mb-2">
+<<<<<<< HEAD
             <div class="d-flex about-flex">
+=======
+            <div class="d-flex">
+>>>>>>> afc-webdev-c
                 <img src="{{ url('storage/products/onguard-fencetown-400x400.jpg') }}" alt="OnGuard Fence" style="width: 180px; height: 180px; object-fit: cover;" class="me-4 rounded about-image-onguard">
                 <div>
                     <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
@@ -349,7 +356,11 @@
                         <img src="{{ url('storage/products/' . strtolower($typeName) . '.jpg') }}" 
                              alt="{{ $typeName }} Fence" 
                              class="img-fluid"
+<<<<<<< HEAD
                              onerror="this.src='{{ url('storage/products/default.jpg') }}'">
+=======
+                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+>>>>>>> afc-webdev-c
                     </div>
                 </div>
                 
@@ -358,6 +369,7 @@
                 <div class="row mb-4">
                     @foreach(['Starling', 'Siskin', 'Longspur', 'Heron'] as $modelName)
                         @if(isset($typeData['models'][$modelName]))
+<<<<<<< HEAD
                             <div class="col-md-3 col-6 mb-3">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
@@ -374,6 +386,18 @@
                                              alt="{{ $modelName }} {{ $typeName }} Hover" 
                                              class="hover-image"
                                              onerror="this.src='{{ $defaultImage }}'">
+=======
+                            <div class="col-md-3 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+>>>>>>> afc-webdev-c
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center">{{ $modelName }}</div>
@@ -391,6 +415,7 @@
                 <div class="row mb-4">
                     @foreach(['Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet'] as $modelName)
                         @if(isset($typeData['models'][$modelName]))
+<<<<<<< HEAD
                             <div class="col-md-2.4 model-column" style="flex: 0 0 20%; max-width: 20%;">
                                 <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
                                     <div class="model-image">
@@ -407,6 +432,18 @@
                                              alt="{{ $modelName }} {{ $typeName }} Hover" 
                                              class="hover-image"
                                              onerror="this.src='{{ $defaultImage }}'">
+=======
+                            <div class="col-md-2.4" style="flex: 0 0 20%; max-width: 20%;">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+>>>>>>> afc-webdev-c
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center">{{ $modelName }}</div>
@@ -423,6 +460,7 @@
                 <!-- Puppy Pickets Section -->
                 <h4 class="section-title mt-4 mb-3">Puppy Pickets</h4>
                 <div class="row mb-4">
+<<<<<<< HEAD
                     @foreach($typeData['models'] as $modelName => $model)
                         @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet']))
                             <div class="col-md-3 col-6 mb-3">
@@ -441,6 +479,47 @@
                                              alt="{{ $modelName }} {{ $typeName }} Hover" 
                                              class="hover-image"
                                              onerror="this.src='{{ $defaultImage }}'">
+=======
+                    @foreach(['Puppy 1', 'Puppy 2', 'Puppy 3'] as $modelName)
+                        @if(isset($typeData['models'][$modelName]))
+                            <div class="col-md-4 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        <img src="{{ $typeData['models'][$modelName]['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+                                    </div>
+                                    <div class="model-info">
+                                        <div class="model-name text-center">{{ $modelName }}</div>
+                                        <div class="text-center mb-2">
+                                            <button class="btn btn-sm btn-danger view-products-btn">View Products</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+                
+                <!-- All Other Models (if any) -->
+                <div class="row mb-4">
+                    @foreach($typeData['models'] as $modelName => $model)
+                        @if(!in_array($modelName, ['Starling', 'Siskin', 'Longspur', 'Heron', 'Ibis', 'Kestral', 'Willet', 'Bunting', 'Kinglet', 'Puppy 1', 'Puppy 2', 'Puppy 3']))
+                            <div class="col-md-3 mb-3">
+                                <div class="model-card" data-type="{{ $typeName }}" data-model="{{ $modelName }}">
+                                    <div class="model-image">
+                                        <img src="{{ $model['image'] ?? $representativeImages[$typeName][$modelName]['main'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }}" 
+                                             class="primary-image"
+                                             onerror="this.src='{{ url('storage/products/default.png') }}'">
+                                        <img src="{{ $representativeImages[$typeName][$modelName]['hover'] ?? url('storage/products/default.png') }}" 
+                                             alt="{{ $modelName }} {{ $typeName }} Hover" 
+                                             class="hover-image">
+>>>>>>> afc-webdev-c
                                     </div>
                                     <div class="model-info">
                                         <div class="model-name text-center">{{ $modelName }}</div>

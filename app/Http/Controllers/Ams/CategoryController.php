@@ -110,13 +110,13 @@ class CategoryController extends Controller
                 'insert_keywords' => '',
                 'page_template' => 0,
                 'blog_tag' => 0,
-                'image' => $imageName
+                'img' => $imageName
             ]);
             
             Log::info('Category created successfully with data:', [
                 'cat_name' => $request->cat_name,
                 'web_enabled' => $webEnabled,
-                'image' => $imageName
+                'img' => $imageName
             ]);
         } catch (\Exception $e) {
             Log::error('Category creation failed:', ['error' => $e->getMessage()]);
@@ -198,7 +198,7 @@ class CategoryController extends Controller
         Log::info('Web enabled value set to:', ['web_enabled' => $webEnabled]);
         
         // Handle image upload if there's a new image
-        $imageName = $category->image ?? 'default.png';
+        $imageName = $category->img ?? 'default.png';
         if ($request->hasFile('image')) {
             try {
                 // Remove old image if it's not the default
@@ -234,13 +234,13 @@ class CategoryController extends Controller
                     'cat_url' => $request->seo_name,
                     'cat_meta_title' => $request->cat_name,
                     'cat_meta_description' => $request->cat_desc_short ?? '',
-                    'image' => $imageName
+                    'img' => $imageName
                 ]);
             
             Log::info('Category updated successfully:', [
                 'id' => $id, 
                 'rows_affected' => $result,
-                'image' => $imageName,
+                'img' => $imageName,
                 'web_enabled' => $webEnabled
             ]);
             
@@ -252,7 +252,7 @@ class CategoryController extends Controller
             
             Log::info('Updated category values:', [
                 'web_enabled' => $updatedCategory->web_enabled,
-                'image' => $updatedCategory->image
+                'img' => $updatedCategory->img
             ]);
         } catch (\Exception $e) {
             Log::error('Category update failed:', ['error' => $e->getMessage()]);
@@ -291,8 +291,8 @@ class CategoryController extends Controller
             ->first();
             
         // Delete the image file if it's not the default
-        if ($category && $category->image && !in_array($category->image, ['default.png', 'default.jpg'])) {
-            Storage::delete('public/categories/' . $category->image);
+        if ($category && $category->img && !in_array($category->img, ['default.png', 'default.jpg'])) {
+            Storage::delete('public/categories/' . $category->img);
         }
 
         DB::connection('mysql_second')->table('categories')
