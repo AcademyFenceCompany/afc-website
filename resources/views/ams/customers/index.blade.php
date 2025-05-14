@@ -18,26 +18,17 @@
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
-<<<<<<< HEAD
                         <th>Name</th>
                         <th>Company</th>
                         <th>Contact</th>
                         <th>Phone</th>
                         <th>Email</th>
-=======
-                        <th>#</th>
-                        <th>Name / Company</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Total Orders</th>
->>>>>>> afc-webdev-c
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($customers as $customer)
                         <tr>
-<<<<<<< HEAD
                             <td>{{ $customer->name ?? 'N/A' }}</td>
                             <td>{{ $customer->company ?? 'N/A' }}</td>
                             <td>{{ $customer->contact ?? 'N/A' }}</td>
@@ -45,23 +36,6 @@
                             <td>{{ $customer->email ?? 'N/A' }}</td>
                             <td>
                                 <a href="{{ route('ams.orders.create') }}?customer_id={{ $customer->id ?? 0 }}"
-=======
-                            <td>{{ $customer->customer_id }}</td>
-                            <td>{{ $customer->name ?: $customer->company }}</td>
-                            <td>{{ $customer->phone ?: 'N/A' }}</td>
-                            <td>{{ $customer->email ?: 'N/A' }}</td>
-                            <td>{{ $customer->orders_count }}</td>
-                            <td>
-                                <a href="{{ route('customers.show', $customer->customer_id) }}"
-                                    class="btn btn-sm btn-primary">
-                                    View
-                                </a>
-                                <a href="{{ route('customers.edit', $customer->customer_id) }}"
-                                    class="btn btn-sm btn-warning">
-                                    Edit
-                                </a>
-                                <a href="{{ route('ams.orders.create', ['customer_id' => $customer->customer_id]) }}"
->>>>>>> afc-webdev-c
                                     class="btn btn-sm btn-success">
                                     <i class="fas fa-plus"></i> Create Order
                                 </a>
@@ -76,7 +50,6 @@
             </table>
         </div>
 
-<<<<<<< HEAD
         <!-- Custom Pagination -->
         @if(isset($pagination) && $pagination['last_page'] > 1)
         <div class="d-flex justify-content-center mt-4">
@@ -124,12 +97,6 @@
                 {{ $error }}
             </div>
         @endif
-=======
-        <!-- Pagination -->
-        <div class="d-flex justify-content-center">
-            {{ $customers->links() }}
-        </div>
->>>>>>> afc-webdev-c
     </div>
     <script>
         // Search functionality
@@ -153,7 +120,6 @@
                         data.forEach(customer => {
                             tableRows += `
                         <tr>
-<<<<<<< HEAD
                             <td>${customer.id || 'N/A'}</td>
                             <td>${customer.name || customer.company || 'N/A'}</td>
                             <td>${customer.contact || 'N/A'}</td>
@@ -161,17 +127,6 @@
                             <td>${customer.email || 'N/A'}</td>
                             <td>
                                 <a href="{{ route('ams.orders.create') }}?customer_id=${customer.id || 0}" class="btn btn-sm btn-success">
-=======
-                            <td>${customer.customer_id}</td>
-                            <td>${customer.name || customer.company || 'N/A'}</td>
-                            <td>${customer.phone || 'N/A'}</td>
-                            <td>${customer.email || 'N/A'}</td>
-                            <td>${customer.orders_count || 0}</td>
-                            <td>
-                                <a href="/ams/customers/${customer.customer_id}" class="btn btn-sm btn-primary">View</a>
-                                <a href="/ams/customers/${customer.customer_id}/edit" class="btn btn-sm btn-warning">Edit</a>
-                                <a href="/ams/orders/create?customer_id=${customer.customer_id}" class="btn btn-sm btn-success">
->>>>>>> afc-webdev-c
                                     <i class="fas fa-plus"></i> Create Order
                                 </a>
                             </td>
@@ -189,7 +144,6 @@
                     // Update the table body
                     document.querySelector('#customersTable tbody').innerHTML = tableRows;
                 })
-<<<<<<< HEAD
                 .catch(error => {
                     console.error('Error fetching search results:', error);
                     document.querySelector('#customersTable tbody').innerHTML = `
@@ -198,9 +152,6 @@
                         </tr>
                     `;
                 });
-=======
-                .catch(error => console.error('Error fetching search results:', error));
->>>>>>> afc-webdev-c
         }
 
         // Trigger search on button click

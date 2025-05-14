@@ -130,17 +130,10 @@
 
                     <div class="d-none">
                         @foreach ($cart as $item)
-<<<<<<< HEAD
                             <div class="product-item" data-weight="{{ $item['weight_lbs'] }}"
                                 data-shipping-length="{{ $item['ship_length'] }}"
                                 data-shipping-width="{{ $item['ship_width'] }}"
                                 data-shipping-height="{{ $item['ship_height'] }}">
-=======
-                            <div class="product-item" data-weight="{{ $item['weight'] }}"
-                                data-length="{{ $item['shipping_length'] }}" data-width="{{ $item['shipping_width'] }}"
-                                data-height="{{ $item['shipping_height'] }}" data-quantity="{{ $item['quantity'] }}"
-                                data-family_category="{{ $item['family_category'] }}">
->>>>>>> afc-webdev-c
                             </div>
                         @endforeach
                     </div>
@@ -163,19 +156,11 @@
                             <span>${{ number_format($item['total'], 2) }}</span><br>
                         </div>
                         <small class="text-muted">Item # - {{ $item['item_no'] }}</small><br>
-<<<<<<< HEAD
                         <small class="text-muted">Item # - {{ $item['weight_lbs'] }} LBS</small><br>
                         <small class="text-muted">Size: {{ $item['size'] ?? 'N/A' }}</small><br>
                         <small class="text-muted">Size 2: {{ $item['size2'] ?? 'N/A' }}</small><br>
                         <small class="text-muted">Size 3: {{ $item['size3'] ?? 'N/A' }}</small><br>
                         <small class="text-muted">Color: {{ $item['color'] ?? 'N/A' }}</small>
-=======
-                        <small class="text-muted">Item # - {{ $item['weight'] }} LBS</small><br>
-                        <small class="text-muted">{{ $item['size1'] ?? 'N/A' }}</small><br>
-                        <small class="text-muted">{{ $item['size2'] ?? 'N/A' }}</small><br>
-                        <small class="text-muted">{{ $item['size3'] ?? 'N/A' }}</small><br>
-                        <small class="text-muted">{{ $item['color'] ?? 'N/A' }}</small>
->>>>>>> afc-webdev-c
                     @endforeach
                     <hr>
                     <div class="d-flex justify-content-between">

@@ -11,11 +11,7 @@
             {{ session('success') }}
         </div>
     @endif
-<<<<<<< HEAD
 {{-- @dump($product) --}}
-=======
-
->>>>>>> afc-webdev-c
     <form method="POST" action="{{ route('ams.product-query.update', $product->id) }}" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="old_product_name" value="{{ $product->product_name }}">
@@ -83,7 +79,6 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-<<<<<<< HEAD
                                 @if($product->categories_id == 82)
                                 <label class="form-label">Nominal Size</label>
                                 <input type="text" name="size" value="{{ $product->size }}" class="form-control">
@@ -91,10 +86,6 @@
                                 <label class="form-label">Size</label>
                                 <input type="text" name="size" value="{{ $product->size }}" class="form-control">
                                 @endif
-=======
-                                <label class="form-label">Size</label>
-                                <input type="text" name="size" value="{{ $product->size }}" class="form-control">
->>>>>>> afc-webdev-c
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -104,7 +95,6 @@
                         </div>
 
                         <div class="row">
-<<<<<<< HEAD
                             <div class="col-md-4 mb-3">
                                 @if($product->categories_id == 82)
                                 <label class="form-label">Cap Opening</label>
@@ -132,8 +122,6 @@
                         </div>
 
                         <div class="row">
-=======
->>>>>>> afc-webdev-c
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Material</label>
                                 <input type="text" name="material" value="{{ $product->material }}" class="form-control">
