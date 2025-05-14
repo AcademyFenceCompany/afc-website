@@ -131,4 +131,16 @@
             <p>&copy; <?php echo e(date('Y')); ?> Academy Fence Company Inc.<br>All rights reserved.</p>
         </div>
     </div>
+    <!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="cartToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success">
+            <strong class="me-auto">Cart Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Item added to the cart successfully!
+        </div>
+    </div>
+</div>
 </footer><?php /**PATH C:\xampp\htdocs\afc-website\resources\views/layouts/footer.blade.php ENDPATH**/ ?>

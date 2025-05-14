@@ -241,6 +241,9 @@
                                             data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
                                             data-class="<?php echo e($product->class ?? ''); ?>"
                                             data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                            data-ship_length="<?php echo e($product->ship_length ?? ''); ?>"
+                                            data-ship_width="<?php echo e($product->ship_width ?? ''); ?>"
+                                            data-ship_height="<?php echo e($product->ship_height ?? ''); ?>"
                                             data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                             Add
                                     </button>

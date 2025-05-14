@@ -39,9 +39,9 @@ document
         products.forEach((product) => {
             const quantity = parseInt(product.dataset.quantity);
             const weight = parseFloat(product.dataset.weight);
-            const length = parseFloat(product.dataset.length);
-            const width = parseFloat(product.dataset.width);
-            const height = parseFloat(product.dataset.height);
+            const length = parseFloat(product.dataset.shippingLength);
+            const width = parseFloat(product.dataset.shippingWidth);
+            const height = parseFloat(product.dataset.shippingHeight);
             console.log(weight, length, width, height);
 
             // Calculate total weight

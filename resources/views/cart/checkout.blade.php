@@ -130,7 +130,7 @@
 
                     <div class="d-none">
                         @foreach ($cart as $item)
-                            <div class="product-item" data-weight="{{ $item['weight_lbs'] }}"
+                            <div class="product-item" data-quantity="{{ $item['quantity'] }}" data-weight="{{ $item['weight_lbs'] }}"
                                 data-shipping-length="{{ $item['ship_length'] }}"
                                 data-shipping-width="{{ $item['ship_width'] }}"
                                 data-shipping-height="{{ $item['ship_height'] }}">

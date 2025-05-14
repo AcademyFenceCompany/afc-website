@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'Checkout'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -128,7 +130,7 @@
 
                     <div class="d-none">
                         <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <div class="product-item" data-weight="<?php echo e($item['weight_lbs']); ?>"
+                            <div class="product-item" data-quantity="<?php echo e($item['quantity']); ?>" data-weight="<?php echo e($item['weight_lbs']); ?>"
                                 data-shipping-length="<?php echo e($item['ship_length']); ?>"
                                 data-shipping-width="<?php echo e($item['ship_width']); ?>"
                                 data-shipping-height="<?php echo e($item['ship_height']); ?>">

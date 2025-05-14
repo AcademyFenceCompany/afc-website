@@ -241,6 +241,9 @@
                                             data-amount_per_box="{{ $product->amount_per_box ?? '1' }}"
                                             data-class="{{ $product->class ?? '' }}"
                                             data-categories_id="{{ $product->categories_id ?? '' }}"
+                                            data-ship_length="{{ $product->ship_length ?? '' }}"
+                                            data-ship_width="{{ $product->ship_width ?? '' }}"
+                                            data-ship_height="{{ $product->ship_height ?? '' }}"
                                             data-shipping_method="{{ $product->shipping_method ?? '' }}">
                                             Add
                                     </button>
