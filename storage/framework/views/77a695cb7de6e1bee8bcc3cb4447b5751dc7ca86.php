@@ -11,7 +11,7 @@
         }
 
         .main-header {
-            background-color: #000;
+            background-color: var(--secondary-color);
             color: white;
             text-align: center;
             padding: 10px;
@@ -99,7 +99,7 @@
         }
 
         .product-header {
-            background-color: #8B4513;
+            background-color: var(--gray-color);
             color: white;
             padding: 10px;
             text-align: center;
@@ -175,8 +175,7 @@
             <?php $__currentLoopData = $productsByParent; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $parentCode => $products): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <?php if(count($products) > 0): ?>
                     <div class="product-section" id="products-<?php echo e($parentCode); ?>" style="display: none;">
-                        <div class="product-header"
-                            style="background-color: #8B4513; color: white; padding: 10px; text-align: center; margin-bottom: 20px;">
+                        <div class="product-header">
                             <h5 class="mb-0"><?php echo e(strtoupper($parentGroups[$parentCode] ?? 'WOOD POST CAPS')); ?></h5>
                         </div>
 
@@ -190,7 +189,8 @@
                                     <th>Fits to Post Size</th>
                                     <th>Color</th>
                                     <th>Quantity</th>
-                                    <th>Price / Add to Cart</th>
+                                    <th>Price</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -198,9 +198,9 @@
                                     <tr>
                                         <td><?php echo e($product->item_no); ?></td>
                                         <td><?php echo e($product->product_name); ?></td>
-                                        <td><?php echo e($product->display_size_2); ?></td>
-                                        <td><?php echo e($product->nominal_length); ?></td>
-                                        <td><?php echo e($product->nominal_width); ?></td>
+                                        <td><?php echo e($product->size); ?></td>
+                                        <td><?php echo e($product->size2); ?></td>
+                                        <td><?php echo e($product->size3); ?></td>
                                         <td><?php echo e($product->color ?? 'Pressure Treated'); ?></td>
                                         <td class="text-center">
                                             <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
@@ -214,38 +214,37 @@
                                                 $<span class="product-price"
                                                     data-base-price="<?php echo e($product->price); ?>"><?php echo e(number_format($product->price, 2)); ?></span>
                                             </div>
-
-                                            
-                                            <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
-                                                data-id="<?php echo e($product->id); ?>"
-                                                data-item_no="<?php echo e($product->item_no); ?>" 
-                                                data-product_name="<?php echo e($product->product_name); ?>"
-                                                data-price="<?php echo e($product->price); ?>"
-                                                data-color="<?php echo e($product->color ?? ''); ?>"
-                                                data-size="<?php echo e($product->size ?? ''); ?>"
-                                                data-size_in="<?php echo e($product->size_in ?? ''); ?>"
-                                                data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
-                                                data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
-                                                data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
-                                                data-img_small="<?php echo e($product->img_small ?? ''); ?>"
-                                                data-img_large="<?php echo e($product->img_large ?? ''); ?>"
-                                                data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
-                                                data-size2="<?php echo e($product->size2 ?? ''); ?>"
-                                                data-size3="<?php echo e($product->size3 ?? ''); ?>"
-                                                data-material="<?php echo e($product->material ?? ''); ?>"
-                                                data-spacing="<?php echo e($product->spacing ?? ''); ?>"
-                                                data-coating="<?php echo e($product->coating ?? ''); ?>"
-                                                data-style="<?php echo e($product->style ?? ''); ?>"
-                                                data-speciality="<?php echo e($product->speciality ?? ''); ?>"
-                                                data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
-                                                data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
-                                                data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
-                                                data-class="<?php echo e($product->class ?? ''); ?>"
-                                                data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
-                                                data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
-                                                Add
-                                        </button>
                                         </td>
+                                        <td> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
+                                            data-id="<?php echo e($product->id); ?>"
+                                            data-item_no="<?php echo e($product->item_no); ?>" 
+                                            data-product_name="<?php echo e($product->product_name); ?>"
+                                            data-price="<?php echo e($product->price); ?>"
+                                            data-color="<?php echo e($product->color ?? ''); ?>"
+                                            data-size="<?php echo e($product->size ?? ''); ?>"
+                                            data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                            data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                            data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                            data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                            data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                            data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                            data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                            data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                            data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                            data-material="<?php echo e($product->material ?? ''); ?>"
+                                            data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                            data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                            data-style="<?php echo e($product->style ?? ''); ?>"
+                                            data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                            data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                            data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                            data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                            data-class="<?php echo e($product->class ?? ''); ?>"
+                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                            data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
+                                            Add
+                                    </button>
+                                    </td>
                                     </tr>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>

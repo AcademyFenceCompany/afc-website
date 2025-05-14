@@ -131,7 +131,7 @@ class ProductQueryController extends Controller
         $allowedFields = [
             'product_name', 'item_no', 'seo_name', 'categories_id', 
             'desc_short', 'desc_long', 'price', 'list', 'cost', 'ws_price',
-            'color', 'size', 'weight_lbs', 'material', 'style', 'speciality', 
+            'color', 'size', 'size2', 'size3', 'display_size_2', 'weight_lbs', 'material', 'style', 'speciality', 
             'spacing', 'coating', 'gauge', 'enabled', 'img_small', 'img_large',
             'meta_title', 'meta_description', 'meta_keywords', 'product_assoc'
         ];
@@ -222,7 +222,7 @@ class ProductQueryController extends Controller
         $allowedFields = [
             'product_name', 'item_no', 'seo_name', 'categories_id', 
             'desc_short', 'desc_long', 'price', 'list', 'cost', 'ws_price',
-            'color', 'size', 'weight_lbs', 'material', 'style', 'speciality', 
+            'color', 'size', 'size2', 'size3', 'display_size_2', 'weight_lbs', 'material', 'style', 'speciality', 
             'spacing', 'coating', 'gauge', 'enabled', 'img_small', 'img_large',
             'meta_title', 'meta_description', 'meta_keywords', 'product_assoc'
         ];
