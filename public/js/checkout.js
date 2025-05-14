@@ -33,6 +33,7 @@ document
 
         let packages = [];
         let totalWeight = 0;
+        let categoryIds = []; // Array to collect category IDs
 
         // Collect package details
         const products = document.querySelectorAll(".product-item");
@@ -42,7 +43,14 @@ document
             const length = parseFloat(product.dataset.shippingLength);
             const width = parseFloat(product.dataset.shippingWidth);
             const height = parseFloat(product.dataset.shippingHeight);
-            console.log(weight, length, width, height);
+            const categoryId = parseInt(product.dataset.categoryId || 0); // Get category ID
+            
+            console.log(weight, length, width, height, categoryId);
+
+            // Add category ID to the array if it's not already included
+            if (categoryId && !categoryIds.includes(categoryId)) {
+                categoryIds.push(categoryId);
+            }
 
             // Calculate total weight
             totalWeight += weight * quantity;
@@ -255,8 +263,15 @@ document
                         recipient_state,
                         recipient_postal,
                         packages,
+                        category_ids: categoryIds, // Pass category IDs to the API
                     }),
                 }).then((res) => res.json());
+
+                // Log the shipper address information
+                console.log('UPS Response with Shipper Info:', upsResponse);
+                if (upsResponse.shipper) {
+                    console.log('Shipper Address:', upsResponse.shipper);
+                }
 
                 ratesContainer.innerHTML = ""; // Clear the spinner
 

@@ -133,7 +133,8 @@
                             <div class="product-item" data-quantity="<?php echo e($item['quantity']); ?>" data-weight="<?php echo e($item['weight_lbs']); ?>"
                                 data-shipping-length="<?php echo e($item['ship_length']); ?>"
                                 data-shipping-width="<?php echo e($item['ship_width']); ?>"
-                                data-shipping-height="<?php echo e($item['ship_height']); ?>">
+                                data-shipping-height="<?php echo e($item['ship_height']); ?>"
+                                data-category-id="<?php echo e($item['categories_id'] ?? 0); ?>">
                             </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
@@ -144,6 +145,35 @@
                 <div id="shipping-options" class="mt-4">
                     <h5 class="mb-3">Available Shipping Rates</h5>
                     <div id="shipping-rates" class="border p-3"></div>
+                    
+                    <?php if(!empty($cart)): ?>
+                        <?php
+                            $hasCategory82 = false;
+                            foreach($cart as $item) {
+                                if(isset($item['categories_id']) && $item['categories_id'] == 82) {
+                                    $hasCategory82 = true;
+                                    break;
+                                }
+                            }
+                        ?>
+                        
+                        <div id="shipper-info">
+                            <h5>Shipper Information</h5>
+                            <?php if($hasCategory82 && config('alternative_shipper.category_82')): ?>
+                                <p>Name: <?php echo e(config('alternative_shipper.category_82.name')); ?></p>
+                                <p>Address: <?php echo e(config('alternative_shipper.category_82.address')); ?></p>
+                                <p>City: <?php echo e(config('alternative_shipper.category_82.city')); ?></p>
+                                <p>State: <?php echo e(config('alternative_shipper.category_82.state')); ?></p>
+                                <p>Zip: <?php echo e(config('alternative_shipper.category_82.zip')); ?></p>
+                            <?php else: ?>
+                                <p>Name: <?php echo e(config('shipper.name')); ?></p>
+                                <p>Address: <?php echo e(config('shipper.address')); ?></p>
+                                <p>City: <?php echo e(config('shipper.city')); ?></p>
+                                <p>State: <?php echo e(config('shipper.state')); ?></p>
+                                <p>Zip: <?php echo e(config('shipper.zip')); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

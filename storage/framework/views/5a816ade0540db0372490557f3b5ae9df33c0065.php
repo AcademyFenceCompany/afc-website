@@ -180,7 +180,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                        <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                            <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn" 
                                             data-id="<?php echo e($product->id); ?>"
                                             data-item_no="<?php echo e($product->item_no); ?>" 
                                             data-product_name="<?php echo e($product->product_name); ?>"
@@ -205,12 +205,12 @@
                                             data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
                                             data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
                                             data-class="<?php echo e($product->class ?? ''); ?>"
-                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
                                             data-ship_length="<?php echo e($product->ship_length ?? ''); ?>"
                                             data-ship_width="<?php echo e($product->ship_width ?? ''); ?>"
                                             data-ship_height="<?php echo e($product->ship_height ?? ''); ?>"
+                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
                                             data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
-                                                Add to Cart
+                                            Add to Cart
                                         </button>
                                        </td>
                                     </tr>
@@ -257,35 +257,32 @@
                                             <button class="btn btn-outline-secondary btn-sm quantity-increase">+</button>
                                         </div>
                                         <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn" 
-                                        data-id="<?php echo e($product->id); ?>"
-                                        data-item_no="<?php echo e($product->item_no); ?>" 
-                                        data-product_name="<?php echo e($product->product_name); ?>"
-                                        data-price="<?php echo e($product->price); ?>"
-                                        data-color="<?php echo e($product->color ?? ''); ?>"
-                                        data-size="<?php echo e($product->size ?? ''); ?>"
-                                        data-size_in="<?php echo e($product->size_in ?? ''); ?>"
-                                        data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
-                                        data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
-                                        data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
-                                        data-img_small="<?php echo e($product->img_small ?? ''); ?>"
-                                        data-img_large="<?php echo e($product->img_large ?? ''); ?>"
-                                        data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
-                                        data-size2="<?php echo e($product->size2 ?? ''); ?>"
-                                        data-size3="<?php echo e($product->size3 ?? ''); ?>"
-                                        data-material="<?php echo e($product->material ?? ''); ?>"
-                                        data-spacing="<?php echo e($product->spacing ?? ''); ?>"
-                                        data-coating="<?php echo e($product->coating ?? ''); ?>"
-                                        data-style="<?php echo e($product->style ?? ''); ?>"
-                                        data-speciality="<?php echo e($product->speciality ?? ''); ?>"
-                                        data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
-                                        data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
-                                        data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
-                                        data-class="<?php echo e($product->class ?? ''); ?>"
-                                        data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
-                                        data-ship_length="<?php echo e($product->ship_length ?? ''); ?>"
-                                        data-ship_width="<?php echo e($product->ship_width ?? ''); ?>"
-                                        data-ship_height="<?php echo e($product->ship_height ?? ''); ?>"
-                                        data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
+                                            data-id="<?php echo e($product->id); ?>"
+                                            data-item_no="<?php echo e($product->item_no); ?>" 
+                                            data-product_name="<?php echo e($product->product_name); ?>"
+                                            data-price="<?php echo e($product->price); ?>"
+                                            data-color="<?php echo e($product->color ?? ''); ?>"
+                                            data-size="<?php echo e($product->size ?? ''); ?>"
+                                            data-size_in="<?php echo e($product->size_in ?? ''); ?>"
+                                            data-size_wt="<?php echo e($product->size_wt ?? ''); ?>"
+                                            data-size_ht="<?php echo e($product->size_ht ?? ''); ?>"
+                                            data-weight_lbs="<?php echo e($product->weight_lbs ?? ''); ?>"
+                                            data-img_small="<?php echo e($product->img_small ?? ''); ?>"
+                                            data-img_large="<?php echo e($product->img_large ?? ''); ?>"
+                                            data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
+                                            data-size2="<?php echo e($product->size2 ?? ''); ?>"
+                                            data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                            data-material="<?php echo e($product->material ?? ''); ?>"
+                                            data-spacing="<?php echo e($product->spacing ?? ''); ?>"
+                                            data-coating="<?php echo e($product->coating ?? ''); ?>"
+                                            data-style="<?php echo e($product->style ?? ''); ?>"
+                                            data-speciality="<?php echo e($product->speciality ?? ''); ?>"
+                                            data-free_shipping="<?php echo e($product->free_shipping ?? '0'); ?>"
+                                            data-special_shipping="<?php echo e($product->special_shipping ?? '0'); ?>"
+                                            data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
+                                            data-class="<?php echo e($product->class ?? ''); ?>"
+                                            data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
+                                            data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                             Add to Cart
                                         </button>
                                     </div>
@@ -1090,6 +1087,7 @@
     <script src="<?php echo e(asset('js/cart.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
 
+<!-- Toast Container -->
 
 
 <script>

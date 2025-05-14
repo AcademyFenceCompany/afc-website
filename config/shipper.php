@@ -6,6 +6,4 @@ return [
     'city' => 'Orange',
     'state' => 'NJ',
     'zip' => '07050',
-    'phone' => '973-674-0600',
-    'email' => 'info@academyfence.com',
 ];
