@@ -283,9 +283,15 @@ document
                     upsResponse.RateResponse.RatedShipment.forEach(
                         (shipment) => {
                             if (shipment.Service.Code === "03") {
+                                const baseCharge = parseFloat(shipment.TotalCharges.MonetaryValue);
+                                const boxPrice = 5.00;
+                                const boxesTotal = packages.length * boxPrice;
+                                const markupAmount = baseCharge * 0.33; // 33% markup
                                 const totalCharges =
-                                    shipment.TotalCharges.MonetaryValue +
-                                    stateMarkup;
+                                    baseCharge +
+                                    markupAmount +
+                                    boxesTotal
+                                console.log('Total Charges:', totalCharges);
 
                                 const rateElement =
                                     document.createElement("div");
@@ -293,8 +299,13 @@ document
                                 rateElement.innerHTML = `
                                 <label class="d-block">
                                     <input type="radio" name="shipping_option" class="shipping-option"
-                                        data-charge="${totalCharges}" value="ups-ground">
-                                    UPS Ground - $${shipment.TotalCharges.MonetaryValue}
+                                        data-charge="${totalCharges.toFixed(2)}" value="ups-ground">
+                                    UPS Ground - $${totalCharges.toFixed(2)}
+                                    <div class="shipping-breakdown">
+                                        <small>Base Rate: $${baseCharge.toFixed(2)}</small><br>
+                                        <small>Box Charges: $${boxesTotal.toFixed(2)} (${packages.length} boxes)</small><br>
+                                        <small>Markup (33%): $${markupAmount.toFixed(2)}</small><br>
+                                    </div>
                                 </label>
                             `;
                                 ratesContainer.appendChild(rateElement);
