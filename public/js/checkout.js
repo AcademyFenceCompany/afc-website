@@ -305,6 +305,7 @@ document
                                         <small>Base Rate: $${baseCharge.toFixed(2)}</small><br>
                                         <small>Box Charges: $${boxesTotal.toFixed(2)} (${packages.length} boxes)</small><br>
                                         <small>Markup (33%): $${markupAmount.toFixed(2)}</small><br>
+                                        <small>Shipper Zip: ${upsResponse.shipper.address} ${upsResponse.shipper.city},  ${upsResponse.shipper.state} ${upsResponse.shipper.zip}</small><br>
                                     </div>
                                 </label>
                             `;
