@@ -467,6 +467,25 @@
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+                                    <!-- Shipper Information -->
+                                    <div class="card mb-3">
+                                        <div class="card-header bg-light">
+                                            <h5 class="mb-0">Shipper Information</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <?php if(isset($useAlternativeShipper) && $useAlternativeShipper): ?>
+                                                <div class="shipper-info">
+                                                    <h6>Shipping Method: Dropship</h6>
+                                                    <p>Origin Shipping Address: <?php echo e(config('alternative_shipper.category_82.address')); ?>, <?php echo e(config('alternative_shipper.category_82.city')); ?>, <?php echo e(config('alternative_shipper.category_82.state')); ?>,<?php echo e(config('alternative_shipper.category_82.zip')); ?></p>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="shipper-info">
+                                                    <h6>Shipping Method: Shipping From AFC</h6>
+                                                    <p>Origin Shipping Address: <?php echo e(config('shipper.address')); ?>, <?php echo e(config('shipper.city')); ?>, <?php echo e(config('shipper.state')); ?>,<?php echo e(config('shipper.zip')); ?></p>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
                                 <!-- Shipping Rates List -->
                                 <div id="shippingRates" class="mb-3">
                                     <!-- Shipping rates will be populated here -->
@@ -481,7 +500,7 @@
                                 <!-- UPS Shipping Section -->
                                 <div class="card mb-3">
                                     <div class="card-header bg-light">
-                                        <h5 class="mb-0">UPS Shipping</h5>
+                                        <h5 class="mb-0">UPS Small Package</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -609,9 +628,7 @@
                                                     <input type="text" class="form-control" id="shipping-organizer-quoted-by" name="shipping_organizer_quoted_by" value="sunny">
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 d-flex align-items-end">
-                                                <button type="button" class="btn btn-primary" id="addShippingEstimate">Add to Order</button>
-                                            </div>
+                                          
                                         </div>
                                     </div>
                                 </div>

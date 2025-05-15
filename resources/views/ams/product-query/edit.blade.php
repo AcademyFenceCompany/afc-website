@@ -191,6 +191,10 @@
                     </div>
                     <div class="card-body row">
                         <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping Length</label>
+                            <input type="number" name="ship_length" value="{{ $product->ship_length }}" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
                             <label class="form-label">Shipping width</label>
                             <input type="number" name="ship_width" value="{{ $product->ship_width }}" class="form-control">
                         </div>
@@ -198,11 +202,6 @@
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Shipping height</label>
                             <input type="number" name="ship_height" value="{{ $product->ship_height }}" class="form-control">
-                        </div>
-
-                        <div class="col-md-4 mb-3">
-                            <label class="form-label">Shipping Length</label>
-                            <input type="number" name="ship_length" value="{{ $product->ship_length }}" class="form-control">
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">Amount Per Box</label>
