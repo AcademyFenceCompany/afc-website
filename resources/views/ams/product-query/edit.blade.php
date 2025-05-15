@@ -185,7 +185,31 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Shipping Information</h5>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping width</label>
+                            <input type="number" name="ship_width" value="{{ $product->ship_width }}" class="form-control">
+                        </div>
 
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping height</label>
+                            <input type="number" name="ship_height" value="{{ $product->ship_height }}" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping Length</label>
+                            <input type="number" name="ship_length" value="{{ $product->ship_length }}" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Amount Per Box</label>
+                            <input type="number" name="amount_per_box" value="{{ $product->amount_per_box }}" class="form-control">
+                        </div>
+                    </div>
+                </div>
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">SEO Information</h5>

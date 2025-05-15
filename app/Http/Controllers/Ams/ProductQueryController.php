@@ -133,7 +133,7 @@ class ProductQueryController extends Controller
             'desc_short', 'desc_long', 'price', 'list', 'cost', 'ws_price',
             'color', 'size', 'size2', 'size3', 'display_size_2', 'weight_lbs', 'material', 'style', 'speciality', 
             'spacing', 'coating', 'gauge', 'enabled', 'img_small', 'img_large',
-            'meta_title', 'meta_description', 'meta_keywords', 'product_assoc'
+            'meta_title', 'meta_description', 'meta_keywords', 'product_assoc', 'ship_width', 'ship_height', 'ship_length', 'amount_per_box'
         ];
         
         $data = array_intersect_key($request->except(['_token', 'img_small', 'img_large']), 
@@ -224,7 +224,7 @@ class ProductQueryController extends Controller
             'desc_short', 'desc_long', 'price', 'list', 'cost', 'ws_price',
             'color', 'size', 'size2', 'size3', 'display_size_2', 'weight_lbs', 'material', 'style', 'speciality', 
             'spacing', 'coating', 'gauge', 'enabled', 'img_small', 'img_large',
-            'meta_title', 'meta_description', 'meta_keywords', 'product_assoc'
+            'meta_title', 'meta_description', 'meta_keywords', 'product_assoc', 'ship_width', 'ship_height', 'ship_length', 'amount_per_box'
         ];
         
         // Get all input data first before filtering
