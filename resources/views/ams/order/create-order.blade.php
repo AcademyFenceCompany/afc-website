@@ -472,17 +472,10 @@
                                             <h5 class="mb-0">Shipper Information</h5>
                                         </div>
                                         <div class="card-body">
-                                            @if(isset($useAlternativeShipper) && $useAlternativeShipper)
-                                                <div class="shipper-info">
+                                                <div id="shipper-info">
                                                     <h6>Shipping Method: Dropship</h6>
                                                     <p>Origin Shipping Address: {{ config('alternative_shipper.category_82.address') }}, {{ config('alternative_shipper.category_82.city') }}, {{ config('alternative_shipper.category_82.state') }},{{ config('alternative_shipper.category_82.zip') }}</p>
                                                 </div>
-                                            @else
-                                                <div class="shipper-info">
-                                                    <h6>Shipping Method: Shipping From AFC</h6>
-                                                    <p>Origin Shipping Address: {{ config('shipper.address') }}, {{ config('shipper.city') }}, {{ config('shipper.state') }},{{ config('shipper.zip') }}</p>
-                                                </div>
-                                            @endif
                                         </div>
                                     </div>
                                 <!-- Shipping Rates List -->

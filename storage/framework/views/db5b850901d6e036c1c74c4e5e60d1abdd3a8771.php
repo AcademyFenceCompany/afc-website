@@ -473,17 +473,10 @@
                                             <h5 class="mb-0">Shipper Information</h5>
                                         </div>
                                         <div class="card-body">
-                                            <?php if(isset($useAlternativeShipper) && $useAlternativeShipper): ?>
-                                                <div class="shipper-info">
+                                                <div id="shipper-info">
                                                     <h6>Shipping Method: Dropship</h6>
                                                     <p>Origin Shipping Address: <?php echo e(config('alternative_shipper.category_82.address')); ?>, <?php echo e(config('alternative_shipper.category_82.city')); ?>, <?php echo e(config('alternative_shipper.category_82.state')); ?>,<?php echo e(config('alternative_shipper.category_82.zip')); ?></p>
                                                 </div>
-                                            <?php else: ?>
-                                                <div class="shipper-info">
-                                                    <h6>Shipping Method: Shipping From AFC</h6>
-                                                    <p>Origin Shipping Address: <?php echo e(config('shipper.address')); ?>, <?php echo e(config('shipper.city')); ?>, <?php echo e(config('shipper.state')); ?>,<?php echo e(config('shipper.zip')); ?></p>
-                                                </div>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 <!-- Shipping Rates List -->

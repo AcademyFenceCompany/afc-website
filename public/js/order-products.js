@@ -440,6 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let totalWeight = 0;
         
         orderItems.forEach(item => {
+            const category = item.product_data.categories_id;
             const weight = parseFloat(item.weight_lbs) || 0;
             const quantity = parseInt(item.quantity) || 1;
             
@@ -474,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (shippingModal) {
             const bsModal = new bootstrap.Modal(shippingModal);
             bsModal.show();
-            
+           
             // Show loading state
             const shippingRates = document.getElementById('shippingRates');
             if (shippingRates) {

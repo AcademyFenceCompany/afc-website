@@ -156,23 +156,6 @@
                                 }
                             }
                         ?>
-                        
-                        <div id="shipper-info">
-                            <h5>Shipper Information</h5>
-                            <?php if($hasCategory82 && config('alternative_shipper.category_82')): ?>
-                                <p>Name: <?php echo e(config('alternative_shipper.category_82.name')); ?></p>
-                                <p>Address: <?php echo e(config('alternative_shipper.category_82.address')); ?></p>
-                                <p>City: <?php echo e(config('alternative_shipper.category_82.city')); ?></p>
-                                <p>State: <?php echo e(config('alternative_shipper.category_82.state')); ?></p>
-                                <p>Zip: <?php echo e(config('alternative_shipper.category_82.zip')); ?></p>
-                            <?php else: ?>
-                                <p>Name: <?php echo e(config('shipper.name')); ?></p>
-                                <p>Address: <?php echo e(config('shipper.address')); ?></p>
-                                <p>City: <?php echo e(config('shipper.city')); ?></p>
-                                <p>State: <?php echo e(config('shipper.state')); ?></p>
-                                <p>Zip: <?php echo e(config('shipper.zip')); ?></p>
-                            <?php endif; ?>
-                        </div>
                     <?php endif; ?>
                 </div>
             </div>
