@@ -83,6 +83,7 @@
 
         
 </style>
+    {{-- @dd($groupedByGauge) --}}
     @if(count($groupedByGauge) > 0)
     <div class="bg-black rounded mb-3">
         <h1 class="ww_title text-center py-0 mb-0 mt-3">{{ $groupedByGauge->first()->first()->size2 }} {{ $groupedByGauge->first()->first()->product_name }}</h1>

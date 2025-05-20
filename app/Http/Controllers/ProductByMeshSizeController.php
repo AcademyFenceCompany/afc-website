@@ -15,11 +15,17 @@ class ProductByMeshSizeController extends Controller
             // Legacy route with query parameters
             $meshSize = urldecode($request->input('meshSize'));
             $coating = urldecode($request->input('coating'));
+            $meshSize = str_replace('+', ' ', $meshSize); // Normalize '+' to space for query params too
         } else {
             // New route with path parameters
             $meshSize = urldecode($meshSize);
             $coating = urldecode($coating);
+            $meshSize = str_replace('+', ' ', $meshSize); // Normalize '+' to space for path params
         }
+        
+        // Normalize the meshSize from URL/request for robust comparison
+        $normalizedUrlMeshSize = strtolower($meshSize);
+        $normalizedUrlMeshSize = str_replace([' ', '.'], '', $normalizedUrlMeshSize);
         
         // Get all welded wire products first
         $allWeldedWireProducts = DB::connection('mysql_second')
@@ -33,8 +39,15 @@ class ProductByMeshSizeController extends Controller
         Log::info('All available coatings in database:', $availableCoatings->toArray());
             
         // Filter products by the specified mesh size
-        $meshSizeProducts = $allWeldedWireProducts->filter(function($product) use ($meshSize) {
-            return strcasecmp($product->size2, $meshSize) === 0;
+        $meshSizeProducts = $allWeldedWireProducts->filter(function($product) use ($normalizedUrlMeshSize) {
+            if (empty($product->size2)) {
+                return false;
+            }
+            // Normalize database mesh size for robust comparison
+            $normalizedDbMeshSize = strtolower($product->size2);
+            $normalizedDbMeshSize = str_replace([' ', '.'], '', $normalizedDbMeshSize);
+            
+            return $normalizedDbMeshSize === $normalizedUrlMeshSize;
         })->values();
         
     
