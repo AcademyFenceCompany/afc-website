@@ -20,7 +20,8 @@ class ProductReports extends Model
         'spacing' => 'Spacing',
         'speciality' => 'Specialty',
         'coating' => 'Coating',
-        'material' => 'Material'
+        'material' => 'Material',
+        'enabled' => 'Enabled',
     ];
     // This function is used to get the product report
     public function getProductById($id){
@@ -54,18 +55,20 @@ class ProductReports extends Model
         $speciality = $this->filterColumn($id, 'speciality');
         $coating = $this->filterColumn($id, 'coating');
         $material = $this->filterColumn($id, 'material');
+        $enabled = $this->filterColumn($id, 'enabled');
         return [
             'products' => $products,
             'filters' => [
                 'size' => ['size' => $size, 'selected' => '48in x 50ft'],
-                'size2' =>  ['size2' => $size2, 'selected' => '2 in. x 4 in.'],
+                'size2' =>  ['size2' => $size2, 'selected' => '2in x 4in'],
                 'size3' => ['size3' => $size3, 'selected' => '14 Gauge'],
                 'color' => ['color' => $color, 'selected' => 'Black'],
                 'style' => ['style' => $style, 'selected' => ''],
                 'spacing' => ['spacing' => $spacing, 'selected' => ''],
                 'speciality' => ['speciality' => $speciality, 'selected' => ''],
                 'coating' => ['coating' => $coating, 'selected' => 'Vinyl'],
-                'material' => ['material' => $material, 'selected' => '']
+                'material' => ['material' => $material, 'selected' => ''],
+                'enabled' => ['enabled' => $enabled, 'selected' => ''],
             ],
         ];
     }
@@ -107,7 +110,8 @@ class ProductReports extends Model
                 'speciality' => 'Specialty',
                 'spacing' => 'Spacing',
                 'coating' => 'Galv/Vinyl',
-                'material' => 'GAB/GAW'
+                'material' => 'GAB/GAW',
+                'enabled' => 'Enabled',
             ];
             break;
             case 2:
@@ -119,21 +123,40 @@ class ProductReports extends Model
                 'list' => 'List',
                 'style' => 'Style',
                 'spacing' => 'Spacing',
+                'speciality' => 'Specialty',
                 'coating' => 'Coating',
-                'material' => 'Material'
+                'material' => 'Material',
+                'enabled' => 'Enabled',
             ];
             break;
-            case 2: //
+            case 82: // Wood Post Caps
                 $columnHeaders = [
-                    'size' => 'Size',
-                    'size2' => 'Size2',
-                    'size3' => 'Size3',
+                    'size' => 'Nominal Size',
+                    'size2' => 'Cap Opening',
+                    'size3' => 'Fits Size',
                     'color' => 'Color',
                     'list' => 'List',
                     'style' => 'Style',
                     'spacing' => 'Spacing',
+                    'speciality' => 'Specialty',
                     'coating' => 'Coating',
-                    'material' => 'Material'
+                    'material' => 'Material',
+                    'enabled' => 'Enabled',
+                ];
+                break;
+            case 81: // SOLAR Post Caps
+                $columnHeaders = [
+                    'size' => 'Nominal Size',
+                    'size2' => 'Cap Opening',
+                    'size3' => 'Fits Size',
+                    'color' => 'Color',
+                    'list' => 'List',
+                    'style' => 'Style',
+                    'spacing' => 'Spacing',
+                    'speciality' => 'Specialty',
+                    'coating' => 'Coating',
+                    'material' => 'Material',
+                    'enabled' => 'Enabled',
                 ];
                 break;
             default:

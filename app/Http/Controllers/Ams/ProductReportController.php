@@ -6,6 +6,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\Models\ams\ProductReports;
 use App\Models\Products;
+use App\Models\ActivityLog;
 
 class ProductReportController extends Controller
 {
@@ -24,6 +25,15 @@ class ProductReportController extends Controller
         $columnHeaders = $productsOb->setTableHeaders($id); // Set Table Headers based on the category id
         // List of filters
         $filters = $arr['filters'];
+        // Call the activity log model
+        $activityLog = new ActivityLog();
+        $activityLog->createLog([
+            'note_desc' => 'Product report viewed',
+            'filename' => '',
+            'ip_info' => request()->ip(),
+            'users_id' => 73, //auth()->user()->id,
+            'logtype_id' => 1
+        ]);
    
         // List of install jobs
         //$installGallery = \DB::table('product_report')->get();
@@ -117,6 +127,7 @@ class ProductReportController extends Controller
         $speciality = $productsOb->filterColumn($id, 'speciality');
         $coating = $productsOb->filterColumn($id, 'coating');
         $material = $productsOb->filterColumn($id, 'material');
+        $enabled = $productsOb->filterColumn($id, 'enabled');
         $filters = [
             'size' => ['size' => $size, 'selected' => isset($request->post('size')[0]) ? $request->post('size')[0] : ''],
             'size2' => ['size2' => $size2, 'selected' => isset($request->post('size2')[0]) ? $request->post('size2')[0] : ''],
@@ -127,6 +138,7 @@ class ProductReportController extends Controller
             'speciality' => ['speciality' => $speciality, 'selected' => isset($request->post('speciality')[0]) ? $request->post('speciality')[0] : ''],
             'coating' => ['coating' => $coating, 'selected' => isset($request->post('coating')[0]) ? $request->post('coating')[0] : ''],
             'material' => ['material' => $material, 'selected' => isset($request->post('material')[0]) ? $request->post('material')[0] : ''],
+            'enabled' =>  ['enabled' => $enabled, 'selected' => isset($request->post('enabled')[0]) ? $request->post('enabled')[0] : ''],
         ];
         // List of install jobs
         //$installGallery = \DB::table('product_report')->get();
@@ -157,6 +169,8 @@ class ProductReportController extends Controller
         $id = $request->post('id');
         $product = Products::findOrFail($id); // Use the Product model to find the product
         $data = $request->except(['_token', '_method']); // Exclude _token and _method fields
+        $data['shippable'] = $request->has('shippable') ? 1 : 0; // Convert shippable to 1 or 0
+        $data['enabled'] = $request->has('enabled') ? 1 : 0; // Convert enabled to 1 or 0
         // Validate the request
         $request->validate([
             'product_name' => 'required|string|max:255',
@@ -170,6 +184,7 @@ class ProductReportController extends Controller
             'speciality' => 'nullable|string|max:255',
             'coating' => 'nullable|string|max:255',
             'material' => 'nullable|string|max:255',
+            'shippable' => 'nullable|boolean',
             'enabled' => 'nullable|boolean',
             'categories_id' => 'required|integer|exists:categories,id',
             'img_large' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image

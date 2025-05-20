@@ -153,7 +153,7 @@ $(document).ready(function() {
         }
     );
     // Event handler to load subcategories on major category selection change
-    $("#majcat_id").on("change", function() {
+    $("#majcat_id").on("click", function() {
         const selectedCategory = $(this).val();
         const subcategorySelect = $("#subcat_id");
         console.log("Selected category:", selectedCategory);
@@ -181,11 +181,12 @@ $(document).ready(function() {
     // Print products report result table when the button is clicked
     $("#print-prod-report").on("click", function() {
         // Hide the form and other elements you don't want to print
-        const formElement = $("#product-report-form-filter");
+        const formElement = $("#product-report-form-filter, d-print-none");
         formElement.hide();
 
         const printContent = document.getElementById("product-report-table").innerHTML;
-        const printWindow = window.open("", "_blank", "width=800,height=600");
+        const printWindow = window.open("", "_blank");
+        printWindow.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">');
         printWindow.document.write("<html><head><title>Print Report</title></head><body>");
         printWindow.document.write(printContent);
         printWindow.document.write("</body></html>");

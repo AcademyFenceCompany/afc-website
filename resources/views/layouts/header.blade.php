@@ -140,7 +140,6 @@
                         </ul>
                     </div>
                     
-<<<<<<< HEAD
                     <div class="dropdown">
                         <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="">WELDED WIRE</a>
                         <ul class="dropdown-menu">
@@ -207,33 +206,13 @@
                     @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                         <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
                     @endforeach
-=======
-                    <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn">WELDED WIRE</a>
-                    <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
-                        <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
-                    @endforeach -->
->>>>>>> afc-webdev-c
                     <a href='{{ route('contact') }}' class="nav-link btn nav-btn">CONTACT US</a>
                     <div class="dropdown">
                         <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-list"></i> Quick Menu
                         </a>
                         <ul class="dropdown-menu">
-<<<<<<< HEAD
-                            @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
-=======
-                            <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
->>>>>>> afc-webdev-c
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
-                                        {{ $page->title ?: $page->category->family_category_name }}
-                                    </a>
-                                </li>
-<<<<<<< HEAD
-                            @endforeach
-=======
-                            @endforeach -->
->>>>>>> afc-webdev-c
+                            
                         </ul>
                     </div>
                 </nav>
@@ -272,7 +251,6 @@
                             </ul>
                         </div>
                         
-<<<<<<< HEAD
                         <div class="dropdown">
                             <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">WELDED WIRE</a>
                             <ul class="dropdown-menu">
@@ -339,33 +317,13 @@
                         @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
                             <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn mb-2">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
                         @endforeach
-=======
-                        <a href='{{ route('weldedwire') }}' class="nav-link btn nav-btn mb-2">WELDED WIRE</a>
-                        <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'main_menu')->orderBy('menu_order')->get() as $page)
-                            <a href='{{ route('category.show', ['slug' => $page->slug]) }}' class="nav-link btn nav-btn mb-2">{{ strtoupper($page->title ?: $page->category->family_category_name) }}</a>
-                        @endforeach -->
->>>>>>> afc-webdev-c
                         <a href='{{ route('contact') }}' class="nav-link btn nav-btn mb-2">CONTACT US</a>
                         <div class="dropdown">
                             <a href="#" class="nav-link btn nav-btn dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="bi bi-list"></i> Quick Menu
                             </a>
                             <ul class="dropdown-menu">
-<<<<<<< HEAD
-                                @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
-=======
-                                <!-- @foreach(\App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get() as $page)
->>>>>>> afc-webdev-c
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('category.show', ['slug' => $page->slug]) }}">
-                                            {{ $page->title ?: $page->category->family_category_name }}
-                                        </a>
-                                    </li>
-<<<<<<< HEAD
-                                @endforeach
-=======
-                                @endforeach -->
->>>>>>> afc-webdev-c
+                               
                             </ul>
                         </div>
                     </div>

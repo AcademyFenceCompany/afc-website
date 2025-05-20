@@ -234,7 +234,7 @@
                             <div class="col-4">
                                 <div class="mb-3">
                                 <label for="shippable" class="form-label">Shippable</label>
-                                <input type="checkbox" name="shippable" id="shippable" class="form-check-input" {{ $product->shippable ? 'checked' : '' }}>
+                                <input type="checkbox" name="shippable" id="shippable" class="form-check-input" value="1" {{ $product->shippable ? 'checked' : '' }}>
                             </div>
                             </div>
                         </div>

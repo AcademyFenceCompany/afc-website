@@ -30,10 +30,14 @@
     @if(!empty($filters['material']))
         <x-prod-report-filter-list :filters="$filters['material']['material']" :selected="$filters['material']['selected']" :filtername="$columnHeaders['material']" :colname="'material'"  :inputname="'material'" />
     @endif
+    @if(!empty($filters['enabled']))
+        <x-prod-report-filter-list :filters="$filters['enabled']['enabled']" :selected="$filters['enabled']['selected']" :filtername="$columnHeaders['enabled']" :colname="'enabled'"  :inputname="'enabled'" />
+    @endif
     <input type="hidden" name="cat_id" value="{{ $id }}">
 </form>
-<div class="d-none d-print-block">
-    This is a print preview. Please adjust your print settings to ensure the report fits on the page.
+<div class="d-none d-print-block text-center fw-bold mt-3 mb-3">
+    <h2 class="text-dark">Product Report</h2>
+    {{ $categoryqry->firstWhere('id', $id)->maj_cat_name ?? 'N/A' }} - {{$categoryqry->firstWhere('id', $id)->cat_name ?? 'N/A' }}
 </div>
 
 @if(!empty($filters))
@@ -72,7 +76,7 @@
         <tbody>
             @foreach($products as $product)
             <tr data-id="{{ $product->id }}">
-                <th scope="row">{{ $product->item_no }} <a class="btn btn-outline-secondary px-2 py-1" href="#" role="button" onclick="App.openModal({{$product->id}},'exampleModal')">
+                <th scope="row">{{ $product->item_no }} <a class="btn btn-outline-secondary px-2 py-1 d-print-none" href="#" role="button" onclick="App.openModal({{$product->id}},'exampleModal')">
                     <i class="bi bi-pencil-fill"></i></a>
                 </th>
                 <td>{{ $product->product_name }}</td>
@@ -89,6 +93,7 @@
         </tbody>
     </table>
 </div>
+<p class="d-none d-print-block text-center fw-bold mt-3 mb-3"><span class="ms-3">Report generated on: {{ now()->format('Y-m-d H:i:s') }}</span></p>
 @else
     <p><strong>Sorry, no records were found matching your criteria.</strong> Please adjust the filters and try again.</p>
 @endif

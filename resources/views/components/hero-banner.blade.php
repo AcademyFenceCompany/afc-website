@@ -1,4 +1,4 @@
-<section class="hero-banner p-5" style="background-image: url(https://www.freedomfenceandrailing.com/wp-content/uploads/2018/12/picket-arched-fence.jpg);">
+<section class="hero-banner p-5" style="background-image: url(https://images.pexels.com/photos/4483773/pexels-photo-4483773.jpeg);">
     <div class="container px-4 py-3 mb-5">
         <div class="row align-items-center g-5 py-3">
             <div class="col-lg-6 d-none">

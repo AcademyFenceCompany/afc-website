@@ -181,7 +181,7 @@
             <div class="row row-cols-1 row-cols-sm-2 g-4">
               <div class="col d-flex flex-column gap-2">
                 <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-secondary bg-gradient fs-4 rounded-3">
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-cart4"></i>
                 </div>
                 <h4 class="fw-semibold mb-0 text-body-emphasis">In Stock Products</h4>
                 <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
@@ -189,7 +189,7 @@
 
               <div class="col d-flex flex-column gap-2">
                 <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-secondary bg-gradient fs-4 rounded-3">
-                  <i class="bi bi-apple"></i>
+                  <i class="bi bi-truck"></i>
                 </div>
                 <h4 class="fw-semibold mb-0 text-body-emphasis">Shipping</h4>
                 <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
@@ -197,7 +197,7 @@
 
               <div class="col d-flex flex-column gap-2">
                 <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-secondary bg-gradient fs-4 rounded-3">
-                  <i class="bi bi-apple"></i>
+                  <i class="bi bi-headset"></i>
                 </div>
                 <h4 class="fw-semibold mb-0 text-body-emphasis">Customer Service</h4>
                 <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
@@ -205,7 +205,7 @@
 
               <div class="col d-flex flex-column gap-2">
                 <div class="feature-icon-small d-inline-flex align-items-center justify-content-center text-bg-secondary bg-gradient fs-4 rounded-3">
-                  <i class="bi bi-apple"></i>
+                  <i class="bi bi-wrench-adjustable"></i>
                 </div>
                 <h4 class="fw-semibold mb-0 text-body-emphasis">Contractors</h4>
                 <p class="text-body-secondary">Paragraph of text beneath the heading to explain the heading.</p>
@@ -215,6 +215,8 @@
         </div>
       </div>
     </section>
+
+    <x-card-categories />
 
     <section class="d-none">
       <div class="container">

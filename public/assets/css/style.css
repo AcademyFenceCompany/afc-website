@@ -32,7 +32,7 @@ header .nav-link {
   border-radius: 0.4rem;
   padding: 0.5rem 1rem !important;
   text-align: center;
-  font-weight: normal;
+  font-weight: bold;
   line-height: 2;
   height: 100%;
   display: flex;
@@ -390,4 +390,42 @@ section {
   form {
     display: none;
   }
+}
+.card-categories .card {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  position: relative;
+  border: none;
+  overflow: hidden;
+}
+.card-categories .card .card-caption {
+  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  height: 30%;
+  padding: 1.5rem 0;
+  transition: height 0.2s ease, padding 0.4s ease;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.card-categories .card .card-caption .small-caption, .card-categories .card .card-caption button {
+  visibility: hidden;
+}
+.card-categories .card:hover .card-caption {
+  height: 100%;
+  padding: 1rem 0;
+  display: block;
+  background: rgba(255, 255, 255, 0.952);
+}
+.card-categories .card:hover .card-caption .small-caption, .card-categories .card:hover .card-caption button {
+  visibility: visible;
 }/*# sourceMappingURL=style.css.map */

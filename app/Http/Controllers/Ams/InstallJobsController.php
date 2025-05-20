@@ -39,7 +39,10 @@ class InstallJobsController extends Controller
             
             // Process the uploaded image
             $image = Image::make($request->file('filename')->getRealPath());
-            $watermark = Image::make(public_path('images/logo.png'));
+            $watermark = Image::make(public_path('/assets/images/logo.png'));
+            if (!file_exists($watermark)) {
+                throw new \Exception("File not found at path: $watermark");
+            }
 
             // Resize watermark to 10% of the original image size
             $watermark->resize($image->width() * 0.1, null, function ($constraint) {

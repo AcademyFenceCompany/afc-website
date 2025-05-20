@@ -1,4 +1,4 @@
-<nav aria-label="breadcrumb" class="bg-light p-3">
+<nav aria-label="breadcrumb" class="bg-light d-print-none p-3">
   <ol class="breadcrumb mt-2 float-start">
     <li class="breadcrumb-item text-primary"><strong>{{ $categoryqry->firstWhere('id', $id)->maj_cat_name ?? 'N/A' }}</strong></li>
     <li class="breadcrumb-item text-primary"><strong>{{ $categoryqry->firstWhere('id', $id)->cat_name ?? 'N/A' }}</strong> ({{$id}})</li>
