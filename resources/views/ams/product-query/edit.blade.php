@@ -141,6 +141,10 @@
                                 <label class="form-label">Spacing</label>
                                 <input type="text" name="spacing" value="{{ $product->spacing }}" class="form-control">
                             </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Product Grouping Code</label>
+                                <input type="text" name="parent" value="{{ $product->parent }}" class="form-control">
+                            </div>
                         </div>
 
                         <div class="row">

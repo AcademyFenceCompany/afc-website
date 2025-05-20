@@ -15,7 +15,6 @@
                     <th class="text-start">Price</th>
                 </tr>
             </thead>
-            <?php dump(session('cart')); ?>
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = session('cart', []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr>

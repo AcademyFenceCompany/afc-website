@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Wood Post Caps'); ?>
 
 <?php $__env->startSection('styles'); ?>
@@ -114,6 +112,63 @@
         .quantity-input {
             text-align: center;
         }
+
+        @media screen and (max-width: 767px) {
+            .product-card-table thead {
+                display: none;
+            }
+            .product-card-table, .product-card-table tbody, .product-card-table tr, .product-card-table td {
+                display: block;
+                width: 100% !important;
+            }
+            .product-card-table tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 10px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .product-card-table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border: none;
+                padding-bottom: 8px;
+                padding-top: 8px;
+                min-height: 30px;
+            }
+            .product-card-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: calc(50% - 20px);
+                text-align: left;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+            .product-card-table td.quantity-cell, .product-card-table td.price-cell, .product-card-table td.action-cell {
+                text-align: center;
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+            .product-card-table td.quantity-cell::before, .product-card-table td.price-cell::before, .product-card-table td.action-cell::before {
+                position: static;
+                display: block;
+                width: 100%;
+                text-align: center;
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
+            .product-card-table td.quantity-cell .input-group {
+                margin: 5px auto;
+                width: 150px; /* Overrides inline 100px for card view */
+            }
+            .product-card-table td.action-cell button.add-to-cart-btn {
+                width: 100%;
+                padding: 10px;
+                font-size: 1rem;
+            }
+        }
     </style>
 <?php $__env->stopSection(); ?>
 
@@ -179,7 +234,7 @@
                             <h5 class="mb-0"><?php echo e(strtoupper($parentGroups[$parentCode] ?? 'WOOD POST CAPS')); ?></h5>
                         </div>
 
-                        <table class="table table-bordered">
+                        <table class="table table-bordered product-card-table">
                             <thead>
                                 <tr>
                                     <th>Item Number</th>
@@ -187,35 +242,37 @@
                                     <th>Nominal Post Size</th>
                                     <th>Cap Opening</th>
                                     <th>Fits to Post Size</th>
+                                    
                                     <th>Color</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Price</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-                                        <td><?php echo e($product->item_no); ?></td>
-                                        <td><?php echo e($product->product_name); ?></td>
-                                        <td><?php echo e($product->size); ?></td>
-                                        <td><?php echo e($product->size2); ?></td>
-                                        <td><?php echo e($product->size3); ?></td>
-                                        <td><?php echo e($product->color ?? 'Pressure Treated'); ?></td>
-                                        <td class="text-center">
+                                        <td data-label="Item Number:"><?php echo e($product->item_no); ?></td>
+                                        <td data-label="Name:"><?php echo e($product->product_name); ?></td>
+                                        <td data-label="Nominal Post Size:"><?php echo e($product->size); ?></td>
+                                        <td data-label="Cap Opening:"><?php echo e($product->size2); ?></td>
+                                        <td data-label="Fits to Post Size:"><?php echo e($product->size3); ?></td>
+                                        
+                                        <td data-label="Color:"><?php echo e($product->color ?? 'Pressure Treated'); ?></td>
+                                        <td data-label="Quantity:" class="text-center quantity-cell">
                                             <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
                                                 <button class="btn btn-outline-secondary quantity-minus" type="button">-</button>
                                                 <input type="text" class="form-control text-center quantity-input" value="1">
                                                 <button class="btn btn-outline-secondary quantity-plus" type="button">+</button>
                                             </div>
                                         </td>
-                                        <td class="text-center">
+                                        <td data-label="Price:" class="text-center price-cell">
                                             <div>
                                                 $<span class="product-price"
                                                     data-base-price="<?php echo e($product->price); ?>"><?php echo e(number_format($product->price, 2)); ?></span>
                                             </div>
                                         </td>
-                                        <td> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
+                                        <td data-label="Action:" class="text-center action-cell"> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
                                             data-id="<?php echo e($product->id); ?>"
                                             data-item_no="<?php echo e($product->item_no); ?>" 
                                             data-product_name="<?php echo e($product->product_name); ?>"
@@ -231,6 +288,7 @@
                                             data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
                                             data-size2="<?php echo e($product->size2 ?? ''); ?>"
                                             data-size3="<?php echo e($product->size3 ?? ''); ?>"
+                                            data-size4="<?php echo e($product->display_size_2 ?? ''); ?>"
                                             data-material="<?php echo e($product->material ?? ''); ?>"
                                             data-spacing="<?php echo e($product->spacing ?? ''); ?>"
                                             data-coating="<?php echo e($product->coating ?? ''); ?>"
@@ -342,49 +400,6 @@
             $(document).on('input', '.quantity-input', function () {
                 updatePrice($(this));
             });
-
-            // Add to cart AJAX
-            // $(document).on('click', '.add-to-cart-btn', function () {
-            //     var $button = $(this);
-            //     var $row = $button.closest('tr');
-            //     var itemNo = $button.data('item');
-            //     var name = $button.data('name');
-            //     var price = $button.data('price');
-            //     var quantity = $row.find('.quantity-input').val();
-
-            //     $.ajax({
-            //         url: '<?php echo e(route("cart.add")); ?>',
-            //         method: 'POST',
-            //         data: {
-            //             _token: '<?php echo e(csrf_token()); ?>',
-            //             item_no: itemNo,
-            //             product_name: name,
-            //             price: price,
-            //             quantity: quantity
-            //         },
-            //         success: function (response) {
-            //             if (response.success) {
-            //                 toastr.success(name + ' added to cart!');
-
-            //                 // ✅ Update cart count badge
-            //                 if ($('.cart-count').length > 0) {
-            //                     $('.cart-count').text(response.cartCount);
-            //                 }
-
-            //                 // ✅ Dynamically update mini cart if data is present and function exists
-            //                 if (typeof updateMiniCart === 'function' && response.cart) {
-            //                     updateMiniCart(response.cart);
-            //                 }
-            //             } else {
-            //                 toastr.error('Error adding item to cart');
-            //             }
-            //         },
-            //         error: function (xhr) {
-            //             toastr.error('Error adding item to cart');
-            //             console.error(xhr.responseText);
-            //         }
-            //     });
-            // });
 
 
             // Trigger selected parent cap on load

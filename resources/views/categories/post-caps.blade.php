@@ -5,6 +5,9 @@
 @section('content')
 
     <style>
+        p {
+            font-size: 14px;
+        }
         .border-bottom {
             font-size: 12px;
         }
@@ -19,12 +22,13 @@
         }
 
         .post-cap-image {
-            max-width: 150px;
+            max-width: 170px;
             object-fit: contain;
+            height: 150px;
         }
 
         .post-cap-content {
-            padding: 20px;
+            padding: 2px;
         }
 
         .post-cap-content h5 {
@@ -35,7 +39,10 @@
             font-size: 0.95rem;
             color: #555;
         }
-
+        .post-cap-content a {
+            color: #8B2E14;
+            text-decoration: none;
+        }
         .btn-product {
             background-color: #8B2E14;
             color: white;
@@ -60,12 +67,11 @@
 
     <!-- Header Section -->
     <div class="rounded bg-brown">
-        <h1 class="page-title text-center py-2 mb-0">POST CAPS</h1>
+        <h1 class="page-title text-center py-2 mb-0">Fence Post Caps</h1>
     </div>
     <div class="text-center py-2 mb-4 border-bottom">
-        <p class="mb-0">Post Caps are normally used for a
-            number of projects including fence. We carry a wide selection of post caps in differrent materials including
-            wood, vinyl and aluminum as well as solar post caps in different colors.</p>
+        <p class="mb-0">We carry wood post caps, solar post caps, and vinyl post caps. Post Caps are normally used for a number of projects including fence. We carry a wide selection of post caps in differrent materials including wood, 
+            vinyl and aluminum as well as solar post caps in different colors.</p>
     </div>
 
 
@@ -74,12 +80,11 @@
             <!-- Card 1 -->
             <div class="col-md-4">
                 <div class="post-cap-card d-flex post-cap-flex p-3">
-                    <img src="/resources/images/post_cap.jpg" alt="Vinyl Cap" class="post-cap-image me-3">
+                    <a href="{{ route('woodpostcaps.index') }}"><img src="/resources/images/woodpost.png" alt="Wood Cap" class="post-cap-image me-3"></a>
                     <div class="post-cap-content">
-                        <h5>Vinyl Post Caps</h5>
-                        <p>Vinyl PVC Ball Cap, External Flat Cap, New England Cap, Gothic Cap, and Internal Flat Cap.
-                            Accessories for 4" x 4", and 5" x 5" Vinyl Fence Posts.</p>
-                        <a href="#" class="btn btn-product mt-2">View Product</a>
+                        <h5> <a href="{{ route('woodpostcaps.index') }}" rel="noopener noreferrer">Wood Post Caps</a></h5>
+                        <p>Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat
+                            Top and Ball Top.</p>
                     </div>
                 </div>
             </div>
@@ -87,25 +92,10 @@
             <!-- Card 2 -->
             <div class="col-md-4">
                 <div class="post-cap-card d-flex post-cap-flex p-3">
-                    <img src="/resources/images/post_cap.jpg" alt="Wood Cap" class="post-cap-image me-3">
+                    <img src="/resources/images/solarpost.jpg" alt="Chain Link Cap" class="post-cap-image me-3">
                     <div class="post-cap-content">
-                        <h5>Wood Post Caps</h5>
-                        <p>Cedar Wood Post attached easily to 4", 5" and 6" posts. Many styles including Pyramid Top, Flat
-                            Top and Ball Top.</p>
-                        <a href="{{ route('woodpostcaps.index') }}" class="btn btn-product mt-2">View Product</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="col-md-4">
-                <div class="post-cap-card d-flex post-cap-flex p-3">
-                    <img src="/resources/images/post_cap.jpg" alt="Chain Link Cap" class="post-cap-image me-3">
-                    <div class="post-cap-content">
-                        <h5>Chain Link Post Caps</h5>
-                        <p>Aluminum chain link acorn caps are the perfect way to finish a fence project. Comes in sizes
-                            ranging from 1-3/8" all the way up to 6-5/8".</p>
-                        <a href="#" class="btn btn-product mt-2">View Product</a>
+                        <h5>Solar Post Caps</h5>
+                        <p>Will fit over any standard vinyl or wood post. Allowes up to 10 hours of light per night. Made from UV Stable, 100% prime PVC (vinyl) guaranteed not to fade, rust or yellow.</p>
                     </div>
                 </div>
             </div>

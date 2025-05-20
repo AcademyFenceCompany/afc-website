@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Wood Post Caps')
+@section('title', 'Solar Posts Caps')
 
 @section('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -114,63 +114,6 @@
         .quantity-input {
             text-align: center;
         }
-
-        @media screen and (max-width: 767px) {
-            .product-card-table thead {
-                display: none;
-            }
-            .product-card-table, .product-card-table tbody, .product-card-table tr, .product-card-table td {
-                display: block;
-                width: 100% !important;
-            }
-            .product-card-table tr {
-                margin-bottom: 15px;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                padding: 10px;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            }
-            .product-card-table td {
-                text-align: right;
-                padding-left: 50%;
-                position: relative;
-                border: none;
-                padding-bottom: 8px;
-                padding-top: 8px;
-                min-height: 30px;
-            }
-            .product-card-table td::before {
-                content: attr(data-label);
-                position: absolute;
-                left: 10px;
-                width: calc(50% - 20px);
-                text-align: left;
-                font-weight: bold;
-                white-space: nowrap;
-            }
-            .product-card-table td.quantity-cell, .product-card-table td.price-cell, .product-card-table td.action-cell {
-                text-align: center;
-                padding-left: 10px;
-                padding-right: 10px;
-            }
-            .product-card-table td.quantity-cell::before, .product-card-table td.price-cell::before, .product-card-table td.action-cell::before {
-                position: static;
-                display: block;
-                width: 100%;
-                text-align: center;
-                font-weight: bold;
-                margin-bottom: 8px;
-            }
-            .product-card-table td.quantity-cell .input-group {
-                margin: 5px auto;
-                width: 150px; /* Overrides inline 100px for card view */
-            }
-            .product-card-table td.action-cell button.add-to-cart-btn {
-                width: 100%;
-                padding: 10px;
-                font-size: 1rem;
-            }
-        }
     </style>
 @endsection
 
@@ -236,7 +179,7 @@
                             <h5 class="mb-0">{{ strtoupper($parentGroups[$parentCode] ?? 'WOOD POST CAPS') }}</h5>
                         </div>
 
-                        <table class="table table-bordered product-card-table">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Item Number</th>
@@ -244,37 +187,35 @@
                                     <th>Nominal Post Size</th>
                                     <th>Cap Opening</th>
                                     <th>Fits to Post Size</th>
-                                    {{-- <th>Overall Actual Size</th> --}}
                                     <th>Color</th>
-                                    <th class="text-center">Quantity</th>
-                                    <th class="text-center">Price</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($products as $product)
                                     <tr>
-                                        <td data-label="Item Number:">{{ $product->item_no }}</td>
-                                        <td data-label="Name:">{{ $product->product_name }}</td>
-                                        <td data-label="Nominal Post Size:">{{ $product->size }}</td>
-                                        <td data-label="Cap Opening:">{{ $product->size2 }}</td>
-                                        <td data-label="Fits to Post Size:">{{ $product->size3 }}</td>
-                                        {{-- <td data-label="Overall Actual Size:">{{ $product->display_size_2 }}</td> --}}
-                                        <td data-label="Color:">{{ $product->color ?? 'Pressure Treated' }}</td>
-                                        <td data-label="Quantity:" class="text-center quantity-cell">
+                                        <td>{{ $product->item_no }}</td>
+                                        <td>{{ $product->product_name }}</td>
+                                        <td>{{ $product->size }}</td>
+                                        <td>{{ $product->size2 }}</td>
+                                        <td>{{ $product->size3 }}</td>
+                                        <td>{{ $product->color ?? 'Pressure Treated' }}</td>
+                                        <td class="text-center">
                                             <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
                                                 <button class="btn btn-outline-secondary quantity-minus" type="button">-</button>
                                                 <input type="text" class="form-control text-center quantity-input" value="1">
                                                 <button class="btn btn-outline-secondary quantity-plus" type="button">+</button>
                                             </div>
                                         </td>
-                                        <td data-label="Price:" class="text-center price-cell">
+                                        <td class="text-center">
                                             <div>
                                                 $<span class="product-price"
                                                     data-base-price="{{ $product->price }}">{{ number_format($product->price, 2) }}</span>
                                             </div>
                                         </td>
-                                        <td data-label="Action:" class="text-center action-cell"> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
+                                        <td> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
                                             data-id="{{ $product->id }}"
                                             data-item_no="{{ $product->item_no }}" 
                                             data-product_name="{{ $product->product_name }}"
@@ -290,7 +231,6 @@
                                             data-display_size_2="{{ $product->display_size_2 ?? '' }}"
                                             data-size2="{{ $product->size2 ?? '' }}"
                                             data-size3="{{ $product->size3 ?? '' }}"
-                                            data-size4="{{ $product->display_size_2 ?? '' }}"
                                             data-material="{{ $product->material ?? '' }}"
                                             data-spacing="{{ $product->spacing ?? '' }}"
                                             data-coating="{{ $product->coating ?? '' }}"
@@ -403,7 +343,6 @@
             $(document).on('input', '.quantity-input', function () {
                 updatePrice($(this));
             });
-
 
             // Trigger selected parent cap on load
             @if(isset($selectedParent))

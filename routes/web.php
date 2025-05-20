@@ -226,6 +226,8 @@ Route::get('/wood-fence/post-rail/{style?}', [PostRailController::class, 'index'
 Route::get('/wood-fence/stockade', [StockadeFenceController::class, 'index'])->name('stockade.index');
 Route::get('/wood-fence/wood-post-caps', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.index');
 Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.style');
+Route::get('/wood-fence/solar-post-caps', [SolarPostController::class, 'index'])->name('solarpost.index');
+Route::get('/wood-fence/solar-post-caps/{style?}', [SolarPostController::class, 'index'])->name('solarpost.style');
 
 // Aluminum Fence Routes
 Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
@@ -349,11 +351,11 @@ Route::get('/api/order-categories', [App\Http\Controllers\OrderCategoryControlle
 Route::get('/api/order-products/{categoryId}', [App\Http\Controllers\OrderCategoryController::class, 'ajaxGetProducts']);
 
 Route::get('/post-caps', function () {
-    return view('post-caps');
+    return view('categories/post-caps');
 })->name('post-caps');
 
 Route::get('/temp-construction-fence', function () {
-    return view('temp-construction-fence');
+    return view('categories/temp-construction-fence');
 })->name('temp-construction-fence');
 
 
