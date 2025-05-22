@@ -184,7 +184,18 @@ Route::get('/product/{id}', [SingleProductController::class, 'show'])->name('pro
 Route::get('/product/details/{id}', [SingleProductController::class, 'fetchProductDetails']);
 
 Route::get('/weldedwire', [ProductController::class, 'showWeldedWire'])->name('weldedwire');
-Route::get('/wwf-product', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+// Routes for welded wire products with proper hierarchy for breadcrumbs
+Route::get('/weldedwire/{coating}/{meshSize}', [ProductByMeshSizeController::class, 'showMeshSizeProducts'])->name('meshsize.products');
+// Redirect old route to new URL format for proper breadcrumb display
+Route::get('/wwf-product', function(\Illuminate\Http\Request $request) {
+    $coating = $request->input('coating');
+    $meshSize = $request->input('meshSize');
+    if ($coating && $meshSize) {
+        return redirect('/weldedwire/' . $coating . '/' . $meshSize);
+    }
+    return redirect('/weldedwire');
+})->name('meshsize.products.legacy');
+Route::get('/knockin-posts', [ProductByMeshSizeController::class, 'knockinpostProduct'])->name('knockin.posts');
 
 Route::get('/wood-fence', [WoodFenceMysql2Controller::class, 'index'])->name('woodfence');
 Route::get('/wood-fence/specs/{id}/{spacing?}', [WoodFenceMysql2Controller::class, 'specs'])
@@ -203,6 +214,8 @@ Route::get('/wood-fence/post-rail/{style?}', [PostRailController::class, 'index'
 Route::get('/wood-fence/stockade', [StockadeFenceController::class, 'index'])->name('stockade.index');
 Route::get('/wood-fence/wood-post-caps', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.index');
 Route::get('/wood-fence/wood-post-caps/{style?}', [WoodPostCapsController::class, 'index'])->name('woodpostcaps.style');
+Route::get('/wood-fence/solar-post-caps', [SolarPostController::class, 'index'])->name('solarpost.index');
+Route::get('/wood-fence/solar-post-caps/{style?}', [SolarPostController::class, 'index'])->name('solarpost.style');
 
 // Aluminum Fence Routes
 Route::get('/aluminum-fence', [AluminumFenceController::class, 'main'])->name('aluminumfence.main');
@@ -323,26 +336,13 @@ Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarku
 
 //==================== Development Routes (Colin) ====================//
 
-Route::get('/academytest', [AcademyTestController::class, 'index']); //->middleware(['auth', 'verified'])->name('academytest');
-Route::get('/chainlinkfence', function(){
- 
-    $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
-    $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
-    $height = 100; //$h;
-    return view('chainlinkhome', compact('majCategories', 'subCategories', 'height'));
-})->name('chainlinkfence'); //->middleware(['auth', 'verified'])->name('academytest');
-//Route::get('/academytest/height/{height}', [AcademyTestController::class, 'height'])->name('academytest.height');
-Route::get('/academytest/height/{height}', function ($height) {
-    // return response()->json([
-    //     'message' => 'This is dummy JSON data for height 4',
-    //     'height' => $height,
-    //     'data' => [
-    //         'example_key' => 'example_value'
-    //     ]
-    // ]);
-    return app(ProductFilterController::class)->height($height);
-})->name('academytest.height');
-use App\Http\Controllers\ImageController;
+Route::get('/post-caps', function () {
+    return view('categories/post-caps');
+})->name('post-caps');
+
+Route::get('/temp-construction-fence', function () {
+    return view('categories/temp-construction-fence');
+})->name('temp-construction-fence');
 
 
 Route::get('/theme', function () {

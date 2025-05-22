@@ -16,6 +16,7 @@ class WoodFenceMysql2Controller extends Controller
             ->where('majorcategories_id', 1)
             ->where('web_enabled', 1) // Only show web-enabled categories
             ->select('id', 'cat_name', 'cat_desc_long', 'seo_name', 'image', 'web_enabled')
+            ->orderBy('page_template', 'desc')
             ->get();
 
         $categoriesWithDetails = [];

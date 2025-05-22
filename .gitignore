@@ -21,10 +21,8 @@ yarn-error.log
 /.vscode
 storage/clockwork/*
 storage/clockwork/index
-<<<<<<< HEAD
 storage/logs/*.log
 /storage/framework/cache/
 /storage/framework/sessions/
 /storage/framework/views/
-=======
->>>>>>> afc-webdev-c
+/storage/framework/cache/data/

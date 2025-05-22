@@ -110,13 +110,25 @@ class OrderController extends Controller
                 ->whereNotNull('phone')
                 ->orderBy('id')
                 ->get();
+                
+            // Get products with category_id 82 or class 'wpc'
+            $specialProducts = DB::connection('mysql_second')->table('products')
+                ->where('categories_id', 82)
+                ->orWhere('class', 'wpc')
+                ->select('id', 'product_name', 'categories_id', 'class')
+                ->get();
+                
+            // Check if alternative shipper should be used
+            $useAlternativeShipper = $specialProducts->isNotEmpty();
 
             return view('ams.order.create-order', [
                 'order' => $order,
                 'customers' => $customers,
                 'selectedCustomer' => $selectedCustomer,
                 'shippingAddresses' => $shippingAddresses,
-                'billingInfo' => $billingInfo
+                'billingInfo' => $billingInfo,
+                'specialProducts' => $specialProducts,
+                'useAlternativeShipper' => $useAlternativeShipper
             ]);
         } catch (\Exception $e) {
             // Log the error

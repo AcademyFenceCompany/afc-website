@@ -697,7 +697,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td>${amountPerBox}</td>
                             <td>${boxWeight.toFixed(2)} lbs</td>
                             <td>$${(productShippingCost / boxCount).toFixed(2)}</td>
-                            <td>${product.product_name} (${product.product_data?.item_no})</td>
+                            <td>${product.product_name}</td>
                         `;
                         
                         upsShippingTable.appendChild(row);
@@ -715,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 totalsRow.innerHTML = `
                     <td>${totalWeight.toFixed(2)} lbs</td>
                     <td>$${baseCharge.toFixed(2)}</td>
-                    <td>$${boxesTotal.toFixed(2)} (${totalBoxes} boxes)</td>
+                    <td>$${boxesTotal.toFixed(2)}</td>
                     <td>$${markup.toFixed(2)}</td>
                     <td>$${totalPrice.toFixed(2)}</td>
                 `;
@@ -727,12 +727,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="list-group mb-3">
                         <label class="list-group-item d-flex justify-content-between align-items-center">
                             <div>
-                                <input class="form-check-input me-2 shipping-option" type="radio" name="shipping_option" 
+                                <input class="form-check-input me-2 shipping-option" type="checkbox" name="shipping_option" 
                                     value="UPS Ground" data-charge="${totalPrice.toFixed(2)}" 
                                     data-carrier="UPS" data-service="Ground" data-transit-days="3-5"
                                     data-base-cost="${baseCharge.toFixed(2)}" data-weight="${totalWeight.toFixed(2)}"
                                     data-class="" data-zip="${document.getElementById('shipping-zip')?.value || ''}"
-                                    data-packages="${totalBoxes}" checked>
+                                    data-packages="${totalBoxes}" id="upsGroundOption">
                                 UPS Ground
                             </div>
                             <span class="badge bg-primary rounded-pill">$${totalPrice.toFixed(2)}</span>
@@ -740,205 +740,148 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
                 
-                // Pre-populate the Shipping Estimate Organizer
-                
-                populateShippingEstimateOrganizer({
-                    carrier: 'UPS',
-                    weight: totalWeight.toFixed(2),
-                    // class: Object.values(productGroups)[0].class,
-                    cost: totalPrice.toFixed(2),
-                    zip: document.getElementById('shipping-zip')?.value || '',
-                    packages: totalBoxes
-                });
-                
-                // Trigger the change event to ensure the shipping option is selected
-                const shippingOption = document.querySelector('.shipping-option');
-                if (shippingOption) {
-                    const event = new Event('change');
-                    shippingOption.dispatchEvent(event);
-                }
-            } else {
-                ratesContainer.innerHTML = `
-                    <div class="alert alert-warning">
-                        No UPS Ground shipping rates available for this address and package configuration.
-                    </div>
-                `;
-            }
-        } else {
-            ratesContainer.innerHTML = `
-                <div class="alert alert-warning">
-                    No UPS shipping rates available for this address and package configuration.
-                </div>
-            `;
+                // Add event listener to UPS Ground option
+                setTimeout(() => {
+                    const upsGroundOption = document.getElementById('upsGroundOption');
+                    if (upsGroundOption) {
+                        upsGroundOption.addEventListener('change', handleShippingOptionChange);
+                    }
+                }, 100);
         }
+    });
+}
+
+function displayUPSRates(upsResponse) {
+    console.log('UPS rates response:', upsResponse);
+
+    const ratesContainer = document.getElementById('shippingRates');
+    const upsShippingTable = document.getElementById('upsShippingTable');
+    const upsShippingTotals = document.getElementById('upsShippingTotals');
+
+    if (!ratesContainer || !upsShippingTable || !upsShippingTotals) {
+        console.error('UPS shipping containers not found');
+        return;
     }
 
-    function displayFreightRates(tforceData, rlData) {
-        console.log('TForce data:', tforceData);
-        console.log('R&L data:', rlData);
-        
-        const ratesContainer = document.getElementById('shippingRates');
-        const freightShippingTable = document.getElementById('freightShippingTable');
-        
-        if (!ratesContainer || !freightShippingTable) {
-            console.error('Freight shipping containers not found');
-            return;
-        }
-        
-        // Clear previous content
-        freightShippingTable.innerHTML = '';
-        
-        // Get existing rates HTML or create new
-        let ratesHtml = ratesContainer.innerHTML || '<div class="list-group mb-3">';
-        
-        let hasRates = false;
-        
-        // Calculate pallet quantity based on product count
-        const productCount = orderItems.length;
-        const palletQty = Math.ceil(productCount / 4); // 4 products per pallet
-        const palletSize = '49x48x54'; // Standard pallet size
-        
-        // Process TForce rates
-        if (tforceData && tforceData.summary && tforceData.detail && tforceData.detail.length > 0) {
-            hasRates = true;
-            
-            tforceData.detail.forEach((shipment) => {
-                // Get total charge from shipmentCharges
-                const totalCharge = parseFloat(shipment.shipmentCharges?.total?.value || 0);
-                
-                // Get service description
-                const serviceName = shipment.service?.description || 'TForce Freight LTL';
-                
-                // Get quote number
-                const quoteNumber = tforceData.summary?.quoteNumber || 'N/A';
-                
-                // Get billable weight
-                const weight = shipment.shipmentWeights?.billable?.value || getTotalWeight().toFixed(2);
-                
-                // Get base charge (LND_GROSS)
-                let baseCharge = 0;
-                if (shipment.rate) {
-                    const lndGrossRate = shipment.rate.find(r => r.code === 'LND_GROSS');
-                    if (lndGrossRate) {
-                        baseCharge = parseFloat(lndGrossRate.value);
-                    }
+    // Clear previous content
+    upsShippingTable.innerHTML = '';
+    upsShippingTotals.innerHTML = '';
+
+    if (upsResponse.RateResponse && upsResponse.RateResponse.RatedShipment && upsResponse.RateResponse.RatedShipment.length > 0) {
+        // Find UPS Ground rate (Service Code '03')
+        const upsGroundRate = upsResponse.RateResponse.RatedShipment.find(shipment => shipment.Service.Code === '03');
+
+        if (upsGroundRate) {
+            const baseCharge = parseFloat(upsGroundRate.TotalCharges.MonetaryValue);
+            const boxPrice = 5.00; // $5 per box
+
+            // Group order items by product
+            const productGroups = {};
+            orderItems.forEach(item => {
+                const productId = item.id || item.product_id;
+                if (!productGroups[productId]) {
+                    productGroups[productId] = {
+                        ...item,
+                        totalQuantity: 0,
+                        totalWeight: 0
+                    };
                 }
-                
-                // Calculate markup (33%)
-                const markup = totalCharge * 0.33;
-                const finalCharge = totalCharge + markup;
-                
-                // Add row to freight shipping table
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <input type="radio" name="freight_option" class="freight-option" 
-                            data-carrier="TForce" data-weight="${weight}" data-class="50"
-                            data-cost="${finalCharge.toFixed(2)}" data-zip="${document.getElementById('shipping-zip')?.value || ''}"
-                            data-quote-number="${quoteNumber}" data-packages="${palletQty}">
-                    </td>
-                    <td>TForce</td>
-                    <td>${weight} lbs</td>
-                    <td>$${totalCharge.toFixed(2)}</td>
-                    <td>$${markup.toFixed(2)}</td>
-                    <td>$${finalCharge.toFixed(2)}</td>
-                    <td>${document.getElementById('shipping-city')?.value || ''}, ${document.getElementById('shipping-state')?.value || ''}</td>
-                    <td>${quoteNumber}</td>
-                    <td>${palletQty}</td>
-                    <td>${palletSize}</td>
-                `;
-                
-                freightShippingTable.appendChild(row);
-                
-                // Add to rates list
-                ratesHtml += `
-                    <label class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <input class="form-check-input me-2 shipping-option" type="radio" name="shipping_option" 
-                                value="${serviceName}" data-charge="${finalCharge.toFixed(2)}"
-                                data-carrier="TForce" data-service="${serviceName}" data-transit-days="1-2"
-                                data-quote-number="${quoteNumber}" data-base-cost="${totalCharge.toFixed(2)}"
-                                data-weight="${weight}" data-class="50" 
-                                data-zip="${document.getElementById('shipping-zip')?.value || ''}"
-                                data-packages="${palletQty}">
-                            ${serviceName}
-                        </div>
-                        <span class="badge bg-primary rounded-pill">$${finalCharge.toFixed(2)}</span>
-                    </label>
+                productGroups[productId].totalQuantity += parseInt(item.quantity) || 1;
+                productGroups[productId].totalWeight += (parseFloat(item.weight_lbs) || 0) * (parseInt(item.quantity) || 1);
+            });
+
+            // Calculate total weight and box count
+            let totalWeight = 0;
+            let totalBoxes = 0;
+            let rowIndex = 1;
+
+            // Add rows for each product
+            Object.values(productGroups).forEach(product => {
+                const productWeight = parseFloat(product.weight_lbs) || 0;
+                const quantity = product.totalQuantity;
+                const amountPerBox = parseInt(product.product_data?.amount_per_box) || 1;
+                const boxCount = Math.ceil(quantity / amountPerBox);
+
+                totalWeight += product.totalWeight;
+                totalBoxes += boxCount;
+
+                // Calculate proportional shipping cost for this product
+                const productShippingCost = (baseCharge * (product.totalWeight / getTotalWeight())).toFixed(2);
+
+                // Add row for each box
+                for (let i = 0; i < boxCount; i++) {
+                    const qtyInThisBox = (i === boxCount - 1 && quantity % amountPerBox !== 0)
+                        ? quantity % amountPerBox
+                        : amountPerBox;
+
+                    const boxWeight = productWeight * qtyInThisBox;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${rowIndex}</td>
+                        <td>${product.product_data?.class || 'WWF'}</td>
+                        <td>${product.size || product.product_data?.size || '18x49x18'}</td>
+                        <td>${amountPerBox}</td>
+                        <td>${boxWeight.toFixed(2)} lbs</td>
+                        <td>$${(productShippingCost / boxCount).toFixed(2)}</td>
+                        <td>${product.product_name}</td>
+                    `;
+
+                    upsShippingTable.appendChild(row);
+                    rowIndex++;
+                }
                 `;
             });
         }
         
-        // Process R&L Carriers rates
-        if (rlData && rlData.d && rlData.d.Result && rlData.d.Result.ServiceLevels && rlData.d.Result.ServiceLevels.length > 0) {
-            hasRates = true;
+            // Calculate box price, markup, and total price
+            const boxesTotal = totalBoxes * 5.00;
+            const markup = baseCharge * 0.3;
+            const totalPrice = baseCharge + boxesTotal + markup;
             
-            rlData.d.Result.ServiceLevels.forEach(service => {
-                const serviceTitle = service.Title || 'Standard Service';
-                
-                // Remove $ and convert to number
-                const netCharge = parseFloat(service.NetCharge.replace('$', '')) || 0;
-                
-                // Apply markups (33%)
-                const markup = netCharge * 0.33;
-                const finalCharge = netCharge + markup;
-                
-                // Get service days
-                const serviceDays = service.ServiceDays || '1';
-                
-                // Add row to freight shipping table
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>
-                        <input type="radio" name="freight_option" class="freight-option" 
-                            data-carrier="R+L Carriers" data-weight="${getTotalWeight().toFixed(2)}" data-class="50"
-                            data-cost="${finalCharge.toFixed(2)}" data-zip="${document.getElementById('shipping-zip')?.value || ''}"
-                            data-quote-number="N/A" data-packages="${palletQty}">
-                    </td>
-                    <td>R+L Carriers</td>
-                    <td>${getTotalWeight().toFixed(2)} lbs</td>
-                    <td>$${netCharge.toFixed(2)}</td>
-                    <td>$${markup.toFixed(2)}</td>
-                    <td>$${finalCharge.toFixed(2)}</td>
-                    <td>${document.getElementById('shipping-city')?.value || ''}, ${document.getElementById('shipping-state')?.value || ''}</td>
-                    <td>N/A</td>
-                    <td>${palletQty}</td>
-                    <td>${palletSize}</td>
-                `;
-                
-                freightShippingTable.appendChild(row);
-                
-                // Add to rates list
-                ratesHtml += `
+            // Add totals row
+            const totalsRow = document.createElement('tr');
+            totalsRow.innerHTML = `
+                <td colspan="3"><strong>${totalWeight.toFixed(2)} lbs</strong></td>
+                <td>$${baseCharge.toFixed(2)}</td>
+                <td>$${boxesTotal.toFixed(2)}</td>
+                <td>$${markup.toFixed(2)}</td>
+                <td>$${totalPrice.toFixed(2)}</td>
+            `;
+            
+            upsShippingTotals.appendChild(totalsRow);
+        
+        // Add freight shipping options to the UI if available
+        if (freightRates && freightRates.length > 0) {
+            // Create HTML for freight options
+            let freightOptionsHtml = `
+                <div class="list-group mb-3">
+                    <h5>Freight Shipping Options</h5>
+            `;
+            
+            freightRates.forEach(rate => {
+                freightOptionsHtml += `
                     <label class="list-group-item d-flex justify-content-between align-items-center">
                         <div>
-                            <input class="form-check-input me-2 shipping-option" type="radio" name="shipping_option" 
-                                value="R&L ${serviceTitle}" data-charge="${finalCharge.toFixed(2)}"
-                                data-carrier="R&L Carriers" data-service="${serviceTitle}" data-transit-days="${serviceDays}"
-                                data-quote-number="N/A" data-base-cost="${netCharge.toFixed(2)}"
-                                data-weight="${getTotalWeight().toFixed(2)}" data-class="50" 
-                                data-zip="${document.getElementById('shipping-zip')?.value || ''}"
-                                data-packages="${palletQty}">
-                            R&L ${serviceTitle}
+                            <input class="form-check-input me-2 shipping-option freight-option" type="checkbox" name="shipping_option" 
+                                value="${rate.carrier} ${rate.service}" data-charge="${rate.totalPrice}" 
+                                data-carrier="${rate.carrier}" data-service="${rate.service}" 
+                                data-class="${rate.freightClass}" data-weight="${rate.weight}"
+                                data-zip="${rate.zip}" data-packages="${rate.palletCount}">
+                            ${rate.carrier} ${rate.service}
                         </div>
-                        <span class="badge bg-primary rounded-pill">$${finalCharge.toFixed(2)}</span>
+                        <span class="badge bg-primary rounded-pill">$${rate.totalPrice}</span>
                     </label>
                 `;
             });
-        }
-        
-        // Close the list group
-        ratesHtml += '</div>';
-        
-        // Update rates container if we have new rates
-        if (hasRates && !ratesContainer.innerHTML.includes('shipping-option')) {
-            ratesContainer.innerHTML = ratesHtml;
-        } else if (!hasRates && !ratesContainer.innerHTML.includes('shipping-option')) {
-            ratesContainer.innerHTML = `
-                <div class="alert alert-warning">
-                    No freight shipping rates available for this address and package configuration.
-                </div>
-            `;
+            
+            freightOptionsHtml += '</div>';
+            
+            // Add freight options to the rates container
+            const freightContainer = document.getElementById('freightRates');
+            if (freightContainer) {
+                freightContainer.innerHTML = freightOptionsHtml;
+            }
         }
         
         // Add event listeners to shipping options and freight options
@@ -951,6 +894,19 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.freight-option').forEach(option => {
                 option.addEventListener('change', function() {
                     if (this.checked) {
+                        // Uncheck UPS Ground option and other freight options
+                        const upsGroundCheckbox = document.getElementById('upsGroundOption');
+                        if (upsGroundCheckbox) {
+                            upsGroundCheckbox.checked = false;
+                        }
+                        
+                        // Uncheck other freight options
+                        document.querySelectorAll('.freight-option').forEach(otherOption => {
+                            if (otherOption !== this) {
+                                otherOption.checked = false;
+                            }
+                        });
+                        
                         console.log('Freight option selected:', this.dataset);
                         populateShippingEstimateOrganizer({
                             carrier: this.dataset.carrier,
@@ -960,6 +916,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             zip: this.dataset.zip,
                             packages: this.dataset.packages
                         });
+                    } else {
+                        // Clear the shipping estimator when unselected
+                        clearShippingEstimateOrganizer();
                     }
                 });
             });
@@ -970,46 +929,80 @@ document.addEventListener('DOMContentLoaded', function() {
     function addShippingOptionListeners() {
         // Add event listeners to shipping options
         document.querySelectorAll('.shipping-option').forEach(option => {
-            option.addEventListener('change', function() {
-                if (this.checked) {
-                    // Store the selected shipping option data
-                    const carrier = this.dataset.carrier;
-                    const service = this.dataset.service;
-                    const charge = parseFloat(this.dataset.charge);
-                    const weight = this.dataset.weight;
-                    const classValue = this.dataset.class;
-                    const zip = this.dataset.zip;
-                    const packages = this.dataset.packages;
-                    
-                    console.log('Selected shipping option:', {
-                        carrier,
-                        service,
-                        charge,
-                        weight,
-                        classValue,
-                        zip,
-                        packages
-                    });
-                    
-                    // Populate the Shipping Estimate Organizer
-                    populateShippingEstimateOrganizer({
-                        carrier: carrier,
-                        weight: weight,
-                        class: classValue,
-                        cost: charge,
-                        zip: zip,
-                        packages: packages
-                    });
-                }
-            });
+            // Remove any existing event listeners first to avoid duplicates
+            option.removeEventListener('change', handleShippingOptionChange);
+            option.addEventListener('change', handleShippingOptionChange);
         });
+    }
+    
+    // Handle shipping option change
+    function handleShippingOptionChange() {
+        if (this.checked) {
+            // Uncheck freight options when UPS Ground is selected
+            if (this.id === 'upsGroundOption') {
+                document.querySelectorAll('.freight-option').forEach(opt => {
+                    opt.checked = false;
+                });
+            } 
+            // Uncheck UPS Ground when freight option is selected
+            else if (this.classList.contains('freight-option')) {
+                const upsGroundOption = document.getElementById('upsGroundOption');
+                if (upsGroundOption) {
+                    upsGroundOption.checked = false;
+                }
+                
+                // Uncheck other freight options
+                document.querySelectorAll('.freight-option').forEach(opt => {
+                    if (opt !== this) opt.checked = false;
+                });
+            }
+            
+            // Store the selected shipping option data
+            const carrier = this.dataset.carrier;
+            const weight = this.dataset.weight;
+            const classValue = this.dataset.class;
+            const cost = this.dataset.charge;
+            const zip = this.dataset.zip;
+            const packages = this.dataset.packages;
+            
+            console.log('Selected shipping option:', {
+                carrier,
+                weight,
+                classValue,
+                cost,
+                zip,
+                packages
+            });
+            
+            // Populate the Shipping Estimate Organizer
+            populateShippingEstimateOrganizer({
+                carrier: carrier,
+                weight: weight,
+                class: classValue,
+                cost: cost,
+                zip: zip,
+                packages: packages
+            });
+        } else {
+            // Clear the shipping estimator when unselected
+            clearShippingEstimateOrganizer();
+        }
+    }
         
-        // Add event listener to the "Populate to Order" button
-        const populateToOrderBtn = document.getElementById('populateToOrder');
-        if (populateToOrderBtn) {
-            populateToOrderBtn.addEventListener('click', function() {
-                const selectedOption = document.querySelector('.shipping-option:checked');
-                if (selectedOption) {
+    // Function to clear the shipping estimator fields
+    function clearShippingEstimateOrganizer() {
+        const estimatorFields = document.querySelectorAll('#shipping-estimate-organizer input[type="text"]');
+        estimatorFields.forEach(field => {
+            field.value = '';
+        });
+    }
+
+    // Add event listener to the "Populate to Order" button
+    const populateToOrderBtn = document.getElementById('populateToOrder');
+    if (populateToOrderBtn) {
+        populateToOrderBtn.addEventListener('click', function() {
+            const selectedOption = document.querySelector('.shipping-option:checked');
+            if (selectedOption) {
                     const carrier = selectedOption.dataset.carrier;
                     const service = selectedOption.dataset.service;
                     const shippingCost = parseFloat(selectedOption.dataset.charge);
@@ -1278,7 +1271,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('shipping-organizer-cost').value = data.cost || '';
         document.getElementById('shipping-organizer-zip').value = data.zip || '';
         document.getElementById('shipping-organizer-packages').value = data.packages || '';
-        console.log('Shipping Estimate Organizer populated with:', data);
     }
     
     // Helper function to get total weight
