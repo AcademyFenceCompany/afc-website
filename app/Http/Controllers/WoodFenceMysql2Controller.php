@@ -10,8 +10,8 @@ class WoodFenceMysql2Controller extends Controller
 {
     public function index()
     {
-        // Fetch wood fence categories from mysql_second where majorcategories_id is 1
-        $woodFenceCategories = DB::connection('mysql_second')
+        // Fetch wood fence categories from academyfence where majorcategories_id is 1
+        $woodFenceCategories = DB::connection('academyfence')
             ->table('categories')
             ->where('majorcategories_id', 1)
             ->where('web_enabled', 1) // Only show web-enabled categories
@@ -23,7 +23,7 @@ class WoodFenceMysql2Controller extends Controller
         foreach ($woodFenceCategories as $category) {
             // Get unique spacing options from productsqry for this category
             try {
-                $spacingValues = DB::connection('mysql_second')
+                $spacingValues = DB::connection('academyfence')
                     ->table('productsqry')
                     ->where('categories_id', $category->id)
                     ->whereNotNull('spacing')
@@ -33,7 +33,7 @@ class WoodFenceMysql2Controller extends Controller
                     ->toArray();
             } catch (\Exception $e) {
                 // If productsqry view doesn't exist, fall back to products table
-                $spacingValues = DB::connection('mysql_second')
+                $spacingValues = DB::connection('academyfence')
                     ->table('products')
                     ->where('categories_id', $category->id)
                     ->whereNotNull('spacing')
@@ -55,7 +55,7 @@ class WoodFenceMysql2Controller extends Controller
             // If no spacing options found, check size field for potential spacing info
             if (empty($spacingOptions)) {
                 try {
-                    $sizes = DB::connection('mysql_second')
+                    $sizes = DB::connection('academyfence')
                         ->table('productsqry')
                         ->where('categories_id', $category->id)
                         ->whereNotNull('size')
@@ -65,7 +65,7 @@ class WoodFenceMysql2Controller extends Controller
                         ->toArray();
                 } catch (\Exception $e) {
                     // If productsqry view doesn't exist, fall back to products table
-                    $sizes = DB::connection('mysql_second')
+                    $sizes = DB::connection('academyfence')
                         ->table('products')
                         ->where('categories_id', $category->id)
                         ->whereNotNull('size')
@@ -146,7 +146,7 @@ class WoodFenceMysql2Controller extends Controller
         $groupBy = $request->input('group_by', 'style');
 
         // Check if the category exists
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $categoryId)
             ->first();
@@ -192,13 +192,13 @@ class WoodFenceMysql2Controller extends Controller
         
         // Base query
         try {
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('productsqry')
                 ->where('categories_id', $categoryId)
                 ->where('enabled', 1);
         } catch (\Exception $e) {
             // If productsqry view doesn't exist, fall back to products table
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('products')
                 ->where('categories_id', $categoryId)
                 ->where('enabled', 1);
@@ -235,7 +235,7 @@ class WoodFenceMysql2Controller extends Controller
         )->get();
 
         // Join the products with category data manually since we don't have the view
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $categoryId)
             ->first();
@@ -478,7 +478,7 @@ class WoodFenceMysql2Controller extends Controller
 
         // Get all wood fence products
         try {
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('productsqry')
                 ->whereIn('categories_id', function($query) {
                     $query->select('id')
@@ -488,7 +488,7 @@ class WoodFenceMysql2Controller extends Controller
                 });
         } catch (\Exception $e) {
             // If productsqry view doesn't exist, fall back to products table
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('products')
                 ->whereIn('categories_id', function($query) {
                     $query->select('id')

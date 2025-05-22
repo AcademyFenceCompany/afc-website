@@ -5,6 +5,7 @@
 
 @section('content')
     <!-- Header Section -->
+<<<<<<< HEAD
     <div class="rounded bg-brown">
         <h1 class="page-title text-center py-2 mb-0">{{ $page->title }}</h1>
     </div>
@@ -39,10 +40,39 @@
                     @endif
                     @if ($page->category_tidbit_3)
                         <div class="mb-2">{!! $page->category_tidbit_3 !!}</div>
+=======
+    <div class="bg-black text-white text-center py-3 rounded">
+        <h1 class="mb-0">{{ $page->title }}</h1>
+    </div>
+    <div class="mt-2">
+        <p class="text-center">{!! $page->subtitle !!}</p>
+    </div>
+
+    <!-- Main Section -->
+    <div class="row mt-4 align-items-center">
+        <!-- Left Column -->
+        <div class="col-md-4">
+            <div class="bg-warning text-dark p-4 rounded shadow-sm">
+                <h4 class="fw-bold">The Original online Fence Superstore</h4>
+                <p class="mb-0"><em>Family owned operated since 1968</em></p>
+                <div>{!! $page->bulletin_board !!}</div>
+
+                <!-- Category Tidbits -->
+                <div class="mt-3">
+                    @if ($page->category_tidbit_1)
+                        <div class="mb-3">{!! $page->category_tidbit_1 !!}</div>
+                    @endif
+                    @if ($page->category_tidbit_2)
+                        <div class="mb-3">{!! $page->category_tidbit_2 !!}</div>
+                    @endif
+                    @if ($page->category_tidbit_3)
+                        <div class="mb-3">{!! $page->category_tidbit_3 !!}</div>
+>>>>>>> afc-webdev-c
                     @endif
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
     </div>
 
     <!-- Middle Section - Optional Buttons (Replace if needed) -->
@@ -70,6 +100,27 @@
 </div>
 
 
+=======
+
+        <!-- Center Image -->
+        <div class="col-md-4 text-center">
+            @if ($page->product_image)
+                <img style="max-width: 357px;height: 270px;" src="{{ Storage::url($page->product_image) }}"
+                    alt="{{ $page->title }} Image" class="img-fluid rounded shadow-sm">
+            @endif
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-4">
+            @if ($page->product_text)
+                <div class="product-text">
+                    {!! $page->product_text !!}
+                </div>
+            @endif
+        </div>
+    </div>
+
+>>>>>>> afc-webdev-c
     <!-- Products Section -->
     @if (empty($groupedProducts['groups']) && empty($meshSize_products) && empty($mainTableProducts))
         <div class="alert alert-info mt-5">

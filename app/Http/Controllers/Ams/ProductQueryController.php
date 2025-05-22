@@ -16,7 +16,7 @@ class ProductQueryController extends Controller
         $search = $request->input('search');
         $perPage = $request->input('per_page', 50);
 
-        $allProducts = DB::connection('mysql_second')
+        $allProducts = DB::connection('academyfence')
             ->table('products')
             ->leftJoin('categories', 'products.categories_id', '=', 'categories.id')
             ->leftJoin('majorcategories', 'categories.majorcategories_id', '=', 'majorcategories.id')
@@ -81,7 +81,7 @@ class ProductQueryController extends Controller
     
     public function loadCategory($id)
     {
-        $productsQuery = DB::connection('mysql_second')
+        $productsQuery = DB::connection('academyfence')
             ->table('products')
             ->leftJoin('categories', 'products.categories_id', '=', 'categories.id')
             ->select('products.*', 'categories.cat_name')
@@ -105,7 +105,7 @@ class ProductQueryController extends Controller
 
     public function create()
     {
-        $categories = DB::connection('mysql_second')->table('categories')
+        $categories = DB::connection('academyfence')->table('categories')
             ->orderBy('majorcategories_id')
             ->orderBy('cat_name')
             ->pluck('cat_name', 'id');
@@ -122,7 +122,7 @@ class ProductQueryController extends Controller
             'product_name' => 'required|string|max:255',
             'item_no' => 'required|string|max:50',
             'price' => 'required|numeric',
-            'categories_id' => 'required|exists:mysql_second.categories,id',
+            'categories_id' => 'required|exists:academyfence.categories,id',
             'img_small' => 'nullable|image|max:2048',
             'img_large' => 'nullable|image|max:2048',
         ]);
@@ -160,7 +160,7 @@ class ProductQueryController extends Controller
         }
 
         // Insert product into database
-        $productId = DB::connection('mysql_second')->table('products')->insertGetId($data);
+        $productId = DB::connection('academyfence')->table('products')->insertGetId($data);
 
         return redirect()->route('ams.product-query.edit', $productId)
             ->with('success', 'Product created successfully.');
@@ -168,7 +168,7 @@ class ProductQueryController extends Controller
 
     public function edit($id)
     {
-        $product = DB::connection('mysql_second')->table('products')
+        $product = DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->first();
 
@@ -177,13 +177,13 @@ class ProductQueryController extends Controller
                 ->with('error', 'Product not found.');
         }
 
-        $categories = DB::connection('mysql_second')->table('categories')
+        $categories = DB::connection('academyfence')->table('categories')
             ->orderBy('majorcategories_id')
             ->orderBy('cat_name')
             ->pluck('cat_name', 'id');
 
         // Get category details for shippable status
-        $category = DB::connection('mysql_second')->table('categories')
+        $category = DB::connection('academyfence')->table('categories')
             ->where('id', $product->categories_id)
             ->first();
 
@@ -203,13 +203,13 @@ class ProductQueryController extends Controller
             'product_name' => 'required|string|max:255',
             'item_no' => 'required|string|max:50',
             'price' => 'required|numeric',
-            'categories_id' => 'required|exists:mysql_second.categories,id',
+            'categories_id' => 'required|exists:academyfence.categories,id',
             'img_small' => 'nullable|image|max:2048',
             'img_large' => 'nullable|image|max:2048',
         ]);
 
         // Get existing product
-        $product = DB::connection('mysql_second')->table('products')
+        $product = DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->first();
 
@@ -264,7 +264,7 @@ class ProductQueryController extends Controller
         }
 
         // Update product in database
-        DB::connection('mysql_second')->table('products')
+        DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->update($data);
 
@@ -274,7 +274,7 @@ class ProductQueryController extends Controller
     
     public function destroy($id)
     {
-        $product = DB::connection('mysql_second')->table('products')
+        $product = DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->first();
 
@@ -293,7 +293,7 @@ class ProductQueryController extends Controller
         }
 
         // Delete product from database
-        DB::connection('mysql_second')->table('products')
+        DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->delete();
 
@@ -308,7 +308,7 @@ class ProductQueryController extends Controller
                 ->with('error', 'Invalid image type.');
         }
 
-        $product = DB::connection('mysql_second')->table('products')
+        $product = DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->first();
 
@@ -323,7 +323,7 @@ class ProductQueryController extends Controller
         }
 
         // Update product record to remove image reference
-        DB::connection('mysql_second')->table('products')
+        DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->update([$type => null]);
 
@@ -337,7 +337,7 @@ class ProductQueryController extends Controller
     public function duplicate($id)
     {
         // Get existing product
-        $originalProduct = DB::connection('mysql_second')->table('products')
+        $originalProduct = DB::connection('academyfence')->table('products')
             ->where('id', $id)
             ->first();
 
@@ -367,7 +367,7 @@ class ProductQueryController extends Controller
         // The user can update these later if needed
         
         // Insert the new product
-        $newProductId = DB::connection('mysql_second')->table('products')
+        $newProductId = DB::connection('academyfence')->table('products')
             ->insertGetId($newProduct);
             
         return redirect()->route('ams.product-query.edit', $newProductId)
@@ -386,7 +386,7 @@ class ProductQueryController extends Controller
             return redirect()->route('ams.product-query.index');
         }
         
-        $productsQuery = DB::connection('mysql_second')
+        $productsQuery = DB::connection('academyfence')
             ->table('products')
             ->leftJoin('categories', 'products.categories_id', '=', 'categories.id')
             ->leftJoin('majorcategories', 'categories.majorcategories_id', '=', 'majorcategories.id')

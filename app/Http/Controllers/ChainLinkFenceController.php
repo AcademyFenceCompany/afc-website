@@ -33,7 +33,7 @@ class ChainLinkFenceController extends Controller
         ];
 
         // Get chain link categories from the database
-        $chainlinkCategories = DB::connection('mysql_second')
+        $chainlinkCategories = DB::connection('academyfence')
             ->table('categories')
             ->where('majorcategories_id', 17)
             ->where('web_enabled', 1)
@@ -130,7 +130,7 @@ class ChainLinkFenceController extends Controller
             $parentCode = $baseParentCode . $sys['parent_suffix'];
             
             // More flexible search for system images
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('productsqry');
                 
             // For System 1, use exact parent match
@@ -179,7 +179,7 @@ class ChainLinkFenceController extends Controller
 
         Log::info("Searching for products with patterns: {$stylePattern}, {$terminalPostPattern}");
 
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('products')
             ->where(function ($query) use ($stylePattern, $terminalPostPattern) {
                 $query->where('style', 'LIKE', "%{$stylePattern}%")

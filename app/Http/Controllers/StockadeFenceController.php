@@ -13,7 +13,7 @@ class StockadeFenceController extends Controller
         $categoryId = 5;
         
         // Fetch products from the database
-        $query = DB::connection('mysql_second')
+        $query = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $categoryId)
             ->where('enabled', 1);

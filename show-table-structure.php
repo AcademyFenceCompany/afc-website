@@ -8,19 +8,19 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 try {
     // Check categories table structure
     echo "=== Categories Table Structure ===\n";
-    $columns = DB::connection('mysql_second')->select('SHOW COLUMNS FROM categories');
+    $columns = DB::connection('academyfence')->select('SHOW COLUMNS FROM categories');
     foreach ($columns as $col) {
         echo "- {$col->Field} ({$col->Type})" . ($col->Key ? " [KEY: {$col->Key}]" : "") . "\n";
     }
     
     echo "\n=== Productsqry Table Structure ===\n";
-    $columns = DB::connection('mysql_second')->select('SHOW COLUMNS FROM productsqry');
+    $columns = DB::connection('academyfence')->select('SHOW COLUMNS FROM productsqry');
     foreach ($columns as $col) {
         echo "- {$col->Field} ({$col->Type})" . ($col->Key ? " [KEY: {$col->Key}]" : "") . "\n";
     }
     
     echo "\n=== Sample Categories ===\n";
-    $categories = DB::connection('mysql_second')
+    $categories = DB::connection('academyfence')
         ->table('categories')
         ->where('majorcategories_id', 1)
         ->select('id', 'cat_name', 'seo_name', 'cat_desc_long')
@@ -33,7 +33,7 @@ try {
     echo "\n=== Sample Products ===\n";
     if (count($categories) > 0) {
         $firstCategoryId = $categories[0]->id;
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $firstCategoryId)
             ->select('product_id', 'item_no', 'product_name', 'style', 'speciality', 'spacing', 'size')

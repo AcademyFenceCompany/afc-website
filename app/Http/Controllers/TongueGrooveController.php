@@ -19,7 +19,7 @@ class TongueGrooveController extends Controller
         $categoryId = 4;
         
         // Get the category
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $categoryId)
             ->first();
@@ -30,7 +30,7 @@ class TongueGrooveController extends Controller
         
         // Get all products for this category
         try {
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('productsqry')
                 ->where('categories_id', $categoryId)
                 ->where('enabled', 1);
@@ -38,7 +38,7 @@ class TongueGrooveController extends Controller
             $products = $query->get();
         } catch (\Exception $e) {
             // Fallback to products table if productsqry view doesn't exist
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('products')
                 ->where('categories_id', $categoryId)
                 ->where('enabled', 1);

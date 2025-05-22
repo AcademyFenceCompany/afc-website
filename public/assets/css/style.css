@@ -1,0 +1,436 @@
+:root {
+  --bs-bg-danger: rgb(242, 105, 66);
+  /* Colors */
+  --bs-body-color:#282828;
+  --primary-color: $primary-color;
+  --secondary-color: $secondary-color;
+  --light-color: #fff;
+  --dark-color: #000;
+  --bg-color: #f8f7f2;
+  --footer-bg-color: #000;
+}
+
+.bg-danger {
+  background-color: var(--bs-bg-danger) !important;
+}
+
+body {
+  color: #5e5e5e;
+  --bs-body-color: #222;
+}
+
+.text-bg-secondary {
+  background-color: RGB(104, 104, 104) !important;
+}
+
+.main-qty {
+  border: 2px solid;
+}
+
+header .nav-link {
+  background-color: #f5b149;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem !important;
+  text-align: center;
+  font-weight: bold;
+  line-height: 2;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  align-content: center;
+  text-transform: uppercase;
+}
+header .filter-categories {
+  border-radius: 0.4rem;
+  padding: 0.5rem 1rem !important;
+  text-align: center;
+}
+header .img-fluid {
+  height: 70px;
+}
+header .big-menu {
+  position: relative;
+  height: auto;
+}
+header .big-menu .dropdown-menu {
+  width: 20vw;
+  margin-left: -1px;
+  line-height: 1.3;
+}
+header .big-menu .dropdown-menu .dropdown-submenu {
+  display: none;
+  position: absolute;
+  --bs-dropdown-bg: #eee !important;
+  left: 100%;
+  top: 0;
+  height: 100%;
+}
+header .big-menu .dropdown-menu .dropdown-item {
+  color: rgb(22, 22, 22);
+  padding: 0.4rem 1rem;
+}
+header .big-menu .dropdown-menu li {
+  padding: 0;
+  font-size: 0.9rem;
+}
+header .big-menu .dropdown-menu > li:hover > .dropdown-submenu {
+  display: block;
+}
+@media (max-width: 800px) {
+  header .big-menu {
+    width: 100%;
+  }
+  header .big-menu .dropdown-toggle::after {
+    right: 1rem;
+  }
+  header .big-menu .d-flex {
+    flex-direction: column;
+  }
+  header .big-menu .dropdown-menu {
+    width: 20vw;
+    margin-left: -1px;
+    line-height: 1.3;
+    width: 100%;
+  }
+  header .big-menu .dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    --bs-dropdown-bg: #eee !important;
+    left: 100%;
+    top: 0;
+    height: 100%;
+  }
+  header .big-menu .dropdown-menu .dropdown-item {
+    color: rgb(22, 22, 22);
+    padding: 0.4rem 0;
+  }
+  header .big-menu .dropdown-menu li {
+    padding: 0;
+    font-size: 0.9rem;
+  }
+  header .big-menu .dropdown-menu > li:hover > .dropdown-submenu {
+    display: block;
+  }
+  header .big-menu .dropdown-menu .dropdown-submenu {
+    position: static;
+    left: 0;
+    top: 0;
+  }
+  header .big-menu .dropdown-menu .dropdown-menu {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+nav.top-bar {
+  background-color: rgb(242, 233, 228);
+}
+nav.top-bar .nav-link {
+  color: rgb(7, 7, 7);
+  font-weight: normal;
+  background-color: transparent;
+  font-size: 0.9rem;
+}
+
+.product-table .form-control {
+  width: 1rem;
+  border: 1px solid #cecece !important;
+  margin: 0 0.5rem !important;
+  border-radius: 0.5rem !important;
+}
+
+.banner-blocks .banner-ad {
+  background-image: url("https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/11/IMG_1225-1.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.banner-blocks .banner-ad .sw-bg {
+  height: 100%;
+}
+
+.bg-secondary-subtle {
+  background-color: #ececec;
+}
+
+.swiper-wrapper .category-item {
+  border: 1px solid #E1E1E1;
+  box-shadow: none;
+}
+
+.logo-caption {
+  font-style: italic;
+}
+
+.card-text {
+  line-height: 1;
+  font-size: 0.9rem;
+}
+
+.sub-category .card {
+  --bs-card-border-color: rgba(0, 0, 0, 0.06);
+}
+.sub-category .card-body {
+  background-color: #F2ECC5;
+}
+.sub-category .card-body p {
+  border-bottom: 1px solid rgb(146, 146, 146);
+}
+
+.table {
+  border-color: lightgray;
+}
+
+.main-nav {
+  border: 1px solid #E1E1E1;
+}
+
+.search-bar {
+  border: 2px solid #c4c4c4;
+}
+.search-bar select {
+  width: auto;
+}
+
+.hero-banner {
+  background-color: #e8e8e8;
+  background-position: center;
+  background-size: cover;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion .form-check-input {
+  border-color: #5e5e5e;
+}
+
+.btn-primary {
+  background-color: #882905;
+  border-color: #882905;
+}
+
+section {
+  border: none;
+}
+
+.system-complete-card .card-desc {
+  line-height: 1.5;
+}
+.system-complete-card .card-text {
+  border-bottom: 1px solid rgb(201, 201, 201);
+}
+.system-complete-card .prod-detail {
+  display: none;
+  top: -20px;
+  right: 0;
+  position: absolute;
+  width: 600px;
+  left: -50%;
+  z-index: 1000;
+}
+
+.filter-loading {
+  display: inline-block;
+  animation: fadePulse 1.5s infinite;
+}
+
+@keyframes fadePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.grid-list-item {
+  border: 2px solid #5e5e5e;
+  border-radius: 0.5rem;
+  display: block;
+  border: 2px solid #cacaca;
+  border-radius: 0.5rem;
+  display: block;
+  background-color: beige;
+}
+
+.gallery-carrosel {
+  color: #FFF;
+  --height: 60vh;
+  height: var(--height);
+  overflow-y: hidden;
+}
+.gallery-carrosel .carousel-item {
+  height: var(--height);
+  background-image: url("https://www.academyfence.com/codes-and-permits/wp-content/uploads/2019/04/yard-from-fork-lift-dark-480x165.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.gallery-carrosel .carousel-item h1 {
+  font-size: 2.5rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 900;
+  text-transform: uppercase !important;
+}
+.gallery-carrosel .carousel-item p {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+}
+.gallery-carrosel .gallery-footer {
+  border-top: 1px solid rgb(78, 78, 78);
+  height: auto;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+.gallery-carrosel .gallery-footer i {
+  color: #f5b149;
+}
+.gallery-carrosel .gallery-footer .list-group-item {
+  background-color: transparent !important;
+  border: none;
+  color: white;
+}
+
+.gallery-container .lightbox-carousel {
+  border: 1rem solid #FFF;
+}
+.gallery-container .img-container {
+  height: 300px;
+  overflow-y: hidden;
+  padding: 0;
+  display: inline-block;
+}
+
+.counties .county-list {
+  font-family: "Montserrat", sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  color: #000;
+}
+
+.lightbox-caption {
+  bottom: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  background: rgba(62, 62, 62, 0.6196078431);
+  font-size: 1rem;
+  padding: 1rem;
+}
+.lightbox-caption em {
+  font-style: normal;
+}
+
+.banner-ad {
+  color: #FFF;
+}
+
+.landing-features {
+  background: #eaf0cb;
+  padding: 0;
+}
+
+.testimonials {
+  background-color: #f2e9e4;
+}
+
+.db-table-header {
+  color: #757575 !important;
+}
+
+.filter-box .form-check-inline {
+  background-color: #eaeaea;
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+}
+.filter-box .form-check-inline label {
+  font-size: 0.8rem;
+}
+.filter-box .form-check-inline .form-check-input {
+  margin-left: auto !important;
+  margin-right: 0.5rem;
+}
+.filter-box .card-title {
+  font-size: 0.9rem;
+}
+
+.admin .form-control {
+  border: 2px solid #9d9d9d !important;
+}
+.admin .form-control-feedback {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.modal .modal-content {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.modal .card {
+  background-color: #ececec;
+}
+.modal #alert-container {
+  position: relative;
+  z-index: 1;
+}
+.modal #alert-container .alert {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  filter: drop-shadow(4px 4px 19px #afafaf);
+}
+
+@media print {
+  form {
+    display: none;
+  }
+}
+.card-categories .card {
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  position: relative;
+  border: none;
+  overflow: hidden;
+}
+.card-categories .card .card-caption {
+  background: rgba(255, 255, 255, 0.8);
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+  height: 30%;
+  padding: 1.5rem 0;
+  transition: height 0.2s ease, padding 0.4s ease;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.card-categories .card .card-caption .small-caption, .card-categories .card .card-caption button {
+  visibility: hidden;
+}
+.card-categories .card:hover .card-caption {
+  height: 100%;
+  padding: 1rem 0;
+  display: block;
+  background: rgba(255, 255, 255, 0.952);
+}
+.card-categories .card:hover .card-caption .small-caption, .card-categories .card:hover .card-caption button {
+  visibility: visible;
+}
+
+.landing-section-card {
+  border: 2px solid #f0f0f0;
+  border-radius: 2rem;
+}/*# sourceMappingURL=style.css.map */

@@ -143,10 +143,13 @@
                                 <label class="form-label">Spacing</label>
                                 <input type="text" name="spacing" value="<?php echo e($product->spacing); ?>" class="form-control">
                             </div>
+<<<<<<< HEAD
+=======
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Product Grouping Code</label>
                                 <input type="text" name="parent" value="<?php echo e($product->parent); ?>" class="form-control">
                             </div>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                         </div>
 
                         <div class="row">
@@ -191,6 +194,9 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
+
+=======
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Shipping Information</h5>
@@ -215,6 +221,7 @@
                         </div>
                     </div>
                 </div>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">SEO Information</h5>

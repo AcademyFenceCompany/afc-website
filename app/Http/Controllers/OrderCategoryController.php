@@ -11,8 +11,8 @@ class OrderCategoryController extends Controller
     public function ajaxGetCategories()
     {
         try {
-            // Get major categories from mysql_second
-            $majorCategories = DB::connection('mysql_second')
+            // Get major categories from academyfence
+            $majorCategories = DB::connection('academyfence')
                 ->table('majorcategories')
                 ->where('enabled', 1)
                 ->orderBy('id')
@@ -28,7 +28,7 @@ class OrderCategoryController extends Controller
                 ];
                 
                 // Get categories for this major category
-                $categories = DB::connection('mysql_second')
+                $categories = DB::connection('academyfence')
                     ->table('categories')
                     ->where('active', 1)
                     ->where('majorcategories_id', $majorCategory->id)
@@ -55,8 +55,8 @@ class OrderCategoryController extends Controller
     public function getCategories()
     {
         try {
-            // Get major categories from mysql_second
-            $majorCategories = DB::connection('mysql_second')
+            // Get major categories from academyfence
+            $majorCategories = DB::connection('academyfence')
                 ->table('majorcategories')
                 ->where('enabled', 1)
                 ->orderBy('id')
@@ -72,7 +72,7 @@ class OrderCategoryController extends Controller
                 ];
                 
                 // Get categories for this major category
-                $categories = DB::connection('mysql_second')
+                $categories = DB::connection('academyfence')
                     ->table('categories')
                     ->where('active', 1)
                     ->where('majorcategories_id', $majorCategory->id)
@@ -99,8 +99,8 @@ class OrderCategoryController extends Controller
     public function ajaxGetProducts($categoryId)
     {
         try {
-            // Get products for the specified category from mysql_second
-            $products = DB::connection('mysql_second')
+            // Get products for the specified category from academyfence
+            $products = DB::connection('academyfence')
                 ->table('products')
                 ->select(
                     'products.id',
@@ -126,8 +126,8 @@ class OrderCategoryController extends Controller
     public function ajaxGetProductDetails($productId)
     {
         try {
-            // Get detailed product information from mysql_second
-            $product = DB::connection('mysql_second')
+            // Get detailed product information from academyfence
+            $product = DB::connection('academyfence')
                 ->table('products')
                 ->select(
                     'products.id',
@@ -165,8 +165,8 @@ class OrderCategoryController extends Controller
                 return response()->json([]);
             }
             
-            // Search products by name or item number from mysql_second
-            $products = DB::connection('mysql_second')
+            // Search products by name or item number from academyfence
+            $products = DB::connection('academyfence')
                 ->table('products')
                 ->select(
                     'products.id',

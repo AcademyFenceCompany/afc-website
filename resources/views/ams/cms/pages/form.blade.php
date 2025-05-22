@@ -253,7 +253,10 @@
                                 <img src="{{ Storage::url($page->footer_product_image) }}" class="preview-image" alt="Footer Product Image">
                             @endif
                         </div>
+<<<<<<< HEAD
                     
+=======
+>>>>>>> afc-webdev-c
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">

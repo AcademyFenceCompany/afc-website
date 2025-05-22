@@ -19,13 +19,13 @@ class CategoryController extends Controller
     public function index()
     {
         // Get all major categories
-        $majorCategories = DB::connection('mysql_second')
+        $majorCategories = DB::connection('academyfence')
             ->table('majorcategories')
             ->orderBy('id')
             ->get();
             
         // Get all categories with their associated major category name
-        $categories = DB::connection('mysql_second')
+        $categories = DB::connection('academyfence')
             ->table('categories')
             ->select('categories.*', 'majorcategories.cat_name as major_cat_name')
             ->leftJoin('majorcategories', 'categories.majorcategories_id', '=', 'majorcategories.id')
@@ -42,7 +42,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $majorCategories = DB::connection('mysql_second')
+        $majorCategories = DB::connection('academyfence')
             ->table('majorcategories')
             ->orderBy('id')
             ->get();
@@ -60,8 +60,8 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'cat_name' => 'required|string|max:255',
-            'seo_name' => 'required|string|max:255|unique:mysql_second.categories',
-            'majorcategories_id' => 'required|integer|exists:mysql_second.majorcategories,id',
+            'seo_name' => 'required|string|max:255|unique:academyfence.categories',
+            'majorcategories_id' => 'required|integer|exists:academyfence.majorcategories,id',
             'cat_desc_short' => 'nullable|string',
             'cat_desc_long' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -93,7 +93,7 @@ class CategoryController extends Controller
 
         try {
             // Insert data with explicit field list to ensure all fields are included
-            DB::connection('mysql_second')->table('categories')->insert([
+            DB::connection('academyfence')->table('categories')->insert([
                 'cat_name' => $request->cat_name,
                 'seo_name' => $request->seo_name,
                 'majorcategories_id' => $request->majorcategories_id,
@@ -110,13 +110,13 @@ class CategoryController extends Controller
                 'insert_keywords' => '',
                 'page_template' => 0,
                 'blog_tag' => 0,
-                'image' => $imageName
+                'img' => $imageName
             ]);
             
             Log::info('Category created successfully with data:', [
                 'cat_name' => $request->cat_name,
                 'web_enabled' => $webEnabled,
-                'image' => $imageName
+                'img' => $imageName
             ]);
         } catch (\Exception $e) {
             Log::error('Category creation failed:', ['error' => $e->getMessage()]);
@@ -137,7 +137,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $id)
             ->first();
@@ -147,7 +147,7 @@ class CategoryController extends Controller
                 ->with('error', 'Category not found');
         }
 
-        $majorCategories = DB::connection('mysql_second')
+        $majorCategories = DB::connection('academyfence')
             ->table('majorcategories')
             ->orderBy('id')
             ->get();
@@ -164,7 +164,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $id)
             ->first();
@@ -180,8 +180,8 @@ class CategoryController extends Controller
         
         $validator = Validator::make($request->all(), [
             'cat_name' => 'required|string|max:255',
-            'seo_name' => 'required|string|max:255|unique:mysql_second.categories,seo_name,' . $id,
-            'majorcategories_id' => 'required|integer|exists:mysql_second.majorcategories,id',
+            'seo_name' => 'required|string|max:255|unique:academyfence.categories,seo_name,' . $id,
+            'majorcategories_id' => 'required|integer|exists:academyfence.majorcategories,id',
             'cat_desc_short' => 'nullable|string',
             'cat_desc_long' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -198,7 +198,7 @@ class CategoryController extends Controller
         Log::info('Web enabled value set to:', ['web_enabled' => $webEnabled]);
         
         // Handle image upload if there's a new image
-        $imageName = $category->image ?? 'default.png';
+        $imageName = $category->img ?? 'default.png';
         if ($request->hasFile('image')) {
             try {
                 // Remove old image if it's not the default
@@ -220,7 +220,7 @@ class CategoryController extends Controller
 
         try {
             // Update with direct values to ensure proper assignment
-            $result = DB::connection('mysql_second')
+            $result = DB::connection('academyfence')
                 ->table('categories')
                 ->where('id', $id)
                 ->update([
@@ -234,25 +234,25 @@ class CategoryController extends Controller
                     'cat_url' => $request->seo_name,
                     'cat_meta_title' => $request->cat_name,
                     'cat_meta_description' => $request->cat_desc_short ?? '',
-                    'image' => $imageName
+                    'img' => $imageName
                 ]);
             
             Log::info('Category updated successfully:', [
                 'id' => $id, 
                 'rows_affected' => $result,
-                'image' => $imageName,
+                'img' => $imageName,
                 'web_enabled' => $webEnabled
             ]);
             
             // Double-check if update worked by retrieving the updated record
-            $updatedCategory = DB::connection('mysql_second')
+            $updatedCategory = DB::connection('academyfence')
                 ->table('categories')
                 ->where('id', $id)
                 ->first();
             
             Log::info('Updated category values:', [
                 'web_enabled' => $updatedCategory->web_enabled,
-                'image' => $updatedCategory->image
+                'img' => $updatedCategory->img
             ]);
         } catch (\Exception $e) {
             Log::error('Category update failed:', ['error' => $e->getMessage()]);
@@ -274,7 +274,7 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         // Check if there are products using this category
-        $productCount = DB::connection('mysql_second')
+        $productCount = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $id)
             ->count();
@@ -285,17 +285,17 @@ class CategoryController extends Controller
         }
         
         // Get category image before deletion
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $id)
             ->first();
             
         // Delete the image file if it's not the default
-        if ($category && $category->image && !in_array($category->image, ['default.png', 'default.jpg'])) {
-            Storage::delete('public/categories/' . $category->image);
+        if ($category && $category->img && !in_array($category->img, ['default.png', 'default.jpg'])) {
+            Storage::delete('public/categories/' . $category->img);
         }
 
-        DB::connection('mysql_second')->table('categories')
+        DB::connection('academyfence')->table('categories')
             ->where('id', $id)
             ->delete();
 

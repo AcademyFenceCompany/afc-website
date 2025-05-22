@@ -18,7 +18,7 @@ class ProductApiController extends Controller
             return response()->json([]);
         }
         
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('products')
             ->where('enabled', 1)
             ->where(function($query) use ($term) {
@@ -49,7 +49,7 @@ class ProductApiController extends Controller
      */
     public function getByItemNumber($itemNumber)
     {
-        $product = DB::connection('mysql_second')
+        $product = DB::connection('academyfence')
             ->table('products')
             ->where('enabled', 1)
             ->where('item_no', $itemNumber)

@@ -187,14 +187,7 @@
                             <i class="bi bi-list"></i> Quick Menu
                         </a>
                         <ul class="dropdown-menu">
-                            <?php $__currentLoopData = \App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <li>
-                                    <a class="dropdown-item" href="<?php echo e(route('category.show', ['slug' => $page->slug])); ?>">
-                                        <?php echo e($page->title ?: $page->category->family_category_name); ?>
-
-                                    </a>
-                                </li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            
                         </ul>
                     </div>
                 </nav>
@@ -305,14 +298,7 @@
                                 <i class="bi bi-list"></i> Quick Menu
                             </a>
                             <ul class="dropdown-menu">
-                                <?php $__currentLoopData = \App\Models\CategoryPage::with('category')->where('menu_type', 'quick_menu')->orderBy('menu_order')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $page): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li>
-                                        <a class="dropdown-item" href="<?php echo e(route('category.show', ['slug' => $page->slug])); ?>">
-                                            <?php echo e($page->title ?: $page->category->family_category_name); ?>
-
-                                        </a>
-                                    </li>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                               
                             </ul>
                         </div>
                     </div>

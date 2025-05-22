@@ -467,6 +467,8 @@
                                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+<<<<<<< HEAD
+=======
                                     <!-- Shipper Information -->
                                     <div class="card mb-3">
                                         <div class="card-header bg-light">
@@ -479,6 +481,7 @@
                                                 </div>
                                         </div>
                                     </div>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                 <!-- Shipping Rates List -->
                                 <div id="shippingRates" class="mb-3">
                                     <!-- Shipping rates will be populated here -->
@@ -493,7 +496,11 @@
                                 <!-- UPS Shipping Section -->
                                 <div class="card mb-3">
                                     <div class="card-header bg-light">
+<<<<<<< HEAD
+                                        <h5 class="mb-0">UPS Shipping</h5>
+=======
                                         <h5 class="mb-0">UPS Small Package</h5>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
@@ -621,7 +628,13 @@
                                                     <input type="text" class="form-control" id="shipping-organizer-quoted-by" name="shipping_organizer_quoted_by" value="sunny">
                                                 </div>
                                             </div>
+<<<<<<< HEAD
+                                            <div class="col-md-8 d-flex align-items-end">
+                                                <button type="button" class="btn btn-primary" id="addShippingEstimate">Add to Order</button>
+                                            </div>
+=======
                                           
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                         </div>
                                     </div>
                                 </div>
