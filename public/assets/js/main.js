@@ -120,7 +120,7 @@ $(document).ready(function() {
     // application parameters
     const appParams = {
         appName: "MyApp",
-        url: "http://localhost:8000",
+        url: App.url,
     }
 
     const url = "https://example.com/api/endpoint";
@@ -162,7 +162,7 @@ $(document).ready(function() {
 
         if (selectedCategory) {
             $.ajax({
-            url: `http://localhost:8000/subcatlist/${selectedCategory}`,
+            url: `${App.url}/subcatlist/${selectedCategory}`,
             type: "GET",
             dataType: "html",
             success: function(data) {
@@ -295,7 +295,7 @@ $(document).ready(function() {
 
         setTimeout(function() {
             $.ajax({
-                url: `http://localhost:8000/academytest/height/${height}`,
+                url: `${App.url}/academytest/height/${height}`,
                 type: "GET",
                 data: JSON.stringify(dummyData),
                 contentType: "application/json",

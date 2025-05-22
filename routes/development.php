@@ -20,7 +20,7 @@ Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById
 Route::get('/products-report/cat/{id}', [ProductReportController::class, 'getProductsByCategoryId'])->name('ams.getAllByCatId');
 Route::get('/products-report/search/{str}', [ProductReportController::class, 'getProductBySearch'])->name('ams.getAllBySearch');
 Route::get('/products-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
-Route::get('login', function () {
+Route::get('/login', function () {
     return view('auth.login2');
 })->name('login');
 //Route::get('/product-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
@@ -90,5 +90,10 @@ Route::get('/productdesc', function(){
     return view('productdesc', compact('majCategories', 'subCategories', 'fenceCategories'));
 
 })->name('category');
-
+Route::get('/logout', function () {
+    \Illuminate\Support\Facades\Auth::logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/');
+})->name('logout');
 Route::get('/homepage', [AcademyTestController::class, 'index'])->name('homepage');
