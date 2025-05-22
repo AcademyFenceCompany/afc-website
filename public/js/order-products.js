@@ -440,6 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let totalWeight = 0;
         
         orderItems.forEach(item => {
+            const category = item.product_data.categories_id;
             const weight = parseFloat(item.weight_lbs) || 0;
             const quantity = parseInt(item.quantity) || 1;
             
@@ -474,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (shippingModal) {
             const bsModal = new bootstrap.Modal(shippingModal);
             bsModal.show();
-            
+           
             // Show loading state
             const shippingRates = document.getElementById('shippingRates');
             if (shippingRates) {
@@ -697,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <td>${amountPerBox}</td>
                             <td>${boxWeight.toFixed(2)} lbs</td>
                             <td>$${(productShippingCost / boxCount).toFixed(2)}</td>
-                            <td>${product.product_name}</td>
+                            <td>${product.product_name} (${product.product_data?.item_no})</td>
                         `;
                         
                         upsShippingTable.appendChild(row);
@@ -715,7 +716,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 totalsRow.innerHTML = `
                     <td>${totalWeight.toFixed(2)} lbs</td>
                     <td>$${baseCharge.toFixed(2)}</td>
-                    <td>$${boxesTotal.toFixed(2)}</td>
+                    <td>$${boxesTotal.toFixed(2)} (${totalBoxes} boxes)</td>
                     <td>$${markup.toFixed(2)}</td>
                     <td>$${totalPrice.toFixed(2)}</td>
                 `;
@@ -731,7 +732,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     value="UPS Ground" data-charge="${totalPrice.toFixed(2)}" 
                                     data-carrier="UPS" data-service="Ground" data-transit-days="3-5"
                                     data-base-cost="${baseCharge.toFixed(2)}" data-weight="${totalWeight.toFixed(2)}"
-                                    data-class="WWF" data-zip="${document.getElementById('shipping-zip')?.value || ''}"
+                                    data-class="" data-zip="${document.getElementById('shipping-zip')?.value || ''}"
                                     data-packages="${totalBoxes}" checked>
                                 UPS Ground
                             </div>
@@ -741,10 +742,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
                 
                 // Pre-populate the Shipping Estimate Organizer
+                
                 populateShippingEstimateOrganizer({
                     carrier: 'UPS',
                     weight: totalWeight.toFixed(2),
-                    class: 'WWF',
+                    // class: Object.values(productGroups)[0].class,
                     cost: totalPrice.toFixed(2),
                     zip: document.getElementById('shipping-zip')?.value || '',
                     packages: totalBoxes
@@ -1277,6 +1279,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('shipping-organizer-cost').value = data.cost || '';
         document.getElementById('shipping-organizer-zip').value = data.zip || '';
         document.getElementById('shipping-organizer-packages').value = data.packages || '';
+        console.log('Shipping Estimate Organizer populated with:', data);
     }
     
     // Helper function to get total weight

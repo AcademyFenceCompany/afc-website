@@ -74,7 +74,7 @@
             <div class="row">
                 @foreach ($filteredProductsBySpeciality as $specialityName => $products)
                     <div class="col-md-4 mb-4">
-                        <x-woodfence.speciality-card 
+                        <x-woodfence.specialty-card 
                             :styleGroup="$styleGroup" 
                             :specialityName="$specialityName" 
                             :products="$products"

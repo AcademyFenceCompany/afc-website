@@ -15,14 +15,20 @@ class ProductByMeshSizeController extends Controller
             // Legacy route with query parameters
             $meshSize = urldecode($request->input('meshSize'));
             $coating = urldecode($request->input('coating'));
+            $meshSize = str_replace('+', ' ', $meshSize); // Normalize '+' to space for query params too
         } else {
             // New route with path parameters
             $meshSize = urldecode($meshSize);
             $coating = urldecode($coating);
+            $meshSize = str_replace('+', ' ', $meshSize); // Normalize '+' to space for path params
         }
         
+        // Normalize the meshSize from URL/request for robust comparison
+        $normalizedUrlMeshSize = strtolower($meshSize);
+        $normalizedUrlMeshSize = str_replace([' ', '.'], '', $normalizedUrlMeshSize);
+        
         // Get all welded wire products first
-        $allWeldedWireProducts = DB::connection('mysql_second')
+        $allWeldedWireProducts = DB::connection('academyfence')
             ->table('productsqry')
             ->where('majorcategories_id', 44)
             ->where('enabled', 1)
@@ -33,8 +39,15 @@ class ProductByMeshSizeController extends Controller
         Log::info('All available coatings in database:', $availableCoatings->toArray());
             
         // Filter products by the specified mesh size
-        $meshSizeProducts = $allWeldedWireProducts->filter(function($product) use ($meshSize) {
-            return strcasecmp($product->size2, $meshSize) === 0;
+        $meshSizeProducts = $allWeldedWireProducts->filter(function($product) use ($normalizedUrlMeshSize) {
+            if (empty($product->size2)) {
+                return false;
+            }
+            // Normalize database mesh size for robust comparison
+            $normalizedDbMeshSize = strtolower($product->size2);
+            $normalizedDbMeshSize = str_replace([' ', '.'], '', $normalizedDbMeshSize);
+            
+            return $normalizedDbMeshSize === $normalizedUrlMeshSize;
         })->values();
         
     
@@ -123,7 +136,7 @@ class ProductByMeshSizeController extends Controller
             return strtolower(trim($displaySize));
         });
 
-        $kproduct = DB::connection('mysql_second')
+        $kproduct = DB::connection('academyfence')
         ->table('productsqry')
         ->where('categories_id', 50)
         ->where('parent','AFCHDFP')
@@ -175,7 +188,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getVinylBlackFencePiping()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', 205)
             ->where('color', 'like', 'vinyl')
@@ -203,7 +216,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getRoundCedarFencePosts()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', 163)
             ->where('parent', 'like', 'afcrwp')
@@ -230,7 +243,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getBazookaPostDrivers()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('item_no', 'WWFBPDR')
             ->where('enabled', 1)
@@ -254,7 +267,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getPressureTreatedPosts()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('item_no', 'PSRWFT')
             ->where('enabled', 1)

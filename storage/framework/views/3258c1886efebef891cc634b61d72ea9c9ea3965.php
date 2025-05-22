@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('title', 'My Shopping Cart'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -15,7 +17,10 @@
                     <th class="text-start">Price</th>
                 </tr>
             </thead>
+<<<<<<< HEAD
             <?php dump(session('cart')); ?>
+=======
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
             <tbody>
                 <?php $__empty_1 = true; $__currentLoopData = session('cart', []); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                     <tr>

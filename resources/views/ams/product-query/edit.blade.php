@@ -79,8 +79,13 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
+                                @if($product->categories_id == 82)
+                                <label class="form-label">Nominal Size</label>
+                                <input type="text" name="size" value="{{ $product->size }}" class="form-control">
+                                @else
                                 <label class="form-label">Size</label>
                                 <input type="text" name="size" value="{{ $product->size }}" class="form-control">
+                                @endif
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -91,18 +96,28 @@
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
+                                @if($product->categories_id == 82)
                                 <label class="form-label">Cap Opening</label>
-                                <input type="text" name="cap_opening" value="{{ $product->nominal_length }}" class="form-control">
+                                <input type="text" name="size2" value="{{ $product->size2 }}" class="form-control">
+                                @else
+                                <label class="form-label">Size2</label>
+                                <input type="text" name="size2" value="{{ $product->size2 }}" class="form-control">
+                                @endif
                             </div>
 
                             <div class="col-md-4 mb-3">
+                                @if($product->categories_id == 82)
                                 <label class="form-label">Fits Post Size</label>
-                                <input type="text" name="size3" value="{{ $product->nominal_width }}" class="form-control">
+                                <input type="text" name="size3" value="{{ $product->size3 }}" class="form-control">
+                                @else
+                                <label class="form-label">Size3</label>
+                                <input type="text" name="size3" value="{{ $product->size3 }}" class="form-control">
+                                @endif
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Display Size</label>
-                                <input type="number" step="0.01" name="display_size" value="{{ $product->display_size_2 }}" class="form-control">
+                                <input type="text" name="display_size_2" value="{{ $product->display_size_2 }}" class="form-control">
                             </div>
                         </div>
 
@@ -125,6 +140,10 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Spacing</label>
                                 <input type="text" name="spacing" value="{{ $product->spacing }}" class="form-control">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Product Grouping Code</label>
+                                <input type="text" name="parent" value="{{ $product->parent }}" class="form-control">
                             </div>
                         </div>
 
@@ -170,7 +189,30 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Shipping Information</h5>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping Length</label>
+                            <input type="number" name="ship_length" value="{{ $product->ship_length }}" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping width</label>
+                            <input type="number" name="ship_width" value="{{ $product->ship_width }}" class="form-control">
+                        </div>
 
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping height</label>
+                            <input type="number" name="ship_height" value="{{ $product->ship_height }}" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Amount Per Box</label>
+                            <input type="number" name="amount_per_box" value="{{ $product->amount_per_box }}" class="form-control">
+                        </div>
+                    </div>
+                </div>
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">SEO Information</h5>

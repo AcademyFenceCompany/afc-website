@@ -2,7 +2,7 @@
 
 // This script analyzes the database structure to help debug issues
 
-// Connect to the mysql_second database
+// Connect to the academyfence database
 $host = getenv('DB_SECOND_HOST') ?: '127.0.0.1';
 $port = getenv('DB_SECOND_PORT') ?: '3306';
 $database = getenv('DB_SECOND_DATABASE') ?: 'mysql2';

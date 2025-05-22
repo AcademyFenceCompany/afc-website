@@ -9,7 +9,7 @@ class SingleProductController extends Controller
 {
     public function show($id)
     {
-        $productDetails = DB::connection('mysql_second')
+        $productDetails = DB::connection('academyfence')
             ->table('productsqry')
             ->where('id', $id)
             ->select
@@ -22,7 +22,7 @@ class SingleProductController extends Controller
             ->first();
             
     
-        $productVariations = DB::connection('mysql_second')
+        $productVariations = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $productDetails->categories_id)
             ->where('style', $productDetails->style)
@@ -32,7 +32,7 @@ class SingleProductController extends Controller
             ->select('size', 'size2', 'size3', 'color', 'id')
             ->get();
     
-        $productOptions = DB::connection('mysql_second')
+        $productOptions = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $productDetails->categories_id)
             ->where('style', $productDetails->style)
@@ -88,7 +88,7 @@ class SingleProductController extends Controller
             
             // Now fetch all these products from database
             foreach ($sections as $section) {
-                $sectionProducts = DB::connection('mysql_second')
+                $sectionProducts = DB::connection('academyfence')
                     ->table('productsqry')
                     ->whereIn('item_no', $section['items'])
                     ->select('id', 'item_no', 'product_name', 'size', 'color', 'price', 'img_small')
@@ -109,7 +109,7 @@ class SingleProductController extends Controller
             $relItemNos = explode(',', $productDetails->product_relatives);
             $relItemNos = array_map('trim', $relItemNos);
             
-            $relatedProducts = DB::connection('mysql_second')
+            $relatedProducts = DB::connection('academyfence')
                 ->table('productsqry')
                 ->whereIn('item_no', $relItemNos)
                 ->select('id', 'item_no', 'product_name', 'price', 'img_small', 'img_large')
@@ -117,7 +117,7 @@ class SingleProductController extends Controller
         }
 
         // Fetch French Gothic Posts from demodb
-        $frenchGothicPosts = DB::connection('mysql_second')
+        $frenchGothicPosts = DB::connection('academyfence')
             ->table('productsqry')
             ->where('parent', 'like', 'AFCGWP')
             ->where('size', 'like', '4in x 4in%')
@@ -125,7 +125,7 @@ class SingleProductController extends Controller
             ->get();
 
         // Fetch Flat Posts from demodb
-        $flatPosts = DB::connection('mysql_second')
+        $flatPosts = DB::connection('academyfence')
             ->table('productsqry')
             ->where('parent', 'like', 'AFCFWP')
             ->where('size', 'like', '4in x 4in%')
@@ -133,7 +133,7 @@ class SingleProductController extends Controller
             ->get();
 
         // Fetch Flat Posts 5x5 from demodb
-        $flatPosts5x5 = DB::connection('mysql_second')
+        $flatPosts5x5 = DB::connection('academyfence')
             ->table('productsqry')
             ->where('item_no', 'like', 'PSFL5%')
             ->where('size', 'like', '5in x 5in%')
@@ -141,7 +141,7 @@ class SingleProductController extends Controller
             ->get();
 
         // Fetch Single Gate from demodb
-        $singleGate = DB::connection('mysql_second')
+        $singleGate = DB::connection('academyfence')
             ->table('productsqry')
             ->where('spacing', $productDetails->spacing)
             ->where('style', $productDetails->style)
@@ -170,7 +170,7 @@ class SingleProductController extends Controller
 
     public function fetchProductDetails($id)
     {
-        $productDetails = DB::connection('mysql_second')
+        $productDetails = DB::connection('academyfence')
             ->table('productsqry')
             ->where('id', $id)
             ->select(

@@ -56,89 +56,106 @@ class UPSService
      * @return array
      */
     public function getShippingRates(array $requestData)
-{
-    try {
-        $packages = [];
-        foreach ($requestData['packages'] as $package) {
-            $packages[] = [
-                "PackagingType" => [
-                    "Code" => "02",
-                    "Description" => "Package",
-                ],
-                "Dimensions" => [
-                    "UnitOfMeasurement" => [
-                        "Code" => "IN",
+    {
+        try {
+            $packages = [];
+            foreach ($requestData['packages'] as $package) {
+                $packages[] = [
+                    "PackagingType" => [
+                        "Code" => "02",
+                        "Description" => "Package",
                     ],
-                    "Length" => $package['dimensions']['length'],
-                    "Width" => $package['dimensions']['width'],
-                    "Height" => $package['dimensions']['height'],
-                ],
-                "PackageWeight" => [
-                    "UnitOfMeasurement" => [
-                        "Code" => "LBS",
+                    "Dimensions" => [
+                        "UnitOfMeasurement" => [
+                            "Code" => "IN",
+                        ],
+                        "Length" => $package['dimensions']['length'],
+                        "Width" => $package['dimensions']['width'],
+                        "Height" => $package['dimensions']['height'],
                     ],
-                    "Weight" => $package['weight'],
+                    "PackageWeight" => [
+                        "UnitOfMeasurement" => [
+                            "Code" => "LBS",
+                        ],
+                        "Weight" => $package['weight'],
+                    ],
+                ];
+            }
+
+            // Determine which shipper address to use
+            $useAlternativeShipper = isset($requestData['use_alternative_shipper']) && $requestData['use_alternative_shipper'] === true;
+            
+            // Get the appropriate shipper configuration
+            if ($useAlternativeShipper && config('alternative_shipper.category_82')) {
+                $shipperName = config('alternative_shipper.category_82.name');
+                $shipperAddress = config('alternative_shipper.category_82.address');
+                $shipperCity = config('alternative_shipper.category_82.city');
+                $shipperState = config('alternative_shipper.category_82.state');
+                $shipperZip = config('alternative_shipper.category_82.zip');
+            } else {
+                $shipperName = config('shipper.name');
+                $shipperAddress = config('shipper.address');
+                $shipperCity = config('shipper.city');
+                $shipperState = config('shipper.state');
+                $shipperZip = config('shipper.zip');
+            }
+
+            $payload = [
+                "RateRequest" => [
+                    "Request" => [
+                        "TransactionReference" => [
+                            "CustomerContext" => "Rating and Service",
+                        ],
+                    ],
+                    "Shipment" => [
+                        "Shipper" => [
+                            "Name" => $shipperName,
+                            "ShipperNumber" => $this->shipperNumber,
+                            "Address" => [
+                                "AddressLine" => $shipperAddress,
+                                "City" => $shipperCity,
+                                "StateProvinceCode" => $shipperState,
+                                "PostalCode" => $shipperZip,
+                                "CountryCode" => "US",
+                            ],
+                        ],
+                        "ShipTo" => [
+                            "Name" => "Recipient Name",
+                            "Address" => [
+                                "AddressLine" => [$requestData['recipient_address']],
+                                "City" => $requestData['recipient_city'],
+                                "StateProvinceCode" => $requestData['recipient_state'],
+                                "PostalCode" => $requestData['recipient_postal'],
+                                "CountryCode" => "US",
+                            ],
+                        ],
+                        "Package" => $packages, // Send multiple packages
+                    ],
                 ],
             ];
+
+            \Log::info('UPS Request Payload:', ['payload' => $payload]);
+
+            $response = $this->client->post("{$this->baseUrl}/api/rating/v1/Shop", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $this->accessToken,
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $payload,
+            ]);
+
+            $responseData = json_decode($response->getBody()->getContents(), true);
+            
+            \Log::info('UPS Response:', ['response' => $responseData]);
+
+            return $responseData;
+        } catch (\Exception $e) {
+            \Log::error('UPS Shipping Rates Error', [
+                'message' => $e->getMessage(),
+                'request' => $requestData
+            ]);
+
+            return ['error' => 'Unable to fetch rates from UPS API.'];
         }
-
-        $payload = [
-            "RateRequest" => [
-                "Request" => [
-                    "TransactionReference" => [
-                        "CustomerContext" => "Rating and Service",
-                    ],
-                ],
-                "Shipment" => [
-                    "Shipper" => [
-                        "Name" => config('shipper.name'),
-                        "ShipperNumber" => $this->shipperNumber,
-                        "Address" => [
-                            "AddressLine" => config('shipper.address'),
-                            "City" => config('shipper.city'),
-                            "StateProvinceCode" =>config('shipper.state'),
-                            "PostalCode" => config('shipper.zip'),
-                            "CountryCode" => "US",
-                        ],
-                    ],
-                    "ShipTo" => [
-                        "Name" => "Recipient Name",
-                        "Address" => [
-                            "AddressLine" => [$requestData['recipient_address']],
-                            "City" => $requestData['recipient_city'],
-                            "StateProvinceCode" => $requestData['recipient_state'],
-                            "PostalCode" => $requestData['recipient_postal'],
-                            "CountryCode" => "US",
-                        ],
-                    ],
-                    "Package" => $packages, // Send multiple packages
-                ],
-            ],
-        ];
-
-        \Log::info('UPS Request Payload:', ['payload' => $payload]);
-
-        $response = $this->client->post("{$this->baseUrl}/api/rating/v1/Shop", [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->accessToken,
-                'Content-Type' => 'application/json',
-            ],
-            'json' => $payload,
-        ]);
-
-        $responseData = json_decode($response->getBody()->getContents(), true);
-        
-        \Log::info('UPS Response:', ['response' => $responseData]);
-
-        return $responseData;
-    } catch (\Exception $e) {
-        \Log::error('UPS Shipping Rates Error', [
-            'message' => $e->getMessage(),
-            'request' => $requestData
-        ]);
-
-        return ['error' => 'Unable to fetch rates from UPS API.'];
     }
-}
-
 }

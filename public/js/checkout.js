@@ -33,16 +33,24 @@ document
 
         let packages = [];
         let totalWeight = 0;
+        let categoryIds = []; // Array to collect category IDs
 
         // Collect package details
         const products = document.querySelectorAll(".product-item");
         products.forEach((product) => {
             const quantity = parseInt(product.dataset.quantity);
             const weight = parseFloat(product.dataset.weight);
-            const length = parseFloat(product.dataset.length);
-            const width = parseFloat(product.dataset.width);
-            const height = parseFloat(product.dataset.height);
-            console.log(weight, length, width, height);
+            const length = parseFloat(product.dataset.shippingLength);
+            const width = parseFloat(product.dataset.shippingWidth);
+            const height = parseFloat(product.dataset.shippingHeight);
+            const categoryId = parseInt(product.dataset.categoryId || 0); // Get category ID
+            
+            console.log(weight, length, width, height, categoryId);
+
+            // Add category ID to the array if it's not already included
+            if (categoryId && !categoryIds.includes(categoryId)) {
+                categoryIds.push(categoryId);
+            }
 
             // Calculate total weight
             totalWeight += weight * quantity;
@@ -255,8 +263,15 @@ document
                         recipient_state,
                         recipient_postal,
                         packages,
+                        category_ids: categoryIds, // Pass category IDs to the API
                     }),
                 }).then((res) => res.json());
+
+                // Log the shipper address information
+                console.log('UPS Response with Shipper Info:', upsResponse);
+                if (upsResponse.shipper) {
+                    console.log('Shipper Address:', upsResponse.shipper);
+                }
 
                 ratesContainer.innerHTML = ""; // Clear the spinner
 
@@ -268,9 +283,15 @@ document
                     upsResponse.RateResponse.RatedShipment.forEach(
                         (shipment) => {
                             if (shipment.Service.Code === "03") {
+                                const baseCharge = parseFloat(shipment.TotalCharges.MonetaryValue);
+                                const boxPrice = 5.00;
+                                const boxesTotal = packages.length * boxPrice;
+                                const markupAmount = baseCharge * 0.33; // 33% markup
                                 const totalCharges =
-                                    shipment.TotalCharges.MonetaryValue +
-                                    stateMarkup;
+                                    baseCharge +
+                                    markupAmount +
+                                    boxesTotal
+                                console.log('Total Charges:', totalCharges);
 
                                 const rateElement =
                                     document.createElement("div");
@@ -278,8 +299,14 @@ document
                                 rateElement.innerHTML = `
                                 <label class="d-block">
                                     <input type="radio" name="shipping_option" class="shipping-option"
-                                        data-charge="${totalCharges}" value="ups-ground">
-                                    UPS Ground - $${shipment.TotalCharges.MonetaryValue}
+                                        data-charge="${totalCharges.toFixed(2)}" value="ups-ground">
+                                    UPS Ground - $${totalCharges.toFixed(2)}
+                                    <div class="shipping-breakdown">
+                                        <small>Base Rate: $${baseCharge.toFixed(2)}</small><br>
+                                        <small>Box Charges: $${boxesTotal.toFixed(2)} (${packages.length} boxes)</small><br>
+                                        <small>Markup (33%): $${markupAmount.toFixed(2)}</small><br>
+                                        <small>Shipper Zip: ${upsResponse.shipper.address} ${upsResponse.shipper.city},  ${upsResponse.shipper.state} ${upsResponse.shipper.zip}</small><br>
+                                    </div>
                                 </label>
                             `;
                                 ratesContainer.appendChild(rateElement);

@@ -20,7 +20,7 @@ class BoardonBoardController extends Controller
         $categoryId = 8;
         
         // Get the category
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $categoryId)
             ->first();
@@ -30,7 +30,7 @@ class BoardonBoardController extends Controller
         }
         
         // Get available spacings from products
-        $spacings = DB::connection('mysql_second')
+        $spacings = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $categoryId)
             ->where('enabled', 1)
@@ -56,7 +56,7 @@ class BoardonBoardController extends Controller
         
         // Get all products for this category
         try {
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('productsqry')
                 ->where('categories_id', $categoryId)
                 ->where('enabled', 1);
@@ -70,7 +70,7 @@ class BoardonBoardController extends Controller
             $products = $query->get();
         } catch (\Exception $e) {
             // Fallback to products table if productsqry view doesn't exist
-            $query = DB::connection('mysql_second')
+            $query = DB::connection('academyfence')
                 ->table('products')
                 ->where('categories_id', $categoryId)
                 ->where('enabled', 1);
@@ -175,7 +175,7 @@ class BoardonBoardController extends Controller
                 'name' => $category->cat_name,
                 'description' => $category->cat_desc_long ?? 'No description available',
                 'seo_name' => $category->seo_name,
-                'image' => $category->img ? url('storage/categories/' . $category->img) : url('storage/categories/default.png'),
+                'image' => $category->image ? url('storage/categories/' . $category->image) : url('storage/categories/default.png'),
             ],
             'productsByStyle' => $productsByStyle,
             'productData' => $productData,

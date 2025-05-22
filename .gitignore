@@ -5,7 +5,9 @@
 /storage/logs
 /storage/*.key
 /vendor
+.gitignore
 .env
+.env.example
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -23,3 +25,4 @@ storage/logs/*.log
 /storage/framework/cache/
 /storage/framework/sessions/
 /storage/framework/views/
+/storage/framework/cache/data/

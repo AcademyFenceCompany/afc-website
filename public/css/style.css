@@ -2,6 +2,8 @@
     /* Colors */
     --primary-color: #005580;
     --secondary-color: #882905;
+    --gray-color: #6C757D;
+    --gray-color: #6C757D;
     --light-color: #fff;
     --dark-color: #000;
     --bg-color: #f8f7f2;
@@ -558,6 +560,8 @@ table th {
 /* Table Body */
 table td {
     font-size: 13px; /* Font size for table values */
+    font-size: 14px; /* Font size for table values */
+    font-size: 13px; /* Font size for table values */
     text-align: center; /* Center align values */
     padding: 6px; /* Adjust padding for compactness */
 }
@@ -649,10 +653,10 @@ h1.page-title,
 .container .page-title,
 main .rounded .page-title,
 .rounded .page-title {
-    font-size: 24px;
+    font-size: 24px !important;
     color: #fff !important;
     font-weight: bold !important;
-    padding: 10px 0;
+    padding: 10px 0 !important;
     margin-bottom: 0 !important;
 }
 

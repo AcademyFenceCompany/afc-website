@@ -287,7 +287,7 @@
         <!-- Left Section - About -->
         <div class="col-md-8 wf-about mb-2">
             <div class="d-flex about-flex">
-                <img src="<?php echo e(url('storage/products/onguard-fencetown-400x400.jpg')); ?>" alt="OnGuard Fence" style="width: 180px; height: 180px; object-fit: cover;" class="me-4 rounded about-image-onguard">
+                <img src="<?php echo e(url('resources/images/og-img.jpg')); ?>" alt="OnGuard Fence" style="width: 180px; height: 180px; object-fit: cover;" class="me-4 rounded about-image-onguard">
                 <div>
                     <h4 class="mb-3">In Stock - Quick Shipping - Home Installation - Pick Up</h4>
                     <p class="page-description mb-2">

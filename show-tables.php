@@ -7,7 +7,7 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
 try {
     // Get all tables
-    $tables = DB::connection('mysql_second')->select('SHOW TABLES');
+    $tables = DB::connection('academyfence')->select('SHOW TABLES');
     echo "Tables in database:\n";
     foreach ($tables as $table) {
         $tableName = reset($table);

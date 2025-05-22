@@ -9,7 +9,7 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 echo "=== MySQL Second Database Schema ===\n\n";
 
 // Get all tables
-$tables = DB::connection('mysql_second')
+$tables = DB::connection('academyfence')
     ->select('SHOW TABLES');
 
 echo "Tables in database:\n";
@@ -19,7 +19,7 @@ foreach ($tables as $table) {
 }
 
 echo "\n=== Categories Table Structure ===\n\n";
-$columns = DB::connection('mysql_second')
+$columns = DB::connection('academyfence')
     ->select('SHOW COLUMNS FROM categories');
 echo "Columns in categories table:\n";
 foreach ($columns as $col) {
@@ -27,7 +27,7 @@ foreach ($columns as $col) {
 }
 
 echo "\n=== Productsqry Table Structure ===\n\n";
-$columns = DB::connection('mysql_second')
+$columns = DB::connection('academyfence')
     ->select('SHOW COLUMNS FROM productsqry');
 echo "Columns in productsqry table:\n";
 foreach ($columns as $col) {
@@ -36,7 +36,7 @@ foreach ($columns as $col) {
 
 // Sample data (top 5 rows only, no sensitive data)
 echo "\n=== Categories Sample (5 rows) ===\n\n";
-$sampleCategories = DB::connection('mysql_second')
+$sampleCategories = DB::connection('academyfence')
     ->table('categories')
     ->select('id', 'cat_name', 'majorcategories_id')
     ->limit(5)
@@ -47,7 +47,7 @@ foreach ($sampleCategories as $cat) {
 }
 
 echo "\n=== Productsqry Sample (5 rows) ===\n\n";
-$sampleProducts = DB::connection('mysql_second')
+$sampleProducts = DB::connection('academyfence')
     ->table('productsqry')
     ->select('product_id', 'item_no', 'product_name', 'categories_id', 'style', 'spacing')
     ->limit(5)

@@ -12,39 +12,47 @@ class ProductController extends Controller
 {
     public function showWeldedWire()
     {
-        // Fetch the Welded Wire category
-        $weldedWireCategory = FamilyCategory::where('family_category_name', 'Welded Wire')->first();
+        // Fetch the Welded Wire category from the new database
+        $weldedWireCategory = DB::connection('academyfence')
+            ->table('categories')
+            ->where('majorcategories_id', 44)
+            ->first();
 
         if (!$weldedWireCategory) {
             abort(404, 'Welded Wire category not found.');
         }
 
         // Fetch products related to the Welded Wire category
-        // $products = Product::where('family_category_id', $weldedWireCategory->product_id)
-        //     ->with(['productDetail', 'productMedia'])
-        //     ->get();
+        try {
+            // Try to use productsqry view first
+            $products_ww = DB::connection('academyfence')
+                ->table('productsqry')
+                ->where('categories_id', $weldedWireCategory->id)
+                ->select('*')
+                ->get();
+        } catch (\Exception $e) {
+            // Fall back to products table if view doesn't exist
+            $products_ww = DB::connection('academyfence')
+                ->table('products')
+                ->where('categories_id', $weldedWireCategory->id)
+                ->select('*')
+                ->get();
+        }
 
-        $general_products_ww = DB::table('products')
-            ->join('product_details', 'products.product_id', '=', 'product_details.product_id')
-            ->join('product_media', 'products.product_id', '=', 'product_media.product_id');
+     
 
-        $products_ww = DB::table('products')
-            ->select($columns = ['*'])
-            ->get();
-
-        $general_ww_mesh_size_imgs = $general_products_ww
-            ->join('general_media', 'product_details.size2', '=', 'general_media.size_portrayed')
-            ->select($columns = ['general_media.image', 'general_media.size_portrayed', 'product_details.size2'])
-            ->groupBy('general_media.size_portrayed', 'general_media.image')
-            ->get();
-
-        return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww', 'general_ww_mesh_size_imgs'));
+        return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww'));
     }
 
     public function create()
     {
-        // Debug: Log available categories
-        $familyCategories = FamilyCategory::all();
+        // Get categories from the new database
+        $familyCategories = DB::connection('academyfence')
+            ->table('categories')
+            ->where('web_enabled', 1)
+            ->orderBy('cat_name')
+            ->get();
+            
         \Log::info('Available categories:', $familyCategories->toArray());
         return view('ams.product.add-product', compact('familyCategories'));
     }
@@ -53,64 +61,66 @@ class ProductController extends Controller
     {
         try {
             // Load categories with nested structure
-            $categories = FamilyCategory::select([
-                'family_category_id',
-                'parent_category_id',
-                'family_category_name'
-            ])
-            ->withCount(['products' => function($query) {
-                // Count products where this category is either the main category or subcategory
-                $query->where(function($q) {
-                    $q->where('family_category_id', '=', DB::raw('family_categories.family_category_id'))
-                      ->orWhere('subcategory_id', '=', DB::raw('family_categories.family_category_id'));
-                });
-            }])
-            ->with(['children' => function($query) {
-                $query->select([
-                    'family_category_id',
-                    'parent_category_id',
-                    'family_category_name'
-                ])->withCount(['products' => function($query) {
-                    $query->where(function($q) {
-                        $q->where('family_category_id', '=', DB::raw('family_categories.family_category_id'))
-                          ->orWhere('subcategory_id', '=', DB::raw('family_categories.family_category_id'));
-                    });
-                }]);
-            }])
-            ->whereNull('parent_category_id')
-            ->get();
+            $categories = DB::connection('academyfence')
+                ->table('categories as c1')
+                ->leftJoin('categories as c2', 'c1.id', '=', 'c2.majorcategories_id')
+                ->whereNull('c1.majorcategories_id') // Only parent categories
+                ->select('c1.id as family_category_id', 'c1.cat_name as family_category_name')
+                ->distinct()
+                ->get();
+
+            // Add product counts and children to each category
+            foreach ($categories as $category) {
+                // Count products for this category
+                $category->products_count = DB::connection('academyfence')
+                    ->table('products')
+                    ->where('categories_id', $category->family_category_id)
+                    ->count();
+                
+                // Get child categories
+                $category->children = DB::connection('academyfence')
+                    ->table('categories')
+                    ->where('majorcategories_id', $category->family_category_id)
+                    ->select('id as family_category_id', 'cat_name as family_category_name')
+                    ->get();
+                
+                // Add product counts to each child
+                foreach ($category->children as $child) {
+                    $child->products_count = DB::connection('academyfence')
+                        ->table('products')
+                        ->where('categories_id', $child->family_category_id)
+                        ->count();
+                }
+            }
 
             // Handle AJAX requests for product data
             if ($request->ajax()) {
-                $query = Product::with([
-                    'familyCategory:family_category_id,family_category_name',
-                    'subcategory:family_category_id,family_category_name',
-                    'inventory:product_id,in_stock_hq,in_stock_warehouse'
-                ]);
-
+                $query = DB::connection('academyfence')->table('products');
+                
                 // Apply category filter
                 if ($request->filled('category')) {
                     $categoryId = $request->category;
                     
                     // Get the category and check if it's a parent or child
-                    $category = FamilyCategory::with('children')->find($categoryId);
+                    $category = DB::connection('academyfence')
+                        ->table('categories')
+                        ->where('id', $categoryId)
+                        ->first();
                     
                     if ($category) {
-                        if ($category->children->count() > 0) {
+                        // Check if it has children
+                        $childrenIds = DB::connection('academyfence')
+                            ->table('categories')
+                            ->where('majorcategories_id', $categoryId)
+                            ->pluck('id')
+                            ->toArray();
+                        
+                        if (count($childrenIds) > 0) {
                             // If it's a parent category, get products from it and all its children
-                            $childrenIds = $category->children->pluck('family_category_id')->toArray();
-                            $query->where(function($q) use ($categoryId, $childrenIds) {
-                                $q->where('family_category_id', $categoryId)
-                                  ->orWhere('subcategory_id', $categoryId)
-                                  ->orWhereIn('family_category_id', $childrenIds)
-                                  ->orWhereIn('subcategory_id', $childrenIds);
-                            });
+                            $query->whereIn('categories_id', array_merge([$categoryId], $childrenIds));
                         } else {
                             // If it's a child category or has no children, just get its products
-                            $query->where(function($q) use ($categoryId) {
-                                $q->where('family_category_id', $categoryId)
-                                  ->orWhere('subcategory_id', $categoryId);
-                            });
+                            $query->where('categories_id', $categoryId);
                         }
                     }
                 }
@@ -127,44 +137,43 @@ class ProductController extends Controller
                 if ($request->filled('stock_status')) {
                     switch ($request->stock_status) {
                         case 'in_stock':
-                            $query->whereHas('inventory', function($q) {
-                                $q->where('in_stock_hq', '>', 0)
-                                  ->orWhere('in_stock_warehouse', '>', 0);
+                            $query->where(function($q) {
+                                $q->where('inv_stocked', '>', 0)
+                                  ->orWhere('inv_ordered', '>', 0);
                             });
                             break;
                         case 'low_stock':
-                            $query->whereHas('inventory', function($q) {
-                                $q->where('in_stock_hq', '<=', 5)
-                                  ->where('in_stock_warehouse', '<=', 5)
-                                  ->where(function($sq) {
-                                      $sq->where('in_stock_hq', '>', 0)
-                                         ->orWhere('in_stock_warehouse', '>', 0);
-                                  });
+                            $query->where(function($q) {
+                                $q->where('inv_stocked', '<=', 5)
+                                  ->where('inv_stocked', '>', 0);
                             });
                             break;
                     }
                 }
 
                 $products = $query->get()->map(function ($product) {
-                    $category = $product->familyCategory ?? $product->subcategory;
+                    // Get category name
+                    $category = DB::connection('academyfence')
+                        ->table('categories')
+                        ->where('id', $product->categories_id)
+                        ->first();
+                    
                     return [
-                        'id' => $product->product_id,
+                        'id' => $product->id,
                         'item_no' => $product->item_no,
                         'product_name' => $product->product_name,
                         'family_category' => [
-                            'id' => $category->family_category_id ?? null,
-                            'name' => $category->family_category_name ?? 'N/A'
+                            'id' => $product->categories_id,
+                            'name' => $category ? $category->cat_name : 'N/A'
                         ],
-                        'price' => number_format($product->price_per_unit ?? 0, 2),
+                        'price' => number_format($product->price ?? 0, 2),
                         'stock' => [
-                            'hq' => (int)($product->inventory->in_stock_hq ?? 0),
-                            'warehouse' => (int)($product->inventory->in_stock_warehouse ?? 0)
+                            'hq' => (int)($product->inv_stocked ?? 0),
+                            'warehouse' => (int)($product->inv_ordered ?? 0)
                         ],
-                        'stock_status' => $product->inventory 
-                            ? ($product->inventory->in_stock_hq > 0 || $product->inventory->in_stock_warehouse > 0 
-                                ? 'In Stock' 
-                                : 'Out of Stock')
-                            : 'N/A'
+                        'stock_status' => ($product->inv_stocked > 0 || $product->inv_ordered > 0) 
+                            ? 'In Stock' 
+                            : 'Out of Stock'
                     ];
                 });
 
@@ -175,14 +184,10 @@ class ProductController extends Controller
             }
 
             // For initial page load, get all products
-            $query = Product::with([
-                'familyCategory:family_category_id,family_category_name',
-                'subcategory:family_category_id,family_category_name',
-                'inventory:product_id,in_stock_hq,in_stock_warehouse'
-            ]);
+            $products = DB::connection('academyfence')
+                ->table('products')
+                ->paginate($request->get('per_page', 10));
             
-            $products = $query->paginate($request->get('per_page', 10));
-
             // Return view for non-AJAX requests
             return view('ams.product.view-product', compact('categories', 'products'));
 
@@ -203,63 +208,105 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-    
-            DB::beginTransaction();
+            DB::connection('academyfence')->beginTransaction();
     
             // Create the main product
-            $product = Product::create($request->input('product'));
-            \Log::info('Created product:', $product->toArray());
+            $productData = $request->input('product');
+            
+            // Insert into products table
+            $productId = DB::connection('academyfence')
+                ->table('products')
+                ->insertGetId([
+                    'product_name' => $productData['product_name'],
+                    'item_no' => $productData['item_no'],
+                    'categories_id' => $productData['family_category_id'],
+                    'price' => $productData['price_per_unit'] ?? 0,
+                    'desc_short' => $productData['description'] ?? null,
+                    'desc_long' => $productData['long_description'] ?? null,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            
+            \Log::info('Created product with ID: ' . $productId);
     
-            // Debug each section
+            // Add product details if provided
             if ($request->has('details')) {
                 $detailsData = $request->input('details');
-                $detailsData['product_id'] = $product->product_id; 
-                \Log::info('Creating product details with:', $detailsData);
                 
-                $product->details()->create($detailsData);
+                // Update the product with details
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $productId)
+                    ->update([
+                        'size' => $detailsData['size'] ?? null,
+                        'color' => $detailsData['color'] ?? null,
+                        'style' => $detailsData['style'] ?? null,
+                        'speciality' => $detailsData['speciality'] ?? null,
+                        'material' => $detailsData['material'] ?? null,
+                        'spacing' => $detailsData['spacing'] ?? null
+                    ]);
             }
     
+            // Add shipping details if provided
             if ($request->has('shipping')) {
                 $shippingData = $request->input('shipping');
-                $shippingData['product_id'] = $product->product_id; // Explicitly set product_id
-                \Log::info('Creating shipping details with:', $shippingData);
                 
-                $product->shippingDetails()->create($shippingData);
+                // Update the product with shipping details
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $productId)
+                    ->update([
+                        'weight_lbs' => $shippingData['weight'] ?? 0,
+                        'ship_length' => $shippingData['length'] ?? null,
+                        'ship_width' => $shippingData['width'] ?? null,
+                        'ship_height' => $shippingData['height'] ?? null,
+                        'free_shipping' => isset($shippingData['free_shipping']) ? 1 : 0,
+                        'special_shipping' => isset($shippingData['special_shipping']) ? 1 : 0
+                    ]);
             }
     
+            // Handle media uploads
             if ($request->hasFile('media')) {
-                $mediaData = [];
                 foreach ($request->file('media') as $type => $file) {
                     $path = $file->store('products', 'public');
-                    $mediaData[$type] = $path;
+                    
+                    // Update the appropriate image field
+                    if ($type == 'main_image') {
+                        DB::connection('academyfence')
+                            ->table('products')
+                            ->where('id', $productId)
+                            ->update(['img_large' => basename($path)]);
+                    } else if ($type == 'thumbnail') {
+                        DB::connection('academyfence')
+                            ->table('products')
+                            ->where('id', $productId)
+                            ->update(['img_small' => basename($path)]);
+                    }
                 }
-                $mediaData['product_id'] = $product->product_id; // Explicitly set product_id
-                
-                \Log::info('Creating media with:', $mediaData);
-                $product->media()->create($mediaData);
             }
     
+            // Add inventory data if provided
             if ($request->has('inventory')) {
                 $inventoryData = $request->input('inventory');
                 
-                // Create inventory using the relationship
-                $inventory = $product->inventory()->create([
-                    'in_stock_hq' => $inventoryData['in_stock_hq'],
-                    'in_stock_warehouse' => $inventoryData['in_stock_warehouse'],
-                    'inventory_ordered' => $inventoryData['inventory_ordered'] ?? 0,
-                    'product_id' => $product->product_id  
-                ]);
-                
-                \Log::info('Created inventory:', ['inventory' => $inventory->toArray()]);
+                // Update inventory fields
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $productId)
+                    ->update([
+                        'inv_stocked' => $inventoryData['in_stock_hq'] ?? 0,
+                        'inv_ordered' => $inventoryData['in_stock_warehouse'] ?? 0,
+                        'inv_ordered_expect' => $inventoryData['inventory_ordered'] ?? 0
+                    ]);
             }
     
-            DB::commit();
+            DB::connection('academyfence')->commit();
             \Log::info('Product creation successful');
     
             return redirect()->route('products.index')->with('success', 'Product created successfully');
     
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::connection('academyfence')->rollBack();
             \Log::error('Error creating product:');
             \Log::error($e->getMessage());
             \Log::error($e->getTraceAsString());
@@ -272,60 +319,165 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with(['details', 'shippingDetails', 'inventory', 'media'])
-            ->findOrFail($id);
-        $familyCategories = FamilyCategory::all();
+        // Get product from the new database
+        $product = DB::connection('academyfence')
+            ->table('products')
+            ->where('id', $id)
+            ->first();
+            
+        if (!$product) {
+            abort(404, 'Product not found');
+        }
         
-        return view('ams.product.edit-product', compact('product', 'familyCategories'));
+        // Get all categories
+        $familyCategories = DB::connection('academyfence')
+            ->table('categories')
+            ->where('web_enabled', 1)
+            ->orderBy('cat_name')
+            ->get();
+        
+        // Format product data to match the expected structure in the view
+        $formattedProduct = (object)[
+            'product_id' => $product->id,
+            'item_no' => $product->item_no,
+            'product_name' => $product->product_name,
+            'family_category_id' => $product->categories_id,
+            'price_per_unit' => $product->price,
+            'description' => $product->desc_short,
+            'long_description' => $product->desc_long,
+            'details' => (object)[
+                'size' => $product->size,
+                'color' => $product->color,
+                'style' => $product->style,
+                'speciality' => $product->speciality,
+                'material' => $product->material,
+                'spacing' => $product->spacing
+            ],
+            'shippingDetails' => (object)[
+                'weight' => $product->weight_lbs,
+                'length' => $product->ship_length,
+                'width' => $product->ship_width,
+                'height' => $product->ship_height,
+                'free_shipping' => $product->free_shipping,
+                'special_shipping' => $product->special_shipping
+            ],
+            'inventory' => (object)[
+                'in_stock_hq' => $product->inv_stocked,
+                'in_stock_warehouse' => $product->inv_ordered,
+                'inventory_ordered' => $product->inv_ordered_expect
+            ],
+            'media' => (object)[
+                'main_image' => $product->img_large,
+                'thumbnail' => $product->img_small
+            ]
+        ];
+        
+        return view('ams.product.edit-product', [
+            'product' => $formattedProduct,
+            'familyCategories' => $familyCategories
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         try {
-            DB::beginTransaction();
+            DB::connection('academyfence')->beginTransaction();
 
-            $product = Product::findOrFail($id);
+            // Get the product
+            $product = DB::connection('academyfence')
+                ->table('products')
+                ->where('id', $id)
+                ->first();
+                
+            if (!$product) {
+                throw new \Exception('Product not found');
+            }
             
             // Update main product
-            $product->update($request->input('product'));
-            \Log::info('Updated product:', $product->toArray());
+            $productData = $request->input('product');
+            DB::connection('academyfence')
+                ->table('products')
+                ->where('id', $id)
+                ->update([
+                    'product_name' => $productData['product_name'],
+                    'item_no' => $productData['item_no'],
+                    'categories_id' => $productData['family_category_id'],
+                    'price' => $productData['price_per_unit'] ?? 0,
+                    'desc_short' => $productData['description'] ?? null,
+                    'desc_long' => $productData['long_description'] ?? null,
+                    'updated_at' => now()
+                ]);
 
             // Update details
             if ($request->has('details')) {
-                $product->details()->update($request->input('details'));
+                $detailsData = $request->input('details');
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $id)
+                    ->update([
+                        'size' => $detailsData['size'] ?? null,
+                        'color' => $detailsData['color'] ?? null,
+                        'style' => $detailsData['style'] ?? null,
+                        'speciality' => $detailsData['speciality'] ?? null,
+                        'material' => $detailsData['material'] ?? null,
+                        'spacing' => $detailsData['spacing'] ?? null
+                    ]);
             }
 
             // Update shipping
             if ($request->has('shipping')) {
-                $product->shippingDetails()->update($request->input('shipping'));
+                $shippingData = $request->input('shipping');
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $id)
+                    ->update([
+                        'weight_lbs' => $shippingData['weight'] ?? 0,
+                        'ship_length' => $shippingData['length'] ?? null,
+                        'ship_width' => $shippingData['width'] ?? null,
+                        'ship_height' => $shippingData['height'] ?? null,
+                        'free_shipping' => isset($shippingData['free_shipping']) ? 1 : 0,
+                        'special_shipping' => isset($shippingData['special_shipping']) ? 1 : 0
+                    ]);
             }
 
             // Update inventory
             if ($request->has('inventory')) {
-                $product->inventory()->update($request->input('inventory'));
+                $inventoryData = $request->input('inventory');
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $id)
+                    ->update([
+                        'inv_stocked' => $inventoryData['in_stock_hq'] ?? 0,
+                        'inv_ordered' => $inventoryData['in_stock_warehouse'] ?? 0,
+                        'inv_ordered_expect' => $inventoryData['inventory_ordered'] ?? 0
+                    ]);
             }
 
             // Handle media updates
             if ($request->hasFile('media')) {
-                $mediaData = [];
                 foreach ($request->file('media') as $type => $file) {
                     $path = $file->store('products', 'public');
-                    $mediaData[$type] = $path;
-                }
-                
-                if ($product->media) {
-                    $product->media()->update($mediaData);
-                } else {
-                    $mediaData['product_id'] = $product->product_id;
-                    $product->media()->create($mediaData);
+                    
+                    // Update the appropriate image field
+                    if ($type == 'main_image') {
+                        DB::connection('academyfence')
+                            ->table('products')
+                            ->where('id', $id)
+                            ->update(['img_large' => basename($path)]);
+                    } else if ($type == 'thumbnail') {
+                        DB::connection('academyfence')
+                            ->table('products')
+                            ->where('id', $id)
+                            ->update(['img_small' => basename($path)]);
+                    }
                 }
             }
 
-            DB::commit();
+            DB::connection('academyfence')->commit();
             return redirect()->route('products.index')->with('success', 'Product updated successfully');
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::connection('academyfence')->rollBack();
             \Log::error('Error updating product: ' . $e->getMessage());
             return back()->withInput()->with('error', 'Error updating product: ' . $e->getMessage());
         }
@@ -334,24 +486,39 @@ class ProductController extends Controller
     public function deleteImage($id, $type)
     {
         try {
-            $product = Product::with('media')->findOrFail($id);
-            
-            if (!$product->media) {
-                return response()->json(['success' => false, 'message' => 'No media found']);
+            // Get the product
+            $product = DB::connection('academyfence')
+                ->table('products')
+                ->where('id', $id)
+                ->first();
+                
+            if (!$product) {
+                return response()->json(['success' => false, 'message' => 'Product not found']);
             }
 
-            $imagePath = $product->media->{$type};
+            // Determine which image field to clear
+            $imageField = null;
+            $imagePath = null;
             
-            if ($imagePath) {
+            if ($type == 'main_image') {
+                $imageField = 'img_large';
+                $imagePath = $product->img_large;
+            } else if ($type == 'thumbnail') {
+                $imageField = 'img_small';
+                $imagePath = $product->img_small;
+            }
+            
+            if ($imageField && $imagePath) {
                 // Delete the file if it exists
-                if (Storage::disk('public')->exists($imagePath)) {
-                    Storage::disk('public')->delete($imagePath);
+                if (Storage::disk('public')->exists('products/' . $imagePath)) {
+                    Storage::disk('public')->delete('products/' . $imagePath);
                 }
                 
                 // Update the database record
-                $product->media()->update([
-                    $type => null
-                ]);
+                DB::connection('academyfence')
+                    ->table('products')
+                    ->where('id', $id)
+                    ->update([$imageField => null]);
                 
                 return response()->json([
                     'success' => true,
@@ -376,14 +543,11 @@ class ProductController extends Controller
     public function getProductsByCategory($categoryId, Request $request)
     {
         try {
-            $perPage = $request->get('per_page', 10);
-
-            // Query using model relationships and check both category fields
-            $products =  DB::table('products')
-            ->join("product_details", "products.product_id", "=", "product_details.product_id")
-            ->where('subcategory_id', $categoryId)
-            ->select('*')
-            ->get();
+            // Get products for the specified category
+            $products = DB::connection('academyfence')
+                ->table('products')
+                ->where('categories_id', $categoryId)
+                ->get();
 
             \Log::info('Products query for category:', [
                 'category_id' => $categoryId,
@@ -411,28 +575,31 @@ class ProductController extends Controller
     public function getByCategory($categoryId)
     {
         try {
-            $products = Product::with([
-                'familyCategory:family_category_id,family_category_name',
-                'inventory:product_id,in_stock_hq,in_stock_warehouse'
-            ])
-            ->where('family_category_id', $categoryId)
-            ->get()
-            ->map(function ($product) {
-                return [
-                    'id' => $product->product_id,
-                    'item_no' => $product->item_no,
-                    'product_name' => $product->product_name,
-                    'family_category' => [
-                        'id' => $product->familyCategory->family_category_id,
-                        'name' => $product->familyCategory->family_category_name
-                    ],
-                    'stock_status' => $product->inventory 
-                        ? ($product->inventory->in_stock_hq > 0 || $product->inventory->in_stock_warehouse > 0 
+            // Get category name
+            $category = DB::connection('academyfence')
+                ->table('categories')
+                ->where('id', $categoryId)
+                ->first();
+                
+            // Get products for this category
+            $products = DB::connection('academyfence')
+                ->table('products')
+                ->where('categories_id', $categoryId)
+                ->get()
+                ->map(function ($product) use ($category) {
+                    return [
+                        'id' => $product->id,
+                        'item_no' => $product->item_no,
+                        'product_name' => $product->product_name,
+                        'family_category' => [
+                            'id' => $product->categories_id,
+                            'name' => $category ? $category->cat_name : 'N/A'
+                        ],
+                        'stock_status' => ($product->inv_stocked > 0 || $product->inv_ordered > 0) 
                             ? 'In Stock' 
-                            : 'Out of Stock')
-                        : 'N/A'
-                ];
-            });
+                            : 'Out of Stock'
+                    ];
+                });
 
             return response()->json([
                 'success' => true,

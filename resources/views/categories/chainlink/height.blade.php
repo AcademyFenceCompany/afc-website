@@ -507,6 +507,7 @@
         
         <div class="system-bundle-content">
             <!-- Bundle Image -->
+            {{-- @dump($systems[$system]['image']) --}}
             <div class="bundle-image">
                 <h4 class="text-center">{{ $height }} High-{{ $systems[$system]['name'] }}</h4>
                 <img src="{{ $systems[$system]['image'] }}" alt="{{ $height }} Chain Link Fence System">

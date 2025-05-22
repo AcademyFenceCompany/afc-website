@@ -9,7 +9,7 @@ try {
     // Check first row in productsqry to see its structure
     echo "=== First Row in productsqry ===\n";
     
-    $product = DB::connection('mysql_second')
+    $product = DB::connection('academyfence')
         ->table('productsqry')
         ->first();
     

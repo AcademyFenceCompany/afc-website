@@ -130,10 +130,11 @@
 
                     <div class="d-none">
                         @foreach ($cart as $item)
-                            <div class="product-item" data-weight="{{ $item['weight_lbs'] }}"
+                            <div class="product-item" data-quantity="{{ $item['quantity'] }}" data-weight="{{ $item['weight_lbs'] }}"
                                 data-shipping-length="{{ $item['ship_length'] }}"
                                 data-shipping-width="{{ $item['ship_width'] }}"
-                                data-shipping-height="{{ $item['ship_height'] }}">
+                                data-shipping-height="{{ $item['ship_height'] }}"
+                                data-category-id="{{ $item['categories_id'] ?? 0 }}">
                             </div>
                         @endforeach
                     </div>
@@ -144,6 +145,18 @@
                 <div id="shipping-options" class="mt-4">
                     <h5 class="mb-3">Available Shipping Rates</h5>
                     <div id="shipping-rates" class="border p-3"></div>
+                    
+                    @if(!empty($cart))
+                        @php
+                            $hasCategory82 = false;
+                            foreach($cart as $item) {
+                                if(isset($item['categories_id']) && $item['categories_id'] == 82) {
+                                    $hasCategory82 = true;
+                                    break;
+                                }
+                            }
+                        @endphp
+                    @endif
                 </div>
             </div>
 

@@ -11,7 +11,7 @@ class CategoryPageController extends Controller
 {
     public function index()
     {
-        $pages = DB::connection('mysql_second')
+        $pages = DB::connection('academyfence')
             ->table('category_pages')
             ->join('majorcategories', 'category_pages.family_category_id', '=', 'majorcategories.id')
             ->select('category_pages.*', 'majorcategories.cat_name')
@@ -22,7 +22,7 @@ class CategoryPageController extends Controller
 
     public function create()
     {
-        $categories = DB::connection('mysql_second')
+        $categories = DB::connection('academyfence')
             ->table('categories')
             ->get();
 
@@ -35,7 +35,7 @@ class CategoryPageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'family_category_id' => 'required|exists:mysql_second.categories,id',
+            'family_category_id' => 'required|exists:academyfence.categories,id',
             'template' => 'required|string|in:standard,welded_wire,razor_wire',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
@@ -65,7 +65,7 @@ class CategoryPageController extends Controller
 
         $validated['slug'] = \Str::slug($validated['title'] ?? 'category-page-' . time());
 
-        DB::connection('mysql_second')
+        DB::connection('academyfence')
             ->table('category_pages')
             ->insert($validated);
 
@@ -75,7 +75,7 @@ class CategoryPageController extends Controller
 
     public function edit($id)
     {
-        $page = DB::connection('mysql_second')
+        $page = DB::connection('academyfence')
             ->table('category_pages')
             ->where('id', $id)
             ->first();
@@ -85,7 +85,7 @@ class CategoryPageController extends Controller
                 ->with('error', 'Category page not found.');
         }
 
-$categories = DB::connection('mysql_second')
+$categories = DB::connection('academyfence')
     ->table('majorcategories')
     ->get();
 
@@ -95,7 +95,7 @@ return view('ams.cms.pages.edit', compact('page', 'categories'));
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'family_category_id' => 'required|exists:mysql_second.majorcategories,id',
+            'family_category_id' => 'required|exists:academyfence.majorcategories,id',
             'template' => 'required|string|in:standard,welded_wire,razor_wire',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:500',
@@ -113,7 +113,7 @@ return view('ams.cms.pages.edit', compact('page', 'categories'));
             'menu_order' => 'nullable|integer|min:0'
         ]);
 
-        $page = DB::connection('mysql_second')
+        $page = DB::connection('academyfence')
             ->table('category_pages')
             ->where('id', $id)
             ->first();
@@ -143,7 +143,7 @@ return view('ams.cms.pages.edit', compact('page', 'categories'));
             $validated['slug'] = \Str::slug($validated['title'] ?? 'category-page-' . time());
         }
 
-        DB::connection('mysql_second')
+        DB::connection('academyfence')
             ->table('category_pages')
             ->where('id', $id)
             ->update($validated);
@@ -154,7 +154,7 @@ return view('ams.cms.pages.edit', compact('page', 'categories'));
 
     public function destroy($id)
     {
-        $page = DB::connection('mysql_second')
+        $page = DB::connection('academyfence')
             ->table('category_pages')
             ->where('id', $id)
             ->first();
@@ -171,7 +171,7 @@ return view('ams.cms.pages.edit', compact('page', 'categories'));
             Storage::disk('public')->delete($page->footer_product_image);
         }
         
-        DB::connection('mysql_second')
+        DB::connection('academyfence')
             ->table('category_pages')
             ->where('id', $id)
             ->delete();

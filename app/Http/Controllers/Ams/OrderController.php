@@ -54,7 +54,7 @@ class OrderController extends Controller
             // If customer_id is provided, get all customer data
             if ($request->has('customer_id')) {
                 // Get customer details
-                $selectedCustomer = DB::connection('mysql_second')->table('customers')
+                $selectedCustomer = DB::connection('academyfence')->table('customers')
                     ->where('id', $request->customer_id)
                     ->first();
                 
@@ -67,7 +67,7 @@ class OrderController extends Controller
                     $order->customer_phone = $selectedCustomer->phone;
                     
                     // Get customer shipping addresses
-                    $shippingAddresses = DB::connection('mysql_second')->table('cust_addresses')
+                    $shippingAddresses = DB::connection('academyfence')->table('cust_addresses')
                         ->where(function($query) use ($selectedCustomer) {
                             $query->where('cust_id_fk', $selectedCustomer->id)
                                   ->orWhere('customers_id', $selectedCustomer->id);
@@ -75,7 +75,7 @@ class OrderController extends Controller
                         ->get();
                     
                     // Get customer billing information
-                    $billingInfo = DB::connection('mysql_second')->table('cust_billing')
+                    $billingInfo = DB::connection('academyfence')->table('cust_billing')
                         ->where(function($query) use ($selectedCustomer) {
                             $query->where('cust_id_fk', $selectedCustomer->id)
                                   ->orWhere('customers_id', $selectedCustomer->id);
@@ -101,7 +101,7 @@ class OrderController extends Controller
             }
             
             // Get all customers for the dropdown
-            $customers = DB::connection('mysql_second')->table('customers')
+            $customers = DB::connection('academyfence')->table('customers')
                 ->select('id', 'name', 'company', 'contact', 'email', 'phone', 'phone_alt', 'fax')
                 ->whereNotNull('name')
                 ->whereNotNull('company')
@@ -110,13 +110,25 @@ class OrderController extends Controller
                 ->whereNotNull('phone')
                 ->orderBy('id')
                 ->get();
+                
+            // Get products with category_id 82 or class 'wpc'
+            $specialProducts = DB::connection('academyfence')->table('products')
+                ->where('categories_id', 82)
+                ->orWhere('class', 'wpc')
+                ->select('id', 'product_name', 'categories_id', 'class')
+                ->get();
+                
+            // Check if alternative shipper should be used
+            $useAlternativeShipper = $specialProducts->isNotEmpty();
 
             return view('ams.order.create-order', [
                 'order' => $order,
                 'customers' => $customers,
                 'selectedCustomer' => $selectedCustomer,
                 'shippingAddresses' => $shippingAddresses,
-                'billingInfo' => $billingInfo
+                'billingInfo' => $billingInfo,
+                'specialProducts' => $specialProducts,
+                'useAlternativeShipper' => $useAlternativeShipper
             ]);
         } catch (\Exception $e) {
             // Log the error
@@ -198,13 +210,13 @@ class OrderController extends Controller
             \Log::info('Inserting order with data:', $orderData);
             
             // Create order
-            $orderId = DB::connection('mysql_second')->table('orders')->insertGetId($orderData);
+            $orderId = DB::connection('academyfence')->table('orders')->insertGetId($orderData);
             
             \Log::info('Order created with ID: ' . $orderId);
             
             // Optionally: Store quote_number in order_quotedate field for reference
             if ($request->quote_number) {
-                DB::connection('mysql_second')->table('orders')
+                DB::connection('academyfence')->table('orders')
                     ->where('id', $orderId)
                     ->update([
                         'order_quotedate' => now()
@@ -213,7 +225,7 @@ class OrderController extends Controller
 
             // Optionally: Store sold_number in order_solddate field for reference
             if ($request->sold_number) {
-                DB::connection('mysql_second')->table('orders')
+                DB::connection('academyfence')->table('orders')
                     ->where('id', $orderId)
                     ->update([
                         'order_solddate' => now()
@@ -223,7 +235,7 @@ class OrderController extends Controller
             // Save order items
             if ($request->has('items') && is_array($request->items)) {
                 foreach ($request->items as $item) {
-                    DB::connection('mysql_second')->table('order_items')->insert([
+                    DB::connection('academyfence')->table('order_items')->insert([
                         'order_id_fk' => $orderId,
                         'product_id_fk' => $item['product_id'],
                         'quantity' => $item['quantity'],
@@ -238,7 +250,7 @@ class OrderController extends Controller
 
             // Save shipping address if provided
             if ($request->has('shipping_address_id')) {
-                DB::connection('mysql_second')->table('orders')
+                DB::connection('academyfence')->table('orders')
                     ->where('id', $orderId)
                     ->update([
                         'shipping_address_id_fk' => $request->shipping_address_id
@@ -247,7 +259,7 @@ class OrderController extends Controller
 
             // Save billing address if provided
             if ($request->has('billing_address_id')) {
-                DB::connection('mysql_second')->table('orders')
+                DB::connection('academyfence')->table('orders')
                     ->where('id', $orderId)
                     ->update([
                         'billing_address_id_fk' => $request->billing_address_id
@@ -689,7 +701,7 @@ class OrderController extends Controller
     {
         try {
             // Get the order from the second database connection
-            $orderData = DB::connection('mysql_second')->table('orders')
+            $orderData = DB::connection('academyfence')->table('orders')
                 ->where('id', $id)
                 ->first();
                 
@@ -698,7 +710,7 @@ class OrderController extends Controller
             }
             
             // Get customer details
-            $customerData = DB::connection('mysql_second')->table('customers')
+            $customerData = DB::connection('academyfence')->table('customers')
                 ->where('id', $orderData->cust_id_fk)
                 ->first();
                 
@@ -725,7 +737,7 @@ class OrderController extends Controller
             // Get shipping address
             $shippingAddress = null;
             if (isset($orderData->shipping_address_id_fk)) {
-                $shippingAddressData = DB::connection('mysql_second')->table('cust_addresses')
+                $shippingAddressData = DB::connection('academyfence')->table('cust_addresses')
                     ->where('id', $orderData->shipping_address_id_fk)
                     ->first();
                     
@@ -742,7 +754,7 @@ class OrderController extends Controller
             // Get billing address
             $billingAddress = null;
             if (isset($orderData->billing_address_id_fk)) {
-                $billingAddressData = DB::connection('mysql_second')->table('cust_billing')
+                $billingAddressData = DB::connection('academyfence')->table('cust_billing')
                     ->where('id', $orderData->billing_address_id_fk)
                     ->first();
                     
@@ -758,7 +770,7 @@ class OrderController extends Controller
             
             // Get shipping details
             $shippingDetails = null;
-            $shippingDetailsData = DB::connection('mysql_second')->table('order_shipping_details')
+            $shippingDetailsData = DB::connection('academyfence')->table('order_shipping_details')
                 ->where('order_id_fk', $id)
                 ->first();
                 
@@ -788,14 +800,14 @@ class OrderController extends Controller
             ];
                 
             // Get order items
-            $orderItems = DB::connection('mysql_second')->table('order_items')
+            $orderItems = DB::connection('academyfence')->table('order_items')
                 ->where('order_id_fk', $id)
                 ->get();
         
             // Get other orders by the same customer
             $customerOrders = collect();
             if ($customer) {
-                $otherOrdersData = DB::connection('mysql_second')->table('orders')
+                $otherOrdersData = DB::connection('academyfence')->table('orders')
                     ->where('cust_id_fk', $customer->id)
                     ->where('id', '!=', $id)
                     ->orderBy('order_date', 'desc')
@@ -865,7 +877,7 @@ class OrderController extends Controller
         }
 
         // Base query to get orders
-        $query = DB::connection('mysql_second')->table('orders')
+        $query = DB::connection('academyfence')->table('orders')
             ->leftJoin('customers', 'orders.cust_id_fk', '=', 'customers.id')
             ->select(
                 'orders.id',
@@ -924,7 +936,7 @@ class OrderController extends Controller
             ];
             
             // 3. Get Shipping Address from cust_addresses
-            $shippingAddress = DB::connection('mysql_second')->table('cust_addresses')
+            $shippingAddress = DB::connection('academyfence')->table('cust_addresses')
                 ->where('cust_id_fk', $order->customer_id)
                 ->where('addr_shipping', 1)
                 ->first();
@@ -943,7 +955,7 @@ class OrderController extends Controller
             }
 
             // 4. Get Billing Address from cust_billing
-            $billingAddress = DB::connection('mysql_second')->table('cust_billing')
+            $billingAddress = DB::connection('academyfence')->table('cust_billing')
                 ->where('cust_id_fk', $order->customer_id)
                 ->first();
 
@@ -959,7 +971,7 @@ class OrderController extends Controller
             }
 
             // 5. Get Order Items
-            $orderItems = DB::connection('mysql_second')->table('order_items')
+            $orderItems = DB::connection('academyfence')->table('order_items')
                 ->where('order_id_fk', $order->id)
                 ->where('enabled', 1)
                 ->orderBy('sort', 'asc')
@@ -967,7 +979,7 @@ class OrderController extends Controller
 
             $formattedItems = [];
             foreach ($orderItems as $item) {
-                $product = DB::connection('mysql_second')->table('products')
+                $product = DB::connection('academyfence')->table('products')
                     ->where('id', $item->product_id_fk)
                     ->first();
 
@@ -1029,7 +1041,7 @@ class OrderController extends Controller
     {
         try {
             // Get order data
-            $order = DB::connection('mysql_second')->table('orders')
+            $order = DB::connection('academyfence')->table('orders')
                 ->where('id', $id)
                 ->first();
                 
@@ -1038,23 +1050,23 @@ class OrderController extends Controller
             }
             
             // Get customer data
-            $customer = DB::connection('mysql_second')->table('customers')
+            $customer = DB::connection('academyfence')->table('customers')
                 ->where('id', $order->cust_id_fk)
                 ->first();
                 
             // Get shipping address
-            $shippingAddress = DB::connection('mysql_second')->table('cust_addresses')
+            $shippingAddress = DB::connection('academyfence')->table('cust_addresses')
                 ->where('cust_id_fk', $order->cust_id_fk)
                 ->where('addr_shipping', 1)
                 ->first();
                 
             // Get billing address
-            $billingAddress = DB::connection('mysql_second')->table('cust_billing')
+            $billingAddress = DB::connection('academyfence')->table('cust_billing')
                 ->where('cust_id_fk', $order->cust_id_fk)
                 ->first();
                 
             // Get order items
-            $orderItems = DB::connection('mysql_second')->table('order_items')
+            $orderItems = DB::connection('academyfence')->table('order_items')
                 ->where('order_id_fk', $id)
                 ->where('enabled', 1)
                 ->orderBy('sort', 'asc')
@@ -1062,7 +1074,7 @@ class OrderController extends Controller
                 
             $formattedItems = [];
             foreach ($orderItems as $item) {
-                $product = DB::connection('mysql_second')->table('products')
+                $product = DB::connection('academyfence')->table('products')
                     ->where('id', $item->product_id_fk)
                     ->first();
                     
@@ -1083,7 +1095,7 @@ class OrderController extends Controller
             }
             
             // Get all customers for the dropdown - same as in create method
-            $customers = DB::connection('mysql_second')->table('customers')
+            $customers = DB::connection('academyfence')->table('customers')
                 ->select('id', 'name', 'company', 'contact', 'email', 'phone', 'phone_alt', 'fax')
                 ->whereNotNull('name')
                 ->whereNotNull('company')

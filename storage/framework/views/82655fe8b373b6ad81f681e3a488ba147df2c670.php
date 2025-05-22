@@ -7,6 +7,10 @@
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
     <title>AMS - <?php echo $__env->yieldContent('title'); ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/bootstrap.css')); ?>" >
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo e(asset('css/ams.css')); ?>">
@@ -14,6 +18,41 @@
     
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <style>
+        @media print {
+            .table {
+            border-collapse: collapse;
+            font-size: 12px;
+            }
+            table, th, td {
+            border: 1px solid black;
+            }
+            th, td {
+                text-align: center;
+                vertical-align: middle;
+            }
+            p {
+                font-weight: bold;
+                margin-left:20px;
+            }
+            .table {
+                width: 94%;
+                margin-left: 3%;
+                margin-right: 3%;
+            }
+            div.bs-table-print {
+            text-align: center;
+            }
+            .d-print-none{
+                display:none;
+            }
+            #product-report-form-filter{
+                display:none;
+            }
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -117,6 +156,9 @@
         <a href="#" class="menu-item">Inventory</a>
         <a href="#" class="menu-item">Office Sheets</a>
         <a href="#" class="menu-item">Sales Reports</a>
+        <a href="<?php echo e(route('ams.product-report')); ?>" class="menu-item">Products Report</a>
+        <a href="<?php echo e(route('ams.install_upload')); ?>" class="menu-item">Install Jobs Gallery</a>
+
     </div>
 
     <!-- Main Content -->
@@ -165,6 +207,10 @@
         });
     </script>
     <script>
+        const APP_URL = "<?php echo e(config('app.url')); ?>";
+    </script>
+    
+    <script>
         // Global TinyMCE initialization
         document.addEventListener('DOMContentLoaded', function() {
             tinymce.init({
@@ -194,6 +240,10 @@
                 }
             });
         });
+    </script>
+    <script>
+        window.APP_URL = "<?php echo e(config('app.url')); ?>";
+        console.log("APP_URL: ", window.APP_URL);
     </script>
     <script src="<?php echo e(asset('js/ams.js')); ?>"></script>
     <?php echo $__env->yieldContent('scripts'); ?>

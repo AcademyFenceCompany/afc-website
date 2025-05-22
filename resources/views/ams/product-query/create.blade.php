@@ -89,6 +89,23 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Size2</label>
+                                <input type="text" name="size2" value="{{ old('size2') }}" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Size3</label>
+                                <input type="text" name="size3" value="{{ old('size3') }}" class="form-control">
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Display Size</label>
+                                <input type="text" name="display_size_2" value="{{ old('display_size_2') }}" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Material</label>
                                 <input type="text" name="material" value="{{ old('material') }}" class="form-control">
@@ -107,6 +124,10 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Spacing</label>
                                 <input type="text" name="spacing" value="{{ old('spacing') }}" class="form-control">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Product Grouping Code</label>
+                                <input type="text" name="parent" value="{{ old('parent') }}" class="form-control">
                             </div>
                         </div>
 
@@ -155,6 +176,32 @@
 
                 <div class="card mb-4">
                     <div class="card-header">
+                        <h5 class="mb-0">Shipping Information</h5>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping Length</label>
+                            <input type="number" name="ship_length" value="{{ old('ship_length') }}" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping width</label>
+                            <input type="number" name="ship_width" value="{{ old('ship_width') }}" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping height</label>
+                            <input type="number" name="ship_height" value="{{ old('ship_height') }}" class="form-control">
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Amount Per Box</label>
+                            <input type="number" name="amount_per_box" value="{{ old('amount_per_box') }}" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
                         <h5 class="mb-0">SEO Information</h5>
                     </div>
                     <div class="card-body">
@@ -191,8 +238,16 @@
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label">Shippable</label>
+                            <select name="shippable" class="form-select">
+                                <option value="1" {{ old('shippable', '1') == '1' ? 'selected' : '' }}>Yes</option>
+                                <option value="0" {{ old('shippable') == '0' ? 'selected' : '' }}>No</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label class="form-label">Inventory Status</label>
-                            <input type="text" value="{{ $product->inv_orange ?? 'N/A' }}" class="form-control" readonly>
+                            <input type="text" value="N/A" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="card-header">
@@ -201,19 +256,8 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label">Necessary Associated Products</label>
-                            <input type="text" value="{{ $product->product_assoc ?? 'N/A' }}" class="form-control" name="product_assoc">
+                            <input type="text" name="product_assoc" value="{{ old('product_assoc') }}" class="form-control">
                         </div>
-                    </div>
-                        {{-- Shippable is determined by the category, not directly editable --}}
-                        {{-- 
-                        <div class="mb-3">
-                            <label class="form-label">Shippable</label>
-                            <select name="shippable" class="form-select">
-                                <option value="1" {{ old('shippable', '1') == '1' ? 'selected' : '' }}>Yes</option>
-                                <option value="0" {{ old('shippable') == '0' ? 'selected' : '' }}>No</option>
-                            </select>
-                        </div>
-                        --}}
                     </div>
                 </div>
 

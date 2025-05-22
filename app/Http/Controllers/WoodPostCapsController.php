@@ -13,7 +13,7 @@ class WoodPostCapsController extends Controller
         $categoryId = 82;
 
         // Fetch products from the database
-        $query = DB::connection('mysql_second')
+        $query = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', $categoryId)
             ->where('enabled', 1);
@@ -23,8 +23,8 @@ class WoodPostCapsController extends Controller
         // Define parent codes and their display names
         $parentGroups = [
             'AFCWPCP' => 'Standard Pyramid',
-            'AFCWPCPD' => 'Dentil Pyramid',
-            'AFCWPCPC' => 'Copper Pyramid',
+            'AFCWPCPD' => 'Ball Top',
+            'AFCWPCPC' => 'Ball Only',
             'AFCWPCF' => 'Standard Flat',
             'AFCWPCFD' => 'Dentil Flat',
             'AFCWPCFC' => 'Copper Flat',

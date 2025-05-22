@@ -11,17 +11,17 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         try {
-            // Get customers with direct DB query using mysql_second connection
+            // Get customers with direct DB query using academyfence connection
             $perPage = 20;
             $page = $request->get('page', 1);
             $offset = ($page - 1) * $perPage;
             
             // Count total records for pagination
-            $totalCustomers = DB::connection('mysql_second')->table('customers')
+            $totalCustomers = DB::connection('academyfence')->table('customers')
                 ->count();
                 
             // Get customers for current page
-            $customers = DB::connection('mysql_second')->table('customers')
+            $customers = DB::connection('academyfence')->table('customers')
                 ->select('id', 'name', 'company', 'contact', 
                          'email', 'phone', 'phone_alt', 'fax')
                 ->whereNotNull('name')
@@ -71,8 +71,8 @@ class CustomerController extends Controller
             // Log the query for debugging
             Log::info('Search query:', ['query' => $query]);
         
-            // Search customers using direct DB query with mysql_second connection
-            $customers = DB::connection('mysql_second')->table('customers')
+            // Search customers using direct DB query with academyfence connection
+            $customers = DB::connection('academyfence')->table('customers')
                 ->select('id', 'name', 'company', 'contact', 'email', 'phone', 'phone_alt', 'fax')
                 ->where(function ($q) use ($query) {
                     $q->where('name', 'like', "%{$query}%")
@@ -92,7 +92,7 @@ class CustomerController extends Controller
             
             // Get addresses for each customer
             foreach ($customers as $customer) {
-                $customer->addresses = DB::connection('mysql_second')->table('cust_addresses')
+                $customer->addresses = DB::connection('academyfence')->table('cust_addresses')
                     ->where('cust_id_fk', $customer->id)
                     ->where(function ($q) {
                         $q->where('addr_shipping', 1)
@@ -139,8 +139,8 @@ class CustomerController extends Controller
         try {
             DB::beginTransaction();
 
-            // Create customer with direct DB insert using mysql_second connection
-            $customerId = DB::connection('mysql_second')->table('customers')->insertGetId([
+            // Create customer with direct DB insert using academyfence connection
+            $customerId = DB::connection('academyfence')->table('customers')->insertGetId([
                 'name' => $request->name,
                 'company' => $request->company,
                 'contact' => $request->contact,
@@ -155,8 +155,8 @@ class CustomerController extends Controller
                 'mod_by' => auth()->id() ?? 1
             ]);
 
-            // Create address with direct DB insert using mysql_second connection
-            $addressId = DB::connection('mysql_second')->table('cust_addresses')->insertGetId([
+            // Create address with direct DB insert using academyfence connection
+            $addressId = DB::connection('academyfence')->table('cust_addresses')->insertGetId([
                 'cust_id_fk' => $customerId,
                 'addr_name' => $request->addr_name,
                 'addr_company' => $request->addr_company,
@@ -176,8 +176,8 @@ class CustomerController extends Controller
                 'customers_id' => $customerId
             ]);
 
-            // Update customer with primary address using mysql_second connection
-            DB::connection('mysql_second')->table('customers')
+            // Update customer with primary address using academyfence connection
+            DB::connection('academyfence')->table('customers')
                 ->where('id', $customerId)
                 ->update([
                     'primary_addr_fk' => $addressId,
@@ -203,8 +203,8 @@ class CustomerController extends Controller
     public function show($customerId)
     {
         try {
-            // Get customer with direct DB query using mysql_second connection
-            $customer = DB::connection('mysql_second')->table('customers')
+            // Get customer with direct DB query using academyfence connection
+            $customer = DB::connection('academyfence')->table('customers')
                 ->where('id', $customerId)
                 ->first();
             
@@ -213,14 +213,14 @@ class CustomerController extends Controller
                     ->with('error', 'Customer not found');
             }
             
-            // Get customer addresses with direct DB query using mysql_second connection
-            $addresses = DB::connection('mysql_second')->table('cust_addresses')
+            // Get customer addresses with direct DB query using academyfence connection
+            $addresses = DB::connection('academyfence')->table('cust_addresses')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
                 
-            // Get customer billing info with direct DB query using mysql_second connection
-            $billingInfo = DB::connection('mysql_second')->table('cust_billing')
+            // Get customer billing info with direct DB query using academyfence connection
+            $billingInfo = DB::connection('academyfence')->table('cust_billing')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
@@ -239,8 +239,8 @@ class CustomerController extends Controller
     public function edit($customerId)
     {
         try {
-            // Get customer with direct DB query using mysql_second connection
-            $customer = DB::connection('mysql_second')->table('customers')
+            // Get customer with direct DB query using academyfence connection
+            $customer = DB::connection('academyfence')->table('customers')
                 ->where('id', $customerId)
                 ->first();
             
@@ -249,14 +249,14 @@ class CustomerController extends Controller
                     ->with('error', 'Customer not found');
             }
             
-            // Get customer addresses with direct DB query using mysql_second connection
-            $addresses = DB::connection('mysql_second')->table('cust_addresses')
+            // Get customer addresses with direct DB query using academyfence connection
+            $addresses = DB::connection('academyfence')->table('cust_addresses')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
                 
-            // Get customer billing info with direct DB query using mysql_second connection
-            $billingInfo = DB::connection('mysql_second')->table('cust_billing')
+            // Get customer billing info with direct DB query using academyfence connection
+            $billingInfo = DB::connection('academyfence')->table('cust_billing')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
@@ -284,8 +284,8 @@ class CustomerController extends Controller
         ]);
 
         try {
-            // Update customer with direct DB query using mysql_second connection
-            DB::connection('mysql_second')->table('customers')
+            // Update customer with direct DB query using academyfence connection
+            DB::connection('academyfence')->table('customers')
                 ->where('id', $customerId)
                 ->update([
                     'name' => $request->name,

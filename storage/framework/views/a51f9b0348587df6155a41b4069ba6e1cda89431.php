@@ -81,8 +81,13 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
+                                <?php if($product->categories_id == 82): ?>
+                                <label class="form-label">Nominal Size</label>
+                                <input type="text" name="size" value="<?php echo e($product->size); ?>" class="form-control">
+                                <?php else: ?>
                                 <label class="form-label">Size</label>
                                 <input type="text" name="size" value="<?php echo e($product->size); ?>" class="form-control">
+                                <?php endif; ?>
                             </div>
 
                             <div class="col-md-4 mb-3">
@@ -93,18 +98,28 @@
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
+                                <?php if($product->categories_id == 82): ?>
                                 <label class="form-label">Cap Opening</label>
-                                <input type="text" name="cap_opening" value="<?php echo e($product->nominal_length); ?>" class="form-control">
+                                <input type="text" name="size2" value="<?php echo e($product->size2); ?>" class="form-control">
+                                <?php else: ?>
+                                <label class="form-label">Size2</label>
+                                <input type="text" name="size2" value="<?php echo e($product->size2); ?>" class="form-control">
+                                <?php endif; ?>
                             </div>
 
                             <div class="col-md-4 mb-3">
+                                <?php if($product->categories_id == 82): ?>
                                 <label class="form-label">Fits Post Size</label>
-                                <input type="text" name="size3" value="<?php echo e($product->nominal_width); ?>" class="form-control">
+                                <input type="text" name="size3" value="<?php echo e($product->size3); ?>" class="form-control">
+                                <?php else: ?>
+                                <label class="form-label">Size3</label>
+                                <input type="text" name="size3" value="<?php echo e($product->size3); ?>" class="form-control">
+                                <?php endif; ?>
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Display Size</label>
-                                <input type="number" step="0.01" name="display_size" value="<?php echo e($product->display_size_2); ?>" class="form-control">
+                                <input type="text" name="display_size_2" value="<?php echo e($product->display_size_2); ?>" class="form-control">
                             </div>
                         </div>
 
@@ -128,6 +143,13 @@
                                 <label class="form-label">Spacing</label>
                                 <input type="text" name="spacing" value="<?php echo e($product->spacing); ?>" class="form-control">
                             </div>
+<<<<<<< HEAD
+=======
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Product Grouping Code</label>
+                                <input type="text" name="parent" value="<?php echo e($product->parent); ?>" class="form-control">
+                            </div>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                         </div>
 
                         <div class="row">
@@ -172,7 +194,34 @@
                         </div>
                     </div>
                 </div>
+<<<<<<< HEAD
 
+=======
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Shipping Information</h5>
+                    </div>
+                    <div class="card-body row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping Length</label>
+                            <input type="number" name="ship_length" value="<?php echo e($product->ship_length); ?>" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping width</label>
+                            <input type="number" name="ship_width" value="<?php echo e($product->ship_width); ?>" class="form-control">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Shipping height</label>
+                            <input type="number" name="ship_height" value="<?php echo e($product->ship_height); ?>" class="form-control">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Amount Per Box</label>
+                            <input type="number" name="amount_per_box" value="<?php echo e($product->amount_per_box); ?>" class="form-control">
+                        </div>
+                    </div>
+                </div>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">SEO Information</h5>

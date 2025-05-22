@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
 <?php $__env->startSection('title', 'Checkout'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -128,10 +133,18 @@
 
                     <div class="d-none">
                         <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<<<<<<< HEAD
                             <div class="product-item" data-weight="<?php echo e($item['weight_lbs']); ?>"
                                 data-shipping-length="<?php echo e($item['ship_length']); ?>"
                                 data-shipping-width="<?php echo e($item['ship_width']); ?>"
                                 data-shipping-height="<?php echo e($item['ship_height']); ?>">
+=======
+                            <div class="product-item" data-quantity="<?php echo e($item['quantity']); ?>" data-weight="<?php echo e($item['weight_lbs']); ?>"
+                                data-shipping-length="<?php echo e($item['ship_length']); ?>"
+                                data-shipping-width="<?php echo e($item['ship_width']); ?>"
+                                data-shipping-height="<?php echo e($item['ship_height']); ?>"
+                                data-category-id="<?php echo e($item['categories_id'] ?? 0); ?>">
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                             </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
@@ -142,6 +155,21 @@
                 <div id="shipping-options" class="mt-4">
                     <h5 class="mb-3">Available Shipping Rates</h5>
                     <div id="shipping-rates" class="border p-3"></div>
+<<<<<<< HEAD
+=======
+                    
+                    <?php if(!empty($cart)): ?>
+                        <?php
+                            $hasCategory82 = false;
+                            foreach($cart as $item) {
+                                if(isset($item['categories_id']) && $item['categories_id'] == 82) {
+                                    $hasCategory82 = true;
+                                    break;
+                                }
+                            }
+                        ?>
+                    <?php endif; ?>
+>>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                 </div>
             </div>
 
