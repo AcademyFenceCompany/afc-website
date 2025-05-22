@@ -547,41 +547,6 @@
 
 
             </div>
-
-            <!-- @foreach ($general_ww_mesh_size_imgs as $mesh_size)
-                                                                                                                                    <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                                                                                                                                        <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                                                                                                                                            <div class="card-header bg-danger text-white fw-bold py-1">
-                                                                                                                                                <h6 class="mesh-size__title">{{ $mesh_size->size2 }}</h6>
-                                                                                                                                            </div>
-                                                                                                                                            <div class="card-body p-2">
-                                                                                                                                                <img src="{{ $mesh_size->image ?? '/resources/images/4x4.jpg' }}" alt="Wire Image"
-                                                                                                                                                    style="height:120px; " class="img-fluid mb-1 rounded">
-                                                                                                                                                <div class="d-grid gap-1">
-
-                                                                                                                                                    <div class="d-flex justify-content-center gap-2"> -->
-            <!-- Vinyl Coated Button -->
-            <!-- <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Vinyl PVC']) }}"
-                                                                                                                                                            class="btn btn-dark btn-sm fw-bold"
-                                                                                                                                                            style="font-size: 12px; padding: 5px 20px;">
-                                                                                                                                                            Vinyl
-                                                                                                                                                        </a> -->
-
-            <!-- Galvanized Button -->
-            <!-- <a href="{{ route('meshsize.products', ['meshSize' => urlencode($mesh_size->size2), 'coating' => 'Galvanized']) }}"
-                                                                                                                                                            class="btn btn-outline-dark btn-sm fw-bold gal"
-                                                                                                                                                            style="font-size: 12px; padding: 5px 20px;">
-                                                                                                                                                            Galv
-                                                                                                                                                        </a>
-                                                                                                                                                    </div>
-                                                                                                                                                </div>
-                                                                                                                                            </div>
-                                                                                                                                        </div>
-                                                                                                                                    </div>
-                                                                                                                                @endforeach -->
-
-
-            <!-- </div> -->
         </div>
     </div>
 
@@ -596,67 +561,20 @@
             <!-- Hardware Cloth Wire Cards -->
             <div class="col-12 mt-2">
                 <div class="row justify-content-center">
-                    <!-- @foreach (["1/2\"", "1/4\"", "1/8\""] as $size)
-                                                                                                            <div class="col-4 mb-1 d-flex justify-content-center">
-                                                                                                                <div class="card text-center shadow-sm h-100" style="width:120px; border: none;">
-                                                                                                                    <div class="card-header bg-danger text-white fw-bold py-1 prd-sm-text">
-                                                                                                                        {{ $size }}
-                                                                                                                    </div>
-                                                                                                                    <div class="card-body p-2">
-                                                                                                                        <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid mb-3 rounded">
-                                                                                                                        <div class="d-grid gap-2">
-                                                                                                                            <div class="d-flex justify-content-center gap-2">
-                                                                                                                                <button class="btn btn-dark btn-sm fw-bold"
-                                                                                                                                    style="font-size: 12px; padding: 5px 10px;">Vinyl</button>
-
-                                                                                                                                <button class="btn btn-outline-dark btn-sm fw-bold gal"
-                                                                                                                                    style="font-size: 12px; padding: 5px 10px;">Galv</button>
-                                                                                                                            </div>
-
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        @endforeach -->
-
                     <!-- Hardware Cloth Wire Cards -->
 
                     <div class="col-8 col-md-2 d-flex justify-content-center cards">
                         <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                            <!-- <div class="card-header bg-danger text-white fw-bold py-1">
-                                                                            <h6 class="mesh-size__title">Brochures</h6>
-                                                                        </div> -->
                             <div class="card-body p-2">
                                 <img src="/resources/images/image 91.png" alt="Wire Image" style="height:180px; "
                                     class="img-fluid mb-1 rounded">
                                 <div class="d-grid gap-1">
 
-                                    <!-- <div class="d-flex justify-content-center gap-2">
-                                                                                <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
-                                                                                <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
-                                                                                </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
 
-
-                    <!-- <div class="col-2">
-                                                                                    <img src="/resources/images/image 91.png" alt="Hardware Cloth"
-                                                                                        class="img-fluid mb-3 rounded shadow-sm">
-                                                                                </div> -->
-
-                    <!-- <div class="col-2 prd-sm-text"> -->
-                    <!-- <h6>Brochures</h6> -->
-                    <!-- <div class="d-flex gap-1 flex-wrap mb-1">
-                                                                                    <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
-                                                                                    <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
-                                                                                </div> -->
-                    <!-- <p>Our 1/2in Hardware Cloth is a welded steel wire mesh. It’s zinc coating provides maximum
-                                                                                    protection
-                                                                                    and extra durability. Hardware cloth has an unlimited number of applications around the home,
-                                                                                    business, or farm.</p> -->
-                    <!-- </div> -->
                     <div class="col-8 col-md-2 d-flex justify-content-center cards">
                         <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                             <div class="card-header bg-danger text-white fw-bold py-1">
@@ -685,8 +603,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <div class="col-8 col-md-2 d-flex justify-content-center cards">
                         <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
@@ -748,29 +664,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Hardware Cloth Wire Description -->
-            <!-- <div class="row mt-2"> -->
-            <!-- <div class="col-4">
-                                                                                    <img src="/resources/images/image 91.png" alt="Hardware Cloth" class="img-fluid mb-3 rounded shadow-sm">
-                                                                                </div> -->
-            <!-- <div class="col-8 prd-sm-text">
-                                                                                <h6>Brochures</h6>
-                                                                                <div class="d-flex gap-1 flex-wrap mb-1">
-                                                                                    <a href="#" class="btn btn-light btn-sm border">WWF Brochure</a>
-                                                                                    <a href="#" class="btn btn-light btn-sm border">Order Sheet</a>
-                                                                                </div>
-                                                                                <p>Our 1/2in Hardware Cloth is a welded steel wire mesh. It’s zinc coating provides maximum
-                                                                                    protection
-                                                                                    and extra durability. Hardware cloth has an unlimited number of applications around the home,
-                                                                                    business, or farm.</p>
-                                                                            </div>
-                                                                            <div>
-                                                                            </div>
-                                                                        </div> -->
         </div>
-
-
 
         <!-- Chicken Wire -->
         <div class="col-lg-5 mb-1">
@@ -836,48 +730,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Cards Row -->
-        <!-- <div class="row mt-4"> -->
-
-
-
-
-        <!-- @foreach (["1\" Hex", "2\" Hex"] as $size)
-                                                                                                <div class="col-6 mb-3 d-flex justify-content-center">
-                                                                                                    <div class="card text-center shadow-sm h-100" style="width: 150px; border: none;">
-                                                                                                        <div class="card-header bg-danger text-white fw-bold py-2 prd-sm-text">
-                                                                                                            {{ $size }}
-                                                                                                        </div>
-                                                                                                        <div class="card-body p-2">
-                                                                                                            <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid mb-3 rounded">
-                                                                                                            <div class="d-grid gap-2">
-                                                                                                                <button class="btn btn-outline-dark btn-sm fw-bold"
-                                                                                                                    style="font-size: 12px;">Galvanized</button>
-                                                                                                                <button class="btn btn-outline-secondary btn-sm fw-bold" style="font-size: 12px;">Vinyl
-                                                                                                                    Coated</button>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            @endforeach -->
-        <!-- </div>
-                                                                                </div> -->
-
-
-
-
-
         <!-- Deer Fence and Gate Kits for Welded Wire Section -->
         <div class="row g-4 mt-0">
             <!-- Deer Fence -->
@@ -906,36 +758,9 @@
                                 ways
                                 to provide protection from deer damage.</p>
                             <button class="quote-btn btn btn-danger py-2">View product</button>
-                            <!-- <div class="mt-3">
-                                                                            <h6>Brochures</h6>
-                                                                            <a href="#" class="btn btn-secondary btn-sm me-2"><i class="bi bi-file-earmark-text"></i>
-                                                                                Welded
-                                                                                Wire Brochure</a>
-                                                                            <a href="#" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Print Order
-                                                                                Sheet</a>
-                                                                        </div> -->
                         </div>
                     </div>
                 </div>
-                <!-- Grid for Deer Fence -->
-                <!-- <div class="row g-4 mt-4">
-                                                                @foreach (["2\" x 4\"", "1 1/2\" x 4\"", "1\" Hex", 'Fixed knot'] as $size)
-                                                                    <div class="col-6 col-md-3">
-                                                                        <div class="card text-center shadow-sm h-100">
-                                                                            <div class="card-header bg-danger text-white fw-bold py-2">
-                                                                                {{ $size }}
-                                                                            </div>
-                                                                            <div class="card-body p-3">
-                                                                                <img src="/resources/images/4x4.jpg" alt="{{ $size }}" class="img-fluid rounded mb-3">
-                                                                                <div class="d-grid gap-2">
-                                                                                    <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
-                                                                                    <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div> -->
             </div>
 
             <!-- Gate Kits for Welded Wire -->
@@ -960,36 +785,9 @@
                                 latch to hang the gate on the posts. Everything is included to assemble the gate except the
                                 wire to cover the gate.</p>
                             <button class="quote-btn btn btn-danger py-2">View product</button>
-                            <!-- <div class="mt-3">
-                                                                    <h6>Brochures</h6>
-                                                                    <a href="#" class="btn btn-secondary btn-sm me-2"><i class="bi bi-file-earmark-text"></i>
-                                                                        Welded
-                                                                        Wire Brochure</a>
-                                                                    <a href="#" class="btn btn-secondary btn-sm"><i class="bi bi-printer"></i> Print Order
-                                                                        Sheet</a>
-                                                                </div> -->
                         </div>
                     </div>
                 </div>
-                <!-- Grid for Gate Kits -->
-                <!-- <div class="row g-4 mt-4">
-                                                        @foreach (["Single Swing", "Double Swing", "Slide", 'Custom'] as $type)
-                                                            <div class="col-6 col-md-3">
-                                                                <div class="card text-center shadow-sm h-100">
-                                                                    <div class="card-header bg-danger text-white fw-bold py-2">
-                                                                        {{ $type }}
-                                                                    </div>
-                                                                    <div class="card-body p-3">
-                                                                        <img src="/resources/images/gate.jpg" alt="{{ $type }}" class="img-fluid rounded mb-3">
-                                                                        <div class="d-grid gap-2">
-                                                                            <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
-                                                                            <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    </div> -->
             </div>
 
 
@@ -1014,12 +812,6 @@
                                     <div class="d-grid gap-1">
 
                                         <div class="d-flex justify-content-center gap-2">
-                                            <!-- Vinyl Coated Button -->
-                                            <!-- <a href="/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Vinyl%20PVC"
-                                                                                    class="btn btn-dark btn-sm fw-bold" style="font-size: 12px; padding: 5px 20px;">
-                                                                                    Vinyl
-                                                                                </a> -->
-
                                             <!-- Galvanized Button -->
                                             <a href="/wwf-product?meshSize=4%2Bin.%2Bx%2B4%2Bin.&amp;coating=Galvanized"
                                                 class="btn btn-outline-dark btn-sm fw-bold gal"
@@ -1030,33 +822,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                            <!-- Image -->
-                            <!-- <div class="col-md-5 text-center">
-                                                                            <div class="card-header bg-danger text-white fw-bold py-2">
-                                                                                <h6 class="mb-0">Various Sizes</h6>
-                                                                            </div>
-                                                                            <img src="/resources/images/Group 294 (1).png" alt="Game & Horse"
-                                                                                class="img-fluid rounded my-3" style="height: 120px; object-fit: cover;">
-                                                                            <div class="d-grid gap-2">
-                                                                                <button class="btn btn-outline-dark btn-sm fw-bold">Galvanized</button>
-                                                                                <button class="btn btn-outline-secondary btn-sm fw-bold">Vinyl Coated</button>
-                                                                            </div>
-                                                                        </div> -->
-
-
-                            <!-- Content -->
-                            <!-- <div class="col-md-7">
-                                                                            <div class="card shadow-sm h-100">
-                                                                                <div class="card-body prd-sm-text">
-                                                                                    <p>Field & Game Fence manufactured by SolidLock with Fixed Knot mesh. Offers the
-                                                                                        benefits of
-                                                                                        high
-                                                                                        tensile fencing over traditional soft products used over the last century.</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div> -->
                         </div>
                     </div>
                 </div>
@@ -1093,34 +858,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Image -->
-                            <!-- <div class="col-md-5 text-center">
-                                                            <div class="card-header bg-danger text-white fw-bold py-2">
-                                                                <h6 class="mb-0">Various Sizes</h6>
-                                                            </div>
-                                                            <img src="/resources/images/Group 294 (2).png" alt="Knock In Posts"
-                                                                class="img-fluid rounded my-3" style="height: 120px; object-fit: cover;">
-                                                            <div class="d-grid gap-2">
-                                                                <button class="btn btn-outline-dark btn-sm fw-bold">Green</button>
-                                                                <button class="btn btn-outline-secondary btn-sm fw-bold">Black</button>
-                                                            </div>
-                                                        </div> -->
-
-                            <!-- Content -->
-                            <!-- <div class="col-md-7">
-                                                            <div class="card text-center shadow-sm h-100">
-                                                                <div class="card-body">
-                                                                    <p>Heavy Knock-In U</p>
-                                                                    <ul class="text-start prd-sm-text">
-                                                                        <li>Easy to Install</li>
-                                                                        <li>Weather Proof</li>
-                                                                        <li>Attractive Durable</li>
-                                                                        <li>Rust-Resistant</li>
-                                                                        <li>Black and Green</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -1159,29 +896,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Image -->
-                            <!-- <div class="col-md-5 text-center">
-                                                        <div class="card-header bg-danger text-white fw-bold py-2">
-                                                            <h6 class="mb-0">Various Sizes</h6>
-                                                        </div>
-                                                        <img src="/resources/images/Group 294 (3).png" alt="Fence Pen Kits"
-                                                            class="img-fluid rounded my-3" style="height: 120px; object-fit: cover;">
-                                                        <div class="d-grid gap-2">
-                                                            <button class="btn btn-outline-dark btn-sm fw-bold">Vinyl Coated</button>
-                                                            <button class="btn btn-outline-secondary btn-sm fw-bold">Galvanized</button>
-                                                        </div>
-                                                    </div> -->
-
-                            <!-- Content -->
-                            <!-- <div class="col-md-7">
-                                                        <div class="card shadow-sm h-100">
-                                                            <div class="card-body prd-sm-text">
-                                                                <p>A quick ship fence pen kit will enable you to build a welded wire fence enclosure
-                                                                    with an all-inclusive fence pen kit.</p>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
                         </div>
                     </div>
                 </div>
@@ -1215,13 +929,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="row mt-3">
-                        <div class="col-12 prd-sm-text">
-                            <p>Erosion control fencing, Silt Fence, is made of vinyl fabric with posts pre-attached at 10 ft
-                                intervals.</p>
-                        </div>
-                    </div> -->
                 </div>
 
                 <!-- Snow Fence -->
@@ -1252,17 +959,5 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="row mt-3">
-                <div class="col-12 prd-sm-text">
-                    <p>A snow fence is a structure, similar to a sand fence, that forces drifting snow to accumulate
-                        in a desired place.</p>
                 </div>
-            </div> -->
-                </div>
-
-
-
-
-
 @endsection

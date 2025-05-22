@@ -92,7 +92,7 @@
 
         </div>
     </div>
-    <nav class="main-nav">
+    {{-- <nav class="main-nav">
         <div class="container">
             <div class="row py-2">
             <div class="d-flex  justify-content-center justify-content-sm-between align-items-center">
@@ -118,8 +118,9 @@
                             <!-- Major Categories First Level menu-->
                             <x-big-menu :majCategories="$majCategories" />
                         </li>
+                        
                         <li class="nav-item">
-                            <a href="#men" class="nav-link">Wood Fence</a>
+                            <a href="{{ route('woodfence') }}" class="nav-link">Wood Fence</a>
                         </li>
                         <li class="nav-item">
                             <a href="#men" class="nav-link">Vinyl Fence</a>
@@ -147,5 +148,6 @@
             </div>
             </div>
         </div>
-    </nav>
+    </nav> --}}
+    @include('layouts.nav')
 </header>

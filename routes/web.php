@@ -130,7 +130,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
 
 });
 
-Route::get('/', function () {
+Route::get('/old', function () {
     return view('index');
 })->name('home');
 

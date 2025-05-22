@@ -96,4 +96,5 @@ Route::get('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/');
 })->name('logout');
-Route::get('/homepage', [AcademyTestController::class, 'index'])->name('homepage');
+
+Route::get('/', [AcademyTestController::class, 'index'])->name('homepage');

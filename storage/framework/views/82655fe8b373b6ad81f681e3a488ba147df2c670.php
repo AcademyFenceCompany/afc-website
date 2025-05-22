@@ -241,6 +241,10 @@
             });
         });
     </script>
+    <script>
+        window.APP_URL = "<?php echo e(config('app.url')); ?>";
+        console.log("APP_URL: ", window.APP_URL);
+    </script>
     <script src="<?php echo e(asset('js/ams.js')); ?>"></script>
     <?php echo $__env->yieldContent('scripts'); ?>
 </body>
