@@ -20,7 +20,7 @@
         
         <div class="col-sm-4 col-lg-3 text-center text-sm-start">
             <div class="main-logo">
-            <a href="index.html">
+            <a href="/homepage">
                 <img src="https://www.academyfence.com/images/logo.png" alt="logo" class="img-fluid">
             </a>
             </div>

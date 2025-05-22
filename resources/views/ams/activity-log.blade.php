@@ -114,7 +114,7 @@
                             No File
                         @else
                             {{ $activity->filename }}
-                            <a class="btn btn-outline-secondary px-2 py-1 d-print-none" href="#" role="button" onclick="App.openModal({{$product->id}},'exampleModal')">
+                            <a class="btn btn-outline-secondary px-2 py-1 d-print-none" href="#" role="button" onclick="App.openModal({{$activity->id}},'exampleModal')">
                     <i class="bi bi-pencil-fill"></i></a>
                         @endif
                     </td>
