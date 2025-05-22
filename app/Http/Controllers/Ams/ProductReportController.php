@@ -6,7 +6,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\Models\ams\ProductReports;
 use App\Models\Products;
-use App\Models\ActivityLog;
+use App\Models\ams\ActivityLog;
 
 class ProductReportController extends Controller
 {

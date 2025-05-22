@@ -118,7 +118,8 @@
             </div>
             <h2 class="text-center">AMS Admin Login</h2>
             <p class="text-center mb-4">Please enter your credentials to login.</p>
-            <form>
+            <form method="POST" action="{{ route('login') }}">
+              @csrf
               <!-- 2 column grid layout with text inputs for the first and last names -->
               <div class="row d-none">
                 <div class="col-md-12 mb-4">
@@ -136,13 +137,23 @@
               <!-- Email input -->
               <div data-mdb-input-init="" class="form-outline mb-4">
               <label class="form-label" for="form3Example3">Email address</label>
-                <input type="email" id="form3Example3" class="form-control form-control-lg">
+                <input type="text" id="form3Example3" class="form-control form-control-lg">
+                @if ($errors->has('username'))
+                        <div class="text-danger mt-2">
+                            {{ $errors->first('username') }}
+                        </div>
+                    @endif
               </div>
 
               <!-- Password input -->
               <div data-mdb-input-init="" class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Password</label>
                 <input type="password" id="form3Example4" class="form-control form-control-lg">
+                @if ($errors->has('password'))
+                    <div class="text-danger mt-2">
+                        {{ $errors->first('password') }}
+                    </div>
+                  @endif
               </div>
 
 

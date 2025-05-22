@@ -35,14 +35,13 @@
     @endif
     <input type="hidden" name="cat_id" value="{{ $id }}">
 </form>
-<div class="d-none d-print-block text-center fw-bold mt-3 mb-3">
-    <h2 class="text-dark">Product Report</h2>
+<div class="d-none d-print-block text-center  mt-3 mb-3">
+    <h2 class="text-dark fw-bold">Product Report</h2>
     {{ $categoryqry->firstWhere('id', $id)->maj_cat_name ?? 'N/A' }} - {{$categoryqry->firstWhere('id', $id)->cat_name ?? 'N/A' }}
+    @if(!empty($filters))
+        <x-prod-report-producttree-print :filters="$filters" :products="$products" :id="$id" :categoryqry="$categoryqry" />
+    @endif
 </div>
-
-@if(!empty($filters))
-    <x-prod-report-producttree :filters="$filters" :products="$products" :id="$id" :categoryqry="$categoryqry" />
-@endif
 
 @if(!$products->isEmpty())
 <div class="d-print-table">

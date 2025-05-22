@@ -113,7 +113,7 @@
                 
                     <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
                         <li class="nav-item active dropdown">
-                            <a class="nav-link dropdown-toggle text-bg-secondary" role="button" data-bs-toggle="dropdown" aria-expanded="false" type="button"
+                            <a class="nav-link dropdown-toggle bg-primary" role="button" data-bs-toggle="dropdown" aria-expanded="false" type="button"
                             data-mdb-toggle="dropdown">Shop By Category</a>
                             <!-- Major Categories First Level menu-->
                             <x-big-menu :majCategories="$majCategories" />

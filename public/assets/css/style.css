@@ -428,4 +428,9 @@ section {
 }
 .card-categories .card:hover .card-caption .small-caption, .card-categories .card:hover .card-caption button {
   visibility: visible;
+}
+
+.landing-section-card {
+  border: 2px solid #f0f0f0;
+  border-radius: 2rem;
 }/*# sourceMappingURL=style.css.map */

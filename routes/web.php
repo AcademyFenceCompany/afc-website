@@ -32,6 +32,7 @@ use App\Http\Controllers\AluminumFenceController;
 use App\Http\Controllers\ChainLinkFenceController;
 use App\Http\Controllers\Ams\InstallJobsController;
 use App\Http\Controllers\Ams\ProductReportController;
+use App\Http\Controllers\Ams\ActivityLogController;
 
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -134,6 +135,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::post('/install_upload', [InstallJobsController::class, 'add'])->name('ams.install_upload');
     Route::post('/products-report/filter', [ProductReportController::class, 'getProductByFilter'])->name('ams.product-report.filter');
     Route::post('/products-report/edit', [ProductReportController::class, 'update'])->name('ams.product-report.edit');
+    Route::get('/log', [ActivityLogController::class, 'getAllLogs'])->name('ams.activity-log');
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
@@ -398,8 +400,9 @@ Route::get('/productdesc', function(){
     return view('productdesc', compact('majCategories', 'subCategories', 'fenceCategories'));
 
 })->name('category');
+
 Route::get('/login', function(){
-    return view('login', [
+    return view('auth.login2', [
         'title' => 'AMS Login',
         'header' => 'AMS Login'
     ]);

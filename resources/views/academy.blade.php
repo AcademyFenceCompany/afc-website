@@ -168,7 +168,7 @@
     
     <x-hero-banner />
 
-    <section class="landing-features">
+    <section class="landing-features d-none">
       <div class="container px-4 py-5">
         <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
           <div class="col d-flex flex-column align-items-start gap-2">
@@ -215,6 +215,7 @@
         </div>
       </div>
     </section>
+    <x-landing-3-sections />
 
     <x-card-categories />
 
@@ -921,7 +922,7 @@
       <div class="container">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-10 col-sm-8 col-lg-6">
-            <img src="{{asset('assets/images/installationmap.jpg')}}" class="d-block mx-lg-auto img-fluid rounded" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+            <img src="{{asset('assets/images/installationmap.png')}}" class="d-block mx-lg-auto img-fluid rounded" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
           </div>
           <div class="col-lg-6">
             <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3">Shipping availability.</h1>
