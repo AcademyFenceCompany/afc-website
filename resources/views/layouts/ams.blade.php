@@ -235,6 +235,10 @@
             });
         });
     </script>
+    <script>
+        window.APP_URL = "{{ config('app.url') }}";
+        console.log("APP_URL: ", window.APP_URL);
+    </script>
     <script src="{{ asset('js/ams.js') }}"></script>
     @yield('scripts')
 </body>
