@@ -69,6 +69,7 @@ class ProductReportController extends Controller
     }
     // This functin is used to get products by a search string
     public function getProductBySearch($str){
+        $categoryqry = \DB::table('categoriesqry')->where('enabled', 1)->select('id','cat_name', 'maj_cat_name')->get();
         $products = \DB::table('products')
             ->where(function($query) use ($str) {
                 $query->where('product_name', 'like', '%'.$str.'%')
@@ -84,7 +85,7 @@ class ProductReportController extends Controller
             $columnHeaders = $productsOb->setTableHeaders(); // Set default Table Headers
         }
         $id = 45;
-        return view('components.product-report', compact('products', 'columnHeaders', 'filters', 'id'));
+        return view('components.product-report', compact('products', 'columnHeaders', 'categoryqry','filters', 'id'));
     }
     // This functin is used to get products by their filter
     public function getProductByFilter(Request $request){

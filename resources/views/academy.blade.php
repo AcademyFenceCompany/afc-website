@@ -117,21 +117,21 @@
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between lh-sm">
               <div>
-                <h6 class="my-0">Growers cider</h6>
+                <h6 class="my-0">Welded Wire</h6>
                 <small class="text-body-secondary">Brief description</small>
               </div>
               <span class="text-body-secondary">$12</span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-sm">
               <div>
-                <h6 class="my-0">Fresh grapes</h6>
+                <h6 class="my-0">Razor Wire</h6>
                 <small class="text-body-secondary">Brief description</small>
               </div>
               <span class="text-body-secondary">$8</span>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-sm">
               <div>
-                <h6 class="my-0">Heinz tomato ketchup</h6>
+                <h6 class="my-0">Really Cool Fence</h6>
                 <small class="text-body-secondary">Brief description</small>
               </div>
               <span class="text-body-secondary">$5</span>
