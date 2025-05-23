@@ -35,10 +35,7 @@
     --font-weight-normal: normal;
 }
 
-.custom-container {
-    max-width: 1450px; /* Adjust as needed */
-    margin: 0 auto; /* Center the container */
-}
+
 body {
     font-family: var(--font-family-primary);
     font-size: var(--font-size-base);
@@ -221,16 +218,11 @@ textarea {
 .dropdown:hover .dropdown-menu {
     display: block;
 }
-
+header .nav-link {
+    background-color: transparent !important;
+  }
 /* Additional styling for button text alignment */
-.nav-link {
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
+
 
 .nav-btn i {
     margin-right: 5px;

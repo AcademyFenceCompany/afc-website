@@ -20,7 +20,7 @@
         
         <div class="col-sm-4 col-lg-3 text-center text-sm-start">
             <div class="main-logo">
-            <a href="/homepage">
+            <a href="/">
                 <img src="https://www.academyfence.com/images/logo.png" alt="logo" class="img-fluid">
             </a>
             </div>
@@ -92,7 +92,7 @@
 
         </div>
     </div>
-    {{-- <nav class="main-nav">
+    <nav class="main-nav">
         <div class="container">
             <div class="row py-2">
             <div class="d-flex  justify-content-center justify-content-sm-between align-items-center">
@@ -118,36 +118,13 @@
                             <!-- Major Categories First Level menu-->
                             <x-big-menu :majCategories="$majCategories" />
                         </li>
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('woodfence') }}" class="nav-link">Wood Fence</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#men" class="nav-link">Vinyl Fence</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#men" class="nav-link">Chain Link Fence</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#men" class="nav-link">Aluminum Fence</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#men" class="nav-link">Welded Wire</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#men" class="nav-link text-bg-info" style="background-color: RGB(234, 221, 181)">Get A Quote</a>
-                        </li>
+                        @include('layouts.nav')
                     </ul>
-                    
-
                     </div>
-
                 </div>
-
                 </nav>
-            </div>
+                </div>
             </div>
         </div>
-    </nav> --}}
-    @include('layouts.nav')
+    </nav>
 </header>

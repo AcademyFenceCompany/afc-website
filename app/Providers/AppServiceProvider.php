@@ -8,8 +8,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use App\Services\UPSService;
-
-
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -44,5 +43,13 @@ class AppServiceProvider extends ServiceProvider
         });
         Paginator::useBootstrap();
 
+        // Share $majCategories with the header partial
+        View::composer('partials.header', function ($view) {
+            $majCategories = DB::table('majorcategories')
+                                ->where('enabled', 1)
+                                ->orderBy('id') // Assuming 'name' column exists for ordering
+                                ->get();
+            $view->with('majCategories', $majCategories);
+        });
     }
 }

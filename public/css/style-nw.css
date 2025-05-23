@@ -112,9 +112,6 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-<<<<<<< HEAD
-}
-=======
 }
 
 /* Media Queries for Responsive Design */
@@ -281,4 +278,3 @@ body, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea {
         text-overflow: ellipsis;
     }
 }
->>>>>>> afc-webdev-c
