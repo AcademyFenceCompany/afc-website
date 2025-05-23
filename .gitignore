@@ -2,6 +2,7 @@
 /public/build
 /public/hot
 /public/storage
+/storage/app/public/
 /storage/logs
 /storage/*.key
 /vendor
@@ -26,3 +27,4 @@ storage/logs/*.log
 /storage/framework/sessions/
 /storage/framework/views/
 /storage/framework/cache/data/
+
