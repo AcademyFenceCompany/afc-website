@@ -18,10 +18,13 @@
     <!-- App CSS -->
     <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
     <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendor.css')); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/main.css')); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/bootstrap.css')); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/style.css')); ?>">
+    <?php if(request()->is('/')): ?>
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/vendor.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/main.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/bootstrap.css')); ?>">
+    <link rel="stylesheet" href="<?php echo e(asset('assets/css/style.css')); ?>">
+    <?php endif; ?>
+    
     
     <title><?php echo e($title ?? 'Academy Fence Company'); ?></title>
     
