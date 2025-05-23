@@ -7,13 +7,13 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
 try {
     echo "=== Productsqry Table Structure ===\n";
-    $columns = DB::connection('mysql_second')->select('SHOW COLUMNS FROM productsqry');
+    $columns = DB::connection('academyfence')->select('SHOW COLUMNS FROM productsqry');
     foreach ($columns as $col) {
         echo "- {$col->Field} ({$col->Type})" . ($col->Key ? " [KEY: {$col->Key}]" : "") . "\n";
     }
     
     echo "\n=== Sample Products for Wood Fence Category (ID 4: Tongue & Groove Cedar) ===\n";
-    $products = DB::connection('mysql_second')
+    $products = DB::connection('academyfence')
         ->table('productsqry')
         ->where('categories_id', 4)
         ->select('product_id', 'item_no', 'product_name', 'style', 'speciality', 'spacing', 'size', 'color', 'price')
@@ -33,7 +33,7 @@ try {
         
         // Try another category
         echo "\n=== Sample Products for Wood Fence Category (ID 5: Stockade Wood Fence) ===\n";
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', 5)
             ->select('product_id', 'item_no', 'product_name', 'style', 'speciality', 'spacing', 'size', 'color', 'price')

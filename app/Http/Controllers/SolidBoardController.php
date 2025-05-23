@@ -19,7 +19,7 @@ class SolidBoardController extends Controller
         $categoryId = 7;
         
         // Get the category
-        $category = DB::connection('mysql_second')
+        $category = DB::connection('academyfence')
             ->table('categories')
             ->where('id', $categoryId)
             ->first();
@@ -60,7 +60,7 @@ class SolidBoardController extends Controller
         
         // Get products from the database that match the IDs in our map
         try {
-            $products = DB::connection('mysql_second')
+            $products = DB::connection('academyfence')
                 ->table('productsqry')
                 ->whereIn('id', $productIds)
                 ->where('enabled', 1)
@@ -68,7 +68,7 @@ class SolidBoardController extends Controller
                 
             if ($products->isEmpty()) {
                 // Fall back to querying all products in the category
-                $products = DB::connection('mysql_second')
+                $products = DB::connection('academyfence')
                     ->table('productsqry')
                     ->where('categories_id', $categoryId)
                     ->where('enabled', 1)
@@ -76,7 +76,7 @@ class SolidBoardController extends Controller
             }
         } catch (\Exception $e) {
             // Fallback to products table if productsqry view doesn't exist
-            $products = DB::connection('mysql_second')
+            $products = DB::connection('academyfence')
                 ->table('products')
                 ->whereIn('id', $productIds)
                 ->where('enabled', 1)
@@ -84,7 +84,7 @@ class SolidBoardController extends Controller
                 
             if ($products->isEmpty()) {
                 // Fall back to querying all products in the category
-                $products = DB::connection('mysql_second')
+                $products = DB::connection('academyfence')
                     ->table('products')
                     ->where('categories_id', $categoryId)
                     ->where('enabled', 1)

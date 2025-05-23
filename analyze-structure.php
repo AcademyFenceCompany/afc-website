@@ -14,7 +14,7 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
 try {
     // Part 1: Analyze Categories
     echo "=== Wood Fence Categories (Major Category ID = 1) ===\n";
-    $categories = DB::connection('mysql_second')
+    $categories = DB::connection('academyfence')
         ->table('categories')
         ->where('majorcategories_id', 1)
         ->select('id', 'cat_name', 'seo_name')
@@ -27,7 +27,7 @@ try {
     // Part 2: Analyze Productsqry Structure
     echo "\n=== Productsqry Structure Analysis ===\n";
     // Get one product to check its actual structure
-    $product = DB::connection('mysql_second')
+    $product = DB::connection('academyfence')
         ->table('productsqry')
         ->first();
         
@@ -54,7 +54,7 @@ try {
     
     // Part 3: Get Product Data for Category 4 (Tongue & Groove Cedar)
     echo "\n=== Sample Products for Tongue & Groove Cedar (ID: 4) ===\n";
-    $products = DB::connection('mysql_second')
+    $products = DB::connection('academyfence')
         ->table('productsqry')
         ->where('categories_id', 4)
         ->select('id', 'product_name', 'item_no', 'categories_id', 'style', 'size', 'spacing', 'color', 'price')

@@ -5,7 +5,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="mb-3 d-flex justify-content-between align-items-center">
-        <h2>MySQL Major Categories (mysql_second database)</h2>
+        <h2>MySQL Major Categories (academyfence database)</h2>
         <div>
             <a href="{{ route('ams.mysql-majorcategories.create') }}" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Add New Major Category

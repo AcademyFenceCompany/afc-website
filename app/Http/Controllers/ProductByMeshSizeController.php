@@ -28,7 +28,7 @@ class ProductByMeshSizeController extends Controller
         $normalizedUrlMeshSize = str_replace([' ', '.'], '', $normalizedUrlMeshSize);
         
         // Get all welded wire products first
-        $allWeldedWireProducts = DB::connection('mysql_second')
+        $allWeldedWireProducts = DB::connection('academyfence')
             ->table('productsqry')
             ->where('majorcategories_id', 44)
             ->where('enabled', 1)
@@ -136,7 +136,7 @@ class ProductByMeshSizeController extends Controller
             return strtolower(trim($displaySize));
         });
 
-        $kproduct = DB::connection('mysql_second')
+        $kproduct = DB::connection('academyfence')
         ->table('productsqry')
         ->where('categories_id', 50)
         ->where('parent','AFCHDFP')
@@ -188,7 +188,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getVinylBlackFencePiping()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', 205)
             ->where('color', 'like', 'vinyl')
@@ -216,7 +216,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getRoundCedarFencePosts()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('categories_id', 163)
             ->where('parent', 'like', 'afcrwp')
@@ -243,7 +243,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getBazookaPostDrivers()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('item_no', 'WWFBPDR')
             ->where('enabled', 1)
@@ -267,7 +267,7 @@ class ProductByMeshSizeController extends Controller
      */
     private function getPressureTreatedPosts()
     {
-        $products = DB::connection('mysql_second')
+        $products = DB::connection('academyfence')
             ->table('productsqry')
             ->where('item_no', 'PSRWFT')
             ->where('enabled', 1)

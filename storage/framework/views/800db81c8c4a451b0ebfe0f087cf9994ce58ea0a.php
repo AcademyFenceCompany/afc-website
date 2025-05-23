@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>"> <!-- CSRF Token -->
+    <meta name="app-url" content="<?php echo e(url('/')); ?>"> <!-- Base URL for JavaScript -->
     <!-- Favicon -->
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -46,6 +47,9 @@
                 if (scrollingInfo) scrollingInfo.style.display = "none";
             }, 60000); // 60 seconds
         });
+    </script>
+    <script>
+        const APP_URL = "<?php echo e(config('app.url')); ?>";
     </script>
     <!-- Cart Scripts -->
     <script src="<?php echo e(asset('js/mini-cart.js')); ?>"></script>

@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="mb-3">
         <h2>Edit AFC Major Category</h2>
-        <p class="text-muted">Update major category information in the mysql_second database</p>
+        <p class="text-muted">Update major category information in the academyfence database</p>
     </div>
 
     <div class="card">

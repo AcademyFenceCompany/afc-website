@@ -22,6 +22,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" >
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css" >
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @yield('styles')
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -820,7 +824,7 @@
         <div class="row">
           <div class="col-md-12">
 
-            <div class="category-carousel swiper">
+            {{-- <div class="category-carousel swiper">
               <div class="swiper-wrapper">
                 @foreach ($fenceCategories as $category)
                   <a href="/category" class="nav-link category-item swiper-slide" style="border: 1px solid #868686;">
@@ -829,7 +833,7 @@
                   </a>
                 @endforeach
               </div>
-            </div>
+            </div> --}}
 
           </div>
         </div>
@@ -954,7 +958,7 @@
         </div>
         <div class="row">
             
-          @foreach ($fenceCategories as $product)
+          {{-- @foreach ($fenceCategories as $product)
             <div class="col-lg-3">
                 <div class="card mb-4" style="max-width: 320px">
                     <img src="https://mobileimages.lowes.com/productimages/ec62c039-d9c3-48db-89af-19699cc5b472/42237287.jpg" class="card-img-top" alt="Product Image">
@@ -979,7 +983,7 @@
                     </div>
                 </div>
             </div>
-          @endforeach
+          @endforeach --}}
                
         </div>
       </div>
@@ -1007,7 +1011,7 @@
 
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                   
-                    @foreach ($fenceCategories as $product)
+                    {{-- @foreach ($fenceCategories as $product)
                       <div class="col">
                         <div class="product-item">
                           <span class="badge bg-success position-absolute m-3">-30%</span>
@@ -1038,7 +1042,7 @@
                           </div>
                         </div>
                       </div>
-                    @endforeach
+                    @endforeach --}}
 
 
                   </div>
@@ -1317,7 +1321,7 @@
             <div class="products-carousel swiper">
               <div class="swiper-wrapper">
                 
-                @foreach ($fenceCategories as $product)
+                {{-- @foreach ($fenceCategories as $product)
                   <div class="product-item swiper-slide" style="border: 1px solid #ddd;">
                     <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                     <figure>
@@ -1345,7 +1349,7 @@
                       <a href="#" class="nav-link">Add to Cart <iconify-icon icon="uil:shopping-cart"></a>
                     </div>
                   </div>
-                @endforeach
+                @endforeach --}}
 
                 
               </div>
@@ -1569,9 +1573,9 @@
     <section class="py-5">
       <div class="container">
         <h2 class="my-5">People are also looking for</h2>
-        @foreach ($fenceCategories as $category)
+        {{-- @foreach ($fenceCategories as $category)
           <a href="#" class="btn btn-outline-primary me-2 mb-2">{{$category['name']}}</a>
-        @endforeach
+        @endforeach --}}
       </div>
     </section>
 
@@ -1802,5 +1806,6 @@
     <script src="{{ asset('assets/js/plugins.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    
   </body>
 </html>

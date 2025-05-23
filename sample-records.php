@@ -8,7 +8,7 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 try {
     // Get sample wood fence categories
     echo "=== Sample Wood Fence Categories (MajorCategory ID=1) ===\n";
-    $categories = DB::connection('mysql_second')
+    $categories = DB::connection('academyfence')
         ->table('categories')
         ->where('majorcategories_id', 1)
         ->select('id', 'cat_name')
@@ -22,7 +22,7 @@ try {
     
     // Get a sample product to see its structure
     echo "\n=== Sample Product (first one we find) ===\n";
-    $product = DB::connection('mysql_second')
+    $product = DB::connection('academyfence')
         ->table('productsqry')
         ->first();
     

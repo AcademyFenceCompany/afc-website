@@ -12,7 +12,7 @@ try {
                     WHERE TABLE_SCHEMA = 'afcwebsite_shop'
                     AND TABLE_NAME = 'productsqry'";
                     
-    $columns = DB::connection('mysql_second')->select($columnsQuery);
+    $columns = DB::connection('academyfence')->select($columnsQuery);
     
     echo "=== Productsqry Columns ===\n";
     if ($columns) {
@@ -25,7 +25,7 @@ try {
     
     // Get a sample wood fence product
     echo "\n=== Sample Wood Fence Products ===\n";
-    $products = DB::connection('mysql_second')
+    $products = DB::connection('academyfence')
         ->table('productsqry')
         ->join('categories', 'productsqry.categories_id', '=', 'categories.id')
         ->where('categories.majorcategories_id', 1)
@@ -59,7 +59,7 @@ try {
         echo "No wood fence products found.\n";
         
         // Check if products with categories_id exist
-        $anyProducts = DB::connection('mysql_second')
+        $anyProducts = DB::connection('academyfence')
             ->table('productsqry')
             ->whereNotNull('categories_id')
             ->limit(1)

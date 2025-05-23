@@ -156,23 +156,6 @@
                                 }
                             }
                         @endphp
-                        
-                        <div id="shipper-info">
-                            <h5>Shipper Information</h5>
-                            @if($hasCategory82 && config('alternative_shipper.category_82'))
-                                <p>Name: {{ config('alternative_shipper.category_82.name') }}</p>
-                                <p>Address: {{ config('alternative_shipper.category_82.address') }}</p>
-                                <p>City: {{ config('alternative_shipper.category_82.city') }}</p>
-                                <p>State: {{ config('alternative_shipper.category_82.state') }}</p>
-                                <p>Zip: {{ config('alternative_shipper.category_82.zip') }}</p>
-                            @else
-                                <p>Name: {{ config('shipper.name') }}</p>
-                                <p>Address: {{ config('shipper.address') }}</p>
-                                <p>City: {{ config('shipper.city') }}</p>
-                                <p>State: {{ config('shipper.state') }}</p>
-                                <p>Zip: {{ config('shipper.zip') }}</p>
-                            @endif
-                        </div>
                     @endif
                 </div>
             </div>

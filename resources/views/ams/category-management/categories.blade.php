@@ -7,7 +7,7 @@
         <a href="{{ route('ams.mysql-categories.index') }}" class="btn btn-primary">
             <i class="bi bi-database"></i> MySQL Categories Management
         </a>
-        <p class="text-muted mt-2">Click the button above to manage categories in the mysql_second database.</p>
+        <p class="text-muted mt-2">Click the button above to manage categories in the academyfence database.</p>
     </div>
     
     <ul class="tree">

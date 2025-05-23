@@ -205,6 +205,10 @@
         });
     </script>
     <script>
+        const APP_URL = "{{ config('app.url') }}";
+    </script>
+    
+    <script>
         // Global TinyMCE initialization
         document.addEventListener('DOMContentLoaded', function() {
             tinymce.init({

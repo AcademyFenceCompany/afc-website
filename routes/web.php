@@ -91,12 +91,12 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     // Temporary debug route for demodb inspection
     Route::get('/debug/demodb', function() {
         // Get all tables in demodb
-        $tables = DB::connection('mysql_second')->select('SHOW TABLES');
+        $tables = DB::connection('academyfence')->select('SHOW TABLES');
         
         // Get the structure of productsqry view if it exists
         $productsqryColumns = [];
         try {
-            $productsqryColumns = DB::connection('mysql_second')
+            $productsqryColumns = DB::connection('academyfence')
                 ->select('DESCRIBE productsqry');
         } catch (\Exception $e) {
             $productsqryColumns = ['error' => $e->getMessage()];
@@ -105,7 +105,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         // Get sample data from productsqry
         $sampleData = [];
         try {
-            $sampleData = DB::connection('mysql_second')
+            $sampleData = DB::connection('academyfence')
                 ->select('SELECT * FROM productsqry LIMIT 1');
         } catch (\Exception $e) {
             $sampleData = ['error' => $e->getMessage()];
@@ -114,7 +114,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         // Show all tables and views in the database
         $allViews = [];
         try {
-            $allViews = DB::connection('mysql_second')
+            $allViews = DB::connection('academyfence')
                 ->select("SHOW FULL TABLES WHERE TABLE_TYPE LIKE 'VIEW'");
         } catch (\Exception $e) {
             $allViews = ['error' => $e->getMessage()];
@@ -130,7 +130,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
 
 });
 
-Route::get('/', function () {
+Route::get('/old', function () {
     return view('index');
 })->name('home');
 

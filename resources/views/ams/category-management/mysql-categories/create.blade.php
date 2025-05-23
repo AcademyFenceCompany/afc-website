@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="mb-3">
         <h2>Create New AFC Category</h2>
-        <p class="text-muted">Add a new category to the mysql_second database</p>
+        <p class="text-muted">Add a new category to the academyfence database</p>
     </div>
 
     <div class="card">

@@ -11,7 +11,7 @@ class AluminumFenceController extends Controller
     public function main()
     {
         // Get aluminum fence categories from the database
-        $aluminumCategories = DB::connection('mysql_second')
+        $aluminumCategories = DB::connection('academyfence')
             ->table('categories')
             ->where('majorcategories_id', 43) // Aluminum fence major category ID
             ->where('web_enabled', 1)
@@ -45,7 +45,7 @@ class AluminumFenceController extends Controller
         $selectedModel = $request->input('model');
         
         // Base query for aluminum fence products
-        $baseQuery = DB::connection('mysql_second')
+        $baseQuery = DB::connection('academyfence')
             ->table('productsqry')
             ->where(function($query) {
                 $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
@@ -55,7 +55,7 @@ class AluminumFenceController extends Controller
             ->where('enabled', 1);
             
         // Get all fence types and models using the material and style columns
-        $typesAndModels = DB::connection('mysql_second')
+        $typesAndModels = DB::connection('academyfence')
             ->select("
                 SELECT 
                     material AS fence_type,
@@ -106,7 +106,7 @@ class AluminumFenceController extends Controller
         }
         
         // Get Puppy Picket models from database
-        $puppyPickets = DB::connection('mysql_second')
+        $puppyPickets = DB::connection('academyfence')
             ->table('productsqry')
             ->select('speciality', 'material', 'style', 'item_no', 'img_large')
             ->where('speciality', 'LIKE', 'puppy picket%')
@@ -174,7 +174,7 @@ class AluminumFenceController extends Controller
             $representativeImages[$typeName] = [];
             foreach ($typeData['models'] as $modelName => $modelData) {
                 // Find a product from this model to get its image
-                $representativeProduct = DB::connection('mysql_second')
+                $representativeProduct = DB::connection('academyfence')
                     ->table('productsqry')
                     ->where('material', $typeName)
                     ->where('style', $modelName)
@@ -234,7 +234,7 @@ class AluminumFenceController extends Controller
             $isPuppyPicket = stripos($model, 'puppy picket') !== false;
             
             // Base query for aluminum fence products
-            $baseQuery = DB::connection('mysql_second')
+            $baseQuery = DB::connection('academyfence')
                 ->table('productsqry')
                 ->where(function($query) {
                     $query->where('product_name', 'LIKE', 'OnGuard Aluminum Fence%')
@@ -312,7 +312,7 @@ class AluminumFenceController extends Controller
                 $representativeImage = $selectedProduct->img_large ?? null;
             } else {
                 // For regular models, use the standard query
-                $representativeImage = DB::connection('mysql_second')
+                $representativeImage = DB::connection('academyfence')
                     ->table('productsqry')
                     ->where('material', $type)
                     ->where('style', $model)
@@ -329,7 +329,7 @@ class AluminumFenceController extends Controller
             $modelDescription = $this->getModelDescription($model);
             
             // Get all fence types and models for the navigation
-            $allModels = DB::connection('mysql_second')
+            $allModels = DB::connection('academyfence')
                 ->select("
                     SELECT 
                         material AS fence_type,
@@ -409,7 +409,7 @@ class AluminumFenceController extends Controller
                 
                 // Now fetch all these products from database
                 foreach ($sections as $section) {
-                    $sectionProducts = DB::connection('mysql_second')
+                    $sectionProducts = DB::connection('academyfence')
                         ->table('productsqry')
                         ->whereIn('item_no', $section['items'])
                         ->where('enabled', 1)
@@ -471,7 +471,7 @@ class AluminumFenceController extends Controller
         $isPuppyPicket = stripos($model, 'puppy picket') !== false;
         
         // Get the product details from the database
-        $baseQuery = DB::connection('mysql_second')
+        $baseQuery = DB::connection('academyfence')
             ->table('productsqry')
             ->where('enabled', 1);
             
@@ -519,7 +519,7 @@ class AluminumFenceController extends Controller
             Log::info('No product found with both size and color, trying with just size');
             
             // Reset the query
-            $baseQuery = DB::connection('mysql_second')
+            $baseQuery = DB::connection('academyfence')
                 ->table('productsqry')
                 ->where('enabled', 1);
                 
@@ -585,7 +585,7 @@ class AluminumFenceController extends Controller
             
             // Now fetch all these products from database
             foreach ($sections as $section) {
-                $sectionProducts = DB::connection('mysql_second')
+                $sectionProducts = DB::connection('academyfence')
                     ->table('productsqry')
                     ->whereIn('item_no', $section['items'])
                     ->where('enabled', 1)
@@ -846,7 +846,7 @@ class AluminumFenceController extends Controller
      */
     private function getOnGuardAccessories()
     {
-        return DB::connection('mysql_second')
+        return DB::connection('academyfence')
             ->table('productsqry')
             ->where('parent', 'LIKE', 'ONGAMM%')
             ->where('enabled', 1)

@@ -8,13 +8,13 @@ $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 try {
     // Check categories table structure
     echo "=== Categories Table Structure ===\n";
-    $columns = DB::connection('mysql_second')->select('SHOW COLUMNS FROM categories');
+    $columns = DB::connection('academyfence')->select('SHOW COLUMNS FROM categories');
     foreach ($columns as $col) {
         echo "- {$col->Field} ({$col->Type})" . ($col->Key ? " [KEY: {$col->Key}]" : "") . "\n";
     }
     
     echo "\n=== Sample Wood Fence Categories ===\n";
-    $categories = DB::connection('mysql_second')
+    $categories = DB::connection('academyfence')
         ->table('categories')
         ->where('majorcategories_id', 1)
         ->select('id', 'cat_name', 'seo_name')

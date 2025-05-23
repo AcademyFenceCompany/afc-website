@@ -16,7 +16,7 @@ class MajorCategoryController extends Controller
      */
     public function index()
     {
-        $majorCategories = DB::connection('mysql_second')
+        $majorCategories = DB::connection('academyfence')
             ->table('majorcategories')
             ->orderBy('cat_name')
             ->get();
@@ -56,7 +56,7 @@ class MajorCategoryController extends Controller
         // Set enabled status based on checkbox presence
         $enabled = $request->has('enabled') ? 1 : 0;
 
-        DB::connection('mysql_second')->table('majorcategories')->insert([
+        DB::connection('academyfence')->table('majorcategories')->insert([
             'cat_name' => $request->cat_name,
             'cat_desc' => $request->cat_desc,
             'enabled' => $enabled,
@@ -75,7 +75,7 @@ class MajorCategoryController extends Controller
      */
     public function edit($id)
     {
-        $majorCategory = DB::connection('mysql_second')
+        $majorCategory = DB::connection('academyfence')
             ->table('majorcategories')
             ->where('id', $id)
             ->first();
@@ -111,7 +111,7 @@ class MajorCategoryController extends Controller
         // Set enabled status based on checkbox presence
         $enabled = $request->has('enabled') ? 1 : 0;
 
-        DB::connection('mysql_second')->table('majorcategories')
+        DB::connection('academyfence')->table('majorcategories')
             ->where('id', $id)
             ->update([
                 'cat_name' => $request->cat_name,
@@ -133,7 +133,7 @@ class MajorCategoryController extends Controller
     public function destroy($id)
     {
         // Check if there are categories using this major category
-        $categoryCount = DB::connection('mysql_second')
+        $categoryCount = DB::connection('academyfence')
             ->table('categories')
             ->where('majorcategories_id', $id)
             ->count();
@@ -143,7 +143,7 @@ class MajorCategoryController extends Controller
                 ->with('error', 'Major category cannot be deleted because it has categories associated with it');
         }
 
-        DB::connection('mysql_second')->table('majorcategories')
+        DB::connection('academyfence')->table('majorcategories')
             ->where('id', $id)
             ->delete();
 
