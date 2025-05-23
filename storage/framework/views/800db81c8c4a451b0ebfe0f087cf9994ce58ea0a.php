@@ -35,9 +35,7 @@
 <body style="font-family: 'Inter', sans-serif;">
 
     <!-- Preloader wrapper -->
-    <div class="preloader-wrapper">
-      <div class="preloader"></div>
-    </div>
+    
 
     <!-- Cart Offcanvas -->
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">

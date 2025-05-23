@@ -41,11 +41,7 @@
 
         .cap-box img {
             max-width: 100%;
-<<<<<<< HEAD
-            height: auto;
-=======
             height: 100px;
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
             margin-bottom: 10px;
         }
 
@@ -103,11 +99,7 @@
         }
 
         .product-header {
-<<<<<<< HEAD
-            background-color: var(--gray-color);
-=======
             background-color: #6C757D;
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
             color: white;
             padding: 10px;
             text-align: center;
@@ -122,8 +114,6 @@
         .quantity-input {
             text-align: center;
         }
-<<<<<<< HEAD
-=======
 
         @media screen and (max-width: 767px) {
             .product-card-table thead {
@@ -181,7 +171,6 @@
                 font-size: 1rem;
             }
         }
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
     </style>
 <?php $__env->stopSection(); ?>
 
@@ -202,15 +191,9 @@
             <?php
                 $parentCodeToSlug = [
                     'AFCWPCP' => 'standard-pyramid',
-<<<<<<< HEAD
-                    'AFCWPCPD' => 'dentil-pyramid',
-                    'AFCWPCPC' => 'copper-pyramid',
-                    'AFCWPCF' => 'standard-flat',
-=======
                     'AFCWPCF' => 'standard-flat',
                     'AFCWPCPD' => 'ball-top',
                     'AFCWPCPC' => 'ball-only',
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                     'AFCWPCFD' => 'dentil-flat',
                     'AFCWPCFC' => 'copper-flat',
                     'AFCWPCB3' => '3-ball',
@@ -253,11 +236,7 @@
                             <h5 class="mb-0"><?php echo e(strtoupper($parentGroups[$parentCode] ?? 'WOOD POST CAPS')); ?></h5>
                         </div>
 
-<<<<<<< HEAD
-                        <table class="table table-bordered">
-=======
                         <table class="table table-bordered product-card-table">
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                             <thead>
                                 <tr>
                                     <th>Item Number</th>
@@ -265,31 +244,16 @@
                                     <th>Nominal Post Size</th>
                                     <th>Cap Opening</th>
                                     <th>Fits to Post Size</th>
-<<<<<<< HEAD
-                                    <th>Color</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-=======
                                     
                                     <th>Color</th>
                                     <th class="text-center">Quantity</th>
                                     <th class="text-center">Price</th>
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr>
-<<<<<<< HEAD
-                                        <td><?php echo e($product->item_no); ?></td>
-                                        <td><?php echo e($product->product_name); ?></td>
-                                        <td><?php echo e($product->size); ?></td>
-                                        <td><?php echo e($product->size2); ?></td>
-                                        <td><?php echo e($product->size3); ?></td>
-                                        <td><?php echo e($product->color ?? 'Pressure Treated'); ?></td>
-                                        <td class="text-center">
-=======
                                         <td data-label="Item Number:"><?php echo e($product->item_no); ?></td>
                                         <td data-label="Name:"><?php echo e($product->product_name); ?></td>
                                         <td data-label="Nominal Post Size:"><?php echo e($product->size); ?></td>
@@ -298,28 +262,19 @@
                                         
                                         <td data-label="Color:"><?php echo e($product->color ?? 'Pressure Treated'); ?></td>
                                         <td data-label="Quantity:" class="text-center quantity-cell">
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                             <div class="input-group input-group-sm" style="width: 100px; margin: 0 auto;">
                                                 <button class="btn btn-outline-secondary quantity-minus" type="button">-</button>
                                                 <input type="text" class="form-control text-center quantity-input" value="1">
                                                 <button class="btn btn-outline-secondary quantity-plus" type="button">+</button>
                                             </div>
                                         </td>
-<<<<<<< HEAD
-                                        <td class="text-center">
-=======
                                         <td data-label="Price:" class="text-center price-cell">
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                             <div>
                                                 $<span class="product-price"
                                                     data-base-price="<?php echo e($product->price); ?>"><?php echo e(number_format($product->price, 2)); ?></span>
                                             </div>
                                         </td>
-<<<<<<< HEAD
-                                        <td> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
-=======
                                         <td data-label="Action:" class="text-center action-cell"> <button class="btn btn-danger btn-sm btn-add-cart add-to-cart-btn" 
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                             data-id="<?php echo e($product->id); ?>"
                                             data-item_no="<?php echo e($product->item_no); ?>" 
                                             data-product_name="<?php echo e($product->product_name); ?>"
@@ -335,10 +290,7 @@
                                             data-display_size_2="<?php echo e($product->display_size_2 ?? ''); ?>"
                                             data-size2="<?php echo e($product->size2 ?? ''); ?>"
                                             data-size3="<?php echo e($product->size3 ?? ''); ?>"
-<<<<<<< HEAD
-=======
                                             data-size4="<?php echo e($product->display_size_2 ?? ''); ?>"
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                             data-material="<?php echo e($product->material ?? ''); ?>"
                                             data-spacing="<?php echo e($product->spacing ?? ''); ?>"
                                             data-coating="<?php echo e($product->coating ?? ''); ?>"
@@ -349,12 +301,9 @@
                                             data-amount_per_box="<?php echo e($product->amount_per_box ?? '1'); ?>"
                                             data-class="<?php echo e($product->class ?? ''); ?>"
                                             data-categories_id="<?php echo e($product->categories_id ?? ''); ?>"
-<<<<<<< HEAD
-=======
                                             data-ship_length="<?php echo e($product->ship_length ?? ''); ?>"
                                             data-ship_width="<?php echo e($product->ship_width ?? ''); ?>"
                                             data-ship_height="<?php echo e($product->ship_height ?? ''); ?>"
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                                             data-shipping_method="<?php echo e($product->shipping_method ?? ''); ?>">
                                             Add
                                     </button>
@@ -395,11 +344,7 @@
                 if (history.pushState) {
                     const parentCodeToSlug = {
                         'AFCWPCP': 'standard-pyramid',
-<<<<<<< HEAD
-                        'AFCWPCPD': 'dentil-pyramid',
-=======
                         'AFCWPCPD': 'ball-top',
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
                         'AFCWPCPC': 'copper-pyramid',
                         'AFCWPCF': 'standard-flat',
                         'AFCWPCFD': 'dentil-flat',
@@ -458,52 +403,6 @@
                 updatePrice($(this));
             });
 
-<<<<<<< HEAD
-            // Add to cart AJAX
-            // $(document).on('click', '.add-to-cart-btn', function () {
-            //     var $button = $(this);
-            //     var $row = $button.closest('tr');
-            //     var itemNo = $button.data('item');
-            //     var name = $button.data('name');
-            //     var price = $button.data('price');
-            //     var quantity = $row.find('.quantity-input').val();
-
-            //     $.ajax({
-            //         url: '<?php echo e(route("cart.add")); ?>',
-            //         method: 'POST',
-            //         data: {
-            //             _token: '<?php echo e(csrf_token()); ?>',
-            //             item_no: itemNo,
-            //             product_name: name,
-            //             price: price,
-            //             quantity: quantity
-            //         },
-            //         success: function (response) {
-            //             if (response.success) {
-            //                 toastr.success(name + ' added to cart!');
-
-            //                 // ✅ Update cart count badge
-            //                 if ($('.cart-count').length > 0) {
-            //                     $('.cart-count').text(response.cartCount);
-            //                 }
-
-            //                 // ✅ Dynamically update mini cart if data is present and function exists
-            //                 if (typeof updateMiniCart === 'function' && response.cart) {
-            //                     updateMiniCart(response.cart);
-            //                 }
-            //             } else {
-            //                 toastr.error('Error adding item to cart');
-            //             }
-            //         },
-            //         error: function (xhr) {
-            //             toastr.error('Error adding item to cart');
-            //             console.error(xhr.responseText);
-            //         }
-            //     });
-            // });
-
-=======
->>>>>>> 7ae6878696df03e82711728b9e62e3bad77d3e05
 
             // Trigger selected parent cap on load
             <?php if(isset($selectedParent)): ?>
@@ -517,4 +416,5 @@
     </script>
 
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.main', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\afc-website\resources\views/categories/woodpostcaps.blade.php ENDPATH**/ ?>
