@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     
     <!-- App CSS -->
-    <link href="<?php echo e(asset('css/app.css')); ?>" rel="stylesheet">
-    <link href="<?php echo e(asset('css/style.css')); ?>" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendor.css')); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/main.css')); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/bootstrap.css')); ?>">
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link href="<?php echo e(secure_asset('css/app.css')); ?>" rel="stylesheet">
+    <link href="<?php echo e(secure_asset('css/style.css')); ?>" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(secure_asset('assets/css/vendor.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(secure_asset('assets/css/main.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(secure_asset('assets/css/bootstrap.css')); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo e(secure_asset('assets/css/style.css')); ?>">
     
     <title><?php echo e($title ?? 'Academy Fence Company'); ?></title>
     
@@ -29,7 +29,7 @@
     <?php echo $__env->yieldContent('styles'); ?>
     
     <!-- Core JS -->
-    <script src="<?php echo e(asset('js/app.js')); ?>" defer></script>
+    <script src="<?php echo e(secure_asset('js/app.js')); ?>" defer></script>
 </head>
 
 <body style="font-family: 'Inter', sans-serif;">
@@ -100,15 +100,15 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     <!-- Vendor JavaScript -->
-    <script src="<?php echo e(asset('assets/js/jquery-1.11.0.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/plugins.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/script.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/js/main.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('assets/js/jquery-1.11.0.min.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('assets/js/plugins.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('assets/js/script.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('assets/js/main.js')); ?>"></script>
     
     <!-- Cart Scripts -->
-    <script src="<?php echo e(asset('js/mini-cart.js')); ?>"></script>
-    <script src="<?php echo e(asset('js/cart.js')); ?>"></script>
-    <script src="<?php echo e(asset('js/cart-helper.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('js/mini-cart.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('js/cart.js')); ?>"></script>
+    <script src="<?php echo e(secure_asset('js/cart-helper.js')); ?>"></script>
     
     <!-- Common JS -->
     <script>

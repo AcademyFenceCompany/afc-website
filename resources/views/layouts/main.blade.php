@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
     
     <!-- App CSS -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendor.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}">
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/css/vendor.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ secure_asset('assets/css/style.css') }}">
     
     <title>{{ $title ?? 'Academy Fence Company' }}</title>
     
@@ -29,7 +29,7 @@
     @yield('styles')
     
     <!-- Core JS -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ secure_asset('js/app.js') }}" defer></script>
 </head>
 
 <body style="font-family: 'Inter', sans-serif;">
@@ -99,15 +99,15 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 
     <!-- Vendor JavaScript -->
-    <script src="{{ asset('assets/js/jquery-1.11.0.min.js') }}"></script>
-    <script src="{{ asset('assets/js/plugins.js') }}"></script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="{{ asset('assets/js/main.js') }}"></script>
+    <script src="{{ secure_asset('assets/js/jquery-1.11.0.min.js') }}"></script>
+    <script src="{{ secure_asset('assets/js/plugins.js') }}"></script>
+    <script src="{{ secure_asset('assets/js/script.js') }}"></script>
+    <script src="{{ secure_asset('assets/js/main.js') }}"></script>
     
     <!-- Cart Scripts -->
-    <script src="{{ asset('js/mini-cart.js') }}"></script>
-    <script src="{{ asset('js/cart.js') }}"></script>
-    <script src="{{ asset('js/cart-helper.js') }}"></script>
+    <script src="{{ secure_asset('js/mini-cart.js') }}"></script>
+    <script src="{{ secure_asset('js/cart.js') }}"></script>
+    <script src="{{ secure_asset('js/cart-helper.js') }}"></script>
     
     <!-- Common JS -->
     <script>
