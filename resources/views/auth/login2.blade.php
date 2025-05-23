@@ -46,7 +46,7 @@
         background-color: #e8d7d3;
       }
       .bg-login-ams{
-        background-image: url('{{asset('assets/images/homepage_fence.png')}}');
+        background-image: url('{{asset('assets/images/homepage_fence.png')}}'); /* pattern_fence.png  */
         background-color:#797979;
         background-position:bottom;
         background-repeat: repeat-x;
@@ -124,7 +124,7 @@
               <div class="row d-none">
                 <div class="col-md-12 mb-4">
                   <div data-mdb-input-init="" class="form-outline">
-                    <input type="text" id="form3Example1" class="form-control form-control-lg">
+                    <input type="text" id="form3Example1" name="username" class="form-control form-control-lg">
                     <label class="form-label" for="form3Example1">First name</label>
                   </div>
                   <div data-mdb-input-init="" class="form-outline">
@@ -136,8 +136,8 @@
 
               <!-- Email input -->
               <div data-mdb-input-init="" class="form-outline mb-4">
-              <label class="form-label" for="form3Example3">Email address</label>
-                <input type="text" id="form3Example3" class="form-control form-control-lg">
+              <label class="form-label" for="form3Example3">Username</label>
+                <input type="text" id="form3Example3" name="username" class="form-control form-control-lg" required />
                 @if ($errors->has('username'))
                         <div class="text-danger mt-2">
                             {{ $errors->first('username') }}
@@ -148,7 +148,7 @@
               <!-- Password input -->
               <div data-mdb-input-init="" class="form-outline mb-4">
                 <label class="form-label" for="form3Example4">Password</label>
-                <input type="password" id="form3Example4" class="form-control form-control-lg">
+                <input type="password" id="form3Example4" name="password" class="form-control form-control-lg" required />
                 @if ($errors->has('password'))
                     <div class="text-danger mt-2">
                         {{ $errors->first('password') }}

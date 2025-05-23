@@ -215,6 +215,7 @@
         </div>
       </div>
     </section>
+    
     <x-landing-3-sections />
 
     <x-card-categories />
