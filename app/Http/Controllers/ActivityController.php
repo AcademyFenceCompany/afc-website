@@ -82,5 +82,6 @@ public function show($orderId)
 
     // Return the order details view
     return view('ams.order.order-details', compact('order', 'customerOrders'));
+    
 }
 }
