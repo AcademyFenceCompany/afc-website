@@ -37,14 +37,10 @@
     </div>
     <!-- Orders List -->
     <div class="orders-list">
-        <?php dump($orders); ?>
         <?php $__empty_1 = true; $__currentLoopData = $orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
             <!-- Order Header -->
             <div class="order-header">
-                <a href="<?php echo e(route('ams.orders.edit', $order->id)); ?>" class="order-id">
-                    #<?php echo e($order->id); ?>
-
-                </a>
+                
                 <span class="customer-name">
                     <?php if($order->customer): ?>
                         <?php if($order->customer->name && $order->customer->company): ?>

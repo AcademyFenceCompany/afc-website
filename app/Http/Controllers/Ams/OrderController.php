@@ -937,7 +937,7 @@ class OrderController extends Controller
             
             // 3. Get Shipping Address from cust_addresses
             $shippingAddress = DB::connection('academyfence')->table('cust_addresses')
-                ->where('cust_id_fk', $order->customer_id)
+                ->where('customers_id', $order->customer_id)
                 ->where('addr_shipping', 1)
                 ->first();
 
@@ -956,7 +956,7 @@ class OrderController extends Controller
 
             // 4. Get Billing Address from cust_billing
             $billingAddress = DB::connection('academyfence')->table('cust_billing')
-                ->where('cust_id_fk', $order->customer_id)
+                ->where('customers_id', $order->customer_id)
                 ->first();
 
             if ($billingAddress) {
@@ -972,7 +972,7 @@ class OrderController extends Controller
 
             // 5. Get Order Items
             $orderItems = DB::connection('academyfence')->table('order_items')
-                ->where('order_id_fk', $order->id)
+                ->where('orders_id', $order->id)
                 ->where('enabled', 1)
                 ->orderBy('sort', 'asc')
                 ->get();
@@ -980,7 +980,7 @@ class OrderController extends Controller
             $formattedItems = [];
             foreach ($orderItems as $item) {
                 $product = DB::connection('academyfence')->table('products')
-                    ->where('id', $item->product_id_fk)
+                    ->where('id', $item->products_id)
                     ->first();
 
                 $formattedItem = (object)[

@@ -36,13 +36,12 @@
     </div>
     <!-- Orders List -->
     <div class="orders-list">
-        @dump($orders)
         @forelse ($orders as $order)
             <!-- Order Header -->
             <div class="order-header">
-                <a href="{{ route('ams.orders.edit', $order->id) }}" class="order-id">
+                {{-- <a href="{{ route('ams.orders.edit', $order->id) }}" class="order-id">
                     #{{ $order->id }}
-                </a>
+                </a> --}}
                 <span class="customer-name">
                     @if ($order->customer)
                         @if ($order->customer->name && $order->customer->company)

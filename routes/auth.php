@@ -14,10 +14,11 @@ use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryToProductController;
 use App\Http\Controllers\getProductsByCategory;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Ams\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AddressController;
 use Illuminate\Support\Facades\Route;
+
 
 
 Route::middleware('guest')->group(function () {
@@ -72,7 +73,7 @@ Route::middleware('auth')->group(function () {
 
 //AMS ROUTES
 Route::middleware('auth')->group(function () {
-    Route::get('/ams/activity', [ActivityController::class, 'index'])->name('ams.activity');
+    Route::get('/ams/activity', [OrderController::class, 'activity'])->name('ams.activity');
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 
