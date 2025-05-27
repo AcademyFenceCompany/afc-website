@@ -31,11 +31,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (config('app.env') === 'local') {
-            URL::forceScheme('http');
-        } else {
+        if (config('app.env') !== 'local') {
             URL::forceScheme('https');
-        }
+        } 
         DB::listen(function ($query) {
             \Log::info($query->sql);
             \Log::info($query->bindings);
