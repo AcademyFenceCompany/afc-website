@@ -83,7 +83,7 @@
     <?php endif; ?>
 
     <!-- Main Content Section -->
-    <main class="custom-container my-2">
+    <main class="container my-2">
         <?php echo e($slot ?? ''); ?>
 
         <?php echo $__env->yieldContent('content'); ?>

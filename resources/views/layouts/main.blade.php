@@ -88,7 +88,7 @@
     @endif
 
     <!-- Main Content Section -->
-    <main class="custom-container my-2">
+    <main class="container my-2">
         {{ $slot ?? '' }}
         @yield('content')
     </main>

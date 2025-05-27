@@ -1,6 +1,6 @@
 <div class="dropdown" style="margin-left: 10px;">
     <a href="#" class="nav-link position-relative text-light" id="cartDropdown" data-bs-toggle="dropdown">
-        <i class="bi bi-cart fs-4"></i>
+        <i class="bi bi-cart fs-4 text-dark"></i>
         <span id="cart-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
             <?php echo e(session('cart') ? count(session('cart')) : 0); ?>
 
