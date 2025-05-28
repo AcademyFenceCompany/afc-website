@@ -2,7 +2,7 @@
     <h1 class="text-center py-5"><strong>Welcome to the original Online Fence Superstore.</strong></h1>
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card landing-section-card h-100">
+            <div class="card shadow-none landing-section-card h-100">
                 
                 <div class="card-body">
                     <img src="{{asset('assets/images/nationwidemap.png')}}" class="card-img-top mb-3" alt="...">
@@ -174,13 +174,13 @@
                                     <span>Chainlink</span>
                                 </li>
                             </ul>
-                            <div class="card mb-3">
+                            <div class="card shadow-none mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
                                         <img src="{{asset('assets/images/aluminumfence-home.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
                                     </div>
                                     <div class="col-md-8">
-                                        <div class="card-body">
+                                        <div class="card-body pt-0">
                                             <h5 class="card-title">Aluminum Fence</h5>
                                             <a href="#" class="btn btn-outline-primary me-2 mb-2">Sections</a>
                                             <a href="#" class="btn btn-outline-primary me-2 mb-2">48in H x 6ft W</a>
@@ -193,7 +193,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mb-3">
+                            <div class="card shadow-none mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
                                         <img src="{{asset('assets/images/weldedwirehome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
@@ -214,7 +214,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mb-3">
+                            <div class="card shadow-none mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
                                         <img src="{{asset('assets/images/woodfencehome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
@@ -232,7 +232,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mb-3">
+                            <div class="card shadow-none mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
                                         <img src="{{asset('assets/images/chainlinkfencehome.jpg')}}"  class="img-fluid rounded-start" width="100%" alt="...">
@@ -254,7 +254,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mb-3">
+                            <div class="card shadow-none mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
                                         <img src="{{asset('assets/images/vinylfencehome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
@@ -273,18 +273,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mb-3">
+                            <div class="card shadow-none mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" width="100%" alt="...">
+                                        <img src="{{asset('assets/images/speedrailhome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
-                                            <h5 class="card-title">Hand Rail Speed Fittings</h5>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
+                                            <h5 class="card-title">Handrail Speed Fittings</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">1-3/8in Rail Rittings</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">1-5/8in Rail Rittings</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">2in Rail Rittings</a>
                                         </div>
                                     </div>
                                 </div>

@@ -11,10 +11,11 @@ class PaymentController extends Controller
     {
         // Validate the request
         $request->validate([
-            'card_number' => 'required',
-            'expiration_date' => 'required',
-            'cvv' => 'required',
-            'amount' => 'required|numeric',
+            'cc_name' => 'required|string|max:255',
+            'cc_number' => 'required',
+            'cc_expiration' => 'required|date_format:m/y',
+            'cc_cvv' => 'required|numeric|min:100|max:999',
+            'amount' => 'required|numeric|min:0.01',
         ]);
 
         // Set up the API request

@@ -42,23 +42,15 @@
         width: 3rem;
         height: 3rem;
       }
-      .shipping-availability{
-        background-color: #e8d7d3;
-      }
       .bg-login-ams{
-        background-image: url('{{asset('assets/images/homepage_fence.png')}}'); /* pattern_fence.png  */
-        background-color:#797979;
-        background-position:bottom;
-        background-repeat: repeat-x;
-        background-size: 40%;
-        height: 100vh;
+        background-image: url('{{asset('assets/images/homepage_fence.png')}}');
       }
     </style>
   </head>
-  <body class="bg-login-ams">
+  <body class="bg-login-ams pb-5">
 <!-- Section: Design Block -->
 <!-- Section: Design Block -->
-<section class="background-radial-gradient overflow-hidden" style="height: 100vh;">
+<section class="background-radial-gradient overflow-hidden">
   <style>
     .background-radial-gradients{
       background-color: hsl(0, 0%, 27.5%);
@@ -102,12 +94,12 @@
           The Fencing Company<br>
           <span style="color: hsl(25, 81.1%, 75.1%)">for your project.</span>
         </h1>
-        <p class="mb-4 opacity-70" style="color: hsl(0, 0.00%, 95.30%)">
+        <p class="mb-4 md-opacity-70" style="color: hsl(0, 0.00%, 95.30%)">
         Academy Fence Company Established in the 1960's we offer a complete line of all types of fencing and railing. As installers and designers we are able to offer the best quality available in the industry.
         </p>
       </div>
 
-      <div class="col-lg-5 mb-5 mb-lg-0 position-relative">
+      <div class="col-lg-5 col-md-6 mb-5 position-relative">
         <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong d-none"></div>
         <div id="radius-shape-2" class="position-absolute shadow-5-strong d-none"></div>
 

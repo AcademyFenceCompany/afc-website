@@ -3,13 +3,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\Checkout2;
 
 class CheckoutController extends Controller
 {
     public function index()
     {
+        // Retrieve the cart from the session
         $cart = session()->get('cart', []);
-
+        // If the cart is empty, redirect to the cart index with an error message
         if (!$cart || count($cart) === 0) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
@@ -21,7 +23,7 @@ class CheckoutController extends Controller
             }
             $cart[$key]['total'] = $cart[$key]['price'] * $cart[$key]['quantity'];
         }
-
+        // Update the session with the modified cart
         session()->put('cart', $cart);
 
         // Calculate subtotal
@@ -52,5 +54,31 @@ class CheckoutController extends Controller
             'maxWidth',
             'maxHeight'
         ));
+    }
+    //Logic for handling the checkout process
+    public function processCheckout(Request $request)
+    {
+        // Validate the request data
+        $request->validate([
+            'cc_name' => 'required|string|max:255',
+            'cc_number' => 'required',
+            'cc_expiration' => 'required|date_format:m/y',
+            'cc_cvv' => 'required|numeric|min:100|max:999',
+            'amount' => 'required|numeric|min:0.01',
+        ]);
+        //@dd($request->all());
+        // Send to authorize.net for processing
+        $checkout = new Checkout2();
+        $response = $checkout->processCreditCart($request);
+        
+        // Check if the payment was successful
+        if (!$response['success']) {
+            // If payment failed, redirect back with an error message
+            return redirect()->back()->with('error', $response['message']);
+        }
+        // Log the checkout data for debugging
+        //Log::info('Checkout data:', $request->all());
+        
+        return redirect()->route('checkout2.success')->with('success', 'Thank You for Your Order!');
     }
 }

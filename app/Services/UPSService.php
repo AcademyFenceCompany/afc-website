@@ -60,6 +60,19 @@ class UPSService
         try {
             $packages = [];
             foreach ($requestData['packages'] as $package) {
+                $length = isset($package['dimensions']['length']) ? (string) $package['dimensions']['length'] : '1';
+                $width  = isset($package['dimensions']['width'])  ? (string) $package['dimensions']['width']  : '1';
+                $height = isset($package['dimensions']['height']) ? (string) $package['dimensions']['height'] : '1';
+
+                // Ensure all dimensions are > 0
+                if ($length === '0' || $width === '0' || $height === '0') {
+                    $length = $width = $height = '1';
+                }
+
+                $weight = isset($package['weight']) ? (string) $package['weight'] : '1';
+                if ($weight === '0' || empty($weight)) {
+                    $weight = '1';
+                }
                 $packages[] = [
                     "PackagingType" => [
                         "Code" => "02",
@@ -69,15 +82,15 @@ class UPSService
                         "UnitOfMeasurement" => [
                             "Code" => "IN",
                         ],
-                        "Length" => $package['dimensions']['length'],
-                        "Width" => $package['dimensions']['width'],
-                        "Height" => $package['dimensions']['height'],
+                        "Length" => $length,
+                        "Width" => $width,
+                        "Height" => $height,
                     ],
                     "PackageWeight" => [
                         "UnitOfMeasurement" => [
                             "Code" => "LBS",
                         ],
-                        "Weight" => $package['weight'],
+                        "Weight" => $weight,
                     ],
                 ];
             }
@@ -155,7 +168,7 @@ class UPSService
                 'request' => $requestData
             ]);
 
-            return ['error' => 'Unable to fetch rates from UPS API.'];
+            return ['error' => $e->getMessage()];
         }
     }
 }

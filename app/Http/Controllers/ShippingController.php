@@ -35,7 +35,7 @@ class ShippingController extends Controller
             'category_ids' => 'sometimes|array', // Add validation for category_ids
         ]);
 
-        // Check if any product is from category_id=82
+        // Check if any product is from category_id=82 : Wood Post Caps
         $hasCategory82 = false;
         if (isset($validated['category_ids']) && is_array($validated['category_ids'])) {
             $hasCategory82 = in_array(82, $validated['category_ids']);
