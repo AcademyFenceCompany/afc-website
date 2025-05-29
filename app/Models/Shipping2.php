@@ -133,4 +133,14 @@ class Shipping2{
         $response = array_merge($rates);
         return $response;
     }
+    // Calculate Final Cost
+    public function calculateFinalCost($cart, $shippingRate): float
+    {
+        // Calculate subtotal
+        $subtotal = array_sum(array_column($cart, 'total'));
+        $tax = $subtotal * 0.06625; // NJ tax rate
+        $total = $subtotal + $tax + $shippingRate;
+
+        return round($total, 2);
+    }
 }

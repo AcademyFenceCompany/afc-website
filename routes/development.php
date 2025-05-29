@@ -17,6 +17,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::post('/products-report/edit', [ProductReportController::class, 'update'])->name('ams.product-report.edit');
     Route::get('/log', [ActivityLogController::class, 'getAllLogs'])->name('ams.activity-log');
     Route::get('/shippingrate', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
+    Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
