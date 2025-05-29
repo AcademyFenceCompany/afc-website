@@ -467,17 +467,7 @@
                             </div>
                             <div class="modal-body">
                                     <!-- Shipper Information -->
-                                    <div class="card mb-3">
-                                        <div class="card-header bg-light">
-                                            <h5 class="mb-0">Shipper Information</h5>
-                                        </div>
-                                        <div class="card-body">
-                                                <div id="shipper-info">
-                                                    <h6>Shipping Method: Dropship</h6>
-                                                    <p>Origin Shipping Address: {{ config('alternative_shipper.category_82.address') }}, {{ config('alternative_shipper.category_82.city') }}, {{ config('alternative_shipper.category_82.state') }},{{ config('alternative_shipper.category_82.zip') }}</p>
-                                                </div>
-                                        </div>
-                                    </div>
+                                    <div id="shipperInfo"></div>
                                 <!-- Shipping Rates List -->
                                 <div id="shippingRates" class="mb-3">
                                     <!-- Shipping rates will be populated here -->

@@ -531,6 +531,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchUPSRates(address, city, state, zip, packages) {
         console.log('Fetching UPS rates...');
         
+        // Extract category IDs from order items
+        const categoryIds = [];
+        orderItems.forEach(item => {
+            if (item.product_data && item.product_data.categories_id) {
+                const categoryId = parseInt(item.product_data.categories_id);
+                if (!isNaN(categoryId) && !categoryIds.includes(categoryId)) {
+                    categoryIds.push(categoryId);
+                }
+            }
+        });
+        
+        console.log('Category IDs for shipping:', categoryIds);
+        
         fetch('/api/ups-rates', {
             method: 'POST',
             headers: {
@@ -543,6 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 recipient_state: state,
                 recipient_postal: zip,
                 packages: packages,
+                category_ids: categoryIds, // Add category IDs to the request
             }),
         })
         .then(response => response.json())
@@ -631,6 +645,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const ratesContainer = document.getElementById('shippingRates');
         const upsShippingTable = document.getElementById('upsShippingTable');
         const upsShippingTotals = document.getElementById('upsShippingTotals');
+        const shipperInfoContainer = document.getElementById('shipperInfo');
         
         if (!ratesContainer || !upsShippingTable || !upsShippingTotals) {
             console.error('UPS shipping containers not found');
@@ -640,6 +655,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear previous content
         upsShippingTable.innerHTML = '';
         upsShippingTotals.innerHTML = '';
+        
+        // Display shipper information if available
+        if (shipperInfoContainer && upsResponse.shipper) {
+            const shipper = upsResponse.shipper;
+            shipperInfoContainer.innerHTML = `
+                <div class="card mb-3">
+                    <div class="card-header bg-light">
+                        <h6 class="mb-0">Shipper Information</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>${shipper.name}</strong></p>
+                        <p class="mb-1">${shipper.address}</p>
+                        <p class="mb-1">${shipper.city}, ${shipper.state} ${shipper.zip}</p>
+                        ${shipper.phone ? `<p class="mb-1">Phone: ${shipper.phone}</p>` : ''}
+                        ${shipper.email ? `<p class="mb-0">Email: ${shipper.email}</p>` : ''}
+                    </div>
+                </div>
+            `;
+        } else if (shipperInfoContainer) {
+            shipperInfoContainer.innerHTML = '';
+        }
         
         if (upsResponse.RateResponse && upsResponse.RateResponse.RatedShipment && upsResponse.RateResponse.RatedShipment.length > 0) {
             // Find UPS Ground rate (Service Code '03')
