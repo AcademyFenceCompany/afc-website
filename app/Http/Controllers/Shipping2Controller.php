@@ -7,6 +7,16 @@ use App\Models\Shipping2;
 
 class Shipping2Controller extends Controller
 {
+    // This method returns a view of the shipping rates page
+    public function index()
+    {
+        // You can return a view here if needed
+        // return view('shipping2.index');
+        return view('ams.shipping-module', [
+            'title' => 'Shipping Rates',
+            'description' => 'Get shipping rates for your packages.',
+        ]);
+    }
     //This method will handle the shipping rates retrieval
     public function getShippingRates(Request $request)
     {
@@ -32,29 +42,52 @@ class Shipping2Controller extends Controller
             'recipient_postal' => '07018',
             'packages' => [
                 [
-                    'weight' => 60,
+                    'weight' => 105,
                     'dimensions' => [
-                        'length' => 10,
-                        'width' => 6,
-                        'height' => 4,
+                        'length' => 16,
+                        'width' => 49,
+                        'height' => 16,
                     ],
                 ],
                 [
-                    'weight' => 70,
+                    'weight' => 105,
                     'dimensions' => [
-                        'length' => 13,
-                        'width' => 6,
-                        'height' => 4,
+                        'length' => 16,
+                        'width' => 49,
+                        'height' => 16,
                     ],
                 ],
+                [
+                    'weight' => 105,
+                    'dimensions' => [
+                        'length' => 16,
+                        'width' => 49,
+                        'height' => 16,
+                    ],
+                ],
+                [
+                    'weight' => 105,
+                    'dimensions' => [
+                        'length' => 16,
+                        'width' => 49,
+                        'height' => 16,
+                    ],
+                ],
+                [
+                    'weight' => 105,
+                    'dimensions' => [
+                        'length' => 16,
+                        'width' => 49,
+                        'height' => 16,
+                    ],
+                ]
             ],
             // Add category_ids if needed
         ];
         $rates = [];
         // Here you would call the appropriate service to get the rates
-        $shippingModel = new Shipping2();
+        $shippingMODEL = new Shipping2();
         // Use UPS when weight is less than 150 lbs
-        // Calculate total weight of all packages
         // Calculate total weight of all packages
         $totalWeight = 0;
         if (isset($validated['packages']) && is_array($validated['packages'])) {
@@ -64,19 +97,44 @@ class Shipping2Controller extends Controller
                 }
             }
         }
+        $upsrates = $shippingMODEL->getUPSShippingRates($validated); //To Be Implemented
 
+        if(!isset($upsrates['error'])) {
+            
+            // Extract Weight and TotalCharges MonetaryValue from UPS API response
+            $rateResponse = $upsrates['RateResponse'] ?? [];
+            $ratedShipments = $rateResponse['RatedShipment'] ?? [];
+
+            $upsRatesList = [];
+            foreach ($ratedShipments as $shipment) {
+                $weight = $shipment['BillingWeight']['Weight'] ?? null;
+                $totalCost = $shipment['TotalCharges']['MonetaryValue'] ?? null;
+                $serviceCode = $shipment['Service']['Code'] ?? null;
+                $serviceDescription = $shipment['Service']['Description'] ?? null;
+
+                $upsRatesList[] = [
+                    'service_code' => $serviceCode,
+                    'service_description' => $serviceDescription,
+                    'weight' => $weight,
+                    'total_cost' => $totalCost,
+                ];
+            }
+
+            $rates['ups'] = $upsRatesList;
+        }
+        @dd($rates);
         if ($totalWeight < 150) {
-            //$upsrates = $shippingModel->getUPSShippingRates($validated); //To Be Implemented
+            $upsrates = $shippingMODEL->getUPSShippingRates($validated); //To Be Implemented
             // For now, let's simulate UPS rates
-            $upsrates = [
-                'rates' => [
-                    'ground' => 15.99,
-                    '2nd_day_air' => 25.99,
-                    'next_day_air' => 45.99,
-                ],
-                'total_weight' => $totalWeight,
-                'currency' => 'USD',
-            ];
+            // $upsrates = [
+            //     'rates' => [
+            //         'ground' => 15.99,
+            //         '2nd_day_air' => 25.99,
+            //         'next_day_air' => 45.99,
+            //     ],
+            //     'total_weight' => $totalWeight,
+            //     'currency' => 'USD',
+            // ];
         } else {
             // If total weight is 150 lbs or more, use TForce
             $upsrates = [
@@ -85,13 +143,13 @@ class Shipping2Controller extends Controller
         }
         
         //Get TForce rates
-        $tForceRates = $shippingModel->getTForceShippingRates($validated);
+        $tForceRates = $shippingMODEL->getTForceShippingRates($validated);
         if (!isset($tForceRates['error'])) {
             $rates['tforce'] = $tForceRates;
         }
 
         // Get R&L Carriers rates
-        $rlCarriersRates = $shippingModel->getRLCarriersShippingRates($validated);
+        $rlCarriersRates = $shippingMODEL->getRLCarriersShippingRates($validated);
         
         if (isset($upsrates['error'])) {
             return response()->json(['error' => $upsrates['error']], 400);

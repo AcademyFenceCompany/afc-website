@@ -123,8 +123,6 @@ $(document).ready(function() {
         url: App.url,
     }
 
-    const url = "https://example.com/api/endpoint";
-
     $(".add-to-cart").on("click", function() {
         const price = $(this).data("price");
         const qty = $(this).data("qty");

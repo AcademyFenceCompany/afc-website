@@ -157,6 +157,7 @@
         <a href="#" class="menu-item">Office Sheets</a>
         <a href="#" class="menu-item">Sales Reports</a>
         <a href="{{ route('ams.product-report') }}" class="menu-item">Products Report</a>
+        <a href="{{ route('ams.getshippingrate') }}" class="menu-item">Shipping API</a>
         <a href="{{ route('ams.install_upload') }}" class="menu-item">Install Jobs Gallery</a>
 
     </div>
