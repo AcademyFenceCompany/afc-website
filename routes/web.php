@@ -319,6 +319,12 @@ Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('s
 Route::post('/shipping-markup/{id}/update', [StateMarkupController::class, 'update'])->name('shipping-markup.update');
 Route::get('/api/state-markup/{state}', [StateMarkupController::class, 'getMarkup']);
 
+//Product Order API's
+Route::get('/api/products/search', [ProductApiController::class, 'search']);
+Route::get('/api/products/item/{itemNumber}', [ProductApiController::class, 'getByItemNumber']);
+Route::get('/api/order-categories', [OrderCategoryController::class, 'getCategories']);
+Route::get('/api/order-products/{categoryId}', [OrderCategoryController::class, 'ajaxGetProducts']);
+
 
 //Development Routes
 require base_path('routes/development.php');

@@ -86,13 +86,23 @@
                                 <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
                             </div>
                             <div>
-                                <ul class="list-group customer-results">
+                                <ul class="list-group customer-results d-none">
                                     <li class="list-group-item"><strong>Customer Name</strong> <span class="float-end">(324.342.2342)</span></li>
                                     <li class="list-group-item"><strong>Customer Name</strong> (324.342.2342)</li>
                                     <li class="list-group-item"><strong>Customer Name</strong> (324.342.2342)</li>
                                     <li class="list-group-item"><strong>Customer Name</strong> (324.342.2342)</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="mb-3">Save and Confirm</h5>
+                            <button type="button" class="btn btn-success w-100 mb-2" id="saveOrderBtn">
+                                <i class="fas fa-save me-1"></i> Save Order
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -260,7 +270,7 @@
                     </div>
                     <div class="col-md-6">
                         <!-- Payment Information -->
-                        <div class="card card mb-2">
+                        <div class="card mb-4 p-3">
                             <div class="card-body p-2">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="card-title mb-0">Payment Information</h6>
@@ -319,7 +329,7 @@
                                 </div>
                                 
                                 <!-- Order Status Dropdown -->
-                                <div class="mt-2">
+                                <div class="mt-2 d-none">
                                     <label for="order-status" class="form-label small mb-1">Order Status</label>
                                     <select class="form-select form-select" id="order-status" name="order_status">
                                         <option value="QUOTE" data-color="#FFD8B1">QUOTE</option>
@@ -334,7 +344,7 @@
                         </div>
 
                         <!-- Origin and Shipping -->
-                        <div class="card card">
+                        <div class="card mb-4">
                             <div class="card-body p-2">
                                 <div class="row g-2">
                                     <div class="col-md-6">
@@ -384,20 +394,28 @@
                         </div>
                     
                         <!-- Correspondence -->
-                        <div class="card card">
+                        <div class="card p-3">
                             <div class="card-body p-2">
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <h6 class="card-title small mb-2">Customer</h6>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="dropdown-text">Print Documents</span>
+                                            <span class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#"><label><input type="checkbox" class="selectall" /><span class="select-text"> Select</span> All</label></a></li>
+                                                <li class="divider"></li>
+                                                <li><a class="option-link" href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 1 '/> Option 1</label></a></li>
+                                                <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 2 '/> Option 2</label></a></li>
+                                                <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 3 '/> Option 3</label></a></li>
+                                            </ul>
+                                        </div>
                                         <select class="form-select form-select mb-2" id="customer-print">
-                                            <option value="">Print...</option>
-                                            <option value="invoice">Invoice</option>
-                                            <option value="quote">Quote</option>
+                                            <option value="">Print Fax Order</option>
+                                            <option value="ship_request">Print Ship Request</option>
                                         </select>
                                         <select class="form-select form-select" id="customer-email">
-                                            <option value="">Email...</option>
-                                            <option value="invoice">Invoice</option>
-                                            <option value="quote">Quote</option>
+                                            <option value="">Email Customer</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
