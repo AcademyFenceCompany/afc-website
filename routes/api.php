@@ -39,7 +39,7 @@ Route::post('/ups-rates', [ShippingController::class, 'getShippingRates']);
 Route::post('/tforce-rates', [TForceController::class, 'getRate']);
 Route::post('/rl-carriers-rates', [RLCarriersController::class, 'getRates']);
 // Testing Shipping2 API
-Route::get('/shipping2', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
+//Route::get('/shipping2', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
 //Route::post('/shipping2', [UPSController::class, 'getRates'])->name('shipping2.getShippingRates');
 
 //Authorize.net payment api

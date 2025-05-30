@@ -248,6 +248,30 @@ $(document).ready(function() {
             });
         }, 100); // Added missing closing brace for setTimeout
     });
+    //Search Customers
+    $("#customer-search").on("keyup", function() {
+        const searchTerm = $(this).val().toLowerCase();
+        const productList = $(".customer-results");
+        console.log("Search term:", searchTerm);
+        return;
+        if (searchTerm.length < 1) return;
+        setTimeout(function() {
+            $.ajax({
+                url: `${appParams.url}/search-customer/${searchTerm}`,
+                type: "GET",
+                dataType: "html",
+                success: function(data) {
+                    // Populate the element with id 'product-list' with the received data
+                    productList.html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching products:", error);
+                    // Optionally clear the loading message or show an error message
+                    productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                }
+            });
+        }, 100); // Added missing closing brace for setTimeout
+    });
     // Filter functionality
     // $(".input-filter").on("change", function() {
     //     if ($(this).is(":checked")) {

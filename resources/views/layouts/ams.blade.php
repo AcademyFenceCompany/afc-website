@@ -170,7 +170,7 @@
                 <a href="{{ route('ams.orders.create') }}" class="btn btn-primary me-2">
                     <i class="bi bi-plus-circle"></i> Create New Order
                 </a>
-                <a href="{{ route('ams.home') }}" class="btn btn-outline-light">
+                <a href="" class="btn btn-outline-light">
                     <i class="bi bi-house-fill"></i> Home
                 </a>
                 <a href="{{ route('logout') }}" class="btn btn-outline-light">

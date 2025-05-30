@@ -56,11 +56,20 @@ class ActivityController extends Controller
           ->orWhereDate('quote_date', $activityDate);
     });
 
-    $orders = $query->paginate(10);
+    //$orders = $query->paginate(10);
 
-    return view('ams.activity', compact('orders', 'activityDate'));
+    //return view('ams.activity', compact('orders', 'activityDate'));
 }
 
+    // This method gets all orders
+    public function getOders()
+    {
+        // Fetch all orders with their relationships
+        $orders = \DB::table('orders')->limit(10)->get();
+        @dd($orders);
+        // Return the view with the orders
+        return view('ams.activity', compact('orders'));
+    }
 
 public function show($orderId)
 {

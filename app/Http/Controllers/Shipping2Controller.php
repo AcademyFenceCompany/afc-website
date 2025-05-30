@@ -122,9 +122,9 @@ class Shipping2Controller extends Controller
 
             $rates['ups'] = $upsRatesList;
         }
-        @dd($rates);
+        @dd($upsrates);
         if ($totalWeight < 150) {
-            $upsrates = $shippingMODEL->getUPSShippingRates($validated); //To Be Implemented
+            //$upsrates = $shippingMODEL->getUPSShippingRates($validated); //To Be Implemented
             // For now, let's simulate UPS rates
             // $upsrates = [
             //     'rates' => [

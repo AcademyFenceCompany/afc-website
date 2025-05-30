@@ -6,6 +6,7 @@ use App\Http\Controllers\Ams\ProductReportController;
 use App\Http\Controllers\Ams\ActivityLogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Shipping2Controller;
+use App\Http\Controllers\ActivityController;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -18,12 +19,18 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/log', [ActivityLogController::class, 'getAllLogs'])->name('ams.activity-log');
     Route::get('/shippingrate', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
     Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
+    Route::get('/activity', [ActivityController::class, 'getorders'])->name('ams.orders');
+    
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
 Route::get('/products-report/cat/{id}', [ProductReportController::class, 'getProductsByCategoryId'])->name('ams.getAllByCatId');
 Route::get('/products-report/search/{str}', [ProductReportController::class, 'getProductBySearch'])->name('ams.getAllBySearch');
 Route::get('/products-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
+
+Route::get('/getcustomer/{id}', [CustomerController::class, 'getCustomerById'])->name('ams.getCustomerById');
+Route::get('/search-customer/{str}', [CustomerController::class, 'search2'])->name('ams.search-customer');
+Route::get('/getcustomers', [CustomerController::class, 'getCustomers'])->name('ams.getCustomers');
 
 //Route::get('/product-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
 
@@ -108,7 +115,7 @@ Route::prefix('cart2')->group(function () {
 
     Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('cart2.checkout2');
 });
-
+Route::get('/shipping2', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
 // Route for the login page. This route needs to be relocated to the auth routes file.
 Route::get('/logout', function () {
     \Illuminate\Support\Facades\Auth::logout();
