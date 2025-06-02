@@ -43,18 +43,18 @@ Route::post('/rl-carriers-rates', [RLCarriersController::class, 'getRates']);
 //Route::post('/shipping2', [UPSController::class, 'getRates'])->name('shipping2.getShippingRates');
 
 //Authorize.net payment api
-//Route::post('/charge', [PaymentController::class, 'chargeCreditCard']);
+Route::post('/charge', [PaymentController::class, 'chargeCreditCard']);
 // Dummy payment data for testing
-Route::get('/charge', function () {
-    $dummyData = [
-        'card_number' => '4111111111111111',
-        'expiration_date' => '12/25',
-        'cvv' => '123',
-        'amount' => 100.00,
-        'currency' => 'USD',
-        'description' => 'Test payment'
-    ];
-    // Call the controller method with dummy data
-    return app(\App\Http\Controllers\PaymentController::class)->chargeCreditCard(new \Illuminate\Http\Request($dummyData));
-});
+// Route::get('/charge', function () {
+//     $dummyData = [
+//         'card_number' => '4111111111111111',
+//         'expiration_date' => '12/25',
+//         'cvv' => '123',
+//         'amount' => 100.00,
+//         'currency' => 'USD',
+//         'description' => 'Test payment'
+//     ];
+//     // Call the controller method with dummy data
+//     return app(\App\Http\Controllers\PaymentController::class)->chargeCreditCard(new \Illuminate\Http\Request($dummyData));
+// });
 
