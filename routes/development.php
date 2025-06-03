@@ -7,6 +7,7 @@ use App\Http\Controllers\Ams\ActivityLogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Shipping2Controller;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ShoppingCartController;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -105,7 +106,7 @@ Route::prefix('cart2')->group(function () {
     Route::get('/cart', function () {
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
         $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
-        return view('cart.checkout2', compact('majCategories', 'subCategories'));
+        return view('cart.checkout2', compact('majCategories', 'subCategories',));
     })->name('cart2.index');
     Route::get('/thankyou', function () {
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
@@ -114,6 +115,10 @@ Route::prefix('cart2')->group(function () {
     })->name('checkout2.success');
 
     Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('cart2.checkout2');
+    Route::get('/checkout', [ShoppingCartController::class, 'processCheckout'])->name('cart2.checkout2');
+    Route::get('/get-cart', [ShoppingCartController::class, 'getCart'])->name('cart2.getCart');
+    Route::get('/add-to-cart/p/{id}', [ShoppingCartController::class, 'addItem'])->name('cart2.addToCart');
+    Route::get('/update-qty/p/{id}/q/{qty}', [ShoppingCartController::class, 'updateItem'])->name('cart2.updateItem');
 });
 Route::get('/shipping2', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
 // Route for the login page. This route needs to be relocated to the auth routes file.

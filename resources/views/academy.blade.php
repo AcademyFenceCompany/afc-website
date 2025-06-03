@@ -107,49 +107,7 @@
       <div class="preloader">
       </div>
     </div>
-
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
-      <div class="offcanvas-header justify-content-center">
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="order-md-last">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-primary">Your cart</span>
-            <span class="badge bg-primary rounded-pill cart-count">0</span>
-          </h4>
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 class="my-0">Welded Wire</h6>
-                <small class="text-body-secondary">Brief description</small>
-              </div>
-              <span class="text-body-secondary">$12</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 class="my-0">Razor Wire</h6>
-                <small class="text-body-secondary">Brief description</small>
-              </div>
-              <span class="text-body-secondary">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 class="my-0">Really Cool Fence</h6>
-                <small class="text-body-secondary">Brief description</small>
-              </div>
-              <span class="text-body-secondary">$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>$20</strong>
-            </li>
-          </ul>
-  
-          <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-        </div>
-      </div>
-    </div>
+    <x-cart-sidebar :cart="$cart"/>
     
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
       <div class="offcanvas-header justify-content-center">
@@ -170,7 +128,7 @@
 
     @include('partials.header')
     
-    <x-hero-banner />
+    <x-hero-banner :cart="$cart"/>
 
     <section class="landing-features d-none">
       <div class="container px-4 py-5">
@@ -365,7 +323,7 @@
     </section>
 
 
-    <section class="product-desc d-none">
+    <section class="product-desc ">
         <div class="container mt-5">
             <div class="row">
                 <!-- Product Images -->
@@ -418,10 +376,10 @@
                     </div>
                     <div class="mb-4">
                         <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" class="form-control main-qty" id="quantity" value="1" min="1" style="width: 80px;">
+                        <input type="number" class="form-control main-qty incre-qty" id="quantity" data-product-id="43765" value="1" min="1" style="width: 80px;">
                     </div>
                     <div class="d-sm-flex flex-sm-row gap-4">
-                        <button class="btn btn-primary btn-lg flex-sm-fill">
+                        <button class="btn btn-primary btn-lg flex-sm-fill add-to-cart" data-product-id="43765">
                             <i class="bi bi-cart-plus"></i> Add to Cart
                         </button>
                         <button class="btn btn-outline-secondary btn-lg flex-sm-fill">

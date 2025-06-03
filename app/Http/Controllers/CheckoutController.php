@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\Checkout2;
+use App\Models\ShoppingCart; // Assuming you have a ShoppingCart model
 
 class CheckoutController extends Controller
 {
@@ -55,9 +56,38 @@ class CheckoutController extends Controller
             'maxHeight'
         ));
     }
+    //Get The checkout form
+    public function getCheckoutForm()
+    {
+        // Retrieve the cart from the session
+        $cart = session()->get('cart', []);
+        // If the cart is empty, redirect to the cart index with an error message
+        if (!$cart || count($cart) === 0) {
+            //return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
+
+        // Ensure updated quantities are correctly fetched
+        foreach ($cart as $key => $item) {
+            if (!isset($item['quantity']) || $item['quantity'] < 1) {
+                $cart[$key]['quantity'] = 1;
+            }
+            $cart[$key]['total'] = $cart[$key]['price'] * $cart[$key]['quantity'];
+        }
+        // Update the session with the modified cart
+        session()->put('cart', $cart);
+
+        // Calculate subtotal
+        $subtotal = array_sum(array_column($cart, 'total'));
+        $tax = $subtotal * 0.06625; // NJ tax rate
+        $total = $subtotal + $tax;
+
+        return view('cart.checkout2', compact('cart', 'subtotal', 'tax', 'total'));
+    }
     //Logic for handling the checkout process
     public function processCheckout(Request $request)
     {
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
         // Validate the request data
         $request->validate([
             'cc_name' => 'required|string|max:255',

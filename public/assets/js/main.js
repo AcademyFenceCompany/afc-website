@@ -1,6 +1,6 @@
 const App = {
     appName: "MyApp",
-    url: window.APP_URL,
+    url: "http://localhost:8000", //window.APP_URL,
     init: function() {
         console.log("App initialized");
         // Add any initialization logic here
@@ -111,6 +111,11 @@ const App = {
 
 App.init();
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     $('.dropdown-menu').on("click", function (e) {
         $(this).parent().is(".open") && e.stopPropagation();
     });
@@ -127,7 +132,13 @@ $(document).ready(function() {
             $(".select-text").html(' Select');
         }
     });
-
+    $("#same-as-ship").on("change", function() {
+        if ($(this).is(":checked")) {
+            $(".card-billing").fadeOut();
+        } else {
+            $(".card-billing").fadeIn();
+        }
+    });
     $("input[type='checkbox'].justone").change(function(){
         var a = $("input[type='checkbox'].justone");
         if(a.length == a.filter(":checked").length){
@@ -153,26 +164,62 @@ $(document).ready(function() {
         appName: "MyApp",
         url: App.url,
     }
-
+    // Function to add a product to the cart
     $(".add-to-cart").on("click", function() {
-        const price = $(this).data("price");
-        const qty = $(this).data("qty");
-        const data = {
-            price: price,
-            quantity: qty + 1
-        };
-
-        // Update all elements with the 'cart-count' class
-        $(".cart-count").each(function() {
-            const currentCount = parseInt($(this).text(), 10) || 0;
-            const newCount = currentCount + 1;
-            $(this).text(newCount);
+        const productId = $(this).data("product-id");
+        if (!productId) {
+            console.warn("Invalid product ID or quantity.");
+            return;
+        }
+        console.log(App.url);
+        console.log("Updating quantity for product ID:", productId, "to", quantity);
+        $.ajax({
+            url: `${App.url}/cart2/add-to-cart/p/${productId}`,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                // Optionally update cart UI or show a message
+                console.log("Quantity updated successfully:", response);
+                $('.cart-count').text(response.cartCount); // Update cart count
+                //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
+            },
+            error: function(xhr, status, error) {
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                //$("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+            }
         });
 
         console.log("Updated cart count for all elements.");
-        console.log("Data object:", data);
     });
-
+    // Function to update the quantity of a product in the cart
+    $(".incre-qty").on("change", function() {
+        const productId = $(this).data("product-id");
+        const quantity = $(this).val();
+        if (!productId || quantity < 1) {
+            console.warn("Invalid product ID or quantity.");
+            return;
+        }
+        console.log(App.url);
+        console.log("Updating quantity for product ID:", productId, "to", quantity);
+        $.ajax({
+            url: `${App.url}/cart2/update-qty/p/${productId}/q/${quantity}`,
+            type: "GET",
+            // data: {
+            //     id: productId
+            // },
+            dataType: "json",
+            success: function(response) {
+                // Optionally update cart UI or show a message
+                $('.cart-count').text(response.cartCount); // Update cart count
+                console.log("Quantity updated successfully:", response);
+                //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
+            },
+            error: function(xhr, status, error) {
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                //$("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+            }
+        });
+    });
     $(".system-complete-card").hover(
         function() {
             $(this).find(".prod-detail").show();
@@ -393,4 +440,27 @@ $(document).ready(function() {
     }
 
 });
+
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+
+
 

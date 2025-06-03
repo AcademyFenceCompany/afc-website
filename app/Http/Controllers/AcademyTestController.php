@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\ShoppingCart; // Assuming you have a ShoppingCart model
 
 class AcademyTestController extends Controller
 {
@@ -37,7 +38,9 @@ class AcademyTestController extends Controller
             ['id' => 10, 'name' => 'Garden Fences', 'description' => 'Decorative garden fences for landscaping.'],
 
         ];
-        return view('academy', compact('majCategories', 'subCategories', 'fenceCategories'));
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
+        return view('academy', compact('majCategories', 'subCategories', 'fenceCategories', 'cart'));
     }
     public function height($h)
     {

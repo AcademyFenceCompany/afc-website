@@ -30,6 +30,7 @@ use App\Http\Controllers\StockadeFenceController;
 use App\Http\Controllers\WoodPostCapsController;
 use App\Http\Controllers\AluminumFenceController;
 use App\Http\Controllers\ChainLinkFenceController;
+use App\Http\Controllers\ProductApiController;
 
 
 // AMS Routes
@@ -312,7 +313,7 @@ Route::get('/categories/{category}/products', [CategoriesController::class, 'get
 
 
 //Shipping API's 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::get('/checkout', [CheckoutController::class, 'getCheckoutForm'])->name('checkout.index');
 // Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
 
 Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('shipping-markup');;

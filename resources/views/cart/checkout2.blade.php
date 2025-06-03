@@ -34,8 +34,11 @@
       body{
         color: #000;
       }
-      .form-control{
+      .form-control, .form-select{
         border: 2px solid #ced4da;
+      }
+      .form-check-input{
+        --bs-form-check-bg: #c4c4c4;
       }
       section{
           padding: 10rem 0;
@@ -52,9 +55,13 @@
       .shipping-availability{
         background-color: #e8d7d3;
       }
+      .card{
+        border: 2px dashed #ced4da;
+        box-shadow:none;
+      }
     </style>
   </head>
-  <body>
+  <body class="checkout">
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <defs>
@@ -111,48 +118,7 @@
       </div>
     </div>
 
-    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
-      <div class="offcanvas-header justify-content-center">
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <div class="order-md-last">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-primary">Your cart</span>
-            <span class="badge bg-primary rounded-pill cart-count">0</span>
-          </h4>
-          <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 class="my-0">Welded Wire</h6>
-                <small class="text-body-secondary">Brief description</small>
-              </div>
-              <span class="text-body-secondary">$12</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 class="my-0">Razor Wire</h6>
-                <small class="text-body-secondary">Brief description</small>
-              </div>
-              <span class="text-body-secondary">$8</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-sm">
-              <div>
-                <h6 class="my-0">Really Cool Fence</h6>
-                <small class="text-body-secondary">Brief description</small>
-              </div>
-              <span class="text-body-secondary">$5</span>
-            </li>
-            <li class="list-group-item d-flex justify-content-between">
-              <span>Total (USD)</span>
-              <strong>$20</strong>
-            </li>
-          </ul>
-  
-          <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-        </div>
-      </div>
-    </div>
+    <x-cart-sidebar :cart="$cart" />
     
     <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
       <div class="offcanvas-header justify-content-center">
@@ -176,203 +142,63 @@
     <div class="container py-5">
         <main>
             <div class="py-5 text-center">
-            <h2>Checkout form</h2>
-            <p class="lead">This is an example checkout form to test payment, orders, and checkout modules.</p>
+            <h2>
+                <svg class="me-2" width="32" height="32" style="color:rgba(167, 40, 40, 0.9);">
+                <use xlink:href="#cart"></use>
+                </svg>
+              Checkout form
+            </h2>
+            <p class="">
+              Please review your cart and enter your shipping, billing, and payment information below to complete your purchase. <br> For assistance, contact our customer service team.
+            </p>
             </div>
+            <form class="needs-validation" method="POST" action="{{ route('shipping2.getShippingRates') }}" novalidate>
+              @csrf
+              <div class="row g-5">
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Order Summary</span>
+                    <span class="badge bg-primary rounded-pill">3</span>
+                    </h4>
+                    <div class="card mb-3 cart-summary">
+                      <div class="cart-summary-container">
+                          <ul class="list-group-item px-3 pt-4">
+                              <li class="list-group-item py-1 d-flex justify-content-between">
+                                  <span>Item Subtotal ({{$cart['quantity']}})</span>
+                                  <span class="text-muted" data-mi-subtotal="">${{$cart['subtotal']}}</span>
+                              </li>
+                              <li class="list-group-item py-1 d-flex justify-content-between">
+                                  <span>Shipping</span>
+                                  <span class="text-muted" data-mi-shipping="">${{$cart['shipping_cost']}}</span>
+                              </li>
+                              <li class="list-group-item py-1 d-flex justify-content-between">
+                                  <span>Sales Tax</span>
+                                  <span class="text-muted" data-mi-taxes="0">${{$cart['tax']}}</span>
 
-            <div class="row g-5">
-            <div class="col-md-5 col-lg-4 order-md-last">
-                <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-primary">Your cart</span>
-                <span class="badge bg-primary rounded-pill">3</span>
-                </h4>
-                <ul class="list-group mb-3">
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                    <h6 class="my-0">Product name</h6>
-                    <small class="text-muted">Brief description</small>
+                              </li>
+                          </ul>
+                          <div class="p-3 d-flex justify-content-between cart-total border-top">
+                              <strong>Total (USD)</strong>
+                              <strong data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
+                          </div>
+                      </div>
+                      <button type="submit" class="btn btn-primary btn-lg m-3 mt-0" id="place-order">
+                          Place Order
+                      </button>
                     </div>
-                    <span class="text-muted">$12</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                    <h6 class="my-0">Second product</h6>
-                    <small class="text-muted">Brief description</small>
+                    <div class="card bg-light mb-3" style="border:none;">
+                      <img src="https://fencesnj.com/assets/images/nationwidemap.png" class="card-img-top shadow-none" alt="...">
                     </div>
-                    <span class="text-muted">$8</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                    <h6 class="my-0">Third item</h6>
-                    <small class="text-muted">Brief description</small>
-                    </div>
-                    <span class="text-muted">$5</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between bg-light">
-                    <div class="text-success">
-                    <h6 class="my-0">Promo code</h6>
-                    <small>EXAMPLECODE</small>
-                    </div>
-                    <span class="text-success">−$5</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between">
-                    <span>Total (USD)</span>
-                    <strong>$20</strong>
-                </li>
-                </ul>
-
-                <form class="card p-2">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                    <button type="submit" class="btn btn-secondary">Redeem</button>
+                    
                 </div>
-                </form>
-            </div>
-            <div class="col-md-7 col-lg-8">
-                <h4 class="mb-3">Billing address</h4>
-                <form class="needs-validation" method="POST" action="{{ route('shipping2.getShippingRates') }}">
-                    @csrf
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                    <label for="firstName" class="form-label">First name</label>
-                    <input type="text" class="form-control" id="firstName" name="first_name" placeholder="" value="John" required="">
-                    <div class="invalid-feedback">
-                        Valid first name is required.
-                    </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                    <label for="lastName" class="form-label">Last name</label>
-                    <input type="text" class="form-control" id="lastName" name="last_name" placeholder="" value="Doe" required="">
-                    <div class="invalid-feedback">
-                        Valid last name is required.
-                    </div>
-                    </div>
-
-                    <div class="col-12">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="you@gmail.com" placeholder="you@example.com">
-                    <div class="invalid-feedback">
-                        Please enter a valid email address for shipping updates.
-                    </div>
-                    </div>
-
-                    <div class="col-12">
-                    <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" name="recipient_address" value="1234 Main St" placeholder="1234 Main St" required="">
-                    <div class="invalid-feedback">
-                        Please enter your shipping address.
-                    </div>
-                    </div>
-
-                    <div class="col-12">
-                    <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
-                    <input type="text" class="form-control" id="address2" name="address2" placeholder="Apartment or suite">
-                    </div>
-
-                    <div class="col-md-5">
-                    <label for="country" class="form-label">City</label>
-                    <select class="form-select" id="country" name="recipient_city" required="">
-                        <option value="">Choose...</option>
-                        <option value="East Orange">East Orange</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Please select a valid country.
-                    </div>
-                    </div>
-
-                    <div class="col-md-4">
-                    <label for="state" class="form-label">State</label>
-                    <select class="form-select" id="state" name="recipient_state" required="">
-                        <option value="">Choose...</option>
-                        <option value="New Jersey">New Jersey</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Please provide a valid state.
-                    </div>
-                    </div>
-
-                    <div class="col-md-3">
-                    <label for="zip" class="form-label">Zip</label>
-                    <input type="text" class="form-control" id="zip" name="recipient_postal" placeholder="" required="">
-                    <div class="invalid-feedback">
-                        Zip code required.
-                    </div>
-                    </div>
+                <div class="col-md-7 col-lg-8">
+                    <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" />
+                    <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'"/>
+                    <x-cart-payment />
+                    <input type="hidden" name="amount" value="20.00">
                 </div>
-
-                <hr class="my-4">
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="same-address" name="same_address">
-                    <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
-                </div>
-
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="save-info" name="save_info">
-                    <label class="form-check-label" for="save-info">Save this information for next time</label>
-                </div>
-
-                <hr class="my-4">
-
-                <h4 class="mb-3">Payment</h4>
-
-                <div class="my-3">
-                   
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" class="btn-check" name="payment_method" id="btnradio1" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary" for="btnradio1">Visa</label>
-
-                        <input type="radio" class="btn-check" name="payment_method" id="btnradio2" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio2">Master Card</label>
-
-                        <input type="radio" class="btn-check" name="payment_method" id="btnradio3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio3">Amex</label>
-                    </div>
-
-                </div>
-
-                <div class="row gy-3">
-                    <div class="col-md-6">
-                    <label for="cc-name" class="form-label">Name on card</label>
-                    <input type="text" class="form-control" id="cc-name" name="cc_name" value="John Newman" placeholder="" required="">
-                    <small class="text-muted">Full name as displayed on card</small>
-                    <div class="invalid-feedback">
-                        Name on card is required
-                    </div>
-                    </div>
-
-                    <div class="col-md-6">
-                    <label for="cc-number" class="form-label">Credit card number</label>
-                    <input type="text" class="form-control" id="cc-number" name="cc_number" value="4007000000027" placeholder="" required="">
-                    <div class="invalid-feedback">
-                        Credit card number is required
-                    </div>
-                    </div>
-
-                    <div class="col-md-3">
-                    <label for="cc-expiration" class="form-label">Expiration</label>
-                    <input type="text" class="form-control" id="cc-expiration" name="cc_expiration" placeholder="MM/YY" value="05/26" required="">
-                    <div class="invalid-feedback">
-                        Expiration date required
-                    </div>
-                    </div>
-
-                    <div class="col-md-3">
-                    <label for="cc-cvv" class="form-label">CVV</label>
-                    <input type="text" class="form-control" id="cc-cvv" name="cc_cvv" value="243" placeholder="" required="">
-                        <div class="invalid-feedback">
-                            Security code required
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="my-4">
-                <input type="hidden" name="amount" value="20.00">
-                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-                </form>
-            </div>
-            </div>
+              </div>
+            </form>
         </main>
     </div>
     
