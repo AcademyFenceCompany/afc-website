@@ -6,7 +6,7 @@
 /storage/*.key
 /vendor
 .gitignore
-.env
+# Ignore sensitive environment files and local configuration .env
 .env.example
 .env.backup
 .env.production
