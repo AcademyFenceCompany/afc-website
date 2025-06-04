@@ -17,11 +17,11 @@ class InstallJobsController extends Controller
             ->get();
 
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();    
-        
+        $cities = \DB::table('county')->get();
         // List of install jobs
         $installGallery = \DB::table('install_gallery')->get();
 
-        return view('ams.install_upload', compact('counties', 'majCategories', 'installGallery'));
+        return view('ams.install_upload', compact('counties', 'majCategories', 'installGallery', 'cities'));
     }
     //This is the function to add the watermark
     public function add(Request $request)

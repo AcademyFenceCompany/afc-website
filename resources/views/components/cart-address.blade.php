@@ -75,10 +75,17 @@
         <div class="col-12 mt-4">
             <div class="card bg-light mb-3">
                 <ul class="list-group list-group-flush ">
+                    <li class="list-group-item d-flex bg-primary justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">Pick Up</div>
+                            Pick up at our warehouse in <span class="text-muted">Orange, NJ</span>
+                        </div>
+                        <span class="badge text-bg-secondary rounded-pill">FREE</span>
+                    </li>
                     <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start">
                         <div class="ms-2 me-auto">
-                        <div class="fw-bold">UPS Groud</div>
-                        Estimated delivery by <span class="text-muted">Monday, Oct 30</span>
+                            <div class="fw-bold">UPS Ground</div>
+                            Estimated delivery by <span class="text-muted">Monday, Oct 30</span>
                         </div>
                         <span class="badge text-bg-secondary rounded-pill">$343</span>
                     </li>

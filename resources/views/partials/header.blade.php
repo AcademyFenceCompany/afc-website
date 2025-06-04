@@ -87,11 +87,9 @@
                 </button>
                 <div class="dropdown">
                 
-                    <a href="#" class="position-relative text-dark p-2 d-none show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                        <i class="bi bi-person fs-4"></i>
-                    </a>
+                    <a href="{{route('login')}}" class="position-relative text-dark show"><i class="bi bi-person fs-4"></i></a>
                         
-                    <a href="#" class="position-relative text-dark p-2 show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                    <a href="#" class="position-relative text-dark py-2 show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                         <i class="bi-cart fs-4"></i>
                         <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill cart-count">
                             {{$cart['quantity']}}
