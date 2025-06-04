@@ -38,7 +38,9 @@ header{
         font-weight: bold;
         line-height: 2;
         height: 100%;
-        margin-right: -2px !important;
+        display: flex;
+        align-items: stretch;
+        align-content: center;
         text-transform: uppercase;
     }
     .filter-categories{ 

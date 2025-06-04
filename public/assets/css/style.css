@@ -28,12 +28,16 @@ body {
 }
 
 header .nav-link {
+  background-color: #f5b149;
   border-radius: 0.4rem;
+  padding: 0.5rem 1rem !important;
   text-align: center;
   font-weight: bold;
   line-height: 2;
   height: 100%;
-  margin-right: -2px ;
+  display: flex;
+  align-items: stretch;
+  align-content: center;
   text-transform: uppercase;
 }
 header .filter-categories {
