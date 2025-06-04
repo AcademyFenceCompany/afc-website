@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
         ]);
     
         if (Auth::attempt($credentials, true)) {
-            return redirect()->route('ams.activity');
+            return redirect()->route('ams.product-report');
         }
     
         return back()->withErrors(['username' => 'Invalid username or password.']);
