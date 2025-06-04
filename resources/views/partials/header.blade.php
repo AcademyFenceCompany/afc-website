@@ -1,4 +1,3 @@
-
 <header class="bg-white shadow-sm sticky-sm-top sticky-md-top">
     <style>
         .search-container {
@@ -40,7 +39,7 @@
         
         <div class="col-sm-4 col-lg-3 text-center text-sm-start">
             <div class="main-logo">
-            <a href="/">
+            <a href="/homepage">
                 <img src="https://www.academyfence.com/images/logo.png" alt="logo" class="img-fluid">
             </a>
             </div>
@@ -80,9 +79,8 @@
             </div>
 
 
-            @include('layouts.partials.mini-cart')
 
-            {{-- <div class="cart text-end d-none d-lg-block dropdown">
+            <div class="cart text-end d-none d-lg-block dropdown">
                 <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1 d-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                     <span class="fs-6 text-muted dropdown-toggle">Your Cart</span>
                     <span class="cart-total fs-5 fw-bold">$1290.00</span>
@@ -111,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
 
         </div>
@@ -142,12 +140,34 @@
                             <!-- Major Categories First Level menu-->
                             <x-big-menu :majCategories="$majCategories" />
                         </li>
-                        @include('layouts.nav')
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('woodfence') }}" class="nav-link">Wood Fence</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#men" class="nav-link">Vinyl Fence</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#men" class="nav-link">Chain Link Fence</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#men" class="nav-link">Aluminum Fence</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#men" class="nav-link">Welded Wire</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#men" class="nav-link text-bg-info" style="background-color: RGB(234, 221, 181)">Get A Quote</a>
+                        </li>
                     </ul>
+                    
+
                     </div>
+
                 </div>
+
                 </nav>
-                </div>
+            </div>
             </div>
         </div>
     </nav> 
