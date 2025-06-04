@@ -31,7 +31,6 @@ use App\Http\Controllers\WoodPostCapsController;
 use App\Http\Controllers\AluminumFenceController;
 use App\Http\Controllers\ChainLinkFenceController;
 use App\Http\Controllers\ProductApiController;
-use App\Http\Controllers\OrderCategoryController;
 
 
 // AMS Routes
@@ -292,14 +291,14 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 
 
 // AMS Routes
-Route::get('/ams', function () {
-    //return redirect()->route('ams.activity');
-})->middleware('auth')->name('ams.home');
+// Route::get('/ams', function () {
+//     return redirect()->route('ams.activity');
+// })->middleware('auth')->name('ams.home');
 
 
-Route::get('/ams/activity', function () {
-    //return view('ams.activity');
-})->name('ams.activity');
+// Route::get('/ams/activity', function () {
+//     return view('ams.activity');
+// })->name('ams.activity');
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
@@ -314,7 +313,7 @@ Route::get('/categories/{category}/products', [CategoriesController::class, 'get
 
 
 //Shipping API's 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::get('/checkout', [CheckoutController::class, 'getCheckoutForm'])->name('checkout.index');
 // Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
 
 Route::get('/shipping-markup', [StateMarkupController::class, 'index'])->name('shipping-markup');;
@@ -326,6 +325,7 @@ Route::get('/api/products/search', [ProductApiController::class, 'search']);
 Route::get('/api/products/item/{itemNumber}', [ProductApiController::class, 'getByItemNumber']);
 Route::get('/api/order-categories', [OrderCategoryController::class, 'getCategories']);
 Route::get('/api/order-products/{categoryId}', [OrderCategoryController::class, 'ajaxGetProducts']);
+
 
 //Development Routes
 require base_path('routes/development.php');

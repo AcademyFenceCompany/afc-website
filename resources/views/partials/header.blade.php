@@ -1,5 +1,24 @@
 
 <header class="bg-white shadow-sm sticky-sm-top sticky-md-top">
+    <style>
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            height: 50px;
+            border-radius: 30px;
+            padding-left: 35px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #888;
+        }
+    </style>
     <nav class="top-bar">
         <div class="container d-flex flex-wrap">
             <ul class="nav me-auto">
@@ -29,7 +48,12 @@
         </div>
         
         <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-6 d-flex align-items-center">
-            <div class="search-bar w-100 bg-light d-flex p-2 my-2 rounded-4">
+            <div class="search-container w-100">
+                <input type="text" class="form-control search-input" placeholder="Search...">
+                <i class="bi bi-search search-icon"></i>
+            </div>
+            <div class="search-bar w-100 bg-light d-flex p-2 my-2 rounded-4 d-none">
+                
                 <div class="d-none d-md-block">
                     <select class="form-select border-0 bg-transparent">
                         <option>All Categories</option>
@@ -65,14 +89,12 @@
                 </button>
                 <div class="dropdown">
                 
-                    <a href="#" class="position-relative text-dark p-2 d-none show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                        <i class="bi bi-person fs-4"></i>
-                    </a>
+                    <a href="{{route('login')}}" class="position-relative text-dark show"><i class="bi bi-person fs-4"></i></a>
                         
-                    <a href="#" class="position-relative text-dark p-2 show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                        <i class="bi bi-cart fs-4"></i>
+                    <a href="#" class="position-relative text-dark py-2 show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                        <i class="bi-cart fs-4"></i>
                         <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill cart-count">
-                            0
+                            {{$cart['quantity']}}
                         </span>
                     </a>
 
@@ -128,5 +150,6 @@
                 </div>
             </div>
         </div>
-    </nav>
+    </nav> 
+    {{-- @include('layouts.nav') --}}
 </header>

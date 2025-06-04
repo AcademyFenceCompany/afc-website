@@ -1,16 +1,38 @@
 @extends('layouts.ams')
 
 @section('title', 'Create New Order')
-
+@section('styles')
+<link rel="stylesheet" type="text/css" href="{{asset('/assets/css/style.css')}}" >
+<style>
+    .content {
+    padding:0rem;
+    background-color:rgb(255, 255, 255);
+    }
+    .header{
+        border-radius:0;
+    }
+    .breadcrumb-item + .breadcrumb-item::before{
+        content: ">";
+    }
+    @media print {
+        form{
+            display: none;
+        }
+        .d-print-none {
+           display: none;
+       }
+    }
+</style>
+@endsection
 @section('content')
-    <div class="container-fluid py-2">
+    <div class="container-fluid p-4">
         <!-- Header Info -->
-        <div class="row g-2 mb-2">
+        <div class="row g-2 mb-2 d-none">
             <div class="col-md-12">
                 <div class="d-flex align-items-center gap-2">
-                    <div class="input-group input-group-sm" style="width: auto;">
+                    <div class="input-group input-group" style="width: auto;">
                         <span class="input-group-text">Customer</span>
-                        <select class="form-select form-select-sm" id="customer-select" style="min-width: 200px;">
+                        <select class="form-select form-select" id="customer-select" style="min-width: 200px;">
                             <option value="">Select Customer...</option>
                             @foreach ($customers as $customer)
                                 <option value="{{ $customer->id }}" data-email="{{ $customer->email }}"
@@ -21,38 +43,73 @@
                                 </option>
                             @endforeach
                         </select>
-                        <a href="{{ route('customers.index') }}" class="btn btn-outline-primary btn-sm">
+                        <a href="{{ route('customers.index') }}" class="btn btn-outline-primary btn">
                             <i class="bi bi-search"></i> Find Customer
                         </a>
                     </div>
-                    <div class="input-group input-group-sm" style="width: auto;">
+                    <div class="input-group input-group" style="width: auto;">
                         <span class="input-group-text">Call Date</span>
-                        <input type="date" class="form-control form-control-sm" id="call-date"
+                        <input type="date" class="form-control form-control" id="call-date"
                             value="{{ date('Y-m-d') }}" readonly>
                     </div>
-                    <div class="input-group input-group-sm" style="width: auto;">
+                    <div class="input-group input-group" style="width: auto;">
                         <span class="input-group-text">Quote</span>
-                        <input type="text" class="form-control form-control-sm" id="quote-number"
+                        <input type="text" class="form-control form-control" id="quote-number"
                             value="{{ auth()->user()->username ?? '' }}">
                     </div>
-                    <div class="input-group input-group-sm" style="width: auto;">
+                    <div class="input-group input-group" style="width: auto;">
                         <span class="input-group-text">Sold</span>
-                        <input type="text" class="form-control form-control-sm" id="sold-number">
+                        <input type="text" class="form-control form-control" id="sold-number">
                     </div>
-                    <div class="input-group input-group-sm ms-2" style="width: auto;">
+                    <div class="input-group input-group ms-2" style="width: auto;">
                         <span class="input-group-text">Sales Person</span>
-                        <select class="form-select form-select-sm" id="sales-person" style="width: 100px;">
+                        <select class="form-select form-select" id="sales-person" style="width: 100px;">
                             <option value="">N/A</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div class="col-md-12 text-end mb-2">
-                <button type="button" class="btn btn-sm btn-success me-1" id="save-order">Save and Finish</button>
-                <button type="button" class="btn btn-sm btn-danger" id="clearOrderItems">Clear Items</button>
+                <button type="button" class="btn btn btn-success me-1" id="save-order">Save and Finish</button>
+                <button type="button" class="btn btn btn-danger" id="clearOrderItems">Clear Items</button>
             </div>
         </div>
+        <!-- Header2 Info -->
+        <section>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="mb-3">Find Customer</h5>
+                            <div class="input-group">
+                                <input type="search" class="form-control rounded customer-search" id="customer-search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                                <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>search</button>
+                            </div>
+                            <div>
+                                <ul class="list-group customer-results d-none">
+                                    <li class="list-group-item"><strong>Customer Name</strong> <span class="float-end">(324.342.2342)</span></li>
+                                    <li class="list-group-item"><strong>Customer Name</strong> (324.342.2342)</li>
+                                    <li class="list-group-item"><strong>Customer Name</strong> (324.342.2342)</li>
+                                    <li class="list-group-item"><strong>Customer Name</strong> (324.342.2342)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="mb-3">Save and Confirm</h5>
+                            <button type="button" class="btn btn-success w-100 mb-2" id="saveOrderBtn">
+                                <i class="fas fa-save me-1"></i> Save Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
 
+        </section>
         <!-- Customer Information Section -->
         @if(isset($selectedCustomer))
         <div class="row mb-3">
@@ -94,184 +151,126 @@
             <!-- Main Content - Order Details -->
             <div class="col-md-9">
                 <!-- Address Information Row -->
-                <div class="row g-2 mb-3">
-                    <!-- Shipping Info -->
+                <div class="row mb-3">
+                    
                     <div class="col-md-6">
-                        <div class="card card-sm">
+                        <!-- Shipping Info -->
+                        <div class="card card mb-3">
                             <div class="card-header bg-light p-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="card-title mb-0">Shipping Information</h6>
-                                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#addressBookModal">
                                         <i class="bi bi-book"></i> Address Book
                                     </button>
                                 </div>
                             </div>
-                            <div class="card-body p-2">
-                                <div class="input-group input-group-sm mb-1">
+                            <div class="card-body p-3">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Name</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-name" 
+                                    <input type="text" class="form-control form-control" id="shipping-name" 
                                         value="{{ isset($selectedCustomer) ? $selectedCustomer->name : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Company</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-company"
+                                    <input type="text" class="form-control form-control" id="shipping-company"
                                         value="{{ isset($selectedCustomer) ? $selectedCustomer->company : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Address</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-address"
+                                    <input type="text" class="form-control form-control" id="shipping-address"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_address : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Address 2</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-address2"
+                                    <input type="text" class="form-control form-control" id="shipping-address2"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_address2 : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">City</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-city"
+                                    <input type="text" class="form-control form-control" id="shipping-city"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_city : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">State</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-state"
+                                    <input type="text" class="form-control form-control" id="shipping-state"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_state : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">ZIP</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-zip"
+                                    <input type="text" class="form-control form-control" id="shipping-zip"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_postcode : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Country</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-country"
+                                    <input type="text" class="form-control form-control" id="shipping-country"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_country : 'USA' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Phone</span>
-                                    <input type="text" class="form-control form-control-sm" id="shipping-phone"
+                                    <input type="text" class="form-control form-control" id="shipping-phone"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_phone : (isset($selectedCustomer) ? $selectedCustomer->phone : '') }}">
                                 </div>
                                 <input type="hidden" id="shipping-address-id" value="{{ isset($order->shipping_address) ? $order->shipping_address->id : '' }}">
+                                <div class="form-check form-check-inline mt-2">
+                                    <input class="form-check-input" type="checkbox" id="same-as-shipping">
+                                    <label class="form-check-label small" for="same-as-shipping">Same as Shipping</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Billing Information -->
-                    <div class="col-md-6">
-                        <div class="card card-sm">
+                        <!-- Billing Information -->
+                        <div class="card card d-none">
                             <div class="card-header bg-light p-2">
                                 <h6 class="card-title mb-0">Billing Information</h6>
                             </div>
                             <div class="card-body p-2">
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Name</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-name"
+                                    <input type="text" class="form-control form-control" id="billing-name"
                                         value="{{ isset($order->billing_info) ? $order->billing_info->name : (isset($selectedCustomer) ? $selectedCustomer->name : '') }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Company</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-company"
+                                    <input type="text" class="form-control form-control" id="billing-company"
                                         value="{{ isset($order->billing_info) ? $order->billing_info->company : (isset($selectedCustomer) ? $selectedCustomer->company : '') }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Address</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-address"
+                                    <input type="text" class="form-control form-control" id="billing-address"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_address : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Address 2</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-address2"
+                                    <input type="text" class="form-control form-control" id="billing-address2"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_address2 : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">City</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-city"
+                                    <input type="text" class="form-control form-control" id="billing-city"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_city : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">State</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-state"
+                                    <input type="text" class="form-control form-control" id="billing-state"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_state : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">ZIP</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-zip"
+                                    <input type="text" class="form-control form-control" id="billing-zip"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_postcode : '' }}">
                                 </div>
-                                <div class="input-group input-group-sm mb-1">
+                                <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Country</span>
-                                    <input type="text" class="form-control form-control-sm" id="billing-country"
+                                    <input type="text" class="form-control form-control" id="billing-country"
                                         value="{{ isset($order->shipping_address) ? $order->shipping_address->addr_country : 'USA' }}">
-                                </div>
-                                <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="checkbox" id="same-as-shipping">
-                                    <label class="form-check-label small" for="same-as-shipping">Same as Shipping</label>
                                 </div>
                                 <input type="hidden" id="billing-info-id" value="{{ isset($order->billing_info) ? $order->billing_info->id : '' }}">
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Origin and Payment Row -->
-                <div class="row g-2 mb-3">
-                    <!-- Origin and Shipping -->
                     <div class="col-md-6">
-                        <div class="card card-sm">
-                            <div class="card-body p-2">
-                                <div class="row g-2">
-                                    <div class="col-md-6">
-                                        <h6 class="card-title small mb-2">Origin</h6>
-                                        <div class="btn-group-vertical w-100" role="group">
-                                            <input type="radio" class="btn-check" name="origin" id="origin-afc-stock"
-                                                value="afc_stock" checked>
-                                            <label class="btn btn-sm btn-outline-secondary py-0" for="origin-afc-stock">AFC
-                                                Stock</label>
-                                            <input type="radio" class="btn-check" name="origin" id="origin-afc-make"
-                                                value="afc_make">
-                                            <label class="btn btn-sm btn-outline-secondary py-0" for="origin-afc-make">AFC
-                                                Make</label>
-                                            <input type="radio" class="btn-check" name="origin" id="origin-afc-acquire"
-                                                value="afc_acquire">
-                                            <label class="btn btn-sm btn-outline-secondary py-0" for="origin-afc-acquire">AFC
-                                                Acquire</label>
-                                            <input type="radio" class="btn-check" name="origin" id="origin-drop-ship"
-                                                value="drop_ship">
-                                            <label class="btn btn-sm btn-outline-secondary py-0" for="origin-drop-ship">Drop
-                                                Ship</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h6 class="card-title small mb-2">Shipping Method</h6>
-                                        <div class="btn-group-vertical w-100" role="group">
-                                            <input type="radio" class="btn-check" name="shipping_method"
-                                                id="shipping-small-package" value="small_package">
-                                            <label class="btn btn-sm btn-outline-secondary py-0"
-                                                for="shipping-small-package">Small Package</label>
-                                            <input type="radio" class="btn-check" name="shipping_method"
-                                                id="shipping-freight" value="freight">
-                                            <label class="btn btn-sm btn-outline-secondary py-0"
-                                                for="shipping-freight">Freight</label>
-                                            <input type="radio" class="btn-check" name="shipping_method"
-                                                id="shipping-delivery-afc" value="delivery_afc">
-                                            <label class="btn btn-sm btn-outline-secondary py-0"
-                                                for="shipping-delivery-afc">Delivery AFC</label>
-                                            <input type="radio" class="btn-check" name="shipping_method"
-                                                id="shipping-pickup-afc" value="pickup_afc">
-                                            <label class="btn btn-sm btn-outline-secondary py-0"
-                                                for="shipping-pickup-afc">Pickup AFC</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment and Correspondence -->
-                    <div class="col-md-6">
-                        <div class="card card-sm mb-2">
+                        <!-- Payment Information -->
+                        <div class="card mb-4 p-3">
                             <div class="card-body p-2">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <h6 class="card-title mb-0">Payment Information</h6>
@@ -280,14 +279,59 @@
                                         <label class="form-check-label small" for="add-po">Add PO</label>
                                     </div>
                                 </div>
-                                <select class="form-select form-select-sm" id="payment-method">
+                                <select class="form-select form-select" id="payment-method">
                                     <option value="">Select Payment</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="check">Check</option>
+                                    <option value="paypal">PayPal</option>
+                                    <option value="account_card">Account Card</option>
+                                    <option value="office_card">Office Card</option>
                                 </select>
+                                <!-- Credit Card Fields -->
+                                <div id="credit-card-fields" class="mt-3">
+                                    <div class="input-group input-group mb-2">
+                                        <span class="input-group-text">Card Number</span>
+                                        <input type="text" class="form-control" id="cc-number" maxlength="19" autocomplete="cc-number" placeholder="•••• •••• •••• ••••">
+                                    </div>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col">
+                                            <div class="input-group input-group">
+                                                <span class="input-group-text">Exp. Month</span>
+                                                <input type="text" class="form-control" id="cc-exp-month" maxlength="2" autocomplete="cc-exp-month" placeholder="MM">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group input-group">
+                                                <span class="input-group-text">Exp. Year</span>
+                                                <input type="text" class="form-control" id="cc-exp-year" maxlength="4" autocomplete="cc-exp-year" placeholder="YYYY">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="input-group input-group">
+                                                <span class="input-group-text">CVV</span>
+                                                <input type="text" class="form-control" id="cc-cvv" maxlength="4" autocomplete="cc-csc" placeholder="CVV">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group input-group mb-2">
+                                        <span class="input-group-text">Cardholder Name</span>
+                                        <input type="text" class="form-control" id="cc-name" autocomplete="cc-name" placeholder="Name on Card">
+                                    </div>
+                                    <div class="input-group input-group mb-2">
+                                        <span class="input-group-text">Billing ZIP</span>
+                                        <input type="text" class="form-control" id="cc-zip" maxlength="10" autocomplete="postal-code" placeholder="ZIP Code">
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 my-3">
+                                    <button type="button" class="btn btn-lg btn-primary fw-bold" id="process-order-btn">
+                                        <i class="fas fa-credit-card me-2"></i> Process Order
+                                    </button>
+                                </div>
                                 
                                 <!-- Order Status Dropdown -->
-                                <div class="mt-2">
+                                <div class="mt-2 d-none">
                                     <label for="order-status" class="form-label small mb-1">Order Status</label>
-                                    <select class="form-select form-select-sm" id="order-status" name="order_status">
+                                    <select class="form-select form-select" id="order-status" name="order_status">
                                         <option value="QUOTE" data-color="#FFD8B1">QUOTE</option>
                                         <option value="NEW" data-color="#A9D4F6">NEW</option>
                                         <option value="PROCESSED" data-color="#C0C0C0">PROCESSED</option>
@@ -298,31 +342,89 @@
                                 </div>
                             </div>
                         </div>
-                        
+
+                        <!-- Origin and Shipping -->
+                        <div class="card mb-4">
+                            <div class="card-body p-2">
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <h6 class="card-title small mb-2">Origin</h6>
+                                        <div class="btn-group-vertical w-100" role="group">
+                                            <input type="radio" class="btn-check" name="origin" id="origin-afc-stock"
+                                                value="afc_stock" checked>
+                                            <label class="btn btn btn-outline-secondary py-0" for="origin-afc-stock">AFC
+                                                Stock</label>
+                                            <input type="radio" class="btn-check" name="origin" id="origin-afc-make"
+                                                value="afc_make">
+                                            <label class="btn btn btn-outline-secondary py-0" for="origin-afc-make">AFC
+                                                Make</label>
+                                            <input type="radio" class="btn-check" name="origin" id="origin-afc-acquire"
+                                                value="afc_acquire">
+                                            <label class="btn btn btn-outline-secondary py-0" for="origin-afc-acquire">AFC
+                                                Acquire</label>
+                                            <input type="radio" class="btn-check" name="origin" id="origin-drop-ship"
+                                                value="drop_ship">
+                                            <label class="btn btn btn-outline-secondary py-0" for="origin-drop-ship">Drop
+                                                Ship</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6 class="card-title small mb-2">Shipping Method</h6>
+                                        <div class="btn-group-vertical w-100" role="group">
+                                            <input type="radio" class="btn-check" name="shipping_method"
+                                                id="shippingall-package" value="small_package">
+                                            <label class="btn btn btn-outline-secondary py-0"
+                                                for="shippingall-package">Small Package</label>
+                                            <input type="radio" class="btn-check" name="shipping_method"
+                                                id="shipping-freight" value="freight">
+                                            <label class="btn btn btn-outline-secondary py-0"
+                                                for="shipping-freight">Freight</label>
+                                            <input type="radio" class="btn-check" name="shipping_method"
+                                                id="shipping-delivery-afc" value="delivery_afc">
+                                            <label class="btn btn btn-outline-secondary py-0"
+                                                for="shipping-delivery-afc">Delivery AFC</label>
+                                            <input type="radio" class="btn-check" name="shipping_method"
+                                                id="shipping-pickup-afc" value="pickup_afc">
+                                            <label class="btn btn btn-outline-secondary py-0"
+                                                for="shipping-pickup-afc">Pickup AFC</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
                         <!-- Correspondence -->
-                        <div class="card card-sm">
+                        <div class="card p-3">
                             <div class="card-body p-2">
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <h6 class="card-title small mb-2">Customer</h6>
-                                        <select class="form-select form-select-sm mb-2" id="customer-print">
-                                            <option value="">Print...</option>
-                                            <option value="invoice">Invoice</option>
-                                            <option value="quote">Quote</option>
+                                        <div class="dropdown">
+                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="dropdown-text">Print Documents</span>
+                                            <span class="caret"></span></button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#"><label><input type="checkbox" class="selectall" /><span class="select-text"> Select</span> All</label></a></li>
+                                                <li class="divider"></li>
+                                                <li><a class="option-link" href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 1 '/> Option 1</label></a></li>
+                                                <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 2 '/> Option 2</label></a></li>
+                                                <li><a href="#"><label><input name='options[]' type="checkbox" class="option justone" value='Option 3 '/> Option 3</label></a></li>
+                                            </ul>
+                                        </div>
+                                        <select class="form-select form-select mb-2" id="customer-print">
+                                            <option value="">Print Fax Order</option>
+                                            <option value="ship_request">Print Ship Request</option>
                                         </select>
-                                        <select class="form-select form-select-sm" id="customer-email">
-                                            <option value="">Email...</option>
-                                            <option value="invoice">Invoice</option>
-                                            <option value="quote">Quote</option>
+                                        <select class="form-select form-select" id="customer-email">
+                                            <option value="">Email Customer</option>
                                         </select>
                                     </div>
                                     <div class="col-md-6">
                                         <h6 class="card-title small mb-2">Supplier</h6>
-                                        <select class="form-select form-select-sm mb-2" id="supplier-print">
+                                        <select class="form-select form-select mb-2" id="supplier-print">
                                             <option value="">Print Fax Order</option>
                                             <option value="ship_request">Print Ship Request</option>
                                         </select>
-                                        <select class="form-select form-select-sm" id="supplier-email">
+                                        <select class="form-select form-select" id="supplier-email">
                                             <option value="">Email Supplier</option>
                                         </select>
                                     </div>
@@ -330,6 +432,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Order Items Section -->
@@ -348,7 +451,7 @@
                                         <i class="bi bi-search"></i> Search
                                     </button>
                                 </div>
-                                <div id="searchResults" class="position-absolute bg-white border rounded shadow-sm d-none" style="z-index: 1000; width: 95%; max-height: 300px; overflow-y: auto;"></div>
+                                <div id="searchResults" class="position-absolute bg-white border rounded shadow d-none" style="z-index: 1000; width: 95%; max-height: 300px; overflow-y: auto;"></div>
                             </div>
                             <div class="col-md-3">
                                 <div class="input-group">
@@ -486,7 +589,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-sm">
+                                            <table class="table table-bordered table">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>#</th>
@@ -505,7 +608,7 @@
                                         </div>
                                         
                                         <div class="table-responsive mt-3">
-                                            <table class="table table-bordered table-sm">
+                                            <table class="table table-bordered table">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Weight</th>
@@ -530,7 +633,7 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-sm">
+                                            <table class="table table-bordered table">
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th>Select</th>
@@ -633,12 +736,12 @@
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                    <button type="button" class="btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAddressModal">
                                         <i class="fas fa-plus"></i> Add New Address
                                     </button>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-hover">
+                                    <table class="table table table-hover">
                                         <thead>
                                             <tr>
                                                 <th>Address 1</th>
@@ -871,22 +974,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css">
     <style>
-        .card-sm {
+        .card {
             border: 1px solid rgba(0, 0, 0, 0.125);
             margin-bottom: 0.5rem;
         }
 
-        .card-sm .card-body {
+        .card .card-body {
             padding: 0.5rem;
         }
 
-        .form-control-sm,
-        .form-select-sm {
+        .form-control,
+        .form-select {
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
         }
 
-        .btn-sm {
+        .btn {
             padding: 0.25rem 0.5rem;
             font-size: 0.875rem;
         }

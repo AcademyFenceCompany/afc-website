@@ -76,7 +76,7 @@
                         } else {
                             alert('Failed to update markup. Please try again.');
                         }
-                    })
+                    })  
                     .catch(error => {
                         console.error('Error:', error);
                         alert('An error occurred while updating the markup.');

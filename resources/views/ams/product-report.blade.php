@@ -6,6 +6,11 @@
 @section('styles')
 <link rel="stylesheet" type="text/css" href="{{asset('/assets/css/style.css')}}" >
 <style>
+    .dropdown {
+        position: relative;
+        left: 50px;
+        top: 50px;
+        }
     .content {
     padding:0rem;
     background-color:rgb(255, 255, 255);

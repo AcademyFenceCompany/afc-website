@@ -130,8 +130,7 @@ class CartController extends Controller
             'message' => 'Cart cleared successfully',
         ]);
     }
-    public function update(Request $request)
-{
+    public function update(Request $request){
     $cart = session()->get('cart', []);
 
     if (isset($cart[$request->item_no])) {

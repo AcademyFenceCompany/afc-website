@@ -2,7 +2,7 @@
     <h1 class="text-center py-5"><strong>Welcome to the original Online Fence Superstore.</strong></h1>
     <div class="row">
         <div class="col-md-4 mb-4">
-            <div class="card landing-section-card h-100">
+            <div class="card shadow-none landing-section-card h-100">
                 
                 <div class="card-body">
                     <img src="{{asset('assets/images/nationwidemap.png')}}" class="card-img-top mb-3" alt="...">
@@ -145,6 +145,159 @@
             <div class="card landing-section-card h-100">
                 
                 <div class="card-body">
+                    <img src="{{asset('assets/images/installationmap.png')}}" class="card-img-top mb-3" alt="...">
+                    <h5 class="card-title">Pick Up Complete Instock Warehouse</h5>
+                    <p>Every Fence Part Imaginable. </p>
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="list-unstyled d-none">
+                                <li class="d-flex align-items-center mb-2">
+                                    <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" alt="Fast" width="30%" class="rounded me-4">
+                                    <div style="">
+                                        <h5>Welded Wire</h5>
+                                        <p>An item</p>
+                                        <p>An item</p>
+                                        <p>An item</p>
+                                        <ul class="list-group d-none">
+                                            <li class="list-group-item">An item</li>
+                                            <li class="list-group-item">A second item</li>
+                                            <li class="list-group-item">A third item</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li class="d-flex align-items-center mb-2">
+                                    <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" alt="Fast" width="100%" class="me-2">
+                                    <span>Vinyl Fence</span>
+                                </li>
+                                <li class="align-items-center mb-2">
+                                    <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" alt="Fast" width="100%" class="me-2">
+                                    <span>Chainlink</span>
+                                </li>
+                            </ul>
+                            <div class="card shadow-none mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{asset('assets/images/aluminumfence-home.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body pt-0">
+                                            <h5 class="card-title">Aluminum Fence</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Sections</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">48in H x 6ft W</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Posts</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Gate Posts</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Gate</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Gate</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Gate</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-none mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{asset('assets/images/weldedwirehome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Welded Wire Fence</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">2x2</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">2x4</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">3x2</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">1x1</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">4x4</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">11 Gauge</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">12 Gauge</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">13 Gauge</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">14 Gauge</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-none mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{asset('assets/images/woodfencehome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Wood Fence</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Stockade</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Diamond/Lattice Top</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Rustic Post & Rail</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Wood Post Caps</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Hinges & Hardware</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Spaced Picket</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-none mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{asset('assets/images/chainlinkfencehome.jpg')}}"  class="img-fluid rounded-start" width="100%" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Chain Link Fence</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">4ft High</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">5ft High</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">6ft High</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Post</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Pipe</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Rail</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Commercial Fittings</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Pool Code</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Residential Fittings</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-none mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{asset('assets/images/vinylfencehome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Vinyl PVC Fence</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">4ft High</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">5ft High</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">6ft High</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Solid Board</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">4ft Spaced Picket</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Vinyl Post Caps</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Blank Vinyl Posts</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card shadow-none mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="{{asset('assets/images/speedrailhome.jpg')}}" class="img-fluid rounded-start" width="100%" alt="...">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Handrail Speed Fittings</h5>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">1-3/8in Rail Rittings</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">1-5/8in Rail Rittings</a>
+                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">2in Rail Rittings</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card landing-section-card h-100">
+                
+                <div class="card-body">
                     <img src="{{asset('assets/images/nationwidemap.png')}}" class="card-img-top mb-3" alt="...">
                     <h5 class="card-title">We Quick Ship Nationwide</h5>
                     <p>Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
@@ -177,7 +330,7 @@
                             <div class="card mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
+                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" width="100%" alt="...">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
@@ -193,7 +346,7 @@
                             <div class="card mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
+                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" width="100%" alt="...">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
@@ -209,7 +362,7 @@
                             <div class="card mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
+                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" width="100%" alt="...">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">
@@ -225,110 +378,7 @@
                             <div class="card mb-3">
                                 <div class="row g-0">
                                     <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Wood Fence</h5>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 mb-4">
-            <div class="card landing-section-card h-100">
-                
-                <div class="card-body">
-                    <img src="{{asset('assets/images/installationmap.png')}}" class="card-img-top mb-3" alt="...">
-                    <h5 class="card-title">Pick Up Complete Instock Warehouse</h5>
-                    <p>Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-                    <div class="row">
-                        <div class="col-12">
-                            <ul class="list-unstyled d-none">
-                                <li class="d-flex align-items-center mb-2">
-                                    <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" alt="Fast" width="30%" class="rounded me-4">
-                                    <div style="">
-                                        <h5>Welded Wire</h5>
-                                        <p>An item</p>
-                                        <p>An item</p>
-                                        <p>An item</p>
-                                        <ul class="list-group d-none">
-                                            <li class="list-group-item">An item</li>
-                                            <li class="list-group-item">A second item</li>
-                                            <li class="list-group-item">A third item</li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li class="d-flex align-items-center mb-2">
-                                    <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" alt="Fast" width="100%" class="me-2">
-                                    <span>Vinyl Fence</span>
-                                </li>
-                                <li class="align-items-center mb-2">
-                                    <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" alt="Fast" width="100%" class="me-2">
-                                    <span>Chainlink</span>
-                                </li>
-                            </ul>
-                            <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Welded Wire</h5>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Privary Slats</h5>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Wood Fence</h5>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                            <a href="#" class="btn btn-outline-primary me-2 mb-2">Chain Link Fences</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4">
-                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" widtht="100%" alt="...">
+                                        <img src="https://www.academyfence.com/codes-and-permits/wp-content/uploads/2017/12/6-foot-board-on-board-and-4-foot-starling-aluminum-fence-Madison-NJ-Morris-County-3.jpg" class="img-fluid rounded-start" width="100%" alt="...">
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card-body">

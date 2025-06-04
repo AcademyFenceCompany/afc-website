@@ -16,7 +16,7 @@ class PaymentController extends Controller
             'cvv' => 'required',
             'amount' => 'required|numeric',
         ]);
-
+        //@dd($request->all());
         // Set up the API request
         $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
         $merchantAuthentication->setName(config('services.authorize_net.api_login_id'));

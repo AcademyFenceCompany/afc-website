@@ -1,0 +1,4 @@
+SELECT *
+FROM demodb.orders
+ORDER BY id DESC
+LIMIT 10;

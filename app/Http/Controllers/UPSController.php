@@ -32,11 +32,7 @@ class UPSController extends Controller
             'packages.*.dimensions.height' => 'required|numeric',
         ]);
 
-        $rates = $this->upsService->getRates(
-            $validated['origin'],
-            $validated['destination'],
-            $validated['packages']
-        );
+        $rates = $this->upsService->getRates($validated);
 
         return response()->json($rates);
     }

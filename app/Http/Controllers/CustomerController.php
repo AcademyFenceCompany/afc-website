@@ -109,7 +109,29 @@ class CustomerController extends Controller
             return response()->json(['error' => 'Error searching customers: ' . $e->getMessage()], 500);
         }
     }
-    
+    // This is a search method created by Colin to search for customers
+    public function search2(){
+        //
+        try {
+            $query = request()->get('query');
+
+            $customers = DB::table('customers')
+                ->select('name', 'phone')
+                ->where(function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                      ->orWhere('company', 'like', "%{$query}%")
+                      ->orWhere('phone', 'like', "%{$query}%");
+                })
+                ->orderBy('name')
+                ->limit(20)
+                ->get();
+
+            return view('components.search-customer', compact('customers'));
+        } catch (\Exception $e) {
+            Log::error('Error in search2: ' . $e->getMessage());
+            return response()->json(['error' => 'Error searching customers: ' . $e->getMessage()], 500);
+        }
+    }
     public function store(Request $request)
     {
         $request->validate([

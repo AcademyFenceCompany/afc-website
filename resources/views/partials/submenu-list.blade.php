@@ -1,9 +1,5 @@
 @if ($subcategory->id == 163)
-    <li><a href="#">Something Different{{$subcategory->id}}</a></li>
-    <li><a href="#">French Gothic</a></li>
-@endif
-
-@if ($subcategory->id == 4)
-    <li><a href="#">Tongue and Groove {{$subcategory->id}}</a></li>
-    <li><a href="#">French Different</a></li>
+    <li><a href="#" class="dropdown-item d-flex justify-space-between">Something Different {{$subcategory->id}}</a></li>
+    @elseif ($subcategory->id == 164)
+    <li><a href="#" class="dropdown-item d-flex justify-space-between">Something Different {{$subcategory->id}}</a></li>
 @endif

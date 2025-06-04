@@ -78,15 +78,17 @@
         @csrf
         <div class="modal-body">  
             <div class="mb-3">
-                <label for="header" class="form-label">Header</label>
+                <label for="header" class="form-label">Title</label>
                 <input type="text" name="header" id="header" class="form-control" placeholder="Enter header text" required>
+                <div id="emailHelp" class="form-text">Title takes 160 characters.</div>
             </div>
             <div class="mb-3">
-                <label for="caption" class="form-label">Caption</label>
+                <label for="caption" class="form-label">Caption (Description)</label>
                 <textarea name="caption" id="caption" class="form-control" rows="3" placeholder="Enter caption" required></textarea>
+                <div id="emailHelp" class="form-text">Caption takes 255 characters.</div>
             </div>
             <div class="form-group mb-3">
-                <label for="file">Select File:</label>
+                <label for="file">Upload Image:</label>
                 <input type="file" name="filename" id="file" class="form-control" required>
             </div>
             <div class="form-group mb-3">
@@ -100,14 +102,29 @@
 
                 </select>
             </div>
-            <div class="form-group mb-3">
-                <label for="county_id">County</label>
-                <select name="county_id" id="county_id" class="form-control" required>
-                    <option value="">-- Select County --</option>
-                    @foreach ($counties as $county)
-                        <option value="{{$county->id}}">{{$county->county}}</option>
-                    @endforeach
-                </select>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="county_id">City/Town</label>
+                        <select name="county_id" id="county_id" class="form-control" required>
+                            <option value="">-- Select City --</option>
+                            @foreach ($cities as $city)
+                                <option value="{{$city->id}}">{{$city->city}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label for="county_id">County</label>
+                        <select name="county_id" id="county_id" class="form-control" required>
+                            <option value="">-- Select County --</option>
+                            @foreach ($counties as $county)
+                                <option value="{{$county->id}}">{{$county->county}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="modal-footer">

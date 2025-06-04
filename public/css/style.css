@@ -180,7 +180,10 @@ textarea {
 
 /* Dropdown button styling */
 .dropdown-toggle::after {
-    margin-left: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .dropdown-menu {
