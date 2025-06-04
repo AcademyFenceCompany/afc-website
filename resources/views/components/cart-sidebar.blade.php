@@ -24,7 +24,7 @@
                 @endforeach
             </ul>
         </div>
-          <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+          <a href="{{route('cart2.checkout2')}}" class="w-100 btn btn-primary btn-lg" >Continue to checkout</a>
         </div>
       </div>
     </div>
