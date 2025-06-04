@@ -296,9 +296,9 @@ Route::post('/cart/update', [CartController::class, 'update'])->name('cart.updat
 // })->middleware('auth')->name('ams.home');
 
 
-// Route::get('/ams/activity', function () {
-//     return view('ams.activity');
-// })->name('ams.activity');
+Route::get('/ams/activity', function () {
+    return view('ams.activity');
+})->name('ams.activity');
 
 Route::get('/ams/products/add', [ProductController::class, 'create'])->name('ams.products.add');
 
