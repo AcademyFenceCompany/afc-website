@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Models\InventoryDetail;
 use Illuminate\Http\Request;
+use App\Models\ShoppingCart;
 
 class ProductController extends Controller
 {
@@ -39,9 +40,11 @@ class ProductController extends Controller
                 ->get();
         }
 
-     
-
-        return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww'));
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
+        return view('categories.weldedwire', compact('weldedWireCategory', 'products_ww', 'cart', 'majCategories', 'subCategories'));
     }
 
     public function create()

@@ -19,9 +19,11 @@
 </head>
 
 <body style="font-family: 'Inter', sans-serif;">
+
+
     @if (!in_array(Route::currentRouteName(), ['login', 'register']))
         <!-- Header Section -->
-        @include('layouts.header')
+        {{-- @include('layouts.header') --}}
     @endif
     {{-- <!-- Optional Page Header -->
     @isset($header)
@@ -35,6 +37,7 @@
     <!-- Main Content Section -->
     <main class="custom-container my-2">
         {{ $slot ?? '' }}
+
         @yield('content')
 
     </main>

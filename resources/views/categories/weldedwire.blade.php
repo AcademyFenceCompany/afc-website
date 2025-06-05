@@ -108,7 +108,7 @@
             font-size: 0.7rem !important;
         }
     </style>
-
+    @include('partials.header')
 
     <!-- Header Section -->
     <div class="rounded bg-brown">
