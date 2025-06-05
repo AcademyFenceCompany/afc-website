@@ -143,4 +143,20 @@ class Shipping2{
 
         return round($total, 2);
     }
+    // Prepare Shipping Data
+    public function prepareShippingData($cart): array
+    {
+        $packages = [];
+        foreach ($cart as $item) {
+            $packages[] = [
+                'weight' => $item['weight'],
+                'dimensions' => [
+                    'length' => $item['length'],
+                    'width' => $item['width'],
+                    'height' => $item['height'],
+                ],
+            ];
+        }
+        return $packages;
+    }
 }

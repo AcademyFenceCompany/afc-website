@@ -91,6 +91,10 @@ class ShoppingCart{
                 'name' => $name,
                 'quantity' => 1,
                 'price' => $price,
+                'length' => $product->ship_length ?? 0, // Example length in inches
+                'width' => $product->ship_width ?? 0, // Example width in inches
+                'height' => $product->ship_height ?? 0, // Example height in inches
+                'weight' => $product->weight_lbs ?? 0.0, // Example weight in lbs
             ];
         }
 
@@ -116,13 +120,30 @@ class ShoppingCart{
             } else {
                 // Remove the item if quantity is zero or less
                 unset($this->cart['items'][$id]);
+            }    
+        } else {
+            // Get product details from the database or request
+            $product = \DB::table('products')->find($id);
+            if (!$product) {
+                return response()->json(['success' => false, 'message' => 'Product not found.'], 404);
             }
 
-            // Recalculate subtotal and total
-            $this->cart = $this->getCartTotal();
-            // Update the session with the updated cart
-            session()->put('cart2', $this->cart);
+            // If the item does not exist, add it with the specified quantity
+            $this->cart['items'][$id] = [
+                'id' => $id,
+                'name' => $product->product_name ?? 'Unknown Product',
+                'quantity' => $qty,
+                'price' => $product->price ?? 0.0,
+                'length' => $product->ship_length ?? 0, // Example length in inches
+                'width' => $product->ship_width ?? 0, // Example width in inches
+                'height' => $product->ship_height ?? 0, // Example height in inches
+                'weight' => $product->weight_lbs ?? 0.0, // Example weight in lbs
+            ];
         }
+        // Recalculate subtotal and total
+        $this->cart = $this->getCartTotal();
+        // Update the session with the updated cart
+        session()->put('cart2', $this->cart);
         return $this->cart;
 
     }
@@ -170,7 +191,8 @@ class ShoppingCart{
         $this->cart['discount'] = round($this->discount, 2);
         $this->cart['total'] = round($this->total, 2);
         $this->cart['quantity'] = $this->quantity;
-
+        // Return the updated cart
+        session()->put('cart2', $this->cart);
         return $this->cart;
     }
 

@@ -152,6 +152,25 @@ $(document).ready(function() {
     var total = $('input[name="options[]"]:checked').length;
     $(".dropdown-text").html('(' + total + ') Selected');
     });
+    $("#zip").on("click", function() {
+        const zipValue = $(this).val();
+        const shippingOptions = $("#shipping-options");
+        // Show loading spinner
+        shippingOptions.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+        $.ajax({
+            url: "http://localhost:8000/shipping2",
+            type: "GET",
+            data: { zip: zipValue },
+            dataType: "html",
+            success: function(data) {
+                shippingOptions.html(data);
+            },
+            error: function(xhr, status, error) {
+                shippingOptions.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                console.error("Error fetching shipping options:", error);
+            }
+        });
+    });
     ///////////////////////////////////
     // AJAX script to send dummy data to a URL
     const dummyData = {

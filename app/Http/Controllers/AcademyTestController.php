@@ -40,6 +40,9 @@ class AcademyTestController extends Controller
         ];
         $shoppingCart = new ShoppingCart();
         $cart = $shoppingCart->getCart();
+        //session()->forget('cart2');
+        //session()->flush();
+        //@dd($cart);
         return view('academy', compact('majCategories', 'subCategories', 'fenceCategories', 'cart'));
     }
     public function height($h)

@@ -40,7 +40,7 @@
         </div>
 
         <div class="col-lg-6">
-            <img src="{{asset('assets/images/securecheckout.jpg')}}" alt="Visa" class="shadow-none">
+            <img src="{{asset('assets/images/securecheckout.jpg')}}" alt="Visa" class="shadow-none w-100">
         </div>
     </div>
 </div>

@@ -23,7 +23,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" >
     <link rel="stylesheet" type="text/css" href="/assets/css/style.css" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     @yield('styles')
     <script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -36,6 +35,7 @@
       }
       .form-control, .form-select{
         border: 2px solid #ced4da;
+        padding: 0.8rem 0.75rem
       }
       .form-check-input{
         --bs-form-check-bg: #c4c4c4;
@@ -158,7 +158,7 @@
                 <div class="col-md-5 col-lg-4 order-md-last">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary">Order Summary</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
+                    <span class="badge bg-primary rounded-pill">{{$cart['quantity']}}</span>
                     </h4>
                     <div class="card mb-3 cart-summary">
                       <div class="cart-summary-container">

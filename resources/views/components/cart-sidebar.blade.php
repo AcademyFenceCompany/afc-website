@@ -16,7 +16,7 @@
                 @foreach($cart['items'] as $item)
                 <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
-                    <h6 class="my-0">{{$item['product_name']}}</h6>
+                    <h6 class="my-0">{{$item['name']}}</h6>
                     <small class="text-body-secondary">Quantity: {{$item['quantity']}}</small>
                 </div>
                 <span class="text-body-secondary">${{$item['price']}}</span>

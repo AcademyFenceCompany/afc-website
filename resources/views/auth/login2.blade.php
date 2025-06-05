@@ -45,6 +45,9 @@
       .bg-login-ams{
         background-image: url('{{asset('assets/images/homepage_fence.png')}}');
       }
+      .text-danger{
+        color: #dc3545 !important;
+      }
     </style>
   </head>
   <body class="bg-login-ams pb-5">
