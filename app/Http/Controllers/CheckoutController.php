@@ -8,10 +8,17 @@ use App\Models\ShoppingCart; // Assuming you have a ShoppingCart model
 
 class CheckoutController extends Controller
 {
+    public $cart;
+    public function __construct()
+    {
+        // Retrieve the cart from the session
+        $shoppingCart = new ShoppingCart();
+        $this->cart = $shoppingCart->getCart();
+    }
     public function index()
     {
         // Retrieve the cart from the session
-        $cart = session()->get('cart', []);
+        $cart = $this->cart;
         // If the cart is empty, redirect to the cart index with an error message
         if (!$cart || count($cart) === 0) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
@@ -56,13 +63,13 @@ class CheckoutController extends Controller
             'maxHeight'
         ));
     }
-    //Get The checkout form
+    //Get The checkout form v2
     public function getCheckoutForm()
     {
-        // Retrieve the cart from the session
-        $cart = session()->get('cart', []);
+
+        $cart = $shoppingCart->getCart();
         // If the cart is empty, redirect to the cart index with an error message
-        if (!$cart || count($cart) === 0) {
+        if (!$cart || count($cart['items']) === 0) {
             //return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
@@ -83,7 +90,7 @@ class CheckoutController extends Controller
 
         return view('cart.checkout2', compact('cart', 'subtotal', 'tax', 'total'));
     }
-    //Logic for handling the checkout process
+    //Logic for handling the checkout process v2
     public function processCheckout(Request $request)
     {
         $shoppingCart = new ShoppingCart();
