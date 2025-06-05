@@ -376,7 +376,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" class="form-control main-qty incre-qty" id="quantity" data-product-id="43765" value="1" min="1" style="width: 80px;">
+                        <input type="number" class="form-control main-qty incre-qty" id="quantity" data-product-id="43870" value="1" min="1" style="width: 80px;">
                     </div>
                     <div class="d-sm-flex flex-sm-row gap-4">
                         <button class="btn btn-primary btn-lg flex-sm-fill add-to-cart" data-product-id="43765">

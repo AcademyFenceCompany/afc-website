@@ -3,25 +3,46 @@
 namespace App\Models;
 
 class ShoppingCart{
+    public $cart;
+    public function __construct()
+    {
+        // Initialize the cart
+        $this->cart = $this->getCart();
+    }
+    public $subtotal = 0;
+    public $shipping_cost = 0;
+    public $tax = 0;
+    public $discount = 0;
+    public $total = 0;
+    public $quantity = 0;
+    private $statetax = 0.06625; // NJ tax rate
 
-    // This method can be used to retrieve the shopping cart items
+    // This method is used to retrieve the shopping cart from the session or initialize it if not present
     public function getCart()
     {
         // Dummy implementation for retrieving the shopping cart items
         // Dummy cart data for testing
         $cart = [
             'items' => [
-                43765 => [
-                    'id' => 43765,
-                    'product_name' => 'Sample Product 1',
-                    'quantity' => 2,
-                    'price' => 19.99
-                ],
                 43870 => [
                     'id' => 43870,
+                    'product_name' => 'Sample Product 1',
+                    'quantity' => 2,
+                    'price' => 19.99,
+                    'weight' => 1.5, // Example weight in lbs
+                    'length' => 10, // Example length in inches
+                    'width' => 5, // Example width in inches
+                    'height' => 3 // Example height in inches
+                ],
+                43765 => [
+                    'id' => 43765,
                     'product_name' => 'Sample Product 2',
                     'quantity' => 1,
-                    'price' => 9.99
+                    'price' => 9.99,
+                    'weight' => 1.0, // Example weight in lbs
+                    'length' => 8, // Example length in inches
+                    'width' => 4, // Example width in inches
+                    'height' => 2 // Example height in inches
                 ]
             ],
             'subtotal' => 19.99 * 2 + 9.99 * 1, // 49.97
@@ -32,9 +53,18 @@ class ShoppingCart{
             'quantity' => 3, // Total quantity of items in the cart
         ];
 
-        session()->put('cart2', $cart);
+        //session()->put('cart2', $cart);
+        //return session()->get('cart2', $cart); // Return the dummy cart for testing
         // Logic to retrieve the shopping cart items
-        return $cart;
+        return session()->get('cart2', [
+            'items' => [],
+            'subtotal' => $this->subtotal,
+            'shipping_cost' => $this->shipping_cost,
+            'tax' => $this->tax,
+            'discount' => $this->discount,
+            'total' => $this->total,
+            'quantity' => $this->quantity,
+        ]);
     }
     // This method can be used to add an item to the cart
     public function addItem($id)
@@ -45,168 +75,103 @@ class ShoppingCart{
             return response()->json(['success' => false, 'message' => 'Product not found.'], 404);
         }
         // Logic to add an item to the cart
-        //return response()->json(['success' => true, 'message' => 'Item added to cart.', 'data' => $id]);
-        $quantity = 1;
         $name = $product->product_name ?? 'Unknown Product';
         $price = $product->price ?? 0.0;
 
         // Retrieve the current cart from the session, or initialize if not present
-        $cart = session()->get('cart2', [
-            'items' => [],
-            'subtotal' => 0,
-            'shipping_cost' => 0,
-            'tax' => 0,
-            'discount' => 0,
-            'total' => 0,
-            'quantity' => 0, // Initialize quantity
-        ]);
+        $this->cart = $this->getCart();
 
         // If the item already exists in the cart, update its quantity
-        if (isset($cart['items'][$id])) {
-            $cart['items'][$id]['quantity'] += $quantity;
+        if (isset($this->cart['items'][$id])) {
+            $this->cart['items'][$id]['quantity'] += 1;
         } else {
             // Otherwise, add the new item with its details
-            $cart['items'][$id] = [
+            $this->cart['items'][$id] = [
                 'id' => $id,
                 'name' => $name,
-                'quantity' => $quantity,
+                'quantity' => 1,
                 'price' => $price,
             ];
         }
 
         // Recalculate subtotal and total
-        $subtotal = 0;
-        foreach ($cart['items'] as $item) {
-            $subtotal += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
-        }
-        $cart['subtotal'] = $subtotal;
-        $cart['total'] = $subtotal + ($cart['shipping_cost'] ?? 0) + ($cart['tax'] ?? 0) - ($cart['discount'] ?? 0);
-        // Calculate total quantity of items in the cart
-        $quantity = 0;
-        if (!empty($cart['items'])) {
-            foreach ($cart['items'] as $item) {
-            $quantity += isset($item['quantity']) ? (int)$item['quantity'] : 0;
-            }
-        }
-        $cart['quantity'] = $quantity;
-        // Update the session with the updated cart
-        session()->put('cart2', $cart);
-        return $cart;
+        $this->cart = $this->getCartTotal();
 
- 
+        // Update the session with the updated cart
+        session()->put('cart2', $this->cart);
+        return $this->cart;
+
     }
     // This method can be used to update the quantity of an item in the cart
     public function updateItem($id, $qty)
     {
-
-
         // Retrieve the current cart from the session
-        $cart = session()->get('cart2', []);
+        $this->cart = $this->getCart();
 
         // Check if the item exists in the cart
-        if (isset($cart['items'][$id])) {
-            // Update the item's quantity
-            $cart['items'][$id]['quantity'] = $qty;
+        if (isset($this->cart['items'][$id])) {
+            if ($qty > 0) {
+                // Update the item's quantity
+                $this->cart['items'][$id]['quantity'] = (int) $qty;
+            } else {
+                // Remove the item if quantity is zero or less
+                unset($this->cart['items'][$id]);
+            }
 
             // Recalculate subtotal and total
-            $subtotal = 0;
-            foreach ($cart['items'] as $item) {
-                $subtotal += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
-            }
-            $cart['subtotal'] = $subtotal;
-            $cart['total'] = $subtotal + ($cart['shipping_cost'] ?? 0) + ($cart['tax'] ?? 0) - ($cart['discount'] ?? 0);
-            // Calculate total quantity of items in the cart
-            $quantity = 0;
-            if (!empty($cart['items'])) {
-                foreach ($cart['items'] as $item) {
-                $quantity += isset($item['quantity']) ? (int)$item['quantity'] : 0;
-                }
-            }
-            $cart['quantity'] = $quantity;
+            $this->cart = $this->getCartTotal();
             // Update the session with the updated cart
-            session()->put('cart2', $cart);
+            session()->put('cart2', $this->cart);
         }
-        return $cart;
-        
+        return $this->cart;
+
     }
     // This method can be used to remove multiple items from the cart
     public function removeItem($id)
     {
         // Retrieve the current cart from the session
-        $cart = session()->get('cart2', [
-            'items' => [],
-            'subtotal' => 0,
-            'shipping_cost' => 0,
-            'tax' => 0,
-            'discount' => 0,
-            'total' => 0,
-            'quantity' => 0, // Initialize quantity
-        ]);
+        $this->cart = $this->getCart();
 
         // Remove the item from the cart if it exists
-        if (isset($cart['items'][$id])) {
-            unset($cart['items'][$id]);
+        if (isset($this->cart['items'][$id])) {
+            unset($this->cart['items'][$id]);
         }
 
         // Recalculate subtotal and total
-        $subtotal = 0;
-        foreach ($cart['items'] as $item) {
-            $subtotal += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
-        }
-        $cart['subtotal'] = $subtotal;
-        $cart['total'] = $subtotal + ($cart['shipping_cost'] ?? 0) + ($cart['tax'] ?? 0) - ($cart['discount'] ?? 0);
-        // Calculate total quantity of items in the cart
-        $quantity = 0;
-        if (!empty($cart['items'])) {
-            foreach ($cart['items'] as $item) {
-            $quantity += isset($item['quantity']) ? (int)$item['quantity'] : 0;
-            }
-        }
-        $cart['quantity'] = $quantity;
+        $this->cart = $this->getCartTotal();
         // Update the session with the updated cart
-        $cart =  session()->put('cart2', $cart);
-        return $cart;
+        session()->put('cart2', $this->cart);
+        return $this->cart;
 
     }
     // This method calculates and returns the cart totals (subtotal, shipping, tax, discount, total)
     public function getCartTotal()
     {
-        $cart = session()->get('cart2', []);
+        $this->subtotal = $this->shipping_cost = $this->tax = $this->discount = $this->total = $this->quantity = 0;
 
-        // Default values if cart is empty
-        $subtotal = 0;
-        $shipping_cost = 0;
-        $tax = 0;
-        $discount = 0;
-        $total = 0;
-
-        if (!empty($cart) && isset($cart['items'])) {
-            // Calculate subtotal
-            foreach ($cart['items'] as $item) {
-                $subtotal += ($item['price'] ?? 0) * ($item['quantity'] ?? 1);
-            }
-            // Use existing values if present, otherwise defaults
-            $shipping_cost = $cart['shipping_cost'] ?? 0;
-            $tax = $cart['tax'] ?? 0;
-            $discount = $cart['discount'] ?? 0;
-            $total = $subtotal + $shipping_cost + $tax - $discount;
-        }
-        // Calculate total quantity of items in the cart
-        $quantity = 0;
-        if (!empty($cart) && isset($cart['items'])) {
-            foreach ($cart['items'] as $item) {
-            $quantity += ($item['quantity'] ?? 0);
+        if (!empty($this->cart['items'])) {
+            foreach ($this->cart['items'] as $item) {
+                $qty = isset($item['quantity']) ? (int)$item['quantity'] : 1;
+                $price = isset($item['price']) ? (float)$item['price'] : 0.0;
+                $this->subtotal += $price * $qty;
+                $this->quantity += $qty;
             }
         }
-        // Return the calculated totals as a JSON response
-        return response()->json([
-            'subtotal' => round($subtotal, 2),
-            'shipping_cost' => round($shipping_cost, 2),
-            'tax' => round($tax, 2),
-            'discount' => round($discount, 2),
-            'total' => round($total, 2),
-            'quantity' => $quantity,
-        ]);
+
+        $this->shipping_cost = isset($this->cart['shipping_cost']) ? (float)$this->cart['shipping_cost'] : 0.0;
+        $this->discount = isset($this->cart['discount']) ? (float)$this->cart['discount'] : 0.0;
+        $this->tax = $this->subtotal * $this->statetax;
+        $this->total = $this->subtotal + $this->shipping_cost + $this->tax - $this->discount;
+
+        // Update cart array with new totals
+        $this->cart['subtotal'] = round($this->subtotal, 2);
+        $this->cart['shipping_cost'] = round($this->shipping_cost, 2);
+        $this->cart['tax'] = round($this->tax, 2);
+        $this->cart['discount'] = round($this->discount, 2);
+        $this->cart['total'] = round($this->total, 2);
+        $this->cart['quantity'] = $this->quantity;
+
+        return $this->cart;
     }
 
 }
