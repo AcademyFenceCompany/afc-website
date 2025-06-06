@@ -1,11 +1,12 @@
 $primary-color:  #882905;
 $primary-2-color:#ca9237;
 $secondary-color: #f5b149;
-
+$border-color: #CEC5C5;
 $bs-body-color: #5e5e5e;
 :root {
     --bs-bg-danger: rgb(242, 105, 66);
     /* Colors */
+    --bs-border-color: var($border-color);
     --bs-body-color:#282828;
     --primary-color: $primary-color;
     --secondary-color: $secondary-color;

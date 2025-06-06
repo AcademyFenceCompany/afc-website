@@ -171,6 +171,7 @@ class Shipping2Controller extends Controller
             'rlCarriersRates' => '',
             'packages' => '',
         ]);
+        return; 
         // Here you would call the appropriate service to get the rates
         $shippingMODEL = new Shipping2();
         $cart = new ShoppingCart();

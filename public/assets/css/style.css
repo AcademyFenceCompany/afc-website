@@ -1,6 +1,7 @@
 :root {
   --bs-bg-danger: rgb(242, 105, 66);
   /* Colors */
+  --bs-border-color: var($border-color);
   --bs-body-color:#282828;
   --primary-color: $primary-color;
   --secondary-color: $secondary-color;
