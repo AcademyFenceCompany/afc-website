@@ -1,86 +1,29 @@
-@extends('layouts.main')
+@extends('layouts.main2')
 
 @section('title', 'Wood Fence')
 
-@section('styles')
-<style>
-    /* Ensure these styles take precedence */
-    .bg-brown {
-        background-color: #8B4513 !important;
-    }
-    .page-title {
-        font-size: 24px !important;
-        color: #fff !important;
-        font-weight: bold !important;
-        padding: 10px 0 !important;
-    }
-    .page-description {
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        line-height: 1.5 !important;
-        margin-bottom: 1rem !important;
-    }
-    /* Custom button styles */
-    .btn.btn-brown {
-        background-color: #8B4513 !important;
-        color: white !important;
-        border-color: #8B4513 !important;
-    }
-    .btn.btn-brown:hover {
-        background-color: #6B3100 !important;
-        color: white !important;
-    }
-    /* Custom 4-column layout */
-    .col-lg-3 {
-        width: 25% !important;
-    }
-    @media (max-width: 992px) {
-        .col-lg-3 {
-            width: 33.333% !important;
-        }
-    }
-    @media (max-width: 768px) {
-        .col-lg-3 {
-            width: 50% !important;
-        }
-    }
-    @media (max-width: 576px) {
-        .col-lg-3 {
-            width: 100% !important;
-        }
-    }
-    .about-image {
-        width: 180px !important;
-        height: 180px !important;
-        object-fit: cover !important;
-    }
-    .bg-light-yellow {
-        background-color: #FFFFD4 !important;
-    }
-    .small-font {
-        font-size: 14px !important;
-    }
-    .product-image {
-        width: 250px !important;
-        height: 250px !important;
-        object-fit: cover !important;
-    }
-    .btn-small-text {
-        font-size: 0.7rem !important;
-    }
-</style>
-@endsection
-
 @section('content')
+@include('partials.header')
+    <section class="page-header p-0 my-5">
+        <style>
+            .banner-ad{
+                background-repeat: repeat-x;
+                background-size: contain !important;
+                background-position: bottom center;
+            }
+        </style>
+        <div class="container">
+            <div class="banner-ad bg-light text-center py-4" style="background: url('assets/images/pattern_fence.png');">
+                <h1 class="text-body-emphasis">WOOD FENCE</h1>
+                <p class="col-lg-6 mx-auto text-dark mb-4">Academy Wood Fence - Cedar Wood Fencing Leaders Since 1968</p> 
+                <button class="btn btn-primary px-5 mb-5" type="button">
+                    Get a Quote
+                </button>
+            
+            </div>
+        </div>
+    </section>
     <main class="container">
-        <!-- Header Section -->
-        <div class="rounded bg-brown">
-            <h1 class="page-title text-center py-2 mb-0">WOOD FENCE</h1>
-        </div>
-        <div class="text-center py-2 mb-4 border-bottom">
-            <p class="mb-0">Academy Wood Fence - Cedar Wood Fencing Leaders Since 1968</p>
-        </div>
-
         <!-- Info Section -->
         <div class="row g-4 mb-4">
             <!-- Left Section - About -->

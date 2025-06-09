@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\ShoppingCart; // Assuming you have a ShoppingCart model
 
 class WoodFenceMysql2Controller extends Controller
 {
@@ -130,10 +131,21 @@ class WoodFenceMysql2Controller extends Controller
         
         // Group categories by category_group
         $groupedCategories = collect($categoriesWithDetails)->groupBy('category_group');
+        //Development: Log the grouped categories for debugging
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
+        //session()->forget('cart2');
+        //session()->flush();
+        //@dd($cart);
+        //return view('academy', compact('majCategories', 'subCategories',  'cart'));
         
         return view('categories.woodfence', [
             'wood_categories' => collect($categoriesWithDetails)
-        ]);
+        ], compact('groupedCategories', 'majCategories', 'subCategories', 'cart')
+        );
     }
 
     /**

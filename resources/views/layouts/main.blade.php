@@ -33,7 +33,7 @@
             </div>
         </header>
     @endisset --}}
-
+    @include('partials.header')
     <!-- Main Content Section -->
     <main class="custom-container my-2">
         {{ $slot ?? '' }}

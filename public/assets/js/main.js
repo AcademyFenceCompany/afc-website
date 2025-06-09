@@ -158,7 +158,7 @@ $(document).ready(function() {
         // Show loading spinner
         shippingOptions.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
         $.ajax({
-            url: "http://localhost:8000/shipping2",
+            url: `${App.url}/shipping2`,
             type: "GET",
             data: { zip: zipValue },
             dataType: "html",

@@ -145,16 +145,16 @@
                             <a href="{{ route('woodfence') }}" class="nav-link">Wood Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#men" class="nav-link">Vinyl Fence</a>
+                            <a href="#" class="nav-link">Vinyl Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#men" class="nav-link">Chain Link Fence</a>
+                            <a href="{{ route('chainlink.main') }}" class="nav-link">Chain Link Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#men" class="nav-link">Aluminum Fence</a>
+                            <a href="{{ route('aluminumfence.main') }}" class="nav-link">Aluminum Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#men" class="nav-link">Welded Wire</a>
+                            <a href="{{ route('weldedwire') }}" class="nav-link">Welded Wire</a>
                         </li>
                         <li class="nav-item">
                             <a href="#men" class="nav-link text-bg-info" style="background-color: RGB(234, 221, 181)">Get A Quote</a>
