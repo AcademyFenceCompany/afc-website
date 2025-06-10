@@ -4,7 +4,7 @@
 
 @section('content')
 @include('partials.header')
-    <section class="page-header p-0 my-5">
+    <section class="page-header p-0 mb-5"  style="background: url('assets/images/fence.png');background-size:contain;">
         <style>
             .banner-ad{
                 background-repeat: repeat-x;
@@ -13,16 +13,17 @@
             }
         </style>
         <div class="container">
-            <div class="banner-ad bg-light text-center py-4" style="background: url('assets/images/pattern_fence.png');">
+            <div class="banner-ad text-center justify-item-center py-5">
                 <h1 class="text-body-emphasis">WOOD FENCE</h1>
                 <p class="col-lg-6 mx-auto text-dark mb-4">Academy Wood Fence - Cedar Wood Fencing Leaders Since 1968</p> 
-                <button class="btn btn-primary px-5 mb-5" type="button">
+                <button class="btn btn-primary px-5" type="button">
                     Get a Quote
                 </button>
             
             </div>
         </div>
     </section>
+    <x-cart-sidebar :cart="$cart"/>
     <main class="container">
         <!-- Info Section -->
         <div class="row g-4 mb-4">

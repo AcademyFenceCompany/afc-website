@@ -17,6 +17,11 @@
             transform: translateY(-50%);
             color: #888;
         }
+        .disabled-link {
+            pointer-events: none;
+            cursor: default;
+        }
+
     </style>
     <nav class="top-bar">
         <div class="container d-flex flex-wrap">
@@ -145,13 +150,13 @@
                             <a href="{{ route('woodfence') }}" class="nav-link">Wood Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Vinyl Fence</a>
+                            <a href="#" class="nav-link disabled-link">Vinyl Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('chainlink.main') }}" class="nav-link">Chain Link Fence</a>
+                            <a href="{{ route('chainlink.main') }}" class="nav-link disabled-link">Chain Link Fence</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('aluminumfence.main') }}" class="nav-link">Aluminum Fence</a>
+                            <a href="{{ route('aluminumfence.main') }}" class="nav-link disabled-link">Aluminum Fence</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('weldedwire') }}" class="nav-link">Welded Wire</a>

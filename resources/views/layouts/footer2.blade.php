@@ -126,7 +126,7 @@
         </div>
       </div>
     </footer>
-    <div id="footer-bottom" class="py-3 bg-dark text-light">
+    <div id="footer-bottom" class="py-3 text-light" style="background-color: rgb(155, 134, 112);">
       <div class="container">
         <div class="row">
           <div class="col-md-6 copyright">

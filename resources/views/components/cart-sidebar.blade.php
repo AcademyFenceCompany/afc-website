@@ -11,7 +11,7 @@
             <span class="badge bg-primary rounded-pill cart-count">{{$cart['quantity']}}</span>
           </h4>
           <div class="card shopping-cart mb-3" style="border: 2px dashed #ced4da;">
-            <ul class="list-group list-group-flush">
+            <ul class="list-group list-group-flush" id="mini-shopping-cart">
                 @foreach($cart['items'] as $item)
                 <li class="list-group-item d-flex justify-content-between lh-sm">
                 <div>
@@ -24,9 +24,9 @@
             </ul>
               <div class="p-3 d-flex justify-content-between cart-total">
                 <strong>Total (USD)</strong>
-                <strong data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
+                <strong data-mi-total="{{$cart['total']}}" class="mini-cart-subtotal">${{$cart['subtotal']}}</strong>
             </div>
-        </div>
+          </div>
 
           <a href="{{route('cart2.checkout2')}}" class="w-100 btn btn-primary btn-lg" >Continue to checkout</a>
         </div>

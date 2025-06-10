@@ -1,9 +1,30 @@
-@extends('layouts.main')
+@extends('layouts.main2')
 
 @section('title', 'Welded Wire')
 
 @section('content')
-
+@include('partials.header')
+    <section class="page-header p-0 mb-5" style="background-image: url('https://sunviksteels.com/wp-content/uploads/2024/12/image.png');">
+        <style>
+            .banner-ad{
+                background-repeat: repeat-x;
+                background-size: contain !important;
+                background-position: bottom center;
+            }
+        </style>
+        <div class="container">
+            <div class="banner-ad bg-transparent text-center py-4" style="">
+                <h1 class="text-body-emphasis">Welded Wire</h1>
+                <p class="col-lg-6 mx-auto text-dark mb-4">Academy Wood Fence - Cedar Wood Fencing Leaders Since 1968</p> 
+                <button class="btn btn-primary px-5 mb-5" type="button">
+                    Get a Quote
+                </button>
+            
+            </div>
+        </div>
+    </section>
+    <x-cart-sidebar :cart="$cart"/>
+<main class="container py-3">
 
     <style>
         .bg-brown {
@@ -108,12 +129,7 @@
             font-size: 0.7rem !important;
         }
     </style>
-    @include('partials.header')
 
-    <!-- Header Section -->
-    <div class="rounded bg-brown">
-        <h1 class="page-title text-center py-2 mb-0">WELDED WIRE FENCE</h1>
-    </div>
     <div class="text-center py-2 mb-4 border-bottom">
         <p class="mb-0">Specializing in Vinyl Coated Mesh, Hex Netting/Chicken Wire, Hardware Cloth. When comparing welded
             wire
@@ -960,4 +976,5 @@
                         </div>
                     </div>
                 </div>
+</main>
 @endsection

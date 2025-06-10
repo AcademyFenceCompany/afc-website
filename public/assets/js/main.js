@@ -96,7 +96,27 @@ const App = {
             }
         });
         
+    },
+    // This function renders a list group for the cart items
+    renderCartListGroup: function(cart2) {
+    let html = '<ul class="list-group list-group-flush">';
+    for (const key in cart2.items) {
+        if (cart2.items.hasOwnProperty(key)) {
+            const item = cart2.items[key];
+            html += `
+                <li class="list-group-item d-flex justify-content-between lh-sm">
+                    <div>
+                        <h6 class="my-0">${item.name}</h6>
+                        <small class="text-body-secondary">Quantity: ${item.quantity}</small>
+                    </div>
+                    <span class="text-body-secondary">$${parseFloat(item.price).toFixed(2)}</span>
+                </li>
+            `;
+        }
     }
+    html += '</ul>';
+    return html;
+}
 };
 
 // Attach event listener to trigger App.getFilter on input change
@@ -190,7 +210,7 @@ $(document).ready(function() {
             console.warn("Invalid product ID or quantity.");
             return;
         }
-        console.log(App.url);
+        console.log(App.url, window.APP_URL);
         console.log("Updating quantity for product ID:", productId, "to", quantity);
         $.ajax({
             url: `${App.url}/cart2/add-to-cart/p/${productId}`,
@@ -199,7 +219,10 @@ $(document).ready(function() {
             success: function(response) {
                 // Optionally update cart UI or show a message
                 console.log("Quantity updated successfully:", response);
+                const cartHtml = App.renderCartListGroup(response.cart2);
+                $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
                 $('.cart-count').text(response.cartCount); // Update cart count
+                $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
             },
             error: function(xhr, status, error) {
@@ -229,8 +252,13 @@ $(document).ready(function() {
             dataType: "json",
             success: function(response) {
                 // Optionally update cart UI or show a message
-                $('.cart-count').text(response.cartCount); // Update cart count
                 console.log("Quantity updated successfully:", response);
+                const cartHtml = App.renderCartListGroup(response.cart2);
+                $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
+                $('.cart-count').text(response.cartCount); // Update cart count
+                $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
+                console.log("Quantity updated successfully:", response);
+
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
             },
             error: function(xhr, status, error) {

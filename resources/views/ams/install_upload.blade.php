@@ -49,7 +49,7 @@
             <div class="col-lg-3">
                 <div class="card mb-4 shadow-sm">
                 <img
-                    src="{{ asset('assets/images/thumbnails/' . $install->filename) }}"
+                    src="{{ asset('storage/install-jobs/thumbnail/' . $install->filename) }}"
                     class="card-img-top" 
                     alt="Waterfall"
                 />

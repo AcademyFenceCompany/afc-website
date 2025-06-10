@@ -283,7 +283,8 @@
                             <label class="form-label">Small Image</label>
                             @if ($product->img_small)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/products/' . $product->img_small) }}" class="img-thumbnail" style="max-width: 100%; max-height: 150px;">
+                                    <img src="{{ asset('storage/app/public/products/' . $product->img_small) }}" class="img-thumbnail" style="max-width: 100%; max-height: 150px;">
+                                    <img src="{{ Storage::url('products/'. $product->img_small) }}" class="img-thumbnail" style="max-width: 100%; max-height: 150px;">
                                     <button type="button" class="btn btn-sm btn-danger mt-1 delete-image" data-id="{{ $product->id }}" data-type="img_small">
                                         <i class="bi bi-trash"></i> Remove
                                     </button>

@@ -22,7 +22,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/main.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.css') }}" >
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}" >
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- <link href="{{ asset('css/style.css') }}" rel="stylesheet"> -->
     @yield('styles')

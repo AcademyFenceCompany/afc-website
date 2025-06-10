@@ -58,7 +58,7 @@ class InstallJobsController extends Controller
             $watermarkedFilename = "watermarkimage_{$timestamp}.png";
 
             // Save the watermarked image to the public directory
-            $image->save(public_path("assets/images/{$watermarkedFilename}"));
+            $image->save(public_path("storage/install-jobs/thumbnail/{$watermarkedFilename}"));
 
             // Create a square thumbnail of the image
             $thumbnail = Image::make($request->file('filename')->getRealPath());
@@ -66,10 +66,7 @@ class InstallJobsController extends Controller
 
             // Save the thumbnail to the thumbnail folder
             $thumbnailFilename = "thumbnail_{$timestamp}.png";
-            $thumbnail->save(public_path("assets/images/thumbnails/{$thumbnailFilename}"));
-
-            // Save the watermarked image to the public directory
-            $image->save(public_path("assets/images/{$watermarkedFilename}"));
+            $thumbnail->save(public_path("storage/install-jobs/thumbnail/{$thumbnailFilename}"));
 
             // Save the validated data along with the watermarked image filename to the database
             \DB::table('install_gallery')->insert([
