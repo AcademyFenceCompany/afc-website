@@ -1,4 +1,6 @@
 <?php
+// Prevent indexing by search engines
+header('X-Robots-Tag: noindex, nofollow');
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
