@@ -22,13 +22,13 @@
                 </li>
                 @endforeach
             </ul>
-              <div class="p-3 d-flex justify-content-between cart-total">
+              <div class="p-3 d-flex justify-content-between">
                 <strong>Total (USD)</strong>
                 <strong data-mi-total="{{$cart['total']}}" class="mini-cart-subtotal">${{$cart['subtotal']}}</strong>
             </div>
           </div>
 
-          <a href="{{route('cart2.checkout2')}}" class="w-100 btn btn-primary btn-lg" >Continue to checkout</a>
+          <a href="{{route('cart2.precheckout')}}" class="w-100 btn btn-primary btn-lg" >Continue to checkout</a>
         </div>
       </div>
     </div>

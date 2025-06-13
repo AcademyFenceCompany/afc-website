@@ -19,7 +19,7 @@ class Shipping2Controller extends Controller
         ]);
     }
     //This method will handle the shipping rates retrieval
-    public function getShippingRates(Request $request)
+    public function getShippingRates($zip)
     {
         // Here you would call the appropriate service to get the rates
         $shippingMODEL = new Shipping2();
@@ -43,7 +43,7 @@ class Shipping2Controller extends Controller
             'recipient_address' => '78 Elmwood Ave',
             'recipient_city' => 'East Orange',
             'recipient_state' => 'NJ',
-            'recipient_postal' => '07018',
+            'recipient_postal' => $zip,
             'packages' => [
                 [
                     'weight' => 105,
@@ -132,6 +132,8 @@ class Shipping2Controller extends Controller
 
                 $rates['ups'] = $upsRatesList;
             }
+            $tForceRates['error'] = 'Total weight exceeds 150 lbs';
+            $rlCarriersRates['error'] = 'Total weight exceeds 150 lbs';
         } else {
             // If total weight is 150 lbs or more, use TForce
             $upsrates = [
@@ -151,10 +153,10 @@ class Shipping2Controller extends Controller
         }
         
         // This is where you return the lowest rate
-        //$lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
+        $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
         //@dd($tForceRates, $rlCarriersRates);
         return view('components.cart-shipping-insert', [
-            //'upsrates' => $lowestUpsRate,
+            'upsrates' => $lowestUpsRate,
             'tForceRates' => $tForceRates,
             'rlCarriersRates' => $rlCarriersRates,
             'packages' => $formData['packages'],

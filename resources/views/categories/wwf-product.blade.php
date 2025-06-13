@@ -1,10 +1,13 @@
 {{-- @dd($meshSize_products) ; --}}
-@extends('layouts.main')
+@extends('layouts.main2')
 
 @section('title', 'Welded Wire')
 
 @section('content')
+@include('partials.header')
+<x-cart-sidebar :cart="$cart"/>
 
+<main class="container">
 <!-- Using global breadcrumb from header -->
 
 
@@ -21,7 +24,10 @@
     font-weight: bold !important;
     padding: 10px 0 !important;
    }
-
+    .bg-secondary {
+        --bs-bg-opacity: 1;
+        background-color: rgb(179, 202, 217) !important;
+    }
    .border-bottom {
             font-size: 12px;
         }
@@ -71,18 +77,19 @@
         }
 
         .product_img {
-    transition: transform 0.3s ease-in-out;
-    cursor: pointer;
-}
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
 
-.product_img.zoomed {
-    transform: scale(1.8); 
-    z-index: 1000;
-    position: relative;
-}
+    .product_img.zoomed {
+        transform: scale(1.8); 
+        z-index: 1000;
+        position: relative;
+    }
 
         
 </style>
+
     {{-- @dd($groupedByGauge) --}}
     @if(count($groupedByGauge) > 0)
     <div class="bg-black rounded mb-3">
@@ -96,7 +103,7 @@
         @endphp
         <!-- Mesh Size & Gauge Section -->
         <div class="mt-0">
-            <div class="bg-secondary text-white text-center py-2 rounded">
+            <div class="bg-secondary text-dark text-center py-2 rounded">
                 <h4 class="m-0 mesh__title">{{ $meshSize }} - {{ $products->first()->material }}</h4>
             </div>
             <div class="row mt-1">
@@ -163,10 +170,7 @@
                                         </td>
                                         <td class="text-center">
                                             <div class="d-flex align-items-center justify-content-center">
-                                                <button class="btn btn-outline-secondary btn-sm me-2 quantity-decrease">-</button>
-                                                <input type="number" class="quantity-input text-center" value="1"
-                                                    min="1" data-price="{{ $product->price }}" />
-                                                <button class="btn btn-outline-secondary btn-sm ms-2 quantity-increase">+</button>
+                                                <input type="number" class="form-control incre-qty" data-product-id="{{$product->id}}" name="quantity" min="1" value="1" style="width: 70px;">
                                             </div>
                                         </td>
                                         <td>
@@ -176,38 +180,41 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn" 
-                                            data-id="{{ $product->id }}"
-                                            data-item_no="{{ $product->item_no }}" 
-                                            data-product_name="{{ $product->product_name }}"
-                                            data-price="{{ $product->price }}"
-                                            data-color="{{ $product->color ?? '' }}"
-                                            data-size="{{ $product->size ?? '' }}"
-                                            data-size_in="{{ $product->size_in ?? '' }}"
-                                            data-size_wt="{{ $product->size_wt ?? '' }}"
-                                            data-size_ht="{{ $product->size_ht ?? '' }}"
-                                            data-weight_lbs="{{ $product->weight_lbs ?? '' }}"
-                                            data-img_small="{{ $product->img_small ?? '' }}"
-                                            data-img_large="{{ $product->img_large ?? '' }}"
-                                            data-display_size_2="{{ $product->display_size_2 ?? '' }}"
-                                            data-size2="{{ $product->size2 ?? '' }}"
-                                            data-size3="{{ $product->size3 ?? '' }}"
-                                            data-material="{{ $product->material ?? '' }}"
-                                            data-spacing="{{ $product->spacing ?? '' }}"
-                                            data-coating="{{ $product->coating ?? '' }}"
-                                            data-style="{{ $product->style ?? '' }}"
-                                            data-speciality="{{ $product->speciality ?? '' }}"
-                                            data-free_shipping="{{ $product->free_shipping ?? '0' }}"
-                                            data-special_shipping="{{ $product->special_shipping ?? '0' }}"
-                                            data-amount_per_box="{{ $product->amount_per_box ?? '1' }}"
-                                            data-class="{{ $product->class ?? '' }}"
-                                            data-ship_length="{{ $product->ship_length ?? '' }}"
-                                            data-ship_width="{{ $product->ship_width ?? '' }}"
-                                            data-ship_height="{{ $product->ship_height ?? '' }}"
-                                            data-categories_id="{{ $product->categories_id ?? '' }}"
-                                            data-shipping_method="{{ $product->shipping_method ?? '' }}">
-                                            Add to Cart
-                                        </button>
+                                            <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn d-none" 
+                                                data-id="{{ $product->id }}"
+                                                data-item_no="{{ $product->item_no }}" 
+                                                data-product_name="{{ $product->product_name }}"
+                                                data-price="{{ $product->price }}"
+                                                data-color="{{ $product->color ?? '' }}"
+                                                data-size="{{ $product->size ?? '' }}"
+                                                data-size_in="{{ $product->size_in ?? '' }}"
+                                                data-size_wt="{{ $product->size_wt ?? '' }}"
+                                                data-size_ht="{{ $product->size_ht ?? '' }}"
+                                                data-weight_lbs="{{ $product->weight_lbs ?? '' }}"
+                                                data-img_small="{{ $product->img_small ?? '' }}"
+                                                data-img_large="{{ $product->img_large ?? '' }}"
+                                                data-display_size_2="{{ $product->display_size_2 ?? '' }}"
+                                                data-size2="{{ $product->size2 ?? '' }}"
+                                                data-size3="{{ $product->size3 ?? '' }}"
+                                                data-material="{{ $product->material ?? '' }}"
+                                                data-spacing="{{ $product->spacing ?? '' }}"
+                                                data-coating="{{ $product->coating ?? '' }}"
+                                                data-style="{{ $product->style ?? '' }}"
+                                                data-speciality="{{ $product->speciality ?? '' }}"
+                                                data-free_shipping="{{ $product->free_shipping ?? '0' }}"
+                                                data-special_shipping="{{ $product->special_shipping ?? '0' }}"
+                                                data-amount_per_box="{{ $product->amount_per_box ?? '1' }}"
+                                                data-class="{{ $product->class ?? '' }}"
+                                                data-ship_length="{{ $product->ship_length ?? '' }}"
+                                                data-ship_width="{{ $product->ship_width ?? '' }}"
+                                                data-ship_height="{{ $product->ship_height ?? '' }}"
+                                                data-categories_id="{{ $product->categories_id ?? '' }}"
+                                                data-shipping_method="{{ $product->shipping_method ?? '' }}">
+                                                Add to Cart
+                                            </button>
+
+                                        <button class="btn btn-primary m-2 add-to-cart" data-product-id="{{ $product->id }}">Add to Cart</button>
+
                                        </td>
                                     </tr>
                                 @endforeach
@@ -296,7 +303,7 @@
     <!-- Knock-In Posts Section -->
     <div class="mt-0">
         <!-- Section Title -->
-        <div class="bg-secondary text-white text-center py-2 rounded">
+        <div class="bg-secondary text-dark text-center py-2 rounded">
         <h4 class="m-0 mesh__title">Knock-In Posts U-Channel with fastening clips</h4>
     </div>
         <!-- Content -->
@@ -358,44 +365,44 @@
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <button class="btn btn-sm btn-outline-dark">-</button>
-                                            <span class="mx-2" style="width: 20px;">1</span>
-                                            <button class="btn btn-sm btn-outline-dark">+</button>
-                                        </div>
+                                        <input type="number" class="form-control incre-qty" data-product-id="{{$product->id}}" name="quantity" min="1" value="1" style="width: 70px;">
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center justify-content-between">
                                             <span>{{ $product->price }}</span>
-                                            <button class="btn btn-sm btn-danger text-white ms-2 btn-add-cart add-to-cart-btn" 
-                                            data-id="{{ $product->id }}"
-                                            data-item_no="{{ $product->item_no }}" 
-                                            data-product_name="{{ $product->product_name }}"
-                                            data-price="{{ $product->price }}"
-                                            data-color="{{ $product->color ?? '' }}"
-                                            data-size="{{ $product->size ?? '' }}"
-                                            data-size_in="{{ $product->size_in ?? '' }}"
-                                            data-size_wt="{{ $product->size_wt ?? '' }}"
-                                            data-size_ht="{{ $product->size_ht ?? '' }}"
-                                            data-weight_lbs="{{ $product->weight_lbs ?? '' }}"
-                                            data-img_small="{{ $product->img_small ?? '' }}"
-                                            data-img_large="{{ $product->img_large ?? '' }}"
-                                            data-display_size_2="{{ $product->display_size_2 ?? '' }}"
-                                            data-size2="{{ $product->size2 ?? '' }}"
-                                            data-size3="{{ $product->size3 ?? '' }}"
-                                            data-material="{{ $product->material ?? '' }}"
-                                            data-spacing="{{ $product->spacing ?? '' }}"
-                                            data-coating="{{ $product->coating ?? '' }}"
-                                            data-style="{{ $product->style ?? '' }}"
-                                            data-speciality="{{ $product->speciality ?? '' }}"
-                                            data-free_shipping="{{ $product->free_shipping ?? '0' }}"
-                                            data-special_shipping="{{ $product->special_shipping ?? '0' }}"
-                                            data-amount_per_box="{{ $product->amount_per_box ?? '1' }}"
-                                            data-class="{{ $product->class ?? '' }}"
-                                            data-categories_id="{{ $product->categories_id ?? '' }}"
-                                            data-shipping_method="{{ $product->shipping_method ?? '' }}">
-                                            Add to Cart
-                                            </button>   
+                                            
+                                            <button class="btn btn-sm btn-danger text-white ms-2 btn-add-cart add-to-cart-btn  d-none" 
+                                                data-id="{{ $product->id }}"
+                                                data-item_no="{{ $product->item_no }}" 
+                                                data-product_name="{{ $product->product_name }}"
+                                                data-price="{{ $product->price }}"
+                                                data-color="{{ $product->color ?? '' }}"
+                                                data-size="{{ $product->size ?? '' }}"
+                                                data-size_in="{{ $product->size_in ?? '' }}"
+                                                data-size_wt="{{ $product->size_wt ?? '' }}"
+                                                data-size_ht="{{ $product->size_ht ?? '' }}"
+                                                data-weight_lbs="{{ $product->weight_lbs ?? '' }}"
+                                                data-img_small="{{ $product->img_small ?? '' }}"
+                                                data-img_large="{{ $product->img_large ?? '' }}"
+                                                data-display_size_2="{{ $product->display_size_2 ?? '' }}"
+                                                data-size2="{{ $product->size2 ?? '' }}"
+                                                data-size3="{{ $product->size3 ?? '' }}"
+                                                data-material="{{ $product->material ?? '' }}"
+                                                data-spacing="{{ $product->spacing ?? '' }}"
+                                                data-coating="{{ $product->coating ?? '' }}"
+                                                data-style="{{ $product->style ?? '' }}"
+                                                data-speciality="{{ $product->speciality ?? '' }}"
+                                                data-free_shipping="{{ $product->free_shipping ?? '0' }}"
+                                                data-special_shipping="{{ $product->special_shipping ?? '0' }}"
+                                                data-amount_per_box="{{ $product->amount_per_box ?? '1' }}"
+                                                data-class="{{ $product->class ?? '' }}"
+                                                data-categories_id="{{ $product->categories_id ?? '' }}"
+                                                data-shipping_method="{{ $product->shipping_method ?? '' }}">
+                                                Add to Cart
+                                            </button>
+                                            
+                                            <button class="btn btn-primary m-2 add-to-cart" data-product-id="{{ $product->id }}">Add to Cart</button>
+                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -433,7 +440,7 @@
                                         <span class="mx-2">1</span>
                                         <button class="btn btn-outline-secondary btn-sm">+</button>
                                     </div>
-                                    <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn" 
+                                    <button class="btn btn-danger text-white btn-add-cart add-to-cart-btn d-none" 
                                             data-id="{{ $product->id }}"
                                             data-item_no="{{ $product->item_no }}" 
                                             data-product_name="{{ $product->product_name }}"
@@ -462,6 +469,9 @@
                                             data-shipping_method="{{ $product->shipping_method ?? '' }}">
                                             Add to Cart
                                             </button>   
+
+                                            <button class="btn btn-primary m-2 add-to-cart" data-product-id="{{ $product->id }}">Add to Cart</button>
+
                                 </div>
                             </div>
                         </div>
@@ -533,7 +543,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn d-none"
                                                     data-id="{{ $product->id }}"
                                                     data-item_no="{{ $product->item_no }}" 
                                                     data-product_name="{{ $product->product_name }}"
@@ -562,6 +572,8 @@
                                                     data-shipping_method="{{ $product->shipping_method ?? '' }}">
                                                     Add to Cart
                                                 </button>
+                                                
+                                                <button class="btn btn-primary m-2 add-to-cart" data-product-id="{{ $product->id }}">Add to Cart</button>
                                             </td>
                                         </tr>
                                         @empty
@@ -632,6 +644,8 @@
                                                 data-shipping_method="{{ $product->shipping_method ?? '' }}">
                                                 Add to Cart
                                             </button>
+
+                                            <button class="btn btn-primary m-2 add-to-cart" data-product-id="{{ $product->id }}">Add to Cart</button>
                                         </div>
                                     </div>
                                 </div>
@@ -699,7 +713,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn"   
+                                                <button class="btn btn-sm btn-danger text-white ms-2 add-to-cart-btn d-none"   
                                                     data-id="{{ $product->id }}"
                                                     data-item_no="{{ $product->item_no }}" 
                                                     data-product_name="{{ $product->product_name }}"
@@ -728,6 +742,7 @@
                                                     data-shipping_method="{{ $product->shipping_method ?? '' }}">
                                                     Add to Cart
                                                 </button>
+                                                <button class="btn btn-primary m-2 add-to-cart" data-product-id="{{ $product->id }}">Add to Cart</button>
                                             </td>
                                         </tr>
                                         @empty
@@ -1075,7 +1090,7 @@
             </div>
         </div>
     </div>
-
+</main>
 @endsection
 
 

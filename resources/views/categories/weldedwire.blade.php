@@ -200,10 +200,10 @@
             <div class="bg-black text-white text-center py-2 rounded">
                 <h3 class="mb-0">Welded Wire</h3>
             </div>
-            <div class="row justify-content-center g-2 mt-2">
+            <div class="row justify-content-between g-2 mt-2">
 
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center">
+                    <div class="col card text-center shadow-sm h-100" style="border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">4 in. x 4 in.</h6>
                         </div>
@@ -231,9 +231,8 @@
                     </div>
                 </div>
 
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center">
+                    <div class="col card text-center shadow-sm h-100" style="border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">3 in. x 3 in.</h6>
                         </div>
@@ -261,10 +260,8 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center">
+                    <div class="col card text-center shadow-sm h-100" style="border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">2 in. x 4 in.</h6>
                         </div>
@@ -292,8 +289,8 @@
                     </div>
                 </div>
 
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center">
+                    <div class="col card text-center shadow-sm h-100" style="border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">2 in. x 2 in.</h6>
                         </div>
@@ -321,8 +318,8 @@
                     </div>
                 </div>
 
-                {{-- <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                {{-- <div class="col-lg-2 col-md-2 d-flex justify-content-center">
+                    <div class="col card text-center shadow-sm h-100" style="border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                         <h6 class="mesh-size__title">1 3/4 in. x 1 3/4 in.</h6>
                         </div>
@@ -349,9 +346,8 @@
                     </div>
                 </div> --}}
 
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
-                    <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center">
+                    <div class="col card text-center shadow-sm h-100" style="border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">1 1/2 in. x 1 1/2 in.</h6>
                         </div>
@@ -378,9 +374,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row justify-content-between mt-3">
 
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">1 1/2 in. x 4 in.</h6>
@@ -409,8 +406,7 @@
                     </div>
                 </div>
 
-
-                {{-- <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                {{-- <div class="col-lg-2 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">3 in. x 2 in.</h6>
@@ -439,8 +435,7 @@
                     </div>
                 </div> --}}
 
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">1 in. x 3 in.</h6>
@@ -469,8 +464,7 @@
                     </div>
                 </div>
 
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">1 in. x 2 in.</h6>
@@ -499,9 +493,7 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">1 in. x 1 in.</h6>
@@ -530,9 +522,7 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-8 col-md-2 d-flex justify-content-center cards">
+                <div class="col-lg-2 col-md-2 d-flex justify-content-center cards">
                     <div class="col card text-center shadow-sm h-100" style="width: 150px; border: none;">
                         <div class="card-header bg-danger text-white fw-bold py-1">
                             <h6 class="mesh-size__title">1/2 in. x 1 in.</h6>
@@ -560,8 +550,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

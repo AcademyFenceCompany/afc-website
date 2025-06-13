@@ -1,6 +1,15 @@
 <?php
 // Prevent indexing by search engines
-header('X-Robots-Tag: noindex, nofollow');
+// header('X-Robots-Tag: noindex, nofollow');
+// // Only allow access from specific IPs
+// // This is a security measure to restrict access to the application
+// $allowed_ips = ["174.206.225.93", "127.0.0.1"];
+// if (!in_array($_SERVER['REMOTE_ADDR'], $allowed_ips)) {
+//     header("location: https://academyfence.com");
+//     //echo($_SERVER['REMOTE_ADDR']);
+//     exit("Access Denied");
+// }
+
 
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;

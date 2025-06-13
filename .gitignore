@@ -5,6 +5,7 @@
 /storage/logs
 /storage/*.key
 /vendor
+/pulic/index.php
 .gitignore
 # Ignore sensitive environment files and local configuration 
 .env

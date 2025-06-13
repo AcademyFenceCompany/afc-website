@@ -52,7 +52,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h1>Products Report</h1>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1>Products Report</h1>
+                    <a href="{{route('ams.product-query.index')}}" class="btn btn-primary">Add New Product</a>
+                </div>
                 <p>Product reporting provides insights into the performance, trends, and details of various products. It helps in analyzing sales, inventory, and other key metrics to make informed business decisions.</p>
                 <div class="search-prod-report mb-4">
                     <div class="row">
@@ -60,7 +63,6 @@
                             <!-- Actual search box -->
                             <div class="form-group has-search mb-3">
                                 <label for="majcat_id">Search</label>
-                                <i class="bi bi-search form-control-feedback"></i>
                                 <input type="text" class="form-control form-control-lg" placeholder="Search by item# or product name" id="search-products" name="search-products" value="">
                             </div>
                         </div>

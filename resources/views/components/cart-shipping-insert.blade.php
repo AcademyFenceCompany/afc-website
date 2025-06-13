@@ -1,5 +1,5 @@
-{{-- Frontend Shipping options list 
-<div class="card bg-light mb-3 d-none">
+{{-- Frontend Shipping options list --}}
+<div class="card bg-light mb-3">
     <ul class="list-group list-group-flush ">
 
         <li class="list-group-item d-flex bg-primary justify-content-between align-items-start">
@@ -33,6 +33,7 @@
             </li>
         @endif
         @if(!isset($rlCarriersRates['error']))
+        
         <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start">
             <input class="form-check-input me-1" type="radio" name="shipmethod" value="freight">
             <div class="ms-2 me-auto">
@@ -41,11 +42,12 @@
             </div>
             <span class="badge text-bg-primary rounded-pill">{{$rlCarriersRates['d']['Result']['ServiceLevels'][0]['NetCharge']}}</span>
         </li>
+        @dump($rlCarriersRates)
         @endif
     </ul>
 </div>
---}}
-{{-- Backend Shipping options list --}}
+
+{{-- Backend Shipping options list
 <div class="card bg-light mb-3">
     <div class="card-header bg-primary text-dark py-2">
         <h5 class="card-title">Shipping Options</h5>
@@ -193,3 +195,4 @@
         </li>
     </ul>
 </div>
+ --}}

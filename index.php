@@ -1,5 +1,6 @@
 <?php
 
+
 /**
  * Redirect to the public folder
  */

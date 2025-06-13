@@ -38,6 +38,21 @@ class ShoppingCartController extends Controller
      * Since there are two carts, this one will be used for the secure checkout process: Colin.
      * @return \Illuminate\Http\Response
      */
+    //Logic for handling the pre-checkout process
+    public function precheckout()
+    {
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+        $shoppingCart = new ShoppingCart();
+        // Logic to retrieve the shopping cart items
+        $cart = $shoppingCart->getCart();
+
+        // Log the pre-checkout data for debugging
+        //Log::info('Pre-checkout data:', $request->all());
+
+        // Redirect to the checkout form
+        return view('cart.shoppingcart', compact('cart', 'majCategories', 'subCategories'));
+    }
     // This method can be used to retrieve the shopping cart items
     public function getCart(){
         $shoppingCart = new ShoppingCart();

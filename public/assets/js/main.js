@@ -22,7 +22,7 @@ const App = {
         console.log("Serialized form data:", formData);
         
             $.ajax({
-                url: `${this.url}/ams/products-report/filter/`,
+                url: `${this.url}/ams/products-report/filter`,
                 type: "POST",
                 data: formData,
                 contentType: "application/x-www-form-urlencoded",
@@ -99,24 +99,24 @@ const App = {
     },
     // This function renders a list group for the cart items
     renderCartListGroup: function(cart2) {
-    let html = '<ul class="list-group list-group-flush">';
-    for (const key in cart2.items) {
-        if (cart2.items.hasOwnProperty(key)) {
-            const item = cart2.items[key];
-            html += `
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                    <div>
-                        <h6 class="my-0">${item.name}</h6>
-                        <small class="text-body-secondary">Quantity: ${item.quantity}</small>
-                    </div>
-                    <span class="text-body-secondary">$${parseFloat(item.price).toFixed(2)}</span>
-                </li>
-            `;
+        let html = '<ul class="list-group list-group-flush">';
+        for (const key in cart2.items) {
+            if (cart2.items.hasOwnProperty(key)) {
+                const item = cart2.items[key];
+                html += `
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">${item.name}</h6>
+                            <small class="text-body-secondary">Quantity: ${item.quantity}</small>
+                        </div>
+                        <span class="text-body-secondary">$${parseFloat(item.price).toFixed(2)}</span>
+                    </li>
+                `;
+            }
         }
+        html += '</ul>';
+        return html;
     }
-    html += '</ul>';
-    return html;
-}
 };
 
 // Attach event listener to trigger App.getFilter on input change
@@ -172,13 +172,24 @@ $(document).ready(function() {
     var total = $('input[name="options[]"]:checked').length;
     $(".dropdown-text").html('(' + total + ') Selected');
     });
-    $("#zip").on("click", function() {
+    $("#zip").on("keyup", function() {
         const zipValue = $(this).val();
+        console.log("Zip code entered:", zipValue);
+        // Check if zipValue is a valid US ZIP code (5 digits or 5+4 format)
+        if (!zipValue) {
+            console.warn("Zip code is empty.");
+            return;
+        }
+        const zipRegex = /^\d{5}(-\d{4})?$/;
+        if (!zipRegex.test(zipValue)) {
+            console.warn("Invalid zip code format.");
+            return;
+        }
         const shippingOptions = $("#shipping-options");
         // Show loading spinner
         shippingOptions.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
         $.ajax({
-            url: `${App.url}/shipping2`,
+            url: `${App.url}/shipping2/{zipValue}`,
             type: "GET",
             data: { zip: zipValue },
             dataType: "html",
@@ -211,7 +222,7 @@ $(document).ready(function() {
             return;
         }
         console.log(App.url, window.APP_URL);
-        console.log("Updating quantity for product ID:", productId, "to", quantity);
+        console.log("Updating quantity for product ID:", productId);
         $.ajax({
             url: `${App.url}/cart2/add-to-cart/p/${productId}`,
             type: "GET",
@@ -235,8 +246,11 @@ $(document).ready(function() {
     });
     // Function to update the quantity of a product in the cart
     $(".incre-qty").on("change", function() {
+
         const productId = $(this).data("product-id");
         const quantity = $(this).val();
+        //console.log("Product ID:", productId, "Quantity:", quantity);
+        //return;
         if (!productId || quantity < 1) {
             console.warn("Invalid product ID or quantity.");
             return;
@@ -257,6 +271,8 @@ $(document).ready(function() {
                 $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
                 $('.cart-count').text(response.cartCount); // Update cart count
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
+                $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
+                $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
                 console.log("Quantity updated successfully:", response);
 
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
@@ -266,6 +282,39 @@ $(document).ready(function() {
                 //$("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
             }
         });
+    });
+    // Function to remove a product from the cart
+    $(".remove-from-cart").on("click", function() {
+        const productId = $(this).data("product-id");
+        if (!productId) {
+            console.warn("Invalid product ID.");
+            return;
+        }
+        $(this).closest('.cart-item').remove();
+        
+        console.log("Removing product ID:", productId);
+        $.ajax({
+            url: `${App.url}/cart2/remove-item/p/${productId}`,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                $(this).closest('.cart-item').remove();
+                // Optionally update cart UI or show a message
+                console.log("Product removed successfully:", response);
+                const cartHtml = App.renderCartListGroup(response.cart2);
+                $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
+                $('.cart-count').text(response.cartCount); // Update cart count
+                $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
+                $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
+                $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                //$("#alert-container").html('<div class="alert alert-success" role="alert">Product removed!</div>').fadeIn().delay(1000).fadeOut();
+            },
+            error: function(xhr, status, error) {
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                //$("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+            }
+        });
+        console.log("Updated cart count for all elements.");
     });
     $(".system-complete-card").hover(
         function() {

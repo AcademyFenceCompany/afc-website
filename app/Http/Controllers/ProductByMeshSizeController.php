@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\ShoppingCart; // Assuming you have a ShoppingCart model
 
 class ProductByMeshSizeController extends Controller
 {
@@ -169,6 +170,13 @@ class ProductByMeshSizeController extends Controller
             ['name' => $formattedMeshSize, 'url' => '#']
         ];
         
+        //Development: Log the grouped categories for debugging
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
+
+        // If the mesh size is empty, we can skip adding it to breadcrumbs
         return view('categories.wwf-product', [
             'meshSize_products' => $meshSize_products,
             'groupedByGauge' => $groupedByDisplay,
@@ -177,7 +185,10 @@ class ProductByMeshSizeController extends Controller
             'cedarPostProducts' => $this->getRoundCedarFencePosts(),
             'postDriverProducts' => $this->getBazookaPostDrivers(),
             'treatedPostProducts' => $this->getPressureTreatedPosts(),
-            'breadcrumbs' => $breadcrumbs,
+            'breadcrumbs' => $breadcrumbs, 
+            'majCategories' => $majCategories,
+            'subCategories' => $subCategories,  
+            'cart' => $cart
         ]);
     }
 

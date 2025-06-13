@@ -93,7 +93,7 @@ class CategoryController extends Controller
 
         try {
             // Insert data with explicit field list to ensure all fields are included
-            DB::connection('academyfence')->table('categories')->insert([
+            DB::table('categories')->insert([
                 'cat_name' => $request->cat_name,
                 'seo_name' => $request->seo_name,
                 'majorcategories_id' => $request->majorcategories_id,
@@ -110,7 +110,7 @@ class CategoryController extends Controller
                 'insert_keywords' => '',
                 'page_template' => 0,
                 'blog_tag' => 0,
-                'img' => $imageName
+                'image' => $imageName
             ]);
             
             Log::info('Category created successfully with data:', [
@@ -234,7 +234,7 @@ class CategoryController extends Controller
                     'cat_url' => $request->seo_name,
                     'cat_meta_title' => $request->cat_name,
                     'cat_meta_description' => $request->cat_desc_short ?? '',
-                    'img' => $imageName
+                    'image' => $imageName
                 ]);
             
             Log::info('Category updated successfully:', [

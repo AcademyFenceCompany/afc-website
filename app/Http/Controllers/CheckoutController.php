@@ -63,6 +63,7 @@ class CheckoutController extends Controller
             'maxHeight'
         ));
     }
+
     //Get The checkout form v2
     public function getCheckoutForm()
     {

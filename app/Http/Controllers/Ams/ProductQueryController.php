@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Str;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -144,18 +145,22 @@ class ProductQueryController extends Controller
             $data['seo_name'] = Str::slug($data['product_name']);
         }
         
+        // Remove spaces from header and replace with dash
+        $meta_filename = str_replace(' ', '-', $request['product_name']);
         // Handle image uploads
         if ($request->hasFile('img_small')) {
-            $smallImage = $request->file('img_small');
-            $smallImageName = time() . '_small.' . $smallImage->getClientOriginalExtension();
-            $smallImage->storeAs('public/products', $smallImageName);
+            // Process the uploaded image
+            $smallImage = Image::make($request->file('img_small')->getRealPath());
+            $smallImageName = "{$meta_filename}-" . time() . ".png"; 
+            $smallImage->save(public_path("storage/products/thumbnail/{$smallImageName}"));
             $data['img_small'] = $smallImageName;
         }
 
         if ($request->hasFile('img_large')) {
-            $largeImage = $request->file('img_large');
-            $largeImageName = time() . '_large.' . $largeImage->getClientOriginalExtension();
-            $largeImage->storeAs('public/products', $largeImageName);
+            // Process the uploaded image
+            $largeImage = Image::make($request->file('img_large')->getRealPath());
+            $largemageName = "{$meta_filename}-" . time() . ".png"; 
+            $largeImage->save(public_path("storage/products/{$largeImageName}"));
             $data['img_large'] = $largeImageName;
         }
 
@@ -237,7 +242,8 @@ class ProductQueryController extends Controller
         if (empty($data['seo_name'])) {
             $data['seo_name'] = Str::slug($data['product_name']);
         }
-
+        // Remove spaces from header and replace with dash
+        $meta_filename = str_replace(' ', '-', $request['product_name']);
         // Handle image uploads
         if ($request->hasFile('img_small')) {
             // Delete old image if exists
@@ -245,9 +251,10 @@ class ProductQueryController extends Controller
                 Storage::delete('public/products/' . $product->img_small);
             }
             
-            $smallImage = $request->file('img_small');
-            $smallImageName = time() . '_small.' . $smallImage->getClientOriginalExtension();
-            $smallImage->storeAs('public/products', $smallImageName);
+            // Process the uploaded image
+            $smallImage = Image::make($request->file('img_small')->getRealPath());
+            $smallImageName = "{$meta_filename}-" . time() . ".png"; 
+            $smallImage->save(public_path("storage/products/thumbnail/{$smallImageName}"));
             $data['img_small'] = $smallImageName;
         }
 
@@ -256,10 +263,11 @@ class ProductQueryController extends Controller
             if ($product->img_large) {
                 Storage::delete('public/products/' . $product->img_large);
             }
-            
-            $largeImage = $request->file('img_large');
-            $largeImageName = time() . '_large.' . $largeImage->getClientOriginalExtension();
-            $largeImage->storeAs('public/products', $largeImageName);
+
+            // Process the uploaded image
+            $largeImage = Image::make($request->file('img_large')->getRealPath());
+            $largemageName = "{$meta_filename}-" . time() . ".png"; 
+            $largeImage->save(public_path("storage/products/{$largeImageName}"));
             $data['img_large'] = $largeImageName;
         }
 
@@ -268,8 +276,18 @@ class ProductQueryController extends Controller
             ->where('id', $id)
             ->update($data);
 
-        return redirect()->route('ams.product-query.edit', $id)
+        // Check if update was successful
+        $updated = DB::connection('academyfence')->table('products')
+            ->where('id', $id)
+            ->exists();
+
+        if ($updated) {
+            return redirect()->route('ams.product-query.edit', $id)
             ->with('success', 'Product updated successfully.');
+        } else {
+            return redirect()->route('ams.product-query.edit', $id)
+            ->with('error', 'There was an error updating the product.');
+        }
     }
     
     public function destroy($id)

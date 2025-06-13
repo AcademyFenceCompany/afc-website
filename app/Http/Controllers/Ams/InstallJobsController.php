@@ -34,7 +34,9 @@ class InstallJobsController extends Controller
             'majorcategories_id' => 'required|integer|exists:majorcategories,id', // Important: Added exists rule
             'county_id' => 'required|integer|exists:county,id',
         ]);
-        
+        // Remove spaces from header and replace with dash
+        $meta_filename = str_replace(' ', '-', $validatedData['header']);
+
         if ($request->hasFile('filename')) {
             // Process the uploaded image
             $image = Image::make($request->file('filename')->getRealPath());
@@ -55,17 +57,17 @@ class InstallJobsController extends Controller
 
             // Generate a unique filename for the watermarked image
             $timestamp = now()->format('YmdHis');
-            $watermarkedFilename = "watermarkimage_{$timestamp}.png";
+            $watermarkedFilename = $meta_filename . "_wm_{$timestamp}.png";
 
             // Save the watermarked image to the public directory
-            $image->save(public_path("storage/install-jobs/thumbnail/{$watermarkedFilename}"));
+            $image->save(public_path("storage/install-jobs/{$watermarkedFilename}"));
 
             // Create a square thumbnail of the image
             $thumbnail = Image::make($request->file('filename')->getRealPath());
             $thumbnail->fit(150, 150); // Create a 150x150 square thumbnail
 
             // Save the thumbnail to the thumbnail folder
-            $thumbnailFilename = "thumbnail_{$timestamp}.png";
+            $thumbnailFilename = $meta_filename . "_{$timestamp}.png";
             $thumbnail->save(public_path("storage/install-jobs/thumbnail/{$thumbnailFilename}"));
 
             // Save the validated data along with the watermarked image filename to the database

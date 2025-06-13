@@ -1,7 +1,6 @@
 @extends('layouts.main2')
-
-@section('content')
-      <style>
+@section('styles')
+<style>
       body{
         color: #000;
       }
@@ -32,6 +31,8 @@
         box-shadow:none;
       }
     </style>
+@endsection
+@section('content')
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <defs>
         <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
@@ -107,53 +108,50 @@
     </div>
 
     @include('partials.header')
-    
-    <div class="container py-5">
-        <main>
-            <div class="py-5 text-center">
-            <h2>
-                <svg class="me-2" width="32" height="32" style="color:rgba(167, 40, 40, 0.9);">
-                <use xlink:href="#cart"></use>
-                </svg>
-              Checkout form
-            </h2>
-            <p class="">
-              Please review your cart and enter your shipping, billing, and payment information below to complete your purchase. <br> For assistance, contact our customer service team.
-            </p>
+        <main class="container">
+            <div class="py-4">
+                <h2>
+                    <svg class="me-2" width="32" height="32" style="color:rgba(167, 40, 40, 0.9);">
+                    <use xlink:href="#cart"></use>
+                    </svg>
+                Shopping Cart
+                </h2>
+                <p class="lead text-muted">Review your cart items and proceed to checkout.</p>
             </div>
-            <form class="needs-validation" method="POST" action="" novalidate>
+            <form class="needs-validation" method="POST" action="{{ route('shipping2.getShippingRates') }}" novalidate>
               @csrf
               <div class="row g-5">
                 <div class="col-md-5 col-lg-4 order-md-last">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary">Order Summary</span>
-                    <span class="badge bg-primary rounded-pill">{{$cart['quantity']}}</span>
+                    <span class="badge bg-primary rounded-pill cart-count">{{$cart['quantity']}}</span>
                     </h4>
                     <div class="card mb-3 cart-summary">
                       <div class="cart-summary-container">
                           <ul class="list-group-item px-3 pt-4">
                               <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Item Subtotal ({{$cart['quantity']}})</span>
-                                  <span class="text-muted" data-mi-subtotal="">${{$cart['subtotal']}}</span>
+                                  <span>Item Subtotal (<span class="cart-count">{{$cart['quantity']}}</span>)</span>
+                                  <span class="text-muted mini-cart-subtotal" data-mi-subtotal="">${{$cart['subtotal']}}</span>
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Shipping</span>
-                                  <span class="text-muted" data-mi-shipping="">${{$cart['shipping_cost']}}</span>
+                                  <span class="text-muted cart-sumry-shipcost" data-mi-shipping="">--</span>
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Sales Tax</span>
-                                  <span class="text-muted" data-mi-taxes="0">${{$cart['tax']}}</span>
+                                  <span class="text-muted cart-tax" data-mi-taxes="0" >${{$cart['tax']}}</span>
 
                               </li>
                           </ul>
-                          <div class="p-3 d-flex justify-content-between cart-total border-top">
+                          <div class="p-3 d-flex justify-content-between border-top">
                               <strong>Total (USD)</strong>
-                              <strong data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
+                              <strong data-mi-total="{{$cart['total']}}" class="cart-total">${{$cart['total']}}</strong>
                           </div>
                       </div>
-                      <button type="submit" class="btn btn-primary btn-lg m-3 mt-0" id="place-order">
-                          Place Order
-                      </button>
+                      <a href="{{route('cart2.checkout2')}}" class="btn btn-primary btn-lg m-3 mt-0" id="place-order">
+                          Proceed to Checkout
+                          <i class="bi bi-arrow-right-circle-fill"></i>
+                        </a>
                     </div>
                     <div class="card bg-light mb-3" style="border:none;">
                       <img src="https://fencesnj.com/assets/images/nationwidemap.png" class="card-img-top shadow-none" alt="...">
@@ -161,14 +159,56 @@
                     
                 </div>
                 <div class="col-md-7 col-lg-8">
-                    <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" />
-                    <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'"/>
-                    <x-cart-payment />
-                    <input type="hidden" name="amount" value="20.00">
+                    
+                    @foreach($cart['items'] as $item)
+                    <div class="row mb-4 d-flex justify-content-between align-items-center cart-item">
+                        <div class="col-md-2 col-lg-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg"
+                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                        </div>
+                        <div class="col-md-5 col-lg-5">
+                            <h6 class="text-muted">Item #: {{$item['id']}}</h6>
+                            <h6 class="mb-0">{{$item['name']}}</h6>
+                        </div>
+                        <div class="col-md-2 col-lg-1 col-xl-2 d-flex">
+                            <input type="number" class="form-control incre-qty" data-product-id="{{$item['id']}}" name="quantity" min="1" value="{{$item['quantity']}}">
+                        </div>
+                        <div class="col-md-2 col-lg-2">
+                            <h4 class="mb-0 text-success">${{$item['price']}}</h4>
+                        </div>
+                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a href="#" class="btn btn-outline-secondary remove-from-cart" data-product-id="{{$item['id']}}" title="Remove from cart">
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+                        </div>
+                        <hr class="my-4">
+                    </div>
+                    
+                    @endforeach
+                    <div class="row py-4">
+                        <div class="col-sm-6 mb-sm-0">
+                            <div class="card bg-light" style="border-style:solid;">
+                                <div class="card-body">
+                                    <i class="bi bi-truck me-2"></i>
+                                    <h5 class="card-title d-inline">No Returns</h5>
+                                    <p>We do not accept returns. Please review your order carefully before completing your purchase.</p>
+                                    <a href="#" class="btn btn-secondary">Learn more</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card bg-light" style="border-style:solid;">
+                                <div class="card-body">
+                                    <i class="bi bi-telephone-fill me-2"></i>
+                                    <h5 class="card-title d-inline">Shopping Assistance</h5>
+                                    <p>Have questions before you check out? We're here to help!</p>
+                                    <a href="#" class="btn btn-secondary">Email</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
               </div>
             </form>
         </main>
-    </div>
-
-@endsection
+@section('content') 
