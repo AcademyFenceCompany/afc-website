@@ -11,6 +11,7 @@
             <span class="badge bg-primary rounded-pill cart-count">{{$cart['quantity']}}</span>
           </h4>
           <div class="card shopping-cart mb-3" style="border: 2px dashed #ced4da;">
+            @dump($cart)
             <ul class="list-group list-group-flush" id="mini-shopping-cart">
                 @foreach($cart['items'] as $item)
                 <li class="list-group-item d-flex justify-content-between lh-sm">

@@ -60,30 +60,6 @@ class Shipping2Controller extends Controller
                         'width' => 49,
                         'height' => 16,
                     ],
-                ],
-                [
-                    'weight' => 105,
-                    'dimensions' => [
-                        'length' => 16,
-                        'width' => 49,
-                        'height' => 16,
-                    ],
-                ],
-                [
-                    'weight' => 105,
-                    'dimensions' => [
-                        'length' => 16,
-                        'width' => 49,
-                        'height' => 16,
-                    ],
-                ],
-                [
-                    'weight' => 105,
-                    'dimensions' => [
-                        'length' => 16,
-                        'width' => 49,
-                        'height' => 16,
-                    ],
                 ]
             ],
             // Add category_ids if needed
@@ -97,14 +73,14 @@ class Shipping2Controller extends Controller
 
         // Use UPS when weight is less than 150 lbs
         // Calculate total weight of all packages
-        $totalWeight = 160;
-        if (isset($formData['packages']) && is_array($formData['packages'])) {
-            foreach ($formData['packages'] as $package) {
-                if (isset($package['weight'])) {
-                    $totalWeight += $package['weight'];
-                }
-            }
-        }
+        $totalWeight = $cartData['weight'] ?? 0.0; // Initialize total weight from cart data
+        // if (isset($formData['packages']) && is_array($formData['packages'])) {
+        //     foreach ($formData['packages'] as $package) {
+        //         if (isset($package['weight'])) {
+        //             $totalWeight += $package['weight'];
+        //         }
+        //     }
+        // }
 
         // If total weight is less than or equal to 150 lbs, use UPS
         if ($totalWeight < 150) {
@@ -155,14 +131,23 @@ class Shipping2Controller extends Controller
         // This is where you return the lowest rate
         $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
         //@dd($tForceRates, $rlCarriersRates);
-        return view('components.cart-shipping-insert', [
-            'upsrates' => $lowestUpsRate,
-            'tForceRates' => $tForceRates,
-            'rlCarriersRates' => $rlCarriersRates,
-            'packages' => $formData['packages'],
-        ]);
+
+        //@dd($lowestUpsRate, $upsrates, $tForceRates, $rlCarriersRates);
+        $shippingmethod = [
+            'ups' => $lowestUpsRate ?? [],
+            'tforce' => $tForceRates,
+            'rl_carriers' => $rlCarriersRates,
+        ];
+        // Store the shipping rates in the session
+        $shipping = $this->getShippingRatesArray($shippingmethod);
         // Add shipper information to the response
-        return response()->json($upsrates);
+        return view('components.cart-shipping-insert', [
+            'upsrates' => $shipping['ups'] ?? [],
+            'tForceRates' => $shipping['tforce'] ?? [],
+            'rlCarriersRates' => $shipping['rl_carriers'] ?? [],
+            'packages' => $formData['packages'],
+            'shippingmethod' => $shippingmethod,
+        ]);
     }
     //This method will handle the shipping rates retrieval
     public function getShippingRatesAMS(Request $request)
@@ -333,5 +318,35 @@ class Shipping2Controller extends Controller
             }
         }
         return $lowest;
+    }
+    // This method method is used to put all the shipping rates into an array
+    public function getShippingRatesArray($ship)
+    {
+        $shipping = [
+            'ups' => $ship['ups']['total_cost'] ?? 0,
+            'tforce' => $ship['tforce']['detail'][0]['shipmentCharges']['total']['value'],
+            'rl_carriers' => $ship['rl_carriers']['d']['Result']['ServiceLevels'][0]['NetCharge'],
+        ];
+        session()->put('shipping_rates', $shipping);
+        return $shipping;
+    }
+    // Update the shipping method for the cart
+    public function updateShippingMethod($rate)
+    {
+        $getShippingRates = session()->get('shipping_rates', []);
+        // Trim '$' from the rate string and convert to float
+        
+        $rateKey = $getShippingRates[$rate] ?? null;
+        $rate = is_string($rateKey) ? floatval(str_replace('$', '', $rateKey)) : $rateKey;
+
+        // Update the cart with the new shipping cost
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->setShippingMethod($rate);
+        // Return the updated cart and cart count
+        return response()->json([
+            'success' => true,
+            'cart2' => $cart,
+            'cartCount' => $cart['quantity'],
+        ]);
     }
 }

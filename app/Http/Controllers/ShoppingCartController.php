@@ -44,9 +44,17 @@ class ShoppingCartController extends Controller
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
         $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
         $shoppingCart = new ShoppingCart();
-        // Logic to retrieve the shopping cart items
         $cart = $shoppingCart->getCart();
-
+        // Logic to retrieve the shopping cart items
+        $UPSService = new \App\Services\UPSService();
+        $validToken = $UPSService->isAccessTokenValid();
+        @dump($UPSService->accessToken, $validToken);
+        // // Check if the UPS access token is valid
+        // if (!$UPSService->accessToken) {
+        //     $UPSService->authenticate2();
+        //     $validToken = $UPSService->isAccessTokenValid();
+        // }
+        // @dd($UPSService->accessToken, $validToken);
         // Log the pre-checkout data for debugging
         //Log::info('Pre-checkout data:', $request->all());
 
@@ -67,6 +75,7 @@ class ShoppingCartController extends Controller
         session()->forget('cart2');
         return response()->json(['success' => true, 'message' => 'Cart cleared successfully.']);
     }
+
     // This method can be used to add an item to the cart
     public function addItem($id)
     {
@@ -91,6 +100,18 @@ class ShoppingCartController extends Controller
             'cartCount' => $cart['quantity'],
         ]);
     }
+    // Set the shipping method for the cart
+    public function updateShippingMethod($rate)
+    {
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->setShippingMethod($rate);
+        // Return the updated cart and cart count
+        return response()->json([
+            'success' => true,
+            'cart2' => $cart,
+            'cartCount' => $cart['quantity'],
+        ]);
+    }
     // This method can be used to remove multiple items from the cart
     public function removeItem($id)
     {
@@ -108,9 +129,7 @@ class ShoppingCartController extends Controller
     {
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
         $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
-        // Logic to process the checkout
-        // This could involve payment processing, order creation, etc.
-        // For now, we will just return a success message
+
         $shoppingCart = new ShoppingCart();
         $cart = $shoppingCart->getCart();
         return view('cart.checkout2', compact('majCategories', 'subCategories', 'cart'));

@@ -12,7 +12,7 @@ class UPSService
     private $clientId;
     private $clientSecret;
     private $shipperNumber;
-    private $accessToken;
+    public $accessToken;
 
     public function __construct()
     {
@@ -21,13 +21,37 @@ class UPSService
         $this->clientId = env('UPS_CLIENT_ID');
         $this->clientSecret = env('UPS_CLIENT_SECRET');
         $this->shipperNumber = env('UPS_SHIPPER_NUMBER');
-        $this->authenticate();
+        //$this->accessToken = session()->get('ups_access_token', null);
+        //$this->authenticate2();
     }
+    /**
+     * Check if the current access token is valid by making a simple authenticated request.
+     *
+     * @return bool
+     */
+    public function isAccessTokenValid()
+    {
+        if (empty(session()->get('ups_access_token'))) {
+            return false;
+        }
 
+        try {
+            $response = $this->client->get("{$this->baseUrl}/security/v1/token/details", [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . session()->get('ups_access_token'),
+                    'Content-Type' => 'application/json',
+                ],
+            ]);
+            return $response->getStatusCode() === 200;
+        } catch (\Exception $e) {
+            Log::warning('UPS Access Token Invalid', ['message' => $e->getMessage()]);
+            return false;
+        }
+    }
     /**
      * Authenticate and retrieve OAuth token.
      */
-    private function authenticate()
+    public function authenticate()
     {
         try {
             $response = $this->client->post("{$this->baseUrl}/security/v1/oauth/token", [
@@ -42,13 +66,57 @@ class UPSService
 
             $data = json_decode($response->getBody()->getContents(), true);
             $this->accessToken = $data['access_token'];
+            session()->put('ups_access_token', $this->accessToken);
             Log::info('UPS OAuth Token Retrieved', ['token' => $this->accessToken]);
         } catch (\Exception $e) {
             Log::error('UPS OAuth Error', ['message' => $e->getMessage()]);
             throw new \Exception('Failed to authenticate with UPS API.');
         }
     }
+    public function authenticate2()
+    {
+        $maxAttempts = 3;
+        $attempt = 0;
+        $success = false;
+        $lastException = null;
 
+        while ($attempt < $maxAttempts && !$success) {
+            try {
+                $response = $this->client->post("{$this->baseUrl}/security/v1/oauth/token", [
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ],
+                    'form_params' => [
+                        'grant_type' => 'client_credentials',
+                    ],
+                    'auth' => [$this->clientId, $this->clientSecret],
+                ]);
+
+                $data = json_decode($response->getBody()->getContents(), true);
+                if (isset($data['access_token']) && !empty($data['access_token'])) {
+                    $this->accessToken = $data['access_token'];
+                    session()->put('ups_access_token', $this->accessToken);
+                    Log::info('UPS OAuth Token Retrieved', ['token' => $this->accessToken]);
+                    $success = true;
+                } else {
+                    throw new \Exception('No access token returned from UPS API.');
+                }
+            } catch (\Exception $e) {
+                $lastException = $e;
+                Log::warning('UPS OAuth Attempt Failed', [
+                    'attempt' => $attempt + 1,
+                    'message' => $e->getMessage()
+                ]);
+                usleep(500000); // wait 0.5 seconds before retry
+            }
+            $attempt++;
+        }
+
+        if (!$success) {
+            Log::error('UPS OAuth Error', ['message' => $lastException ? $lastException->getMessage() : 'Unknown error']);
+            throw new \Exception('Failed to authenticate with UPS API after multiple attempts.');
+        }
+    }
     /**
      * Get shipping rates from UPS API.
      *
@@ -57,6 +125,7 @@ class UPSService
      */
     public function getShippingRates(array $requestData)
     {
+        $this->accessToken = session()->get('ups_access_token', null);
         try {
             $packages = [];
             foreach ($requestData['packages'] as $package) {

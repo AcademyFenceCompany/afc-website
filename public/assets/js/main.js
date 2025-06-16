@@ -189,9 +189,9 @@ $(document).ready(function() {
         // Show loading spinner
         shippingOptions.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
         $.ajax({
-            url: `${App.url}/shipping2/{zipValue}`,
+            url: `${App.url}/shipping2/${zipValue}`,
             type: "GET",
-            data: { zip: zipValue },
+            //data: { zip: zipValue },
             dataType: "html",
             success: function(data) {
                 shippingOptions.html(data);
@@ -199,6 +199,30 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 shippingOptions.html('<p class="text-danger">An error occurred. Please try again.</p>');
                 console.error("Error fetching shipping options:", error);
+            }
+        });
+    });
+
+    $(document).on("click", "input[name='shipmethod']", function() {
+        const selectedValue = $(this).val();
+        console.log("Selected shipping method:", selectedValue);
+        $.ajax({
+            url: `${App.url}/cart2/update-shipmethod/${selectedValue}`,
+            type: "GET",
+            //data: { shipmethod: selectedValue },
+            success: function(response) {
+                console.log("Shipping method updated:", response);
+                // Optionally update UI or show a message
+                const cartHtml = App.renderCartListGroup(response.cart2);
+                $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
+                $('.cart-count').text(response.cartCount); // Update cart count
+                $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('.shipping-cost').text(`$${parseFloat(response.cart2.shipping_cost).toFixed(2)}`); // Update total price
+                $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
+                $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
+            },
+            error: function(xhr, status, error) {
+                console.error("Error updating shipping method:", error);
             }
         });
     });

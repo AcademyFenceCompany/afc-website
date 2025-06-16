@@ -118,7 +118,7 @@
                 </h2>
                 <p class="lead text-muted">Review your cart items and proceed to checkout.</p>
             </div>
-            <form class="needs-validation" method="POST" action="{{ route('shipping2.getShippingRates') }}" novalidate>
+            <form class="needs-validation" method="POST" action="" novalidate>
               @csrf
               <div class="row g-5">
                 <div class="col-md-5 col-lg-4 order-md-last">

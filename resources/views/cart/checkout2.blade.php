@@ -138,7 +138,7 @@
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Shipping</span>
-                                  <span class="text-muted" data-mi-shipping="">${{$cart['shipping_cost']}}</span>
+                                  <span class="text-muted shipping-cost" data-mi-shipping="">${{$cart['shipping_cost']}}</span>
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Sales Tax</span>
@@ -148,7 +148,7 @@
                           </ul>
                           <div class="p-3 d-flex justify-content-between cart-total border-top">
                               <strong>Total (USD)</strong>
-                              <strong data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
+                              <strong class="cart-total"  data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
                           </div>
                       </div>
                       <button type="submit" class="btn btn-primary btn-lg m-3 mt-0" id="place-order">

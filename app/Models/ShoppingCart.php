@@ -15,6 +15,7 @@ class ShoppingCart{
     public $discount = 0;
     public $total = 0;
     public $quantity = 0;
+    public $weight = 0.0; // Total weight in lbs
     private $statetax = 0.06625; // NJ tax rate
 
     // This method is used to retrieve the shopping cart from the session or initialize it if not present
@@ -64,6 +65,7 @@ class ShoppingCart{
             'discount' => $this->discount,
             'total' => $this->total,
             'quantity' => $this->quantity,
+            'weight' => $this->weight, // Total weight in lbs
         ]);
     }
     // This method can be used to add an item to the cart
@@ -165,6 +167,22 @@ class ShoppingCart{
         return $this->cart;
 
     }
+    // This method can be used to set the shipping method and calculate the shipping cost
+    public function setShippingMethod($rate)
+    {
+        // Retrieve the current cart from the session
+        $this->cart = $this->getCart();
+
+        // Set the shipping cost based on the provided rate
+        $this->cart['shipping_cost'] = (float)$rate;
+
+        // Recalculate subtotal and total
+        $this->cart = $this->getCartTotal();
+
+        // Update the session with the updated cart
+        session()->put('cart2', $this->cart);
+        return $this->cart;
+    }
     // This method calculates and returns the cart totals (subtotal, shipping, tax, discount, total)
     public function getCartTotal()
     {
@@ -178,7 +196,16 @@ class ShoppingCart{
                 $this->quantity += $qty;
             }
         }
-
+        $this->weight = 0.0;
+        if (!empty($this->cart['items'])) {
+            foreach ($this->cart['items'] as $item) {
+                $qty = isset($item['quantity']) ? (int)$item['quantity'] : 1;
+                $weight = isset($item['weight']) ? (float)$item['weight'] : 0.0;
+                $this->weight += $weight * $qty;
+            }
+        }
+        $this->cart['weight'] = round($this->weight, 2);
+        // Calculate shipping cost, discount, and tax
         $this->shipping_cost = isset($this->cart['shipping_cost']) ? (float)$this->cart['shipping_cost'] : 0.0;
         $this->discount = isset($this->cart['discount']) ? (float)$this->cart['discount'] : 0.0;
         $this->tax = $this->subtotal * $this->statetax;

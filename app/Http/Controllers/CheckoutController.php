@@ -91,11 +91,13 @@ class CheckoutController extends Controller
 
         return view('cart.checkout2', compact('cart', 'subtotal', 'tax', 'total'));
     }
+    
     //Logic for handling the checkout process v2
     public function processCheckout(Request $request)
     {
         $shoppingCart = new ShoppingCart();
         $cart = $shoppingCart->getCart();
+
         // Validate the request data
         $request->validate([
             'cc_name' => 'required|string|max:255',

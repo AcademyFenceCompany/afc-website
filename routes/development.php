@@ -115,6 +115,7 @@ Route::prefix('cart2')->group(function () {
     Route::get('/add-to-cart/p/{id}', [ShoppingCartController::class, 'addItem'])->name('cart2.addToCart');
     Route::get('/update-qty/p/{id}/q/{qty}', [ShoppingCartController::class, 'updateItem'])->name('cart2.updateItem');
     Route::get('/remove-item/p/{id}', [ShoppingCartController::class, 'removeItem'])->name('cart2.removeItem');
+    Route::get('/update-shipmethod/{rate}', [Shipping2Controller::class, 'updateShippingMethod'])->name('cart2.updateShippingMethod');
 });
 Route::get('/shipping2/{zip}', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
 // Route for the login page. This route needs to be relocated to the auth routes file.

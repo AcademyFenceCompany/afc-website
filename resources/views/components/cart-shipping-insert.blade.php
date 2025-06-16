@@ -1,48 +1,48 @@
 {{-- Frontend Shipping options list --}}
 <div class="card bg-light mb-3">
+    
     <ul class="list-group list-group-flush ">
 
-        <li class="list-group-item d-flex bg-primary justify-content-between align-items-start">
-            <input class="form-check-input me-1" type="radio" name="shipmethod" value="pickup" checked>
+        <li class="list-group-item d-flex bg-primary justify-content-between align-items-start ship-module">
+            <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="pickup" checked>
             <div class="ms-2 me-auto">
                 <div class="fw-bold">Pick Up</div>
                 Pick up at our warehouse in <span class="text-muted">Orange, NJ</span>
             </div>
             <span class="badge text-bg-secondary rounded-pill">FREE</span>
         </li>
-        @if(isset($upsrates['total_cost']))
-            <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start">
+        @if($upsrates != 0)
+            <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="ups">
+                <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="ups">
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">UPS Ground</div>
                     Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
                 </div>
                 
-                <span class="badge text-bg-secondary rounded-pill">${{ $upsrates['total_cost'] }}</span>
+                <span class="badge text-bg-primary text-dark rounded-pill">${{ $upsrates }}</span>
                 
-            </li>
+            </li>   
         @endif
-        @if(!isset($tForceRates['error']))
-            <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start">
-                <input class="form-check-input me-1" type="radio" name="shipmethod" value="freight">
+        @if(isset($tForceRates))
+            <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="tforce">
+                <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="tforce">
                 <div class="ms-2 me-auto">
                     <div class="fw-bold">TForce Freight (Standard LTL) </div>
-                    Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays($tForceRates['detail'][0]['timeInTransit']['timeInTransit'])->format('l, M d') }}</span>
+                    Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
                 </div>
                 
-                <span class="badge text-bg-primary rounded-pill">${{ $tForceRates['detail'][0]['shipmentCharges']['total']['value'] }}</span>
+                <span class="badge text-bg-primary text-dark rounded-pill">${{ $tForceRates }}</span>
             </li>
         @endif
-        @if(!isset($rlCarriersRates['error']))
-        
-        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start">
-            <input class="form-check-input me-1" type="radio" name="shipmethod" value="freight">
+        @if(isset($rlCarriersRates))
+        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="rl_carriers">
+            <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="rl_carriers">
             <div class="ms-2 me-auto">
             <div class="fw-bold">R&L Carriers (Standard Service) </div>
                 Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
             </div>
-            <span class="badge text-bg-primary rounded-pill">{{$rlCarriersRates['d']['Result']['ServiceLevels'][0]['NetCharge']}}</span>
+            <span class="badge text-bg-primary text-dark rounded-pill ship-module-price">{{$rlCarriersRates}}</span>
         </li>
-        @dump($rlCarriersRates)
         @endif
     </ul>
 </div>
@@ -58,7 +58,6 @@
             <p class="badge rounded-pill text-bg-success p-3"><i class="bi bi-truck me-3"></i><strong>Origin: </strong>NJ, 07102</p>
             <p class="badge rounded-pill text-bg-danger p-3"> <i class="bi bi-geo-alt-fill me-3"></i><strong>Destination: </strong>NJ, 07102</p>
         </div>
-        
 
         <figure class="text-center">
             <blockquote class="blockquote">
