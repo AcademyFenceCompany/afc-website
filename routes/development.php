@@ -13,6 +13,9 @@ use App\Http\Controllers\Ams\OrderController;
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
     // Development route for testing: Colin
+    Route::get('/dashboard', function(){
+        return view('ams.index');
+    })->name('ams.dashboard');
     Route::get('/install_upload', [InstallJobsController::class, 'index'])->name('ams.install_upload');
     Route::get('/product-reports', [ProductReportController::class, 'index'])->name('ams.product-report');
     Route::post('/install_upload', [InstallJobsController::class, 'add'])->name('ams.install_upload');
@@ -62,7 +65,7 @@ Route::get('/codes-and-permits', function () {
     return view('codesandpermits', compact('majCategories', 'subCategories', 'height'));
 })->name('gallery');
 Route::get('/category', function(){
-        
+
     $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
     $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
     $fenceCategories = [
@@ -82,7 +85,7 @@ Route::get('/category', function(){
 
 })->name('category');
 Route::get('/productdesc', function(){
-        
+
     $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
     $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
     $fenceCategories = [
