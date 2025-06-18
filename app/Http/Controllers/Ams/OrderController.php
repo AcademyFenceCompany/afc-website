@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\CustomerAddress;
+use App\Models\ShoppingCart;
 
 class OrderController extends Controller
 {
@@ -23,6 +24,19 @@ class OrderController extends Controller
         DB::enableQueryLog(); // Enable query logging
     }
 
+    public function create2(){
+                // Get list of unique counties
+        $counties = \DB::table('county')
+            ->select('county', \DB::raw('MIN(id) as id'))
+            ->groupBy('county')
+            ->get();
+
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();    
+        $cities = \DB::table('county')->get();
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
+        return view('ams.order.create-order2', compact('counties', 'majCategories', 'cart', 'cities'));
+    }
     /**
      * Show the form for creating a new order.
      *

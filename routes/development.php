@@ -8,6 +8,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Shipping2Controller;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\Ams\OrderController;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -21,7 +22,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/shippingrate', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
     Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
     Route::get('/activity', [ActivityController::class, 'getorders'])->name('ams.orders');
-    
+    Route::get('/create-order', [OrderController::class, 'create2'])->name('ams.create-order');
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');

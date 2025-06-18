@@ -311,8 +311,7 @@
                         <i class="bi bi-star-fill text-primary"></i>
                         <span class="ms-2">4.5 (120 reviews)</span>
                     </div>
-                    <p class="mb-4">Experience premium sound quality and industry-leading noise cancellation with these wireless
-                        headphones. Perfect for music lovers and frequent travelers.</p>
+                    <p class="mb-4">Discover durable and versatile welded wire fencing, ideal for gardens, yards, and property boundaries. Designed for strength and easy installation, it's a reliable solution for residential and commercial applications.</p>
                     <div class="mb-4">
                         <h5>Color:</h5>
                         <div class="btn-group" role="group" aria-label="Color selection">
@@ -339,10 +338,10 @@
                     <div class="mt-4">
                         <h5>Key Features:</h5>
                         <ul>
-                            <li>Industry-leading noise cancellation</li>
-                            <li>30-hour battery life</li>
-                            <li>Touch sensor controls</li>
-                            <li>Speak-to-chat technology</li>
+                            <li>Industry-leading quality</li>
+                            <li>30-hour warranty</li>
+                            <li>Vinyl PVC coated</li>
+                            <li>For residential and Commercial</li>
                         </ul>
                     </div>
                 </div>

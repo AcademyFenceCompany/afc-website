@@ -16,13 +16,15 @@ class UPSService
 
     public function __construct()
     {
-        $this->client = new Client(['timeout' => 30]);
+        $this->client = new Client(['timeout' => 3600]);
         $this->baseUrl = config('services.ups.base_url', env('UPS_API_BASE_URL'));
         $this->clientId = env('UPS_CLIENT_ID');
         $this->clientSecret = env('UPS_CLIENT_SECRET');
         $this->shipperNumber = env('UPS_SHIPPER_NUMBER');
-        //$this->accessToken = session()->get('ups_access_token', null);
-        //$this->authenticate2();
+        
+        if (null === session()->get('ups_access_token')) {
+            $this->authenticate();
+        }
     }
     /**
      * Check if the current access token is valid by making a simple authenticated request.

@@ -146,7 +146,7 @@
 
                               </li>
                           </ul>
-                          <div class="p-3 d-flex justify-content-between cart-total border-top">
+                          <div class="p-3 d-flex justify-content-between border-top">
                               <strong>Total (USD)</strong>
                               <strong class="cart-total"  data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
                           </div>

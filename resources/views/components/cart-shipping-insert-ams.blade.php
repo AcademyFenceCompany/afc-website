@@ -1,52 +1,3 @@
-{{-- Frontend Shipping options list --}}
-<div class="card bg-light mb-3">
-    
-    <ul class="list-group list-group-flush ">
-
-        <li class="list-group-item d-flex bg-primary justify-content-between align-items-start ship-module">
-            <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="pickup" checked>
-            <div class="ms-2 me-auto">
-                <div class="fw-bold">Pick Up</div>
-                Pick up at our warehouse in <span class="text-muted">Orange, NJ</span>
-            </div>
-            <span class="badge text-bg-secondary rounded-pill">FREE</span>
-        </li>
-        @if(isset($upsrates) && $upsrates != 0)
-            <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="ups">
-                <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="ups">
-                <div class="ms-2 me-auto">
-                    <div class="fw-bold">UPS Ground</div>
-                    Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
-                </div>
-                <span class="badge text-bg-primary text-dark rounded-pill">${{$upsrates}}</span>
-                
-            </li>   
-        @endif
-        @if(isset($tForceRates) && $tForceRates != 0)
-            <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="tforce">
-                <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="tforce">
-                <div class="ms-2 me-auto">
-                    <div class="fw-bold">TForce Freight (Standard LTL) </div>
-                    Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
-                </div>
-                
-                <span class="badge text-bg-primary text-dark rounded-pill">${{ $tForceRates }}</span>
-            </li>
-        @endif
-        @if(isset($rlCarriersRates) && $rlCarriersRates != 0)
-        <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="rl_carriers">
-            <input class="form-check-input me-1 mt-2" type="radio" name="shipmethod" value="rl_carriers">
-            <div class="ms-2 me-auto">
-            <div class="fw-bold">R&L Carriers (Standard Service) </div>
-                Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
-            </div>
-            <span class="badge text-bg-primary text-dark rounded-pill ship-module-price">${{$rlCarriersRates}}</span>
-        </li>
-        @endif
-    </ul>
-</div>
-
-{{-- Backend Shipping options list
 <div class="card bg-light mb-3">
     <div class="card-header bg-primary text-dark py-2">
         <h5 class="card-title">Shipping Options</h5>
@@ -193,4 +144,3 @@
         </li>
     </ul>
 </div>
- --}}

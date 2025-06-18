@@ -1,13 +1,27 @@
-@props(['cardHeader' => null, 'cardname' => 'default'])
+@props(['cardHeader' => null, 'cardname' => 'default' , 'admin' => 'true'])
 <div class="card p-4 mb-4 card-{{ $cardname }}">
     <h4 class="mb-3">{{ $cardHeader }}</h4>
     <div class="row g-3">
-        <div class="col-sm-6">
-        <label for="firstName" class="form-label">First name</label>
-        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="" value="John" required>
-        <div class="invalid-feedback">
-            Valid first name is required.
+        @if($admin == true)
+        <div class="col-md-12">
+            <label for="addressSelect" class="form-label">Select Address</label>
+            <select class="form-select form-select-lg" id="addressSelect" name="selected_address" required>
+                <option value="">Choose an address...</option>
+                <option value="1">1234 Main St, Newark, New Jersey, 07101</option>
+                <option value="2">5678 Oak Ave, Jersey City, New Jersey, 07302</option>
+                <option value="3">9101 Maple Rd, Hoboken, New Jersey, 07030</option>
+            </select>
+            <div class="invalid-feedback">
+            Please select a valid address.
+            </div>
         </div>
+        @endif
+        <div class="col-sm-6">
+            <label for="firstName" class="form-label">First name</label>
+            <input type="text" class="form-control" id="firstName" name="first_name" placeholder="" value="John" required>
+            <div class="invalid-feedback">
+                Valid first name is required.
+            </div>
         </div>
 
         <div class="col-sm-6">

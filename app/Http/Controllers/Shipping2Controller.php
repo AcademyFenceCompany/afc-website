@@ -130,7 +130,7 @@ class Shipping2Controller extends Controller
         
         // This is where you return the lowest rate
         $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
-        //@dd($tForceRates, $rlCarriersRates);
+        //@dd($upsrates, $tForceRates, $rlCarriersRates, $lowestUpsRate);
 
         //@dd($lowestUpsRate, $upsrates, $tForceRates, $rlCarriersRates);
         $shippingmethod = [
@@ -140,6 +140,7 @@ class Shipping2Controller extends Controller
         ];
         // Store the shipping rates in the session
         $shipping = $this->getShippingRatesArray($shippingmethod);
+        @dump($shipping);
         // Add shipper information to the response
         return view('components.cart-shipping-insert', [
             'upsrates' => $shipping['ups'] ?? [],
@@ -322,10 +323,13 @@ class Shipping2Controller extends Controller
     // This method method is used to put all the shipping rates into an array
     public function getShippingRatesArray($ship)
     {
+        $ups = $ship['ups']['total_cost'] ?? 0;
+        $tforce = $ship['tforce']['detail'][0]['shipmentCharges']['total']['value'] ?? 0;
+        $rlCarriers = $ship['rl_carriers']['d']['Result']['ServiceLevels'][0]['NetCharge'] ?? 0;
         $shipping = [
-            'ups' => $ship['ups']['total_cost'] ?? 0,
-            'tforce' => $ship['tforce']['detail'][0]['shipmentCharges']['total']['value'],
-            'rl_carriers' => $ship['rl_carriers']['d']['Result']['ServiceLevels'][0]['NetCharge'],
+            'ups' => $ups,
+            'tforce' => $tforce,
+            'rl_carriers' => $rlCarriers,
         ];
         session()->put('shipping_rates', $shipping);
         return $shipping;
