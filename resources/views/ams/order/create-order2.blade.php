@@ -17,6 +17,7 @@
     }
     .card{
         border: 2px dashed rgb(165, 165, 165);
+        background-color:rgb(236, 236, 236);
     }
     .form-control,
     .form-select {
@@ -74,9 +75,9 @@
                 <x-cart-customer-search :cardHeader="'Customer Search'" :cardname="'customersearch'" />
                 <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" />
                 <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'" :admin="true"/>
-                <x-cart-items :cardHeader="'Order Items'" :cardname="'items'" />
-                <x-cart-correspondence :cardHeader="'Shipping Method'" :cardname="'correspondence'" />
-                <x-cart-shipping-insert-ams />
+                <x-cart-items :cardHeader="'Order Items'" :cardname="'items'" :cart="$cart"/>
+                <x-cart-correspondence :cardHeader="'Order Fulfillment'" :cardname="'correspondence'" />
+                <div class="col-12 mt-4" id="shipping-options"></div>
                 <x-cart-payment :cardHeader="'Payment Method'" :cardname="'payment'" />
                 <x-cart-activity-list :cardHeader="'Order Notes'" :cardname="'ordernotes'" />
             </div>
@@ -169,6 +170,10 @@
                                   <span class="text-muted" data-mi-taxes="0">$0</span>
                               </li>
                           </ul>
+                          <div class="p-3  border-top">
+                              <label for="cart_subtotal" class="form-label"><strong>Charge Total (USD)</strong></label>
+                              <input type="number" class="form-control" name="cart_total" id="total" width="50%" value="{{$cart['total']}}">
+                            </div>
                           <div class="p-3 d-flex justify-content-between border-top">
                               <strong>Total (USD)</strong>
                               <strong class="cart-total"  data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
@@ -253,9 +258,6 @@
     </div>
   </div>
 </div>
-
-
-
 
 @endsection
 

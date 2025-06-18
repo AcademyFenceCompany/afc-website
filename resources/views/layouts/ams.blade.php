@@ -18,6 +18,7 @@
     
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <style>
         @media print {
             .table {
@@ -245,6 +246,7 @@
         console.log("APP_URL: ", window.APP_URL);
     </script>
     <script src="{{ asset('js/ams.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
     @yield('scripts')
 </body>
 

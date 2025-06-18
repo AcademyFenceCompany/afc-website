@@ -115,7 +115,7 @@ body {
 }
 
 /* Table Styles */
-.table {
+/* .table {
     width: 100%;
     margin-top: 1rem;
     background-color: white;
@@ -149,7 +149,7 @@ body {
 
 .table tbody tr:hover {
     background-color: #f9f9f9;
-}
+} */
 
 .status-oms {
     color: white;

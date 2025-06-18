@@ -21,6 +21,11 @@ class Shipping2Controller extends Controller
     //This method will handle the shipping rates retrieval
     public function getShippingRates($zip)
     {
+        $ams = true;
+        if($ams) {
+            //return $this->getShippingRatesAMS($zip);
+        }
+        //$zip = '07018'; // Default zip code for testing, replace with dynamic input if needed
         // Here you would call the appropriate service to get the rates
         $shippingMODEL = new Shipping2();
         $cart = new ShoppingCart();
@@ -108,8 +113,8 @@ class Shipping2Controller extends Controller
 
                 $rates['ups'] = $upsRatesList;
             }
-            $tForceRates['error'] = 'Total weight exceeds 150 lbs';
-            $rlCarriersRates['error'] = 'Total weight exceeds 150 lbs';
+            $tForceRates['error'] = 'Total weight is less than 150 lbs';
+            $rlCarriersRates['error'] = 'Total weight is less than 150 lbs';
         } else {
             // If total weight is 150 lbs or more, use TForce
             $upsrates = [
@@ -140,26 +145,25 @@ class Shipping2Controller extends Controller
         ];
         // Store the shipping rates in the session
         $shipping = $this->getShippingRatesArray($shippingmethod);
-        @dump($shipping);
+        //@dump($shipping);
         // Add shipper information to the response
         return view('components.cart-shipping-insert', [
             'upsrates' => $shipping['ups'] ?? [],
+            'upsallrates' => $upsrates ?? [],
             'tForceRates' => $shipping['tforce'] ?? [],
             'rlCarriersRates' => $shipping['rl_carriers'] ?? [],
             'packages' => $formData['packages'],
+            'cart' => $cartData,
             'shippingmethod' => $shippingmethod,
+            'formData' => $formData,
+
         ]);
     }
     //This method will handle the shipping rates retrieval
-    public function getShippingRatesAMS(Request $request)
+    public function getShippingRatesAMS($zip)
     {
-        return view('components.cart-shipping-insert', [
-            //'upsrates' => $lowestUpsRate,
-            'tForceRates' =>'',
-            'rlCarriersRates' => '',
-            'packages' => '',
-        ]);
-        return; 
+        
+        $zip = '07018'; // Default zip code for testing, replace with dynamic input if needed
         // Here you would call the appropriate service to get the rates
         $shippingMODEL = new Shipping2();
         $cart = new ShoppingCart();
@@ -182,32 +186,8 @@ class Shipping2Controller extends Controller
             'recipient_address' => '78 Elmwood Ave',
             'recipient_city' => 'East Orange',
             'recipient_state' => 'NJ',
-            'recipient_postal' => '07018',
+            'recipient_postal' => $zip,
             'packages' => [
-                [
-                    'weight' => 105,
-                    'dimensions' => [
-                        'length' => 16,
-                        'width' => 49,
-                        'height' => 16,
-                    ],
-                ],
-                [
-                    'weight' => 105,
-                    'dimensions' => [
-                        'length' => 16,
-                        'width' => 49,
-                        'height' => 16,
-                    ],
-                ],
-                [
-                    'weight' => 105,
-                    'dimensions' => [
-                        'length' => 16,
-                        'width' => 49,
-                        'height' => 16,
-                    ],
-                ],
                 [
                     'weight' => 105,
                     'dimensions' => [
@@ -236,70 +216,76 @@ class Shipping2Controller extends Controller
 
         // Use UPS when weight is less than 150 lbs
         // Calculate total weight of all packages
-        $totalWeight = 160;
-        if (isset($formData['packages']) && is_array($formData['packages'])) {
-            foreach ($formData['packages'] as $package) {
-                if (isset($package['weight'])) {
-                    $totalWeight += $package['weight'];
-                }
-            }
-        }
+        $totalWeight = $cartData['weight'] ?? 0.0; // Initialize total weight from cart data
+        // if (isset($formData['packages']) && is_array($formData['packages'])) {
+        //     foreach ($formData['packages'] as $package) {
+        //         if (isset($package['weight'])) {
+        //             $totalWeight += $package['weight'];
+        //         }
+        //     }
+        // }
 
         // If total weight is less than or equal to 150 lbs, use UPS
-        if ($totalWeight < 150) {
-            $upsrates = $shippingMODEL->getUPSShippingRates($formData); //To Be Implemented
-            // Check if the UPS API response contains an error
-            if(!isset($upsrates['error'])) {
-                // Extract Weight and TotalCharges MonetaryValue from UPS API response
-                $rateResponse = $upsrates['RateResponse'] ?? [];
-                $ratedShipments = $rateResponse['RatedShipment'] ?? [];
 
-                $upsRatesList = [];
-                foreach ($ratedShipments as $shipment) {
-                    $weight = $shipment['BillingWeight']['Weight'] ?? null;
-                    $totalCost = $shipment['TotalCharges']['MonetaryValue'] ?? null;
-                    $serviceCode = $shipment['Service']['Code'] ?? null;
-                    $serviceDescription = $shipment['Service']['Description'] ?? null;
+        $upsrates = $shippingMODEL->getUPSShippingRates($formData); //To Be Implemented
+        // Check if the UPS API response contains an error
+        if(!isset($upsrates['error'])) {
+            // Extract Weight and TotalCharges MonetaryValue from UPS API response
+            $rateResponse = $upsrates['RateResponse'] ?? [];
+            $ratedShipments = $rateResponse['RatedShipment'] ?? [];
 
-                    $upsRatesList[] = [
-                        'service_code' => $serviceCode,
-                        'service_description' => $serviceDescription,
-                        'weight' => $weight,
-                        'total_cost' => $totalCost,
-                    ];
-                }
+            $upsRatesList = [];
+            foreach ($ratedShipments as $shipment) {
+                $weight = $shipment['BillingWeight']['Weight'] ?? null;
+                $totalCost = $shipment['TotalCharges']['MonetaryValue'] ?? null;
+                $serviceCode = $shipment['Service']['Code'] ?? null;
+                $serviceDescription = $shipment['Service']['Description'] ?? null;
 
-                $rates['ups'] = $upsRatesList;
-            }
-        } else {
-            // If total weight is 150 lbs or more, use TForce
-            $upsrates = [
-                'error' => 'Total weight exceeds 150 lbs, please use Freight for shipping rates.'
-            ];
-            //Get TForce rates
-            $tForceRates = $shippingMODEL->getTForceShippingRates($formData);
-            if (!isset($tForceRates['error'])) {
-                $rates['tforce'] = $tForceRates;
+                $upsRatesList[] = [
+                    'service_code' => $serviceCode,
+                    'service_description' => $serviceDescription,
+                    'weight' => $weight,
+                    'total_cost' => $totalCost,
+                ];
             }
 
-            // Get R&L Carriers rates
-            $rlCarriersRates = $shippingMODEL->getRLCarriersShippingRates($formData);
-            if (!isset($rlCarriersRates['error'])) {
-                $rates['rl_carriers'] = $rlCarriersRates;
-            }
+            $rates['ups'] = $upsRatesList;
+        }
+        //Get TForce rates
+        $tForceRates = $shippingMODEL->getTForceShippingRates($formData);
+        if (!isset($tForceRates['error'])) {
+            $rates['tforce'] = $tForceRates;
+        }
+
+        // Get R&L Carriers rates
+        $rlCarriersRates = $shippingMODEL->getRLCarriersShippingRates($formData);
+        if (!isset($rlCarriersRates['error'])) {
+            $rates['rl_carriers'] = $rlCarriersRates;
         }
         
         // This is where you return the lowest rate
-        //$lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
-        //@dd($tForceRates, $rlCarriersRates);
-        return view('components.cart-shipping-insert', [
-            //'upsrates' => $lowestUpsRate,
-            'tForceRates' => $tForceRates,
-            'rlCarriersRates' => $rlCarriersRates,
-            'packages' => $formData['packages'],
-        ]);
+        $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
+        @dd($upsrates, $tForceRates, $rlCarriersRates, $lowestUpsRate);
+
+        //@dd($lowestUpsRate, $upsrates, $tForceRates, $rlCarriersRates);
+        $shippingmethod = [
+            'ups' => $lowestUpsRate ?? [],
+            'tforce' => $tForceRates,
+            'rl_carriers' => $rlCarriersRates,
+        ];
+        // Store the shipping rates in the session
+        $shipping = $this->getShippingRatesArray($shippingmethod);
+        @dump($shipping);
         // Add shipper information to the response
-        return response()->json($upsrates);
+        return view('components.cart-shipping-insert', [
+            'upsrates' => $shipping['ups'] ?? [],
+            'upsallrates' => $rates['ups'] ?? [],
+            'tForceRates' => $shipping['tforce'] ?? [],
+            'rlCarriersRates' => $shipping['rl_carriers'] ?? [],
+            'packages' => $formData['packages'],
+            'cart' => $cartData,
+            'shippingmethod' => $shippingmethod,
+        ]);
     }
     // This method is used to get the lowest shipping rate
     public function getLowestUPSRate($rates)

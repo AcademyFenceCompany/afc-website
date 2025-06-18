@@ -16,15 +16,13 @@ class UPSService
 
     public function __construct()
     {
-        $this->client = new Client(['timeout' => 3600]);
+        $this->client = new Client(['timeout' => 86400]);
         $this->baseUrl = config('services.ups.base_url', env('UPS_API_BASE_URL'));
         $this->clientId = env('UPS_CLIENT_ID');
         $this->clientSecret = env('UPS_CLIENT_SECRET');
         $this->shipperNumber = env('UPS_SHIPPER_NUMBER');
-        
-        if (null === session()->get('ups_access_token')) {
-            $this->authenticate();
-        }
+        $this->authenticate();
+
     }
     /**
      * Check if the current access token is valid by making a simple authenticated request.
@@ -55,25 +53,29 @@ class UPSService
      */
     public function authenticate()
     {
-        try {
-            $response = $this->client->post("{$this->baseUrl}/security/v1/oauth/token", [
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-                'form_params' => [
-                    'grant_type' => 'client_credentials',
-                ],
-                'auth' => [$this->clientId, $this->clientSecret],
-            ]);
+       if (empty(session()->get('ups_access_token'))) {
+            try {
+                $response = $this->client->post("{$this->baseUrl}/security/v1/oauth/token", [
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ],
+                    'form_params' => [
+                        'grant_type' => 'client_credentials',
+                    ],
+                    'auth' => [$this->clientId, $this->clientSecret],
+                ]);
 
-            $data = json_decode($response->getBody()->getContents(), true);
-            $this->accessToken = $data['access_token'];
-            session()->put('ups_access_token', $this->accessToken);
-            Log::info('UPS OAuth Token Retrieved', ['token' => $this->accessToken]);
-        } catch (\Exception $e) {
-            Log::error('UPS OAuth Error', ['message' => $e->getMessage()]);
-            throw new \Exception('Failed to authenticate with UPS API.');
-        }
+                $data = json_decode($response->getBody()->getContents(), true);
+                $this->accessToken = $data['access_token'];
+                session()->put('ups_access_token', $this->accessToken);
+                Log::info('UPS OAuth Token Retrieved', ['token' => $this->accessToken]);
+            } catch (\Exception $e) {
+                Log::error('UPS OAuth Error', ['message' => $e->getMessage()]);
+                session()->put('ups_access_token', null); // Clear the session token on failure
+                throw new \Exception('Failed to authenticate with UPS API.');
+            }
+       }
+
     }
     public function authenticate2()
     {
