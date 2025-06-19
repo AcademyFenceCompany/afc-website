@@ -167,7 +167,7 @@
                             class="img-fluid rounded-3" alt="Cotton T-shirt">
                         </div>
                         <div class="col-md-5 col-lg-5">
-                            <h6 class="text-muted">Item #: {{$item['id']}}</h6>
+                            <h6 class="text-muted">Item #: {{$item['item_no']}}</h6>
                             <h6 class="mb-0">{{$item['name']}}</h6>
                         </div>
                         <div class="col-md-2 col-lg-1 col-xl-2 d-flex">

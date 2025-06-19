@@ -50,7 +50,7 @@
 </div>
 @else
 {{-- Admin Shipping options list --}}
-<div class="card bg-light mb-3" style="border: 1px solid #cecece;">
+<div class="card bg-light mb-3 d-none" style="border: 1px solid #cecece;">
     <div class="card-header bg-primary text-dark py-2">
         <h5 class="card-title">Shipping Options</h5>
         <p class="card-text">Select a shipping method for your order.</p>
@@ -120,7 +120,7 @@
         </div>
     </div>
     <ul class="list-group list-group-flush ">
-        {{-- @dump($cart, $shippingmethod, $upsallrates, $upsrates, $tForceRates, $rlCarriersRates) --}}
+        
         @if($cart['weight'] < 150)
         <li class="list-group-item bg-transparent">
             <div class="ms-2 mb-3 d-flex me-auto justify-content-between align-items-start">
@@ -130,12 +130,31 @@
             </div>
             <div class="w-100 mb-3">
                 <ul class="list-group">
-                    
+                    @foreach($upsallrates as $rate)
                     <li class="list-group-item d-flex align-items-center">
-                        <input class="form-check-input me-3" type="checkbox" value="" id="firstCheckbox">
-                        <label class="form-check-label me-auto" for="firstCheckbox">USPS Small Package</label>
-                        <span class="badge text-bg-primary rounded-pill text-dark">${{$upsrates}}</span>
-                    </li>
+                        <input class="form-check-input me-3" type="checkbox" value="{{$rate['total_cost']}}" id="firstCheckbox">
+                        @if(isset($rate['service_code']))
+                            @if($rate['service_code'] == '01')
+                                <label class="form-check-label me-auto" for="firstCheckbox">UPS Next Day Air</label>
+                            @elseif($rate['service_code'] == '02')
+                                <label class="form-check-label me-auto" for="firstCheckbox">UPS 2nd Day Air</label>
+                            @elseif($rate['service_code'] == '03')
+                                <label class="form-check-label me-auto" for="firstCheckbox">UPS Ground</label>
+                            @elseif($rate['service_code'] == '12')
+                                <label class="form-check-label me-auto" for="firstCheckbox">UPS 3 Day Select</label>
+                            @elseif($rate['service_code'] == '13')
+                                <label class="form-check-label me-auto" for="firstCheckbox">UPS 2nd Day Air</label>
+                            @elseif($rate['service_code'] == '14')
+                                <label class="form-check-label me-auto" for="firstCheckbox">UPS Next Day Air Early A.M.</label>
+                            @else
+                                <label class="form-check-label me-auto" for="firstCheckbox">USPS Small Package</label>
+                            @endif
+                        @else
+                            <label class="form-check-label me-auto" for="firstCheckbox">USPS Small Package</label>
+                        @endif
+                        <span class="badge text-bg-primary rounded-pill text-dark">${{$rate['total_cost']}}</span>
+                    </li>       
+                    @endforeach
                 </ul>
             </div>
         </li>
@@ -146,20 +165,47 @@
                     <div class="fw-bold">Freight</div>Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
                 </div>
             </div>
-            <div class="w-100 mb-3">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex align-items-center">
-                        <input class="form-check-input me-3" type="checkbox" value="" id="firstCheckbox">
-                        <label class="form-check-label me-auto" for="firstCheckbox">TForce Freight (Standard LTL)</label>
-                        <span class="badge text-bg-primary rounded-pill text-dark">${{$tForceRates}}</span>
-                    </li>
-                    <li class="list-group-item d-flex align-items-center">
-                        <input class="form-check-input me-3" type="checkbox" value="" id="firstCheckbox">
-                        <label class="form-check-label me-auto" for="firstCheckbox">R&amp;L Carriers (Standard Service) </label>
-                        <span class="badge text-bg-primary rounded-pill text-dark">{{$rlCarriersRates}}</span>
-                    </li>
-                </ul>
-            </div>
+            <div class="table-responsive w-100">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                        <th scope="col">Select</th> 
+                        <th scope="col">Carrier</th>
+                        <th scope="col">Weight</th>
+                        <th scope="col">Cost</th>
+                        <th scope="col">Markup</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Ouote #</th>
+                        <th scope="col">Pallet Qty</th>
+                        <th scope="col">Pallet Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input class="form-check-input me-3" type="checkbox" value=""></td>
+                            <td>TForce Freight</td>
+                            <td>525 lbs</td>
+                            <td>${{$tForceRates}}</td>
+                            <td>$25</td>
+                            <td>$259.33</td>
+                            <td>Q123456</td>
+                            <td>2</td>
+                            <td>48x48x60</td>
+                        </tr>
+                        <tr>
+                            <td><input class="form-check-input me-3" type="checkbox" value=""></td>
+                            <td>R&L Carriers</td>
+                            <td>525 lbs</td>
+                            <td>${{$rlCarriersRates}}</td>
+                            <td>$25</td>
+                            <td>$259.33</td>
+                            <td>Q123456</td>
+                            <td>2</td>
+                            <td>48x48x60</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>    
         </li>
         @endif
     </ul>

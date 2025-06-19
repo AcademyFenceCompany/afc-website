@@ -147,9 +147,9 @@ class Shipping2Controller extends Controller
         $shipping = $this->getShippingRatesArray($shippingmethod);
         //@dump($shipping);
         // Add shipper information to the response
-        return view('components.cart-shipping-insert', [
+        return view('components.cart-shipping-insert-ams', [
             'upsrates' => $shipping['ups'] ?? [],
-            'upsallrates' => $upsrates ?? [],
+            'upsallrates' => $rates['ups'] ?? [],
             'tForceRates' => $shipping['tforce'] ?? [],
             'rlCarriersRates' => $shipping['rl_carriers'] ?? [],
             'packages' => $formData['packages'],

@@ -15,6 +15,13 @@
     .breadcrumb-item + .breadcrumb-item::before{
         content: ">";
     }
+    .form-check-input{
+        border: 1px solid gray;
+    }
+    .text-bg-primary{
+        color:#0f0f0f !important;
+    }
+    .list-group-item .badge{ --bs-badge-font-size: 1rem;}
     .card{
         border: 2px dashed rgb(165, 165, 165);
         background-color:#FFF;

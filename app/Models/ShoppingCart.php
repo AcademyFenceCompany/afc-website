@@ -76,9 +76,6 @@ class ShoppingCart{
         if (!$product) {
             return response()->json(['success' => false, 'message' => 'Product not found.'], 404);
         }
-        // Logic to add an item to the cart
-        $name = $product->product_name ?? 'Unknown Product';
-        $price = $product->price ?? 0.0;
 
         // Retrieve the current cart from the session, or initialize if not present
         $this->cart = $this->getCart();
@@ -90,9 +87,10 @@ class ShoppingCart{
             // Otherwise, add the new item with its details
             $this->cart['items'][$id] = [
                 'id' => $id,
-                'name' => $name,
+                'item_no' => $product->item_no ?? 'Unknown Item Number',
+                'name' => $product->product_name ?? 'Unknown Product',
                 'quantity' => 1,
-                'price' => $price,
+                'price' => $product->price ?? 0.0,
                 'length' => $product->ship_length ?? 0, // Example length in inches
                 'width' => $product->ship_width ?? 0, // Example width in inches
                 'height' => $product->ship_height ?? 0, // Example height in inches
@@ -133,6 +131,7 @@ class ShoppingCart{
             // If the item does not exist, add it with the specified quantity
             $this->cart['items'][$id] = [
                 'id' => $id,
+                'item_no' => $product->item_no ?? 'Unknown Item Number',
                 'name' => $product->product_name ?? 'Unknown Product',
                 'quantity' => $qty,
                 'price' => $product->price ?? 0.0,
