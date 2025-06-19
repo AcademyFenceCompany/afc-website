@@ -67,6 +67,7 @@ class ActivityController extends Controller
         // Fetch all orders with their relationships
         $orders = \DB::table('orders')->limit(10)->get();
         //@dd($orders);
+        return redirect()->route('ams.create-order');
         // Return the view with the orders
         return view('ams.activity', compact('orders'));
     }

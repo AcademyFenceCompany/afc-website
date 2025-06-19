@@ -67,7 +67,7 @@
             Orders <i class="bi bi-caret-down-fill"></i>
         </a>
         <div class="collapse submenu" id="ordersMenu">
-            <a href="{{ route('ams.orders.create') }}" class="menu-item">Create New Order</a>
+            <a href="{{ route('ams.create-order') }}" class="menu-item">Create New Order</a>
             <a href="{{ route('ams.activity') }}" class="menu-item">Today's Activity</a>
             <a href="#" class="menu-item">Test Account</a>
         </div>
