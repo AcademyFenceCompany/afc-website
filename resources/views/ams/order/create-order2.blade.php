@@ -17,7 +17,7 @@
     }
     .card{
         border: 2px dashed rgb(165, 165, 165);
-        background-color:rgb(236, 236, 236);
+        background-color:#FFF;
     }
     .form-control,
     .form-select {
@@ -39,7 +39,7 @@
 @endsection
 
 @section('content')
-    <div class="container-fluid">
+    <div class="container-fluid" style="background-color: rgb(236, 236, 236);">
         <div class="row mb-4">
             @if (session('success'))
                 <div class="alert alert-success">
@@ -69,7 +69,7 @@
         </div>
 
         <div class="row">
-           
+
             <div class="col-md-8">
                 <x-cart-order-status :cardHeader="'Order Status'" :cardname="'orderstatus'" />
                 <x-cart-customer-search :cardHeader="'Customer Search'" :cardname="'customersearch'" />
@@ -184,7 +184,7 @@
                       </button>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -199,7 +199,7 @@
       </div>
       <form action="{{ url()->current() }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="modal-body">  
+        <div class="modal-body">
             <div class="mb-3">
                 <label for="header" class="form-label">Title</label>
                 <input type="text" name="header" id="header" class="form-control" placeholder="Enter header text" required>
@@ -294,12 +294,12 @@
             font-size: 0.875rem;
             text-align: left;
         }
-        
+
         @media (max-width: 767px) {
             .col-md-9, .col-md-3 {
                 width: 100%;
             }
-            
+
             .col-md-3 {
                 margin-top: 1rem;
             }
@@ -310,7 +310,7 @@
             font-size: 0.85rem;
             padding: 0.25rem;
         }
-        
+
         /* Order Status Styling */
         .order-status {
             display: inline-block;
@@ -320,32 +320,32 @@
             text-align: center;
             min-width: 80px;
         }
-        
+
         .order-status-QUOTE {
             background-color: #FFD8B1;
             color: #000;
         }
-        
+
         .order-status-PROCESSED {
             background-color: #C0C0C0;
             color: #000;
         }
-        
+
         .order-status-DEPOSIT {
             background-color: #B6D7B9;
             color: #000;
         }
-        
+
         .order-status-NEW {
             background-color: #A9D4F6;
             color: #000;
         }
-        
+
         .order-status-PROCESSING {
             background-color: #E8B4B4;
             color: #000;
         }
-        
+
         .order-status-MATERIAL {
             background-color: #FF5252;
             color: #fff;

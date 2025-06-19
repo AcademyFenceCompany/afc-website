@@ -9,13 +9,12 @@ use App\Http\Controllers\Shipping2Controller;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\Ams\OrderController;
+use App\Http\Controllers\DashboardController;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
     // Development route for testing: Colin
-    Route::get('/dashboard', function(){
-        return view('ams.index');
-    })->name('ams.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('ams.dashboard');
     Route::get('/install_upload', [InstallJobsController::class, 'index'])->name('ams.install_upload');
     Route::get('/product-reports', [ProductReportController::class, 'index'])->name('ams.product-report');
     Route::post('/install_upload', [InstallJobsController::class, 'add'])->name('ams.install_upload');
@@ -133,3 +132,6 @@ Route::get('/logout', function () {
 
 
 Route::get('/', [AcademyTestController::class, 'index'])->name('homepage');
+// Simple ping route for testing
+Route::get('/ping', fn() => 'pong');
+

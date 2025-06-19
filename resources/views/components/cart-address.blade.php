@@ -5,7 +5,7 @@
         @if($admin == true)
         <div class="col-md-12">
             <label for="addressSelect" class="form-label">Select Address</label>
-            <select class="form-select form-select-lg" id="addressSelect" name="selected_address" required>
+            <select class="form-select" id="addressSelect" name="selected_address" required>
                 <option value="">Choose an address...</option>
                 <option value="1">1234 Main St, Newark, New Jersey, 07101</option>
                 <option value="2">5678 Oak Ave, Jersey City, New Jersey, 07302</option>
@@ -69,7 +69,7 @@
 
         <div class="col-md-4">
             <label for="state" class="form-label">State</label>
-            <select class="form-select form-select-lg" id="state" name="recipient_state" required="">
+            <select class="form-select" id="state" name="recipient_state" required="">
                 <option value="">Choose...</option>
                 <option value="New Jersey">New Jersey</option>
             </select>
@@ -87,7 +87,7 @@
         </div>
         @if($cardname == 'shipping')
         <div class="col-12 mt-4" id="shipping-options">
-            
+
         </div>
         @endif
         @if($cardname == 'shipping')
