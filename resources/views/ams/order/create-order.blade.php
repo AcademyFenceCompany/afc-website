@@ -107,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
         </section>
         <!-- Customer Information Section -->
@@ -147,12 +147,12 @@
             <div class="col-md-3">
                 @include('ams.order.categories-sidebar')
             </div>
-            
+
             <!-- Main Content - Order Details -->
             <div class="col-md-9">
                 <!-- Address Information Row -->
                 <div class="row mb-3">
-                    
+
                     <div class="col-md-6">
                         <!-- Shipping Info -->
                         <div class="card card mb-3">
@@ -168,7 +168,7 @@
                             <div class="card-body p-3">
                                 <div class="input-group input-group mb-1">
                                     <span class="input-group-text">Name</span>
-                                    <input type="text" class="form-control form-control" id="shipping-name" 
+                                    <input type="text" class="form-control form-control" id="shipping-name"
                                         value="{{ isset($selectedCustomer) ? $selectedCustomer->name : '' }}">
                                 </div>
                                 <div class="input-group input-group mb-1">
@@ -327,7 +327,7 @@
                                         <i class="fas fa-credit-card me-2"></i> Process Order
                                     </button>
                                 </div>
-                                
+
                                 <!-- Order Status Dropdown -->
                                 <div class="mt-2 d-none">
                                     <label for="order-status" class="form-label small mb-1">Order Status</label>
@@ -392,7 +392,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                         <!-- Correspondence -->
                         <div class="card p-3">
                             <div class="card-body p-2">
@@ -440,7 +440,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Order Items</h5>
                     </div>
-                    
+
                     <!-- Product Search Box -->
                     <div class="card-body border-bottom pb-3">
                         <div class="row g-2">
@@ -491,7 +491,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Order Totals Section -->
                 <div class="card mt-4">
                     <div class="card-header">
@@ -522,21 +522,21 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <button type="button" class="btn btn-primary" onclick="calculateShipping()">
                                     <i class="fas fa-shipping-fast me-1"></i> Calculate Shipping
                                 </button>
                                 <button type="button" class="btn btn-danger" onclick="deleteShipping()">Delete Shipping</button>
-                                
+
                                 <div class="d-inline-block ms-3">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="checkbox" id="tax-exempt" name="tax_exempt" value="1">
                                         <label class="form-check-label" for="tax-exempt">Tax Exempt</label>
                                     </div>
                                 </div>
-                                
+
                                 <div class="d-inline-block ms-3">
                                     <span class="me-2">Deposit</span>
                                     <div class="form-check form-check-inline">
@@ -551,7 +551,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Hidden inputs for form submission -->
                         <input type="hidden" id="subtotal" name="subtotal" value="0">
                         <input type="hidden" id="tax_amount" name="tax_amount" value="0">
@@ -559,7 +559,7 @@
                         <input type="hidden" id="orderItemsJson" name="order_items" value="[]">
                     </div>
                 </div>
-                
+
                 <!-- Shipping Modal -->
                 <div class="modal fade" id="shippingModal" tabindex="-1" aria-labelledby="shippingModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
@@ -591,7 +591,7 @@
                                         <p class="mt-2">Calculating shipping rates...</p>
                                     </div>
                                 </div>
-                                
+
                                 <!-- UPS Shipping Section -->
                                 <div class="card mb-3">
                                     <div class="card-header bg-light">
@@ -616,7 +616,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        
+
                                         <div class="table-responsive mt-3">
                                             <table class="table table-bordered table">
                                                 <thead class="table-light">
@@ -635,7 +635,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Freight Shipping Section -->
                                 <div class="card">
                                     <div class="card-header bg-light">
@@ -665,7 +665,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Shipping Estimate Organizer -->
                                 <div class="card mt-3">
                                     <div class="card-header bg-light">
@@ -723,11 +723,11 @@
                                                     <input type="text" class="form-control" id="shipping-organizer-quoted-by" name="shipping_organizer_quoted_by" value="sunny">
                                                 </div>
                                             </div>
-                                          
+
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="d-flex justify-content-end mt-3">
                                     <button type="button" class="btn btn-success" id="populateToOrder">Populate to Order</button>
                                 </div>
@@ -783,23 +783,23 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize order items table
             updateOrderItemsTable();
-            
+
             // Initialize datepicker
             $('.datepicker').datepicker({
                 format: 'yyyy-mm-dd',
                 autoclose: true,
                 todayHighlight: true
             });
-            
+
             // Handle form submission
             $('#orderForm').on('submit', function(e) {
                 // Don't clear localStorage on form submission
                 // This allows the items to persist even after page reload
-                
+
                 // Ensure order items are included in form submission
                 $('#orderItemsJson').val(JSON.stringify(getOrderItems()));
             });
-            
+
             // Initialize address lookup
             $('#customer_id').on('change', function() {
                 const customerId = $(this).val();
@@ -816,14 +816,14 @@
                     });
                 }
             });
-            
+
             // Clear existing items from previous implementations
             $('#clearOrderItems').on('click', function() {
                 if (confirm('Are you sure you want to clear all order items?')) {
                     clearOrderItems(); // This function is defined in order-products.js
                 }
             });
-            
+
             // Connect the calculate shipping button
             $('button[onclick="calculateShipping()"]').on('click', function() {
                 if (typeof window.calculateShipping === 'function') {
@@ -833,7 +833,7 @@
                     alert('Shipping calculation is not available. Please check the console for errors.');
                 }
             });
-            
+
             // If categories don't load after 3 seconds, initialize with default categories
             setTimeout(function() {
                 if ($('#categoriesList .spinner-border').length > 0) {
@@ -868,53 +868,53 @@
                 }
             }, 3000);
         });
-        
+
         function calculateOrderTotals() {
             const subtotal = parseFloat(document.getElementById('subtotal-display').textContent.replace('$', '')) || 0;
             const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
             const taxAmount = subtotal * (taxRate / 100);
             const shippingCost = parseFloat(document.getElementById('shipping-cost').value) || 0;
-            
+
             // Update tax amount display if it exists
             const taxDisplay = document.getElementById('tax-display');
             if (taxDisplay) {
                 taxDisplay.textContent = '$' + taxAmount.toFixed(2);
             }
-            
+
             // Calculate and update total
             const total = subtotal + taxAmount + shippingCost;
             const totalDisplay = document.getElementById('total-display');
             if (totalDisplay) {
                 totalDisplay.textContent = '$' + total.toFixed(2);
             }
-            
+
             // Update hidden fields for form submission
             document.getElementById('subtotal').value = subtotal.toFixed(2);
             document.getElementById('tax_amount').value = taxAmount.toFixed(2);
             document.getElementById('total').value = total.toFixed(2);
-            
+
             console.log('Order totals updated:', { subtotal, taxAmount, shippingCost, total });
         }
-        
+
         // Initialize tax rate change listener
         document.getElementById('taxRate').addEventListener('change', calculateOrderTotals);
-        
+
         // Helper function to get order items (for compatibility)
         function getOrderItems() {
             return JSON.parse(localStorage.getItem('orderItems') || '[]');
         }
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             const orderStatusDropdown = document.getElementById('order-status');
             orderStatusDropdown.addEventListener('change', function() {
                 applyOrderStatusColor(this);
             });
-            
+
             // Initialize the color on page load
             if (orderStatusDropdown) {
                 applyOrderStatusColor(orderStatusDropdown);
             }
-            
+
             // Save Order Button Event Listener
             const saveOrderBtn = document.getElementById('save-order');
             if (saveOrderBtn) {
@@ -934,16 +934,16 @@
                         shipping_state: document.getElementById('shipping-state')?.value,
                         shipping_zip: document.getElementById('shipping-zip')?.value,
                         shipping_phone: document.getElementById('shipping-phone')?.value,
-                        
+
                         subtotal: document.getElementById('subtotal')?.value,
                         tax_amount: document.getElementById('tax_amount')?.value,
                         shipping_cost: document.getElementById('shipping-cost')?.value,
                         total: document.getElementById('total')?.value,
-                        
+
                         // This is the key change - include the order status
                         order_status: document.getElementById('order-status')?.value
                     };
-                    
+
                     // Send the data to the server
                     fetch('/ams/orders', {
                         method: 'POST',
@@ -970,7 +970,7 @@
                 });
             }
         });
-        
+
         function applyOrderStatusColor(selectElement) {
             const selectedOption = selectElement.options[selectElement.selectedIndex];
             const color = selectedOption.getAttribute('data-color');
@@ -985,7 +985,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css">
     <style>
         .card {
-            border: 1px solid rgba(0, 0, 0, 0.125);
+            /* border: 1px solid rgba(0, 0, 0, 0.125); */
             margin-bottom: 0.5rem;
         }
 
@@ -1013,12 +1013,12 @@
             font-size: 0.875rem;
             text-align: left;
         }
-        
+
         @media (max-width: 767px) {
             .col-md-9, .col-md-3 {
                 width: 100%;
             }
-            
+
             .col-md-3 {
                 margin-top: 1rem;
             }
@@ -1029,7 +1029,7 @@
             font-size: 0.85rem;
             padding: 0.25rem;
         }
-        
+
         /* Order Status Styling */
         .order-status {
             display: inline-block;
@@ -1039,32 +1039,32 @@
             text-align: center;
             min-width: 80px;
         }
-        
+
         .order-status-QUOTE {
             background-color: #FFD8B1;
             color: #000;
         }
-        
+
         .order-status-PROCESSED {
             background-color: #C0C0C0;
             color: #000;
         }
-        
+
         .order-status-DEPOSIT {
             background-color: #B6D7B9;
             color: #000;
         }
-        
+
         .order-status-NEW {
             background-color: #A9D4F6;
             color: #000;
         }
-        
+
         .order-status-PROCESSING {
             background-color: #E8B4B4;
             color: #000;
         }
-        
+
         .order-status-MATERIAL {
             background-color: #FF5252;
             color: #fff;

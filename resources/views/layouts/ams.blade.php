@@ -51,14 +51,60 @@
                 display:none;
             }
         }
+        .submenu {
+        transition: all 0.3s ease;
+        display: none;
+        }
+
+        .submenu.show {
+        display: block;
+        }
+
+        .submenu-toggle:hover {
+        background-color: #e9ecef;
+        cursor: pointer;
+        }
+
+        .rotate-icon {
+        transition: transform 0.3s ease;
+        }
+
+        .rotate-icon.rotated {
+        transform: rotate(180deg);
+        }
+        .sidebar-container{
+            border-right: 1px solid #bebebe;
+        }
+        .sidebar {
+            background-color: #e1d6d2 !important;
+            color: #fff;
+        }
+        .navbar {
+            height: 70px;
+            border-bottom: 1px solid #bebebe;
+            }
+
+            .input-group input:focus {
+            box-shadow: none;
+            border-color: #86b7fe;
+            }
+
+            .dropdown-menu .dropdown-item:hover {
+            background-color: #f8f9fa;
+            }
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #888;
+        }
     </style>
-
-
 </head>
 
 <body>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar d-none">
         <h3>AMS Home</h3>
 
         <!-- Orders -->
@@ -85,13 +131,13 @@
         <!-- Categories -->
         <a class="menu-item" data-bs-toggle="collapse" href="#categoriesMenu" role="button" aria-expanded="false"
         aria-controls="categoriesMenu">
-    Category Management <i class="bi bi-caret-down-fill"></i>
-    </a>
-    <div class="collapse submenu" id="categoriesMenu">
-        <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">View Categories</a>
-        <a href="{{ route('ams.mysql-categories.create') }}" class="menu-item">Add Category</a>
-        <a href="{{ route('ams.mysql-majorcategories.create') }}" class="menu-item">Add Major Category</a>
-    </div>
+        Category Management <i class="bi bi-caret-down-fill"></i>
+        </a>
+        <div class="collapse submenu" id="categoriesMenu">
+            <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">View Categories</a>
+            <a href="{{ route('ams.mysql-categories.create') }}" class="menu-item">Add Category</a>
+            <a href="{{ route('ams.mysql-majorcategories.create') }}" class="menu-item">Add Major Category</a>
+        </div>
         <!-- Customers -->
         <a class="menu-item" data-bs-toggle="collapse" href="#customersMenu" role="button" aria-expanded="false"
             aria-controls="customersMenu">
@@ -162,10 +208,150 @@
         <a href="{{ route('ams.install_upload') }}" class="menu-item">Install Jobs Gallery</a>
 
     </div>
+    <div class="sidebar-container">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar" style="width: 260px;">
+            <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none text-dark">
+            <i class="fas fa-cubes me-2"></i><span class="fs-5">AMS Home</span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu">
+                <!-- Orders -->
+                <li>
+                    <a href="#ordersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="ordersMenu2">
+                        <span><i class="bi bi-bag me-2"></i> Orders</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="ordersMenu2">
+                        <li><a href="{{ route('ams.create-order') }}" class="nav-link text-muted small">Create New Order</a></li>
+                        <li><a href="{{ route('ams.activity') }}" class="nav-link text-muted small">Today's Activity</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Test Account</a></li>
+                    </ul>
+                </li>
 
+                <!-- Products Management -->
+                <li>
+                    <a href="#productsMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="productsMenu2">
+                        <span><i class="bi bi-box-seam me-2"></i> Products Management</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="productsMenu2">
+                        <li><a href="{{ route('ams.product-query.create') }}" class="nav-link text-muted small">Add Product</a></li>
+                        <li><a href="{{ route('ams.product-query.index') }}" class="nav-link text-muted small">View Product</a></li>
+                    </ul>
+                </li>
+
+                <!-- Category Management -->
+                <li>
+                    <a href="#categoriesMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="categoriesMenu2">
+                        <span><i class="bi bi-tags me-2"></i> Category Management</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="categoriesMenu2">
+                        <li><a href="{{ route('ams.mysql-categories.index') }}" class="nav-link text-muted small">View Categories</a></li>
+                        <li><a href="{{ route('ams.mysql-categories.create') }}" class="nav-link text-muted small">Add Category</a></li>
+                        <li><a href="{{ route('ams.mysql-majorcategories.create') }}" class="nav-link text-muted small">Add Major Category</a></li>
+                    </ul>
+                </li>
+
+                <!-- Customers -->
+                <li>
+                    <a href="#customersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="customersMenu2">
+                        <span><i class="bi bi-people me-2"></i> Customers</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="customersMenu2">
+                        <li><a href="#" class="nav-link text-muted small">Add Customer</a></li>
+                        <li><a href="{{ route('customers.index') }}" class="nav-link text-muted small">View Customers</a></li>
+                    </ul>
+                </li>
+
+                <!-- Shipping -->
+                <li>
+                    <a href="#shippingMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="shippingMenu2">
+                        <span><i class="bi bi-truck me-2"></i> Shipping</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="shippingMenu2">
+                        <li><a href="#" class="nav-link text-muted small">Add Shippers</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Add Contacts to Shipper</a></li>
+                        <li><a href="#" class="nav-link text-muted small">View Shippers</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Delivery Log</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Freight Shipping Log</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Small Package Log</a></li>
+                        <li><a href="{{ route('shipping-markup') }}" class="nav-link text-muted small">Shipping Markup</a></li>
+                    </ul>
+                </li>
+
+                <!-- Suppliers -->
+                <li>
+                    <a href="#suppliersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="suppliersMenu2">
+                        <span><i class="bi bi-building me-2"></i> Suppliers</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="suppliersMenu2">
+                        <li><a href="#" class="nav-link text-muted small">Add Supplier</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Edit Suppliers</a></li>
+                        <li><a href="#" class="nav-link text-muted small">View Suppliers</a></li>
+                        <li><a href="#" class="nav-link text-muted small">Cost Comparison</a></li>
+                    </ul>
+                </li>
+
+                <!-- User Management (God only) -->
+                @if (auth()->user()->level === 'God')
+                <li>
+                    <a href="{{ route('user.management') }}" class="nav-link text-dark">
+                        <i class="fas fa-users-cog me-2"></i> User Management
+                    </a>
+                </li>
+                @endif
+
+                <!-- CMS -->
+                <li>
+                    <a href="#cmsMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cmsMenu2">
+                        <span><i class="bi bi-pencil-square me-2"></i> CMS</span>
+                        <i class="bi bi-chevron-down small rotate-icon"></i>
+                    </a>
+                    <ul class="nav flex-column ms-4 submenu collapse" id="cmsMenu2">
+                        <li><a href="{{ route('ams.cms.pages.index') }}" class="nav-link text-muted small"><i class="bi bi-file-text"></i> Category Pages</a></li>
+                        <li><a href="{{ route('ams.cms.pages.create') }}" class="nav-link text-muted small"><i class="bi bi-plus-circle"></i> Add New Page</a></li>
+                    </ul>
+                </li>
+
+                <!-- Inventory -->
+                <li>
+                    <a href="#" class="nav-link text-dark"><i class="bi bi-archive me-2"></i> Inventory</a>
+                </li>
+
+                <!-- Office Sheets -->
+                <li>
+                    <a href="#" class="nav-link text-dark"><i class="bi bi-file-earmark-spreadsheet me-2"></i> Office Sheets</a>
+                </li>
+
+                <!-- Sales Reports -->
+                <li>
+                    <a href="#" class="nav-link text-dark"><i class="bi bi-bar-chart me-2"></i> Sales Reports</a>
+                </li>
+
+                <!-- Products Report -->
+                <li>
+                    <a href="{{ route('ams.product-report') }}" class="nav-link text-dark"><i class="bi bi-clipboard-data me-2"></i> Products Report</a>
+                </li>
+
+                <!-- Shipping API -->
+                <li>
+                    <a href="{{ route('ams.getshippingrate') }}" class="nav-link text-dark"><i class="bi bi-cloud-arrow-up me-2"></i> Shipping API</a>
+                </li>
+
+                <!-- Install Jobs -->
+                <li>
+                    <a href="{{ route('ams.install_upload') }}" class="nav-link text-dark"><i class="bi bi-images me-2"></i> Install Jobs</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <!-- Main Content -->
     <div class="content">
-        <div class="header">
+        <div class="header d-none">
             <h2>@yield('title')</h2>
             <div class="header-buttons">
                 <a href="{{ route('ams.orders.create') }}" class="btn btn-primary me-2">
@@ -179,188 +365,36 @@
                 </a>
             </div>
         </div>
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow d-none">
-            <!-- Sidebar Toggle (Topbar) -->
-            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                <i class="bi bi-list"></i>
-            </button>
-
-            <!-- Topbar Search -->
-            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
+        <!-- Navbar fixed-top padding-left 280px -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+            <!-- Search Bar -->
+            <form class="d-flex align-items-center col-md-6 me-auto" role="search">
+                <div class="search-container w-100">
+                    <input type="text" class="form-control search-input" placeholder="Search...">
+                    <i class="bi bi-search search-icon"></i>
                 </div>
             </form>
 
-            <!-- Topbar Navbar -->
-            <ul class="navbar-nav ml-auto">
+            <!-- Action Buttons -->
+            <div class="d-flex align-items-center me-3">
+                <a href="#" class="btn btn-outline-secondary me-2"><i class="fas fa-house me-1"></i> Home</a>
+                <a href="#" class="btn btn-success text-light"><i class="fas fa-plus me-1"></i> Create Order</a>
+            </div>
 
-                <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                <li class="nav-item dropdown no-arrow d-sm-none">
-                    <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-search fa-fw"></i>
-                    </a>
-                    <!-- Dropdown - Messages -->
-                    <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                        <form class="form-inline mr-auto w-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-
-                <!-- Nav Item - Alerts -->
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="bi bi-bell-fill"></i>
-                        <!-- Counter - Alerts -->
-                        <span class="badge badge-danger badge-counter">3+</span>
-                    </a>
-                    <!-- Dropdown - Alerts -->
-                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                        <h6 class="dropdown-header">
-                            Alerts Center
-                        </h6>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="mr-3">
-                                <div class="icon-circle bg-primary">
-                                    <i class="fas fa-file-alt text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="small text-gray-500">December 12, 2019</div>
-                                <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="mr-3">
-                                <div class="icon-circle bg-success">
-                                    <i class="fas fa-donate text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="small text-gray-500">December 7, 2019</div>
-                                $290.29 has been deposited into your account!
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="mr-3">
-                                <div class="icon-circle bg-warning">
-                                    <i class="fas fa-exclamation-triangle text-white"></i>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="small text-gray-500">December 2, 2019</div>
-                                Spending Alert: We've noticed unusually high spending for your account.
-                            </div>
-                        </a>
-                        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                    </div>
-                </li>
-
-                <!-- Nav Item - Messages -->
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-envelope fa-fw"></i>
-                        <!-- Counter - Messages -->
-                        <span class="badge badge-danger badge-counter">7</span>
-                    </a>
-                    <!-- Dropdown - Messages -->
-                    <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                        <h6 class="dropdown-header">
-                            Message Center
-                        </h6>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
-                                <div class="status-indicator bg-success"></div>
-                            </div>
-                            <div class="font-weight-bold">
-                                <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                    problem I've been having.</div>
-                                <div class="small text-gray-500">Emily Fowler · 58m</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
-                                <div class="status-indicator"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">I have the photos that you ordered last month, how
-                                    would you like them sent to you?</div>
-                                <div class="small text-gray-500">Jae Chun · 1d</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
-                                <div class="status-indicator bg-warning"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">Last month's report looks great, I am very happy with
-                                    the progress so far, keep up the good work!</div>
-                                <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="...">
-                                <div class="status-indicator bg-success"></div>
-                            </div>
-                            <div>
-                                <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                    told me that people say this to all dogs, even if they aren't good...</div>
-                                <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                            </div>
-                        </a>
-                        <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                    </div>
-                </li>
-
-                <div class="topbar-divider d-none d-sm-block"></div>
-
-                <!-- Nav Item - User Information -->
-                <li class="nav-item dropdown no-arrow">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                        <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
-                    </a>
-                    <!-- Dropdown - User Information -->
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Profile
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Settings
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Activity Log
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Logout
-                        </a>
-                    </div>
-                </li>
-
-            </ul>
-
+            <!-- User Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://img.freepik.com/premium-vector/male-face-avatar-icon-set-flat-design-social-media-profiles_1281173-3806.jpg?semt=ais_hybrid&w=740" alt="user" width="40" height="40" class="rounded-circle me-2">
+                <strong class="mx-2">{{auth()->user()->username}}</strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" aria-labelledby="userMenu">
+                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fas fa-list-ul me-2"></i> Activity Log</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                </ul>
+            </div>
         </nav>
         @if(session('success'))
             <div class="alert alert-success mt-3">
@@ -422,6 +456,23 @@
                 }
             });
         });
+            $(document).ready(function() {
+                $('.submenu-toggle').on('click', function() {
+                    var $submenu = $(this).next('.submenu');
+                    var $icon = $(this).find('.rotate-icon');
+                    var $currentlyOpen = $('.submenu.show');
+
+                    // Close any other open submenu
+                    if ($currentlyOpen.length && !$submenu.is($currentlyOpen)) {
+                        $currentlyOpen.removeClass('show');
+                        $('.rotate-icon').removeClass('rotated');
+                    }
+
+                    // Toggle clicked submenu
+                    $submenu.toggleClass('show');
+                    $icon.toggleClass('rotated');
+                });
+            });
     </script>
     <script>
         window.APP_URL = "{{ config('app.url') }}";
