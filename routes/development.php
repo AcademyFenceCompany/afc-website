@@ -120,7 +120,7 @@ Route::prefix('cart2')->group(function () {
     Route::get('/remove-item/p/{id}', [ShoppingCartController::class, 'removeItem'])->name('cart2.removeItem');
     Route::get('/update-shipmethod/{rate}', [Shipping2Controller::class, 'updateShippingMethod'])->name('cart2.updateShippingMethod');
 });
-Route::get('/shipping2/{zip}', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
+Route::get('/shipping2/{utype}/{zip}', [Shipping2Controller::class, 'getShippingRates'])->name('shipping2.getShippingRates');
 // Route for the login page. This route needs to be relocated to the auth routes file.
 Route::get('/logout', function () {
     \Illuminate\Support\Facades\Auth::logout();

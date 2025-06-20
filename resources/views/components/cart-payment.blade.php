@@ -50,7 +50,7 @@
 <div class="card p-4 mb-4">
     <h4 class="mb-3">Payment Method</h4>    
     <div class="row gy-3">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="col-md-12 mb-3">
                  <label for="cc-name" class="form-label">Select Payment Method</label>
                 <select class="form-select form-select" id="payment-method">
@@ -85,7 +85,7 @@
 
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-12">
 
             <div class="col-md-12">
                 <label for="cc-name" class="form-label">Name on card</label>

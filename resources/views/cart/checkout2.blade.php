@@ -161,8 +161,8 @@
                     
                 </div>
                 <div class="col-md-7 col-lg-8">
-                    <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" />
-                    <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'"/>
+                    <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" :admin="false"/>
+                    <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'" :admin="false"/>
                     <x-cart-payment />
                     <input type="hidden" name="amount" value="20.00">
                 </div>

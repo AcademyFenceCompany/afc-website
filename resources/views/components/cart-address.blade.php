@@ -1,4 +1,4 @@
-@props(['cardHeader' => null, 'cardname' => 'default' , 'admin' => 'true'])
+@props(['cardHeader' => null, 'cardname' => 'default' , 'admin' => false])
 <div class="card p-4 mb-4 card-{{ $cardname }}">
     <h4 class="mb-3">{{ $cardHeader }}</h4>
     <div class="row g-3">
@@ -80,7 +80,7 @@
 
         <div class="col-md-3">
             <label for="zip" class="form-label">Zip (Get Shipping)</label>
-            <input type="text" class="form-control" id="zip" name="recipient_postal" value="" placeholder="Calculate Shipping" required="">
+            <input type="text" class="form-control" id="zip" data-type="customer" name="recipient_postal" value="" placeholder="Calculate Shipping" required="">
             <div class="invalid-feedback">
                 Zip code required.
             </div>

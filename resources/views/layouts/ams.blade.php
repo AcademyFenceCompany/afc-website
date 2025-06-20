@@ -211,7 +211,8 @@
     <div class="sidebar-container">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar" style="width: 260px;">
             <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none text-dark">
-            <i class="fas fa-cubes me-2"></i><span class="fs-5">AMS Home</span>
+                <img src="{{ asset('assets/images/logo.png') }}" alt="Academy fence Logo" width="" height="32" class="me-2 rounded" style="object-fit:;">
+                <span class="fs-5 fw-bold">AMS Home</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu">
@@ -299,8 +300,8 @@
                 <!-- User Management (God only) -->
                 @if (auth()->user()->level === 'God')
                 <li>
-                    <a href="{{ route('user.management') }}" class="nav-link text-dark">
-                        <i class="fas fa-users-cog me-2"></i> User Management
+                    <a href="{{ route('user.management') }}"  class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cmsMenu2">
+                        <span><i class="bi bi-person-exclamation me-2"></i> User Management </span>
                     </a>
                 </li>
                 @endif
@@ -378,11 +379,11 @@
             <!-- Action Buttons -->
             <div class="d-flex align-items-center me-3">
                 <a href="#" class="btn btn-outline-secondary me-2"><i class="fas fa-house me-1"></i> Home</a>
-                <a href="#" class="btn btn-success text-light"><i class="fas fa-plus me-1"></i> Create Order</a>
+                <a href="{{ route('ams.create-order')}}" class="btn btn-success text-light"><i class="fas fa-plus me-1"></i> Create Order</a>
             </div>
 
             <!-- User Dropdown -->
-            <div class="dropdown">
+            <div class="dropdown" style="top:0; left:0;">
                 <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="https://img.freepik.com/premium-vector/male-face-avatar-icon-set-flat-design-social-media-profiles_1281173-3806.jpg?semt=ais_hybrid&w=740" alt="user" width="40" height="40" class="rounded-circle me-2">
                 <strong class="mx-2">{{auth()->user()->username}}</strong>
@@ -392,7 +393,7 @@
                 <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-list-ul me-2"></i> Activity Log</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                 </ul>
             </div>
         </nav>

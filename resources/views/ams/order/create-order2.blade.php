@@ -19,11 +19,11 @@
         border: 1px solid gray;
     }
     .text-bg-primary{
-        color:#0f0f0f !important;
+        color:#0f0f0f !important;6
     }
     .list-group-item .badge{ --bs-badge-font-size: 1rem;}
     .card{
-        border: 2px dashed rgb(165, 165, 165);
+        /* border: 2px dashed rgb(165, 165, 165); */
         background-color:#FFF;
     }
     .form-control,
@@ -80,12 +80,12 @@
             <div class="col-md-8">
                 <x-cart-order-status :cardHeader="'Order Status'" :cardname="'orderstatus'" />
                 <x-cart-customer-search :cardHeader="'Customer Search'" :cardname="'customersearch'" />
-                <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" />
+                <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" :admin="'true'" />
                 <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'" :admin="true"/>
                 <x-cart-items :cardHeader="'Order Items'" :cardname="'items'" :cart="$cart"/>
                 <x-cart-correspondence :cardHeader="'Order Fulfillment'" :cardname="'correspondence'" />
                 <div class="col-12 mt-4" id="shipping-options"></div>
-                <x-cart-payment :cardHeader="'Payment Method'" :cardname="'payment'" />
+                
                 <x-cart-activity-list :cardHeader="'Order Notes'" :cardname="'ordernotes'" />
             </div>
             <div class="col-md-4">
@@ -157,8 +157,8 @@
                       <div class="cart-summary-container">
                           <ul class="list-group-item px-3 pt-4">
                               <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Item Subtotal ({{$cart['quantity']}})</span>
-                                  <span class="text-muted" data-mi-subtotal="">${{$cart['subtotal']}}</span>
+                                  <span>Item Subtotal (<span class="cart-count">{{$cart['quantity']}}</span>)</span>
+                                  <span class="text-muted mini-cart-subtotal" data-mi-subtotal="">${{$cart['subtotal']}}</span>
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Shipping Cost</span>
@@ -170,7 +170,7 @@
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Sales Tax</span>
-                                  <span class="text-muted" data-mi-taxes="0">${{$cart['tax']}}</span>
+                                  <span class="text-muted cart-tax" data-mi-taxes="0">${{$cart['tax']}}</span>
                               </li>
                               <li class="list-group-item py-1 d-flex justify-content-between">
                                   <span>Discount</span>
@@ -190,8 +190,8 @@
                           Place Order
                       </button>
                     </div>
+                    <x-cart-payment :cardHeader="'Payment Method'" :cardname="'payment'" :admin="true"/>
                 </div>
-
             </div>
         </div>
     </div>

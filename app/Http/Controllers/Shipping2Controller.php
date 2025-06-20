@@ -18,13 +18,14 @@ class Shipping2Controller extends Controller
             'description' => 'Get shipping rates for your packages.',
         ]);
     }
-    //This method will handle the shipping rates retrieval
-    public function getShippingRates($zip)
+    //This method will handle the shipping rates retrieval: utype = 'c' for customer, 'ams' for AMS
+    public function getShippingRates($utype = 'customer', $zip)
     {
-        $ams = true;
-        if($ams) {
-            //return $this->getShippingRatesAMS($zip);
-        }
+        // Check if the user is AMS
+        //$ams = ($utype !== 'customer') ? true : false;
+        $ams = (auth()->check()) ? true : false;
+
+        
         //$zip = '07018'; // Default zip code for testing, replace with dynamic input if needed
         // Here you would call the appropriate service to get the rates
         $shippingMODEL = new Shipping2();
@@ -79,13 +80,6 @@ class Shipping2Controller extends Controller
         // Use UPS when weight is less than 150 lbs
         // Calculate total weight of all packages
         $totalWeight = $cartData['weight'] ?? 0.0; // Initialize total weight from cart data
-        // if (isset($formData['packages']) && is_array($formData['packages'])) {
-        //     foreach ($formData['packages'] as $package) {
-        //         if (isset($package['weight'])) {
-        //             $totalWeight += $package['weight'];
-        //         }
-        //     }
-        // }
 
         // If total weight is less than or equal to 150 lbs, use UPS
         if ($totalWeight < 150) {
@@ -145,9 +139,8 @@ class Shipping2Controller extends Controller
         ];
         // Store the shipping rates in the session
         $shipping = $this->getShippingRatesArray($shippingmethod);
-        //@dump($shipping);
         // Add shipper information to the response
-        return view('components.cart-shipping-insert-ams', [
+        return view('components.cart-shipping-insert', [
             'upsrates' => $shipping['ups'] ?? [],
             'upsallrates' => $rates['ups'] ?? [],
             'tForceRates' => $shipping['tforce'] ?? [],
@@ -156,7 +149,7 @@ class Shipping2Controller extends Controller
             'cart' => $cartData,
             'shippingmethod' => $shippingmethod,
             'formData' => $formData,
-
+            'admin' => $ams,
         ]);
     }
     //This method will handle the shipping rates retrieval

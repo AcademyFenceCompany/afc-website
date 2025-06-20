@@ -140,6 +140,33 @@ $(document).ready(function() {
         $(this).parent().is(".open") && e.stopPropagation();
     });
 
+    // Initialize tooltip for .ams-cart-item inputs, including dynamically loaded ones
+    $('.ams-cart-item').each(function () {
+        console.log("Initializing tooltip for input:", this);
+        const input = $(this);
+        // Set initial tooltip content
+        input.attr('data-bs-title', input.val());
+        const tooltip = new bootstrap.Tooltip(this, {
+            trigger: 'manual'
+        });
+
+        function showAndUpdateTooltip() {
+            const value = input.val();
+            tooltip.setContent({ '.tooltip-inner': value });
+            tooltip.show();
+        }
+
+        input.on('focus input', function () {
+            showAndUpdateTooltip();
+        });
+
+        input.on('blur', function () {
+            tooltip.hide();
+        });
+    });
+
+
+
     $('.selectall').click(function() {
         if ($(this).is(':checked')) {
             $('.option').prop('checked', true);
@@ -174,6 +201,8 @@ $(document).ready(function() {
     });
     $("#zip").on("keyup", function() {
         const zipValue = $(this).val();
+        const uType = $(this).data("type");
+        console.log("User type:", uType);
         console.log("Zip code entered:", zipValue);
         // Check if zipValue is a valid US ZIP code (5 digits or 5+4 format)
         if (!zipValue) {
@@ -189,7 +218,7 @@ $(document).ready(function() {
         // Show loading spinner
         shippingOptions.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
         $.ajax({
-            url: `${App.url}/shipping2/${zipValue}`,
+            url: `${App.url}/shipping2/${uType}/${zipValue}`,
             type: "GET",
             //data: { zip: zipValue },
             dataType: "html",
@@ -297,6 +326,7 @@ $(document).ready(function() {
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
                 $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
                 $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('.cart-weight').text(`${parseFloat(response.cart2.weight).toFixed(2)} lbs`); // Update total weight
                 console.log("Quantity updated successfully:", response);
 
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
@@ -331,6 +361,7 @@ $(document).ready(function() {
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
                 $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
                 $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('.cart-weight').text(`${parseFloat(response.cart2.weight).toFixed(2)} lbs`); // Update total weight
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Product removed!</div>').fadeIn().delay(1000).fadeOut();
             },
             error: function(xhr, status, error) {
