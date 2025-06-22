@@ -28,6 +28,9 @@
     .pc-sidebar .pc-link {
         font-size: 1rem;
     }
+     .pc-sidebar {
+        transition: width 0.15s ease;
+    }
 </style>
 </head>
 <!-- [Head] end -->

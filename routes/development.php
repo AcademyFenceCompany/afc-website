@@ -10,6 +10,10 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\Ams\OrderController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Ams\AmsStorefrontController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\GlobalSearchController;
+use Illuminate\Support\Facades\DB;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
 Route::prefix('ams')->middleware('auth')->group(function () {
@@ -25,6 +29,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
     Route::get('/activity', [ActivityController::class, 'getorders'])->name('ams.orders');
     Route::get('/create-order', [OrderController::class, 'create2'])->name('ams.create-order');
+    Route::get('/ams-storefront', [AmsStorefrontController::class, 'index'])->name('ams.storefront');
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
@@ -33,7 +38,8 @@ Route::get('/products-report/search/{str}', [ProductReportController::class, 'ge
 Route::get('/products-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');
 
 Route::get('/getcustomer/{id}', [CustomerController::class, 'getCustomerById'])->name('ams.getCustomerById');
-Route::get('/search-customer/{str}', [CustomerController::class, 'search2'])->name('ams.search-customer');
+Route::post('/search-customer', [CustomerController::class, 'search2'])->name('ams.search-customer');
+Route::post('/global-search', [GlobalSearchController::class, 'search'])->name('ams.global-search');
 Route::get('/getcustomers', [CustomerController::class, 'getCustomers'])->name('ams.getCustomers');
 
 //Route::get('/product-report/{id}', [ProductReportController::class, 'getById'])->name('ams.product-report.id');

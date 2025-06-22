@@ -1,28 +1,48 @@
 <div class="card mb-4">
-    <div class="card-header">
-        <h4>Order Status</h4>
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">Order Status</h4>
+        <span class="text-muted"><strong>Created On:</strong> {{ date('Y-m-d') }}</span>
     </div>
     <div class="card-body">
         <form>
             <div class="row">
                 <div class="col-md-3 mb-3">
                     <label for="date2" class="form-label">Ouote: Colin</label>
-                    <input type="date" class="form-control" id="date2" name="date2">
+                    <div class="input-group">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
+                        <button type="button" class="btn btn-outline-secondary add-date">
+                            <i class="bi bi-calendar-date"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="date3" class="form-label">Sold</label>
-                    <input type="date" class="form-control" id="date3" name="date3">
+                    <div class="input-group">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
+                        <button type="button" class="btn btn-outline-secondary add-date">
+                            <i class="bi bi-calendar-date"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label for="date4" class="form-label">Customer Confirm</label>
-                    <input type="date" class="form-control" id="date4" name="date4">
+                    <div class="input-group">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
+                        <button type="button" class="btn btn-outline-secondary add-date">
+                            <i class="bi bi-calendar-date"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <label for="date4" class="form-label">Shipped Confirmed</label>
-                    <input type="date" class="form-control" id="date4" name="date4">
+                    <label for="date5" class="form-label">Shipped Confirmed</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
+                        <button type="button" class="btn btn-outline-secondary add-date">
+                            <i class="bi bi-calendar-date"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>

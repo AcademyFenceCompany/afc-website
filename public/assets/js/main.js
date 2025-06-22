@@ -6,10 +6,10 @@ const App = {
         // Add any initialization logic here
     },
     getFilter: function(triggerElement) {
-        const productList = $("#product-report-table");
+        const result = $("#product-report-table");
         // Display the loading message
-        productList.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-        
+        result.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+
         const formElement = $(triggerElement); // Find the closest form element
         if (formElement.length === 0) {
             console.error("Form with ID 'product-report-form-filter' not found.");
@@ -20,7 +20,7 @@ const App = {
             console.warn("Form data is empty. Ensure the form has valid input fields with values.");
         }
         console.log("Serialized form data:", formData);
-        
+
             $.ajax({
                 url: `${this.url}/ams/products-report/filter`,
                 type: "POST",
@@ -29,21 +29,21 @@ const App = {
                 dataType: "html",
                 success: function(data) {
                     // Populate the element with id 'product-list' with the received data
-                    productList.html(data);
+                    result.html(data);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching products:", error);
                     // Optionally clear the loading message or show an error message
-                    productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                    result.html('<p class="text-danger">An error occurred. Please try again.</p>');
                 }
             });
     },
     // This function opens a bootstrap modal with the given ID
     openModal: function(id,modalId) {
-        const productList = $("#modal-html");
+        const result = $("#modal-html");
         // Display the loading message
-        productList.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-light" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-        
+        result.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-light" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+
         const modal = new bootstrap.Modal(document.getElementById(modalId), {
             keyboard: false // Disable closing the modal with the keyboard
         });
@@ -54,12 +54,12 @@ const App = {
             dataType: "html",
             success: function(data) {
                 // Populate the element with id 'product-list' with the received data
-                productList.html(data);
+                result.html(data);
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching products:", error);
                 // Optionally clear the loading message or show an error message
-                productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                result.html('<p class="text-danger">An error occurred. Please try again.</p>');
             }
         });
         console.log("Product ID:", id);
@@ -95,7 +95,7 @@ const App = {
                 $("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
             }
         });
-        
+
     },
     // This function renders a list group for the cart items
     renderCartListGroup: function(cart2) {
@@ -345,7 +345,7 @@ $(document).ready(function() {
             return;
         }
         $(this).closest('.cart-item').remove();
-        
+
         console.log("Removing product ID:", productId);
         $.ajax({
             url: `${App.url}/cart2/remove-item/p/${productId}`,
@@ -429,10 +429,10 @@ $(document).ready(function() {
     // Even handler to get products list on subcategory selection change
     $("#subcat_id").on("change", function() {
         const selectedSubcategory = $(this).val();
-        const productList = $("#product-report-table");
+        const result = $("#product-report-table");
         console.log("Selected subcategory:", selectedSubcategory);
         // Display the loading message
-        productList.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+        result.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 
         setTimeout(function() {
             $.ajax({
@@ -441,24 +441,66 @@ $(document).ready(function() {
                 dataType: "html",
                 success: function(data) {
                     // Populate the element with id 'product-list' with the received data
-                    productList.html(data);
+                    result.html(data);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching products:", error);
                     // Optionally clear the loading message or show an error message
-                    productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                    result.html('<p class="text-danger">An error occurred. Please try again.</p>');
                 }
             });
         }, 500); // Added missing closing brace for setTimeout
     });
-    // Search functionality
+    // Set Order Status Date
+    $(document).on("click", ".add-date", function() {
+        const input = $(this).siblings('input[type="date"], input.order-date').first();
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        input.val(formattedDate);
+    });
+    // Global search functionality
+    $(".global-search").on("keyup", function() {
+        const searchTerm = $(this).val().toLowerCase();
+        const result = $("#global-search");
+        console.log("Search term:", searchTerm);
+
+        if (searchTerm.length < 1) return;
+        $.ajax({
+            url: `${App.url}/global-search`,
+            type: "POST",
+            data: { search: searchTerm },
+            dataType: "html",
+            success: function(data) {
+                // Populate the element with id 'product-list' with the received data
+                result.html(data);
+                result.addClass('show');
+
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching products:", error);
+                // Optionally clear the loading message or show an error message
+                result.html('<p class="text-danger">An error occurred. Please try again.</p>');
+            }
+        });
+
+    });
+    // Delay to allow click on result
+    $('.global-search').on('blur', function() {
+        $("#global-search").removeClass('show');
+    });
+    // Search functionality for products
+    // This will search products based on the input in the search field with id 'search-products'
+    // and update the results in the element with id 'product-report-table'
     $("#search-products").on("keyup", function() {
         const searchTerm = $(this).val().toLowerCase();
-        const productList = $("#product-report-table");
-        
+        const result = $("#product-report-table");
+
         if (searchTerm.length < 1) return;
         // Display the loading message
-        productList.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+        result.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 
         setTimeout(function() {
             $.ajax({
@@ -467,39 +509,38 @@ $(document).ready(function() {
                 dataType: "html",
                 success: function(data) {
                     // Populate the element with id 'product-list' with the received data
-                    productList.html(data);
+                    result.html(data);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching products:", error);
                     // Optionally clear the loading message or show an error message
-                    productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                    result.html('<p class="text-danger">An error occurred. Please try again.</p>');
                 }
             });
         }, 100); // Added missing closing brace for setTimeout
     });
     //Search Customers
-    $("#customer-search").on("click", function() {
+    $("#customer-search, .customer-search").on("keyup", function() {
         const searchTerm = $(this).val().toLowerCase();
-        const productList = $(".customer-results");
+        const result = $(".search-results");
         console.log("Search term:", searchTerm);
-        return;
+
         if (searchTerm.length < 1) return;
-        setTimeout(function() {
-            $.ajax({
-                url: `${appParams.url}/search-customer/${searchTerm}`,
-                type: "GET",
-                dataType: "html",
-                success: function(data) {
-                    // Populate the element with id 'product-list' with the received data
-                    productList.html(data);
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error fetching products:", error);
-                    // Optionally clear the loading message or show an error message
-                    productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
-                }
-            });
-        }, 100); // Added missing closing brace for setTimeout
+        $.ajax({
+            url: `${App.url}/search-customer`,
+            type: "POST",
+            data: { search: searchTerm },
+            dataType: "html",
+            success: function(data) {
+                // Populate the element with id 'product-list' with the received data
+                result.html(data);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching products:", error);
+                // Optionally clear the loading message or show an error message
+                result.html('<p class="text-danger">An error occurred. Please try again.</p>');
+            }
+        });
     });
     // Filter functionality
     // $(".input-filter").on("change", function() {
@@ -511,9 +552,9 @@ $(document).ready(function() {
 
     // $("#product-report-form-filter").on("submit", function(event) {
     //     event.preventDefault(); // Prevent the default form submission
-    //     const productList = $("#product-report-table");
+    //     const result = $("#product-report-table");
     //     // Display the loading message
-    //     productList.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+    //     result.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 
     //     setTimeout(() => {
     //         const formData = $(this).serialize(); // Serialize the form data
@@ -526,12 +567,12 @@ $(document).ready(function() {
     //             dataType: "html",
     //             success: function(data) {
     //                 // Populate the element with id 'product-list' with the received data
-    //                 productList.html(data);
+    //                 result.html(data);
     //             },
     //             error: function(xhr, status, error) {
     //                 console.error("Error fetching products:", error);
     //                 // Optionally clear the loading message or show an error message
-    //                 productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+    //                 result.html('<p class="text-danger">An error occurred. Please try again.</p>');
     //             }
     //         });
     //     }, 100);
@@ -540,9 +581,9 @@ $(document).ready(function() {
     $(".form-check.filter").on("click", function() {
         const height = $(this).data("height");
 
-        const productList = $("#product-list");
+        const result = $("#product-list");
         // Display the loading message
-        productList.html('<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
+        result.html('<div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div>');
 
         setTimeout(function() {
             $.ajax({
@@ -554,12 +595,12 @@ $(document).ready(function() {
                     // Handle success response here
                     console.log("Data sent successfully:", response);
                     // Populate the element with id 'product-list' with the returned data
-                    productList.html(response);
+                    result.html(response);
                 },
                 error: function(xhr, status, error) {
                     console.error("Error sending data:", error);
                     // Optionally clear the loading message or show an error message
-                    productList.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                    result.html('<p class="text-danger">An error occurred. Please try again.</p>');
                 }
             });
         }, 1000); // Added missing closing brace for setTimeout

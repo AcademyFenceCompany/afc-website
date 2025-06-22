@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
     @yield('styles')
-
+    <link rel="stylesheet" type="text/css" href="{{asset('/assets/css/style.css')}}" >
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -50,6 +50,10 @@
             #product-report-form-filter{
                 display:none;
             }
+        }
+        .content {
+            padding:0rem;
+            background-color:rgb(255, 255, 255);
         }
         .submenu {
         transition: all 0.3s ease;
@@ -92,12 +96,19 @@
             .dropdown-menu .dropdown-item:hover {
             background-color: #f8f9fa;
             }
+
         .search-icon {
             position: absolute;
             top: 50%;
-            left: 15px;
+            left: 20px;
             transform: translateY(-50%);
             color: #888;
+        }
+        .search-input{
+            padding: auto auto;
+        }
+        .form-select{
+            border: 2px solid #ced4da;
         }
     </style>
 </head>
@@ -217,9 +228,18 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto" id="sidebarMenu">
                 <!-- Orders -->
+                @php
+                    // Example: get the count of new orders (replace with your actual logic)
+                    $newOrdersCount = session('new_orders_count', 1); // Or fetch from DB
+                @endphp
                 <li>
                     <a href="#ordersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="ordersMenu2">
-                        <span><i class="bi bi-bag me-2"></i> Orders</span>
+                        <span>
+                            <i class="bi bi-bag me-2"></i> Orders
+                            @if($newOrdersCount > 0)
+                                <span class="badge bg-danger ms-2">{{ $newOrdersCount }}</span>
+                            @endif
+                        </span>
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
                     <ul class="nav flex-column ms-4 submenu collapse" id="ordersMenu2">
@@ -352,34 +372,49 @@
     </div>
     <!-- Main Content -->
     <div class="content">
-        <div class="header d-none">
-            <h2>@yield('title')</h2>
-            <div class="header-buttons">
-                <a href="{{ route('ams.orders.create') }}" class="btn btn-primary me-2">
-                    <i class="bi bi-plus-circle"></i> Create New Order
-                </a>
-                <a href="" class="btn btn-outline-light">
-                    <i class="bi bi-house-fill"></i> Home
-                </a>
-                <a href="{{ route('logout') }}" class="btn btn-outline-light">
-                    <i class="bi bi-box-arrow-right"></i> Log Out
-                </a>
-            </div>
-        </div>
         <!-- Navbar fixed-top padding-left 280px -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
             <!-- Search Bar -->
-            <form class="d-flex align-items-center col-md-6 me-auto" role="search">
+            <form method="post" action="{{ route('ams.global-search') }}" class="d-flex align-items-center col-md-6 me-auto position-relative" role="search">
                 <div class="search-container w-100">
-                    <input type="text" class="form-control search-input" placeholder="Search...">
+                    <input type="text" class="form-control global-search px-5 py-2" name="global-search" placeholder="Search...">
                     <i class="bi bi-search search-icon"></i>
+                    <!-- Dropdown menu for search results -->
+                    <ul class="dropdown-menu w-100" id="global-search" style="position: absolute; top: 100%; left: 0; z-index: 1000;">
+                        <!-- Products -->
+                        <li>
+                            <h6 class="dropdown-header text-secondary">Products</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Product Result 1</a></li>
+                        <li><a class="dropdown-item" href="#">Product Result 2</a></li>
+                        <!-- Customers -->
+                        <li>
+                            <h6 class="dropdown-header text-success">Customers</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Customer Result 1</a></li>
+                        <li><a class="dropdown-item" href="#">Customer Result 2</a></li>
+                        <!-- Orders -->
+                        <li>
+                            <h6 class="dropdown-header text-primary">Orders</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Order Result 1</a></li>
+                        <li><a class="dropdown-item" href="#">Order Result 2</a></li>
+                    </ul>
                 </div>
             </form>
 
             <!-- Action Buttons -->
             <div class="d-flex align-items-center me-3">
-                <a href="#" class="btn btn-outline-secondary me-2"><i class="fas fa-house me-1"></i> Home</a>
-                <a href="{{ route('ams.create-order')}}" class="btn btn-success text-light"><i class="fas fa-plus me-1"></i> Create Order</a>
+                <a href="#" class="btn btn-outline-secondary me-2"><i class="bi bi-house me-1"></i> Home</a>
+                <a href="{{ route('ams.storefront')}}" class="btn btn-danger text-dark mx-2"><i class="bi bi-cart me-1"></i> Store</a>
+                <a href="{{ route('ams.create-order')}}" class="btn btn-success text-light position-relative">
+                    <i class="bi bi-plus me-1"></i> Create Order
+                    @if(session('cart2') && session('cart2.quantity') > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ session('cart2.quantity') }}
+                        </span>
+                    @endif
+                </a>
             </div>
 
             <!-- User Dropdown -->

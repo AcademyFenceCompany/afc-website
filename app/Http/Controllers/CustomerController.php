@@ -15,14 +15,14 @@ class CustomerController extends Controller
             $perPage = 20;
             $page = $request->get('page', 1);
             $offset = ($page - 1) * $perPage;
-            
+
             // Count total records for pagination
             $totalCustomers = DB::connection('academyfence')->table('customers')
                 ->count();
-                
+
             // Get customers for current page
             $customers = DB::connection('academyfence')->table('customers')
-                ->select('id', 'name', 'company', 'contact', 
+                ->select('id', 'name', 'company', 'contact',
                          'email', 'phone', 'phone_alt', 'fax')
                 ->whereNotNull('name')
                 ->whereNotNull('company')
@@ -33,12 +33,12 @@ class CustomerController extends Controller
                 ->limit($perPage)
                 ->offset($offset)
                 ->get();
-            
+
             // Add default orders_count
             foreach ($customers as $customer) {
                 $customer->orders_count = 0;
             }
-            
+
             // Create pagination manually
             $lastPage = ceil($totalCustomers / $perPage);
             $pagination = [
@@ -49,7 +49,7 @@ class CustomerController extends Controller
                 'from' => $offset + 1,
                 'to' => min($offset + $perPage, $totalCustomers)
             ];
-            
+
             return view('ams.customers.index', [
                 'customers' => $customers,
                 'pagination' => $pagination
@@ -67,10 +67,10 @@ class CustomerController extends Controller
     {
         try {
             $query = $request->get('query');
-            
+
             // Log the query for debugging
             Log::info('Search query:', ['query' => $query]);
-        
+
             // Search customers using direct DB query with academyfence connection
             $customers = DB::connection('academyfence')->table('customers')
                 ->select('id', 'name', 'company', 'contact', 'email', 'phone', 'phone_alt', 'fax')
@@ -84,12 +84,12 @@ class CustomerController extends Controller
                 ->orderBy('name')
                 ->limit(10)
                 ->get();
-        
+
             // Add default orders_count
             foreach ($customers as $customer) {
                 $customer->orders_count = 0;
             }
-            
+
             // Get addresses for each customer
             foreach ($customers as $customer) {
                 $customer->addresses = DB::connection('academyfence')->table('cust_addresses')
@@ -100,9 +100,9 @@ class CustomerController extends Controller
                     })
                     ->get();
             }
-        
+
             Log::info('Search results:', ['count' => count($customers)]);
-        
+
             return response()->json($customers);
         } catch (\Exception $e) {
             Log::error('Error searching customers: ' . $e->getMessage());
@@ -110,20 +110,20 @@ class CustomerController extends Controller
         }
     }
     // This is a search method created by Colin to search for customers
-    public function search2(){
-        //
+    public function search2(Request $request)
+    {
         try {
-            $query = request()->get('query');
+            $str = $request->post('search');
 
-            $customers = DB::table('customers')
-                ->select('name', 'phone')
-                ->where(function ($q) use ($query) {
-                    $q->where('name', 'like', "%{$query}%")
-                      ->orWhere('company', 'like', "%{$query}%")
-                      ->orWhere('phone', 'like', "%{$query}%");
+            $customers = DB::connection('academyfence')->table('customers')
+                ->select('name', 'phone', 'company')
+                ->where(function ($q) use ($str) {
+                    $q->where('name', 'like', "%{$str}%")
+                      ->orWhere('company', 'like', "%{$str}%")
+                      ->orWhere('phone', 'like', "%{$str}%");
                 })
                 ->orderBy('name')
-                ->limit(20)
+                ->limit(10)
                 ->get();
 
             return view('components.search-customer', compact('customers'));
@@ -144,7 +144,7 @@ class CustomerController extends Controller
             'alt_phone' => 'nullable|string|max:32',
             'ext' => 'nullable|string|max:13',
             'fax' => 'nullable|string|max:32',
-            
+
             // Address validation
             'addr_name' => 'nullable|string|max:128',
             'addr_company' => 'nullable|string|max:128',
@@ -229,27 +229,27 @@ class CustomerController extends Controller
             $customer = DB::connection('academyfence')->table('customers')
                 ->where('id', $customerId)
                 ->first();
-            
+
             if (!$customer) {
                 return redirect()->route('ams.customers.index')
                     ->with('error', 'Customer not found');
             }
-            
+
             // Get customer addresses with direct DB query using academyfence connection
             $addresses = DB::connection('academyfence')->table('cust_addresses')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
-                
+
             // Get customer billing info with direct DB query using academyfence connection
             $billingInfo = DB::connection('academyfence')->table('cust_billing')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
-                
+
             // Create empty collection for orders
             $orders = collect([]);
-            
+
             return view('ams.customers.view', compact('customer', 'addresses', 'billingInfo', 'orders'));
         } catch (\Exception $e) {
             Log::error('Error viewing customer: ' . $e->getMessage());
@@ -265,24 +265,24 @@ class CustomerController extends Controller
             $customer = DB::connection('academyfence')->table('customers')
                 ->where('id', $customerId)
                 ->first();
-            
+
             if (!$customer) {
                 return redirect()->route('ams.customers.index')
                     ->with('error', 'Customer not found');
             }
-            
+
             // Get customer addresses with direct DB query using academyfence connection
             $addresses = DB::connection('academyfence')->table('cust_addresses')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
-                
+
             // Get customer billing info with direct DB query using academyfence connection
             $billingInfo = DB::connection('academyfence')->table('cust_billing')
                 ->where('cust_id_fk', $customerId)
                 ->orWhere('customers_id', $customerId)
                 ->get();
-            
+
             return view('ams.customers.edit', compact('customer', 'addresses', 'billingInfo'));
         } catch (\Exception $e) {
             Log::error('Error editing customer: ' . $e->getMessage());

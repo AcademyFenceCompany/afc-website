@@ -16,8 +16,8 @@ class ProductReportController extends Controller
         $id = 45; // Default category id
         // Get list of unique counties
         $categoryqry = \DB::table('categoriesqry')->where('enabled', 1)->select('id','cat_name', 'maj_cat_name')->get();
-        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->orderBy('cat_name', 'asc')->get(); 
-        $subCategories = \DB::table('categories')->where('active', 1)->orderBy('cat_name', 'asc')->get(); 
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->orderBy('cat_name', 'asc')->get();
+        $subCategories = \DB::table('categories')->where('active', 1)->orderBy('cat_name', 'asc')->get();
 
         $productsOb = new ProductReports(); //getAllProducts();
         $arr = $productsOb->getProductsBySubCategory($id);//->take(10);
@@ -34,7 +34,7 @@ class ProductReportController extends Controller
             'users_id' => 73, //auth()->user()->id,
             'logtype_id' => 1
         ]);
-   
+
         // List of install jobs
         //$installGallery = \DB::table('product_report')->get();
 
@@ -49,7 +49,7 @@ class ProductReportController extends Controller
 
         // Get category id
         $categoryqry = \DB::table('categoriesqry')->where('enabled', 1)->select('id','cat_name', 'maj_cat_name')->get();
-        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->orderBy('cat_name', 'asc')->get(); 
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->orderBy('cat_name', 'asc')->get();
         $subCategories = \DB::table('categories')->where('active', 1)->where('id', $id)->first();
         // Get list of column headers
         $columnHeaders = $productsOb->setTableHeaders($id);
@@ -59,7 +59,7 @@ class ProductReportController extends Controller
         return view('components.product-report', compact('products', 'columnHeaders', 'filters', 'id', 'categoryqry','majCategories', 'subCategories'));
     }
 
-    // This functin is used to get a list of subcategories by major category id
+    // This function is used to get a list of subcategories by majorcategory id
     public function getCategoryById($id){
         $subCategories = \DB::table('categories')
             ->where('active', 1)
@@ -67,7 +67,7 @@ class ProductReportController extends Controller
             ->get();
         return view('ams.subcat-list', compact('subCategories'));
     }
-    // This functin is used to get products by a search string
+    // This function is used to get products by a search string
     public function getProductBySearch($str){
         $categoryqry = \DB::table('categoriesqry')->where('enabled', 1)->select('id','cat_name', 'maj_cat_name')->get();
         $products = \DB::table('products')
@@ -87,7 +87,7 @@ class ProductReportController extends Controller
         $id = 45;
         return view('components.product-report', compact('products', 'columnHeaders', 'categoryqry','filters', 'id'));
     }
-    // This functin is used to get products by their filter
+    // This function is used to get products by their filter
     public function getProductByFilter(Request $request){
         $size1 = $request->post('size',[]);
         $size2 = $request->post('size2', []);
@@ -100,7 +100,7 @@ class ProductReportController extends Controller
         $material = $request->post('material', []);
         $id = $request->post('cat_id');
         // Get By category id
-        $categoryqry = \DB::table('categoriesqry')->where('id', $id)->get();   
+        $categoryqry = \DB::table('categoriesqry')->where('id', $id)->get();
         // Filter by category if selected
         $filters = array_filter($request->only(['size', 'size2', 'size3', 'color', 'style', 'spacing', 'speciality', 'coating', 'material']), function ($value) {
             return !empty($value);
@@ -149,7 +149,7 @@ class ProductReportController extends Controller
     }
     // This function is used to edit a product
     public function getById($id){
-        $subCategories = \DB::table('categories')->where('active', 1)->orderBy('cat_name', 'asc')->get(); 
+        $subCategories = \DB::table('categories')->where('active', 1)->orderBy('cat_name', 'asc')->get();
         $product = \DB::table('products')
             ->where('id', $id)
             ->first();
@@ -214,5 +214,5 @@ class ProductReportController extends Controller
             'message' => 'Product updated successfully.'
         ]);
     }
-    
+
 }
