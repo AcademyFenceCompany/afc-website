@@ -380,7 +380,7 @@
                     <input type="text" class="form-control global-search px-5 py-2" name="global-search" placeholder="Search...">
                     <i class="bi bi-search search-icon"></i>
                     <!-- Dropdown menu for search results -->
-                    <ul class="dropdown-menu w-100" id="global-search" style="position: absolute; top: 100%; left: 0; z-index: 1000;">
+                    <ul class="dropdown-menu w-100 shadow" id="global-search" style="position: absolute; top: 100%; left: 0; z-index: 1000;">
                         <!-- Products -->
                         <li>
                             <h6 class="dropdown-header text-secondary">Products</h6>
@@ -410,7 +410,7 @@
                 <a href="{{ route('ams.create-order')}}" class="btn btn-success text-light position-relative">
                     <i class="bi bi-plus me-1"></i> Create Order
                     @if(session('cart2') && session('cart2.quantity') > 0)
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
                             {{ session('cart2.quantity') }}
                         </span>
                     @endif

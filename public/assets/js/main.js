@@ -475,8 +475,11 @@ $(document).ready(function() {
             dataType: "html",
             success: function(data) {
                 // Populate the element with id 'product-list' with the received data
-                result.html(data);
-                result.addClass('show');
+                result.fadeOut(150, function() {
+                    result.html(data);
+                    result.addClass('show');
+                    result.fadeIn(150);
+                });
 
             },
             error: function(xhr, status, error) {

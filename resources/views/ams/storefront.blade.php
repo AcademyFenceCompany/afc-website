@@ -2,7 +2,7 @@
 @section('title', 'AMS Storefront')
 @section('content')
 <div class="container-fluid p-4">
-    <h1>AMS Storefront</h1>
+    <h1><i class="bi text-primary bi-cart me-2"></i>AMS Storefront</h1>
     <p>Welcome to the AMS Storefront page.</p>
     <div class="row">
         <!-- Sidebar Filters -->
@@ -132,92 +132,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Example products -->
+                            @foreach($products->take(20) as $product)
                             <tr data-category="fence" data-price="120">
-                                <td>1001</td>
-                                <td>Classic Wood Fence Panel</td>
-                                <td>6ft x 8ft</td>
+                                <td>{{$product->item_no}}</td>
+                                <td>{{$product->product_name}}</td>
+                                <td>{{$product->size}}</td>
                                 <td>
                                     <span class="badge rounded-pill bg-success">Yes</span>
                                 </td>
-                                <td>$120</td>
+                                <td>${{$product->price}}</td>
                                 <td>
-                                    <input type="number" class="form-control form-control-sm" value="1" min="1" max="10">
+                                    <input type="number" class="form-control form-control-sm incre-qty" data-product-id="{{$product->id}}" value="1" min="0" max="100">
                                 </td>
                                 <td>
-                                    <button class="btn btn-success text-light btn-sm" title="Add to Cart">
-                                        <i class="bi pe-2 bi-cart-plus"></i> Add to Cart
+                                    <button class="btn btn-success text-light btn-sm add-to-cart" data-product-id="{{$product->id}}" title="Add to Cart">
+                                        <i class="bi bi-cart-plus"></i>
                                     </button>
                                 </td>
                             </tr>
-                            <tr data-category="gate" data-price="180">
-                                <td>1002</td>
-                                <td>Steel Driveway Gate</td>
-                                <td>12ft x 4ft</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-success">Yes</span>
-                                </td>
-                                <td>$180</td>
-                                <td>
-                                    <input type="number" class="form-control form-control-sm" value="1" min="1" max="5">
-                                </td>
-                                <td>
-                                    <button class="btn btn-success text-light btn-sm" title="Add to Cart">
-                                        <i class="bi pe-2 bi-cart-plus"></i> Add to Cart
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-category="hardware" data-price="15">
-                                <td>1003</td>
-                                <td>Gate Hinge Set</td>
-                                <td>Standard</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-warning text-dark">Low</span>
-                                </td>
-                                <td>$15</td>
-                                <td>
-                                    <input type="number" class="form-control form-control-sm" value="1" min="1" max="20">
-                                </td>
-                                <td>
-                                    <button class="btn btn-success text-light btn-sm" title="Add to Cart">
-                                        <i class="bi pe-2 bi-cart-plus"></i> Add to Cart
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-category="fence" data-price="95">
-                                <td>1004</td>
-                                <td>Vinyl Privacy Fence Panel</td>
-                                <td>6ft x 6ft</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-danger">No</span>
-                                </td>
-                                <td>$95</td>
-                                <td>
-                                    <input type="number" class="form-control form-control-sm" value="1" min="1" max="10" disabled>
-                                </td>
-                                <td>
-                                    <button class="btn btn-secondary btn-sm" title="Out of Stock" disabled>
-                                        <i class="bi pe-2 bi-cart-x"></i> Out of Stock
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr data-category="accessory" data-price="8">
-                                <td>1005</td>
-                                <td>Post Cap - Black</td>
-                                <td>4x4</td>
-                                <td>
-                                    <span class="badge rounded-pill bg-success">Yes</span>
-                                </td>
-                                <td>$8</td>
-                                <td>
-                                    <input type="number" class="form-control form-control-sm" value="1" min="1" max="50">
-                                </td>
-                                <td>
-                                    <button class="btn btn-success text-light btn-sm" title="Add to Cart">
-                                        <i class="bi pe-2 bi-cart-plus"></i> Add to Cart
-                                    </button>
-                                </td>
-                            </tr>
+                            @endforeach
+
                         </tbody>
                     </table>
                 </div>
