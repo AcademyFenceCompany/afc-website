@@ -1,6 +1,27 @@
-@extends('layouts.main')
+@extends('layouts.main2')
 
 @section('content')
+@include('partials.header')
+    <section class="page-header p-0 mb-5" style="background: url({{ asset('assets/images/fence.png') }});background-size:contain;">
+        <style>
+            .banner-ad{
+                background-repeat: repeat-x;
+                background-size: contain !important;
+                background-position: bottom center;
+            }
+        </style>
+        <div class="container">
+            <div class="banner-ad bg-transparent text-center py-4" style="">
+                <h1 class="text-body-emphasis text-light">Solid Board</h1>
+                <p class="col-lg-6 mx-auto text-light mb-4">Academy Wood Fence - Cedar Wood Fencing Leaders Since 1968</p> 
+                <button class="btn btn-primary px-5 mb-5" type="button">
+                    Get a Quote
+                </button>
+            
+            </div>
+        </div>
+    </section>
+    <x-cart-sidebar :cart="$cart"/>
 <div class="container">
     <h3 class="text-center mt-4 mb-4">Wood Fence Specifications - Solid Board</h3>
 

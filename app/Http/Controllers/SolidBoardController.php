@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\ShoppingCart;
 
 class SolidBoardController extends Controller
 {
@@ -103,6 +104,11 @@ class SolidBoardController extends Controller
         
         // Define the preferred styles and their order
         $styleOrder = ['Straight On Top', 'Concave', 'Convex'];
+        // Define the preferred specialities and their order and Header
+        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
+        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+        $shoppingCart = new ShoppingCart();
+        $cart = $shoppingCart->getCart();
         
         return view('categories.solidboard', [
             'category' => [
@@ -112,6 +118,9 @@ class SolidBoardController extends Controller
                 'seo_name' => $category->seo_name,
                 'image' => $category->image ? url('storage/categories/' . $category->image) : url('storage/categories/default.png'),
             ],
+            'cart' => $cart,
+            'majCategories' => $majCategories,
+            'subCategories' => $subCategories,
             'productMap' => $productMap,
             'productIdMap' => $productIdMap,
             'styleOrder' => $styleOrder,

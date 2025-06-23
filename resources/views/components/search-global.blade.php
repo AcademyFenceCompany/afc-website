@@ -5,7 +5,7 @@
     </li>
     @foreach($customersQuery as $customer)
         <li class="dropdown-item">
-            <a href="" class="d-flex flex-column text-decoration-none">
+            <a href="/" class="d-flex flex-column text-decoration-none">
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="fw-bold">{{ $customer->name }}</span>
                     @if(!empty($customer->phone))
@@ -39,6 +39,24 @@
     @endforeach
 @endif
 <!-- Orders -->
+ <!-- Search Global Component Products -->
+@if(!$ordersQuery->isEmpty())
+    <li>
+        <h6 class="dropdown-header text-info">Products</h6>
+    </li>
+    @foreach($productsQuery as $order)
+        <li class="dropdown-item">
+            <a href="" class="d-flex flex-column text-decoration-none">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">{{ $order->shipping_firstname }} {{$order->shipping_lastname}}</span>
+                    @if(!empty($order->id))
+                        <small class="text-dark ms-2">#{{ $order->id }}</small>
+                    @endif
+                </div>
+            </a>
+        </li>
+    @endforeach
+@endif
 <!-- <li>
     <h6 class="dropdown-header text-primary">Orders</h6>
 </li>

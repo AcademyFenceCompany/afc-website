@@ -165,7 +165,40 @@ $(document).ready(function() {
         });
     });
 
+    // This method is is used to submit the filter form, send an AJAX request, and update the product report table
+    $("#ams-store-form-filter").on("change", "input, select, textarea", function(event) {
+        $("#ams-store-form-filter").submit();
+    });
 
+    $("#ams-store-form-filter").on("submit", function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        const result = $("#product-report-table");
+        // Display the loading message
+        result.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+        setTimeout(() => {
+            const formData = $(this).serialize(); // Serialize the form data
+            console.log("Serialized form data:", formData);
+            if (!formData) {
+                console.warn("Form data is empty. Ensure the form has valid input fields with values.");
+            }
+            $.ajax({
+                url: `${App.url}/ams/ams-storefront`,
+                type: "POST",
+                data: formData,
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "html",
+                success: function(data) {
+                    // Populate the element with id 'product-list' with the received data
+                    result.html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching products:", error);
+                    // Optionally clear the loading message or show an error message
+                    result.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                }
+            });
+        }, 100); // Added missing closing brace for setTimeout
+    });
 
     $('.selectall').click(function() {
         if ($(this).is(':checked')) {
@@ -267,38 +300,8 @@ $(document).ready(function() {
         appName: "MyApp",
         url: App.url,
     }
-    // Function to add a product to the cart
-    $(".add-to-cart").on("click", function() {
-        const productId = $(this).data("product-id");
-        if (!productId) {
-            console.warn("Invalid product ID or quantity.");
-            return;
-        }
-        console.log(App.url, window.APP_URL);
-        console.log("Updating quantity for product ID:", productId);
-        $.ajax({
-            url: `${App.url}/cart2/add-to-cart/p/${productId}`,
-            type: "GET",
-            dataType: "json",
-            success: function(response) {
-                // Optionally update cart UI or show a message
-                console.log("Quantity updated successfully:", response);
-                const cartHtml = App.renderCartListGroup(response.cart2);
-                $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
-                $('.cart-count').text(response.cartCount); // Update cart count
-                $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
-                //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
-            },
-            error: function(xhr, status, error) {
-                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
-                //$("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
-            }
-        });
-
-        console.log("Updated cart count for all elements.");
-    });
-    // Function to update the quantity of a product in the cart
-    $(".incre-qty").on("change", function() {
+        // Function to update the quantity of a product in the cart
+    $(document).on("click", ".incre-qty", function() {
 
         const productId = $(this).data("product-id");
         const quantity = $(this).val();
@@ -337,6 +340,37 @@ $(document).ready(function() {
             }
         });
     });
+    // Function to add a product to the cart
+    $(document).on("click", ".add-to-cart", function() {
+        const productId = $(this).data("product-id");
+        if (!productId) {
+            console.warn("Invalid product ID or quantity.");
+            return;
+        }
+        console.log(App.url, window.APP_URL);
+        console.log("Updating quantity for product ID:", productId);
+        $.ajax({
+            url: `${App.url}/cart2/add-to-cart/p/${productId}`,
+            type: "GET",
+            dataType: "json",
+            success: function(response) {
+                // Optionally update cart UI or show a message
+                console.log("Quantity updated successfully:", response);
+                const cartHtml = App.renderCartListGroup(response.cart2);
+                $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
+                $('.cart-count').text(response.cartCount); // Update cart count
+                $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
+                //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
+            },
+            error: function(xhr, status, error) {
+                const errorMessage = xhr.responseJSON && xhr.responseJSON.message ? xhr.responseJSON.message : error;
+                //$("#alert-container").html('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+            }
+        });
+
+        console.log("Updated cart count for all elements.");
+    });
+
     // Function to remove a product from the cart
     $(".remove-from-cart").on("click", function() {
         const productId = $(this).data("product-id");
@@ -475,11 +509,13 @@ $(document).ready(function() {
             dataType: "html",
             success: function(data) {
                 // Populate the element with id 'product-list' with the received data
-                result.fadeOut(150, function() {
-                    result.html(data);
-                    result.addClass('show');
-                    result.fadeIn(150);
-                });
+                result.html(data);
+                result.addClass('show');
+                // result.fadeOut(150, function() {
+                //     result.html(data);
+                //     result.addClass('show');
+                //     result.fadeIn(150);
+                // });
 
             },
             error: function(xhr, status, error) {

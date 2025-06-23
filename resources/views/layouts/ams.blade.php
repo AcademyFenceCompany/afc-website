@@ -115,110 +115,6 @@
 
 <body>
     <!-- Sidebar -->
-    <div class="sidebar d-none">
-        <h3>AMS Home</h3>
-
-        <!-- Orders -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#ordersMenu" role="button" aria-expanded="false"
-            aria-controls="ordersMenu">
-            Orders <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="ordersMenu">
-            <a href="{{ route('ams.create-order') }}" class="menu-item">Create New Order</a>
-            <a href="{{ route('ams.activity') }}" class="menu-item">Today's Activity</a>
-            <a href="#" class="menu-item">Test Account</a>
-        </div>
-
-        <!-- Products -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#productsMenu" role="button" aria-expanded="false"
-            aria-controls="productsMenu">
-            Products Management <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="productsMenu">
-            <a href="{{ route('ams.product-query.create') }}" class="menu-item">Add Product</a>
-            <a href="{{ route('ams.product-query.index') }}" class="menu-item">View Product</a>
-        </div>
-
-        <!-- Categories -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#categoriesMenu" role="button" aria-expanded="false"
-        aria-controls="categoriesMenu">
-        Category Management <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="categoriesMenu">
-            <a href="{{ route('ams.mysql-categories.index') }}" class="menu-item">View Categories</a>
-            <a href="{{ route('ams.mysql-categories.create') }}" class="menu-item">Add Category</a>
-            <a href="{{ route('ams.mysql-majorcategories.create') }}" class="menu-item">Add Major Category</a>
-        </div>
-        <!-- Customers -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#customersMenu" role="button" aria-expanded="false"
-            aria-controls="customersMenu">
-            Customers <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="customersMenu">
-            <a href="#" class="menu-item">Add Customer</a>
-            <a href="{{ route('customers.index') }}" class="menu-item">View Customers</a>
-        </div>
-
-        <!-- Shipping -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#shippingMenu" role="button" aria-expanded="false"
-            aria-controls="shippingMenu">
-            Shipping <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="shippingMenu">
-            <a href="#" class="menu-item">Add Shippers</a>
-            <a href="#" class="menu-item">Add Contacts to Shipper</a>
-            <a href="#" class="menu-item">View Shippers</a>
-            <a href="#" class="menu-item">Delivery Log</a>
-            <a href="#" class="menu-item">Freight Shipping Log</a>
-            <a href="#" class="menu-item">Small Package Log</a>
-            <a href="{{ route('shipping-markup') }}" class="menu-item">Shipping Markup</a>
-        </div>
-
-        <!-- Suppliers -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#suppliersMenu" role="button" aria-expanded="false"
-            aria-controls="suppliersMenu">
-            Suppliers <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="suppliersMenu">
-            <a href="#" class="menu-item">Add Supplier</a>
-            <a href="#" class="menu-item">Edit Suppliers</a>
-            <a href="#" class="menu-item">View Suppliers</a>
-            <a href="#" class="menu-item">Cost Comparison</a>
-        </div>
-
-        <!-- Additional Menus -->
-        @if (auth()->user()->level === 'God')
-            <a href="{{ route('user.management') }}"
-                class="menu-item {{ request()->routeIs('user.management') ? 'active' : '' }}">
-                <i class="fas fa-users-cog"></i>
-                <span>User Management</span>
-            </a>
-        @endif
-
-        <!-- CMS Menu -->
-        <a class="menu-item" data-bs-toggle="collapse" href="#cmsMenu" role="button" aria-expanded="false"
-            aria-controls="cmsMenu">
-            <i class="bi bi-pencil-square"></i>
-            <span>CMS</span>
-            <i class="bi bi-caret-down-fill"></i>
-        </a>
-        <div class="collapse submenu" id="cmsMenu">
-            <a href="{{ route('ams.cms.pages.index') }}" class="menu-item">
-                <i class="bi bi-file-text"></i> Category Pages
-            </a>
-            <a href="{{ route('ams.cms.pages.create') }}" class="menu-item">
-                <i class="bi bi-plus-circle"></i> Add New Page
-            </a>
-        </div>
-
-        <a href="#" class="menu-item">Inventory</a>
-        <a href="#" class="menu-item">Office Sheets</a>
-        <a href="#" class="menu-item">Sales Reports</a>
-        <a href="{{ route('ams.product-report') }}" class="menu-item">Products Report</a>
-        <a href="{{ route('ams.getshippingrate') }}" class="menu-item">Shipping API</a>
-        <a href="{{ route('ams.install_upload') }}" class="menu-item">Install Jobs Gallery</a>
-
-    </div>
     <div class="sidebar-container">
         <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar" style="width: 260px;">
             <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none text-dark">
@@ -368,16 +264,25 @@
                     <a href="{{ route('ams.install_upload') }}" class="nav-link text-dark"><i class="bi bi-images me-2"></i> Install Jobs</a>
                 </li>
             </ul>
+            <hr>
+            <footer class="text-center mt-4">
+                <small class="text-muted d-block">
+                    &copy; {{ date('Y') }} Academy Fence Company. All rights reserved.
+                </small>
+                <small class="text-muted d-none">
+                    <i class="bi bi-bootstrap-fill"></i> Powered by AMS
+                </small>
+            </footer>
         </div>
     </div>
     <!-- Main Content -->
     <div class="content">
         <!-- Navbar fixed-top padding-left 280px -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-lg-top px-4">
             <!-- Search Bar -->
             <form method="post" action="{{ route('ams.global-search') }}" class="d-flex align-items-center col-md-6 me-auto position-relative" role="search">
                 <div class="search-container w-100">
-                    <input type="text" class="form-control global-search px-5 py-2" name="global-search" placeholder="Search...">
+                    <input type="text" class="form-control global-search px-5 py-2" name="global-search" placeholder="Search name, email, phone, company, product, item no, order ID, order name..." aria-label="Search" id="global-search-input">
                     <i class="bi bi-search search-icon"></i>
                     <!-- Dropdown menu for search results -->
                     <ul class="dropdown-menu w-100 shadow" id="global-search" style="position: absolute; top: 100%; left: 0; z-index: 1000;">

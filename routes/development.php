@@ -30,6 +30,8 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/activity', [ActivityController::class, 'getorders'])->name('ams.orders');
     Route::get('/create-order', [OrderController::class, 'create2'])->name('ams.create-order');
     Route::get('/ams-storefront', [AmsStorefrontController::class, 'index'])->name('ams.storefront');
+    Route::get('/ams-storefront/{id}', [AmsStorefrontController::class, 'getProductsByCategoryId'])->name('ams.storefront.cat');
+    Route::post('/ams-storefront', [AmsStorefrontController::class, 'getProductByFilter'])->name('ams.storefront.filter');
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');

@@ -10,7 +10,7 @@
                     <label for="date2" class="form-label">Ouote: Colin</label>
                     <div class="input-group">
                         <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
-                        <button type="button" class="btn btn-outline-secondary add-date">
+                        <button type="button" class="btn btn-secondary add-date">
                             <i class="bi bi-calendar-date"></i>
                         </button>
                     </div>
@@ -18,8 +18,8 @@
                 <div class="col-md-3 mb-3">
                     <label for="date3" class="form-label">Sold</label>
                     <div class="input-group">
-                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
-                        <button type="button" class="btn btn-outline-secondary add-date">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="" readonly>
+                        <button type="button" class="btn btn-success add-date">
                             <i class="bi bi-calendar-date"></i>
                         </button>
                     </div>
@@ -27,8 +27,8 @@
                 <div class="col-md-3 mb-3">
                     <label for="date4" class="form-label">Customer Confirm</label>
                     <div class="input-group">
-                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
-                        <button type="button" class="btn btn-outline-secondary add-date">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="" readonly>
+                        <button type="button" class="btn btn-warning add-date">
                             <i class="bi bi-calendar-date"></i>
                         </button>
                     </div>
@@ -36,8 +36,8 @@
                 <div class="col-md-3 mb-3">
                     <label for="date5" class="form-label">Shipped Confirmed</label>
                     <div class="input-group">
-                        <input type="text" class="form-control order-date" id="date2" name="date2" value="2024-06-15" readonly>
-                        <button type="button" class="btn btn-outline-secondary add-date">
+                        <input type="text" class="form-control order-date" id="date2" name="date2" value="" readonly>
+                        <button type="button" class="btn btn-danger add-date">
                             <i class="bi bi-calendar-date"></i>
                         </button>
                     </div>

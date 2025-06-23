@@ -97,17 +97,24 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                Welded Wire - Vinyl PVC Coated
+                                Welded Wire
                             </button>
                             </h2>
                             <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">An item</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                        <li class="list-group-item">A fourth item</li>
-                                        <li class="list-group-item">And a fifth one</li>
+                                        <li class="list-group-item">
+                                            <a href="{{ route('ams.storefront.cat', ['id' => 45, 'coating' => 'vinyl']) }}" class="text-decoration-none">Vinyl Coated</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="{{ route('ams.storefront.cat', ['id' => 45, 'coating' => 'galvanized']) }}" class="text-decoration-none">Galvanized</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="{{ route('ams.storefront.cat', ['id' => 1207]) }}" class="text-decoration-none">Fence Pen/Gate Kits</a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <a href="{{ route('ams.storefront.cat', ['id' => 1054]) }}" class="text-decoration-none">Welded Wire Sample</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

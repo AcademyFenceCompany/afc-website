@@ -112,6 +112,7 @@ class ProductReports extends Model
                 'coating' => 'Galv/Vinyl',
                 'material' => 'GAB/GAW',
                 'enabled' => 'Enabled',
+                'storeheader' => 'Welded Wire Products Storefront'
             ];
             break;
             case 2:
@@ -127,6 +128,7 @@ class ProductReports extends Model
                 'coating' => 'Coating',
                 'material' => 'Material',
                 'enabled' => 'Enabled',
+                'storeheader' => 'Welded Wire Products Storefront'
             ];
             break;
             case 82: // Wood Post Caps
@@ -142,6 +144,7 @@ class ProductReports extends Model
                     'coating' => 'Coating',
                     'material' => 'Material',
                     'enabled' => 'Enabled',
+                    'storeheader' => 'Welded Wire Products Storefront'
                 ];
                 break;
             case 81: // SOLAR Post Caps
@@ -157,6 +160,7 @@ class ProductReports extends Model
                     'coating' => 'Coating',
                     'material' => 'Material',
                     'enabled' => 'Enabled',
+                    'storeheader' => 'Welded Wire Products Storefront',
                 ];
                 break;
             default:

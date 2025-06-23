@@ -17,10 +17,11 @@ class GlobalSearchController extends Controller
 
             // Build customers query
             $customersQuery = DB::table('customers')
-                ->select('name', 'phone', 'company')
+                ->select('name', 'email', 'phone', 'company')
                 ->where(function ($q) use ($str) {
                     $q->where('name', 'like', "%{$str}%")
                       ->orWhere('company', 'like', "%{$str}%")
+                      ->orWhere('email', 'like', "%{$str}%")
                       ->orWhere('phone', 'like', "%{$str}%");
                 })
                 ->orderBy('name')
@@ -37,16 +38,18 @@ class GlobalSearchController extends Controller
                 ->get();
 
             // Combine queries using unionAll, then get results
-            // $ordersQuery = DB::connection('academyfence')->table('orders')
-            //     ->select(DB::raw("'order' as type"), 'id as order_id', 'customer_name as title')
-            //     ->where(function ($q) use ($str) {
-            //         $q->where('id', 'like', "%{$str}%")
-            //           ->orWhere('customer_name', 'like', "%{$str}%");
-            //     })
-            //     ->limit(10)
-            //     ->get();
+            $ordersQuery = DB::connection('academyfence')->table('orders')
+                ->select('id', 'shipping_firstname', 'shipping_lastname', 'shipping_company')
+                ->where(function ($q) use ($str) {
+                    $q->where('id', 'like', "%{$str}%")
+                        ->orWhere('shipping_firstname', 'like', "%{$str}%")
+                        ->orWhere('shipping_company', 'like', "%{$str}%")
+                        ->orWhere('shipping_lastname', 'like', "%{$str}%");
+                })
+                ->limit(10)
+                ->get();
 
-            return view('components.search-global', compact('customersQuery', 'productsQuery'));
+            return view('components.search-global', compact('customersQuery', 'productsQuery', 'ordersQuery'));
         } catch (\Exception $e) {
             Log::error('Error in search2: ' . $e->getMessage());
             return response()->json(['error' => 'Error searching customers: ' . $e->getMessage()], 500);
