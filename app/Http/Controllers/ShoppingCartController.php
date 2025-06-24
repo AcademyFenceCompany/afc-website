@@ -46,9 +46,9 @@ class ShoppingCartController extends Controller
         $shoppingCart = new ShoppingCart();
         $cart = $shoppingCart->getCart();
         // Logic to retrieve the shopping cart items
-        $UPSService = new \App\Services\UPSService();
-        $validToken = $UPSService->isAccessTokenValid();
-        @dump($UPSService->accessToken, $validToken);
+        //$UPSService = new \App\Services\UPSService();
+        //$validToken = $UPSService->isAccessTokenValid();
+        //@dump($UPSService->accessToken, $validToken);
         // // Check if the UPS access token is valid
         // if (!$UPSService->accessToken) {
         //     $UPSService->authenticate2();

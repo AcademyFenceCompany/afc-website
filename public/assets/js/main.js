@@ -1,6 +1,6 @@
 const App = {
     appName: "MyApp",
-    url: window.APP_URL,
+    url: 'http://localhost:8000',//window.APP_URL,
     init: function() {
         console.log("App initialized");
         // Add any initialization logic here

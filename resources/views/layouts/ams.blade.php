@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
     @yield('styles')
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/css/style.css')}}" >
-    <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- TinyMCE 
+    <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <style>
         @media print {
@@ -324,7 +324,7 @@
             <div class="dropdown" style="top:0; left:0;">
                 <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="https://img.freepik.com/premium-vector/male-face-avatar-icon-set-flat-design-social-media-profiles_1281173-3806.jpg?semt=ais_hybrid&w=740" alt="user" width="40" height="40" class="rounded-circle me-2">
-                <strong class="mx-2">{{auth()->user()->username}}</strong>
+                <strong class="mx-2">{{auth()->user()->firstname}} {{auth()->user()->lastname}}</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" aria-labelledby="userMenu">
                 <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
