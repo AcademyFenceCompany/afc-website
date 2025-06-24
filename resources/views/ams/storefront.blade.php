@@ -7,7 +7,7 @@
     <div class="row">
         <!-- Sidebar Filters -->
         <div class="col-md-3">
-            <div class="card">
+            <div class="card sticky-top">
                 <div class="card-header">
                     <h4>Filter Products</h4>
                 </div>
@@ -120,10 +120,10 @@
                 <div class="card-body">
                     <p>Browse our selection of products below. Use the filters to find what you need.</p>
                     <div id="product-report-table">
-                        <x-ams-storefront-ww :products="$products" />
+                        <x-ams-storefront-ww :products="$products" :grouped-products="$groupedProducts" />
                     </div>
 
-                    
+
                 </div>
                 <div class="card-footer">
                     <p>Total Products: <span id="totalProducts">4</span></p>

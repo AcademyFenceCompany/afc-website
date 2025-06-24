@@ -40,9 +40,18 @@ class AmsStorefrontController extends Controller
         //     'logtype_id' => 1
         // ]);
 
+        // Group the products by size2 and size3
+        $groupedProducts = [];
+        foreach ($products as $product) {
+            $key = $product->size2 . ' - ' . $product->size3;
+            if (!isset($groupedProducts[$key])) {
+                $groupedProducts[$key] = [];
+            }
+            $groupedProducts[$key][] = $product;
+        }
         // List of install jobs
         //$installGallery = \DB::table('product_report')->get();
-        return view('ams.storefront', compact('categoryqry','majCategories', 'products', 'subCategories', 'filters', 'columnHeaders', 'id'));
+        return view('ams.storefront', compact('categoryqry','majCategories', 'products', 'groupedProducts','subCategories', 'filters', 'columnHeaders', 'id'));
     }
     // This function is used to get a list of products by category id
     public function getProductsByCategoryId($id = 45){
@@ -76,7 +85,7 @@ class AmsStorefrontController extends Controller
         $id = $request->post('cat_id');
 
         // Get By category id
-        $categoryqry = \DB::table('categoriesqry')->where('id', $id)->get();
+        $categoryqry = DB::table('categoriesqry')->where('id', $id)->get();
 
         // Use string variables from the server for filter keys
         $filterKeys = [
@@ -99,7 +108,7 @@ class AmsStorefrontController extends Controller
             }
         }
 
-        $productsQuery = \DB::table('products');
+        $productsQuery = DB::table('products');
 
         foreach ($filters as $column => $values) {
             if (!empty($values)) {
