@@ -41,11 +41,21 @@ class AmsStorefrontController extends Controller
         // ]);
 
         // Group the products by size2 and size3
+        // Group the products by size2 and size3, and sort by size2 (smallest to biggest)
         $groupedProducts = [];
-        foreach ($products as $product) {
+
+        // First, sort $products by size2 (assuming numeric, otherwise adjust as needed)
+        $sortedProducts = $products->sort(function($a, $b) {
+            // Remove non-numeric characters if needed, or cast to float/int
+            $aSize2 = is_numeric($a->size2) ? $a->size2 : floatval(preg_replace('/[^\d.]/', '', $a->size2));
+            $bSize2 = is_numeric($b->size2) ? $b->size2 : floatval(preg_replace('/[^\d.]/', '', $b->size2));
+            return $aSize2 <=> $bSize2;
+        });
+
+        foreach ($sortedProducts as $product) {
             $key = $product->size2 . ' - ' . $product->size3;
             if (!isset($groupedProducts[$key])) {
-                $groupedProducts[$key] = [];
+            $groupedProducts[$key] = [];
             }
             $groupedProducts[$key][] = $product;
         }

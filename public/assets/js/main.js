@@ -1,6 +1,6 @@
 const App = {
     appName: "MyApp",
-    url: "http://localhost:8000", //window.APP_URL,
+    url: window.APP_URL,
     init: function() {
         console.log("App initialized");
         // Add any initialization logic here
@@ -358,7 +358,7 @@ $(document).ready(function() {
                 console.log("Quantity updated successfully:", response);
                 const cartHtml = App.renderCartListGroup(response.cart2);
                 $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
-                $('.cart-count').text(response.cartCount); // Update cart count
+                $('.cart-count').text(response.cartCount).addClass('show'); // Update cart count and add Bootstrap show class
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Quantity updated!</div>').fadeIn().delay(1000).fadeOut();
             },

@@ -4,7 +4,8 @@
         <tr>
             <th>Item Number</th>
             <th>Product Name</th>
-            <th>Size</th>
+            <th>Mesh</th>
+            <th>Gauge</th>
             <th>In Stock</th>
             <th>Price</th>
             <th>Qty</th>
@@ -14,9 +15,24 @@
     <tbody>
         @foreach($products->take(20) as $product)
         <tr data-category="fence" data-price="120">
-            <td>{{$product->item_no}}</td>
-            <td>{{$product->product_name}}</td>
-            <td>{{$product->size}}</td>
+            <td>{{$product->item_no}} 
+                @if(isset($product->color))
+                    @php
+                        $colorClass = match(strtolower($product->color)) {
+                            'black' => 'bg-dark text-light',
+                            'green' => 'bg-success text-light',
+                            'brown' => 'bg-brown text-light', // You may need to define 'bg-brown' in your CSS
+                            'white' => 'bg-white text-dark border',
+                            'yellow' => 'bg-warning text-dark',
+                            default => 'bg-secondary text-light',
+                        };
+                    @endphp
+                    <span class="badge badge-pill {{ $colorClass }}">{{ ucfirst($product->color) }}</span>
+                @endif
+            </td>
+            <td>{{ \Illuminate\Support\Str::limit($product->product_name, 40) }}</td>
+            <td>{{$product->size2}}</td>
+            <td>{{$product->size3}}</td>
             <td>
                 @if($product->in_stock > 10)
                     <span class="badge rounded-pill bg-success">In Stock</span>

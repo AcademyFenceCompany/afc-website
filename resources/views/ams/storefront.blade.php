@@ -7,7 +7,7 @@
     <div class="row">
         <!-- Sidebar Filters -->
         <div class="col-md-3">
-            <div class="card sticky-top">
+            <div class="card">
                 <div class="card-header">
                     <h4>Filter Products</h4>
                 </div>
@@ -102,12 +102,12 @@
                             </select>
                         </div>
                         <input type="hidden" name="cat_id" value="{{ $id }}">
-                        <button type="submit" class="btn btn-primary btn-sm ams-apply-filter">Apply Filters</button>
+                        <button type="button" class="btn btn-primary btn-sm ams-apply-filter d-none">Apply Filters</button>
                     </form>
                 </div>
                 <div class="card-footer">
                     <p>Note: Filters are applied dynamically. Use the buttons below to reset or clear filters.</p>
-                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('ams-store-form-filter').reset();">Reset Filters</button>
+                    <button class="btn btn-secondary btn-md" onclick="document.getElementById('ams-store-form-filter').reset();">Reset Filters</button>
                 </div>
             </div>
         </div>

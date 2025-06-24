@@ -33,6 +33,9 @@ body{
 .form-control{
     background-color: #f7f7f7;
 }
+.notify .cart-count{
+    visibility: hidden;
+}
 header{
     .nav-link{
         background-color: $secondary-color;
