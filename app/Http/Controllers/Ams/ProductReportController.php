@@ -20,7 +20,7 @@ class ProductReportController extends Controller
         $subCategories = \DB::table('categories')->where('active', 1)->orderBy('cat_name', 'asc')->get();
 
         $productsOb = new ProductReports(); //getAllProducts();
-        $arr = $productsOb->getProductsBySubCategory($id);//->take(10);
+        $arr = $productsOb->getProductsBySubCategoryV2($id);//->take(10);
         $products = $arr['products'];
         $columnHeaders = $productsOb->setTableHeaders($id); // Set Table Headers based on the category id
         // List of filters

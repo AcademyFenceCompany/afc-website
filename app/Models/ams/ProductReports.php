@@ -46,7 +46,42 @@ class ProductReports extends Model
         $products = \DB::table('productsqry')
             ->where('categories_id', $id)
             ->where('enabled', 1)
-            ->limit(200)
+            ->orderBy('size2', 'desc')
+            ->get();
+        $size = $this->filterColumn($id, 'size');
+        $size2 = $this->filterColumn($id, 'size2');
+        $size3 = $this->filterColumn($id, 'size3');
+        $color = $this->filterColumn($id, 'color');
+        $style = $this->filterColumn($id, 'style');
+        $spacing = $this->filterColumn($id, 'spacing');
+        $speciality = $this->filterColumn($id, 'speciality');
+        $coating = $this->filterColumn($id, 'coating');
+        $material = $this->filterColumn($id, 'material');
+        $enabled = $this->filterColumn($id, 'enabled');
+        return [
+            'products' => $products,
+            'filters' => [
+                'size' => ['size' => $size, 'selected' => ''],
+                'size2' =>  ['size2' => $size2, 'selected' => ''],
+                'size3' => ['size3' => $size3, 'selected' => ''],
+                'color' => ['color' => $color, 'selected' => ''],
+                'style' => ['style' => $style, 'selected' => ''],
+                'spacing' => ['spacing' => $spacing, 'selected' => ''],
+                'speciality' => ['speciality' => $speciality, 'selected' => ''],
+                'coating' => ['coating' => $coating, 'selected' => ''],
+                'material' => ['material' => $material, 'selected' => ''],
+                'enabled' => ['enabled' => $enabled, 'selected' => '1'],
+            ],
+        ];
+    }
+    // This function is used to get a list of products by category
+    public function getProductsBySubCategoryV2($id){
+        $products = \DB::table('productsqry')
+            ->select('*')
+            ->where('categories_id', $id)
+            ->where('enabled', 1)
+            ->orderBy('size2', 'desc')
+            ->orderBy('size', 'desc')
             ->get();
         $size = $this->filterColumn($id, 'size');
         $size2 = $this->filterColumn($id, 'size2');

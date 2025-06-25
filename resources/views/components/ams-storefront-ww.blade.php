@@ -1,9 +1,16 @@
 <div class="">
     <div  class="row">
         <div class="col-md-12">
+        @php
+            // Group products by size2 and size3
+            $groupedProducts = collect($products)->groupBy(function($item) {
+                return ($item->size2 ?? '') . ' / ' . ($item->size3 ?? '');
+            });
+        @endphp
+
         @foreach ($groupedProducts as $groupLabel => $items)
             <p class="text-dark p-2 m-0 text-center" style="font-size: 0.85em;background-color:rgb(219, 219, 219);">
-                Mesh size and Gauge: <strong>{{ $groupLabel }}</strong>
+                Mesh size and Gauge <strong>{{ $groupLabel }}</strong>
             </p>
             <table class="table m-0 align-middle" style="font-size: {{ auth()->user()->username === 'neal' ? '0.85em' : '' }};">
                 <thead>
@@ -14,7 +21,7 @@
                         <th class="align-middle">Gauge</th>
                         <th class="align-middle">Price</th>
                         <th class="align-middle">
-                            {{ auth()->user()->username === 'colin' ? 'In Stock' : 'Inv' }}
+                            {{ auth()->user()->firstname == 'colin' ? 'In Stock' : 'Inv' }}
                         </th>
                         <th class="align-middle">Quantity</th>
                         <th class="align-middle"></th>

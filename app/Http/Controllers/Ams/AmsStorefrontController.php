@@ -24,7 +24,7 @@ class AmsStorefrontController extends Controller
         $subCategories = DB::table('categories')->where('active', 1)->orderBy('cat_name', 'asc')->get();
 
         $productsOb = new ProductReports(); //getAllProducts();
-        $arr = $productsOb->getProductsBySubCategory($id);//->take(10);
+        $arr = $productsOb->getProductsBySubCategory($id);
         $products = $arr['products'];
         $columnHeaders = $productsOb->setTableHeaders($id); // Set Table Headers based on the category id
         // List of filters
@@ -42,23 +42,24 @@ class AmsStorefrontController extends Controller
 
         // Group the products by size2 and size3
         // Group the products by size2 and size3, and sort by size2 (smallest to biggest)
-        $groupedProducts = [];
+        $groupedProducts = [$products];
+        
 
         // First, sort $products by size2 (assuming numeric, otherwise adjust as needed)
-        $sortedProducts = $products->sort(function($a, $b) {
-            // Remove non-numeric characters if needed, or cast to float/int
-            $aSize2 = is_numeric($a->size2) ? $a->size2 : floatval(preg_replace('/[^\d.]/', '', $a->size2));
-            $bSize2 = is_numeric($b->size2) ? $b->size2 : floatval(preg_replace('/[^\d.]/', '', $b->size2));
-            return $aSize2 <=> $bSize2;
-        });
+        // $sortedProducts = $products->sort(function($a, $b) {
+        //     // Remove non-numeric characters if needed, or cast to float/int
+        //     $aSize2 = is_numeric($a->size2) ? $a->size2 : floatval(preg_replace('/[^\d.]/', '', $a->size2));
+        //     $bSize2 = is_numeric($b->size2) ? $b->size2 : floatval(preg_replace('/[^\d.]/', '', $b->size2));
+        //     return $aSize2 <=> $bSize2;
+        // });
 
-        foreach ($sortedProducts as $product) {
-            $key = $product->size2 . ' - ' . $product->size3;
-            if (!isset($groupedProducts[$key])) {
-            $groupedProducts[$key] = [];
-            }
-            $groupedProducts[$key][] = $product;
-        }
+        // foreach ($sortedProducts as $product) {
+        //     $key = $product->size2 . ' - ' . $product->size3;
+        //     if (!isset($groupedProducts[$key])) {
+        //     $groupedProducts[$key] = [];
+        //     }
+        //     $groupedProducts[$key][] = $product;
+        // }
         // List of install jobs
         //$installGallery = \DB::table('product_report')->get();
         return view('ams.storefront', compact('categoryqry','majCategories', 'products', 'groupedProducts','subCategories', 'filters', 'columnHeaders', 'id'));
