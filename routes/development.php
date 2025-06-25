@@ -29,6 +29,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
     Route::get('/activity', [ActivityController::class, 'getorders'])->name('ams.orders');
     Route::get('/create-order', [OrderController::class, 'create2'])->name('ams.create-order');
+    Route::get('/create-order/{id}', [OrderController::class, 'create2'])->name('ams.create-cus-order');
     Route::get('/ams-storefront', [AmsStorefrontController::class, 'index'])->name('ams.storefront');
     Route::get('/ams-storefront/{id}', [AmsStorefrontController::class, 'getProductsByCategoryId'])->name('ams.storefront.cat');
     Route::post('/ams-storefront', [AmsStorefrontController::class, 'getProductByFilter'])->name('ams.storefront.filter');

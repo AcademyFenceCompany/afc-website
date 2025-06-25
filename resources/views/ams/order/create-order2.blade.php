@@ -83,9 +83,9 @@
                 <x-cart-address :cardHeader="'Shipping Address'" :cardname="'shipping'" :admin="'true'" />
                 <x-cart-address :cardHeader="'Billing Address'" :cardname="'billing'" :admin="true"/>
                 <x-cart-items :cardHeader="'Order Items'" :cardname="'items'" :cart="$cart"/>
-                <x-cart-correspondence :cardHeader="'Order Fulfillment'" :cardname="'correspondence'" />
+                <x-cart-fulfillment :cardHeader="'Order Fulfillment'" :cardname="'correspondence'" />
                 <div class="col-12 mt-4" id="shipping-options"></div>
-                
+
                 <x-cart-activity-list :cardHeader="'Order Notes'" :cardname="'ordernotes'" />
             </div>
             <div class="col-md-4">
@@ -157,48 +157,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mb-3 cart-summary" style="background-color: #fbf7db;">
-                    <div class="card-header bg-secondary p-2">
-                        <h4 class="card-title mb-0 text-dark">Order Summary</h4>
-                    </div>
-                      <div class="cart-summary-container">
-                          <ul class="list-group-item px-3 pt-4">
-                              <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Item Subtotal (<span class="cart-count">{{$cart['quantity']}}</span>)</span>
-                                  <span class="text-muted mini-cart-subtotal" data-mi-subtotal="">${{$cart['subtotal']}}</span>
-                              </li>
-                              <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Shipping Cost</span>
-                                  <span class="text-muted shipping-cost" data-mi-shipping="">${{$cart['shipping_cost']}}</span>
-                              </li>
-                              <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Shipping Price</span>
-                                  <span class="text-muted shipping-cost" data-mi-shipping="">${{$cart['shipping_cost']}}</span>
-                              </li>
-                              <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Sales Tax</span>
-                                  <span class="text-muted cart-tax" data-mi-taxes="0">${{$cart['tax']}}</span>
-                              </li>
-                              <li class="list-group-item py-1 d-flex justify-content-between">
-                                  <span>Discount</span>
-                                  <span class="text-muted" data-mi-taxes="0">$0</span>
-                              </li>
-                          </ul>
-                          <div class="p-3  border-top">
-                              <label for="cart_subtotal" class="form-label"><strong>Charge Total (USD)</strong></label>
-                              <input type="number" class="form-control" name="cart_total" id="total" width="50%" value="{{$cart['total']}}">
-                            </div>
-                          <div class="p-3 d-flex justify-content-between border-top">
-                              <strong>Total (USD)</strong>
-                              <strong class="cart-total"  data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
-                          </div>
-                      </div>
-                      <button type="submit" class="btn btn-primary btn-lg m-3 mt-0" id="place-order">
-                          Place Order
-                      </button>
-                    </div>
-                    <x-cart-payment :cardHeader="'Payment Method'" :cardname="'payment'" :admin="true"/>
-                </div>
+                <x-cart-payment :cardHeader="'Payment Method'" :cardname="'payment'" :admin="true"/>
+                <x-cart-summary :cardHeader="'Order Summary'" :cardname="'summary'" :cart="$cart" />
             </div>
         </div>
     </div>

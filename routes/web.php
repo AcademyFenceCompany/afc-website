@@ -43,7 +43,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/products/by-category/{category}', [ProductController::class, 'getByCategory'])->name('products.by.category');
-    
+
     // Product Query routes for demodb testing
     Route::prefix('product-query')->name('ams.product-query.')->group(function () {
         Route::get('/', [ProductQueryController::class, 'index'])->name('index');
@@ -61,24 +61,24 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     // MySQL Category Management
     Route::resource('mysql-categories', \App\Http\Controllers\Ams\CategoryController::class)->names('ams.mysql-categories');
     Route::resource('mysql-majorcategories', \App\Http\Controllers\Ams\MajorCategoryController::class)->names('ams.mysql-majorcategories');
- 
+
     // Other AMS routes...
-    Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
-    Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
-    Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
-    Route::get('/orders/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.orders.category.show');
-    Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
-    Route::get('/orders/products/all', [OrderController::class, 'getAllProducts'])->name('ams.orders.all-products');
-    Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('ams.orders.update-status');
-    Route::get('/customers/{customer}/addresses', [OrderController::class, 'getCustomerAddresses'])->name('ams.customers.addresses');
-    
-    // Customer Address Routes
-    Route::prefix('/customers/{customer}/addresses')->group(function () {
-        Route::post('/', [OrderController::class, 'storeAddress'])->name('ams.customers.addresses.store');
-        Route::put('/{address}', [OrderController::class, 'updateAddress'])->name('ams.customers.addresses.update');
-        Route::delete('/{address}', [OrderController::class, 'deleteAddress'])->name('ams.customers.addresses.delete');
-    });
-    
+    // Route::get('/orders/create', [OrderController::class, 'create'])->name('ams.orders.create');
+    // Route::post('/orders', [OrderController::class, 'store'])->name('ams.orders.store');
+    // Route::get('/orders/categories', [OrderController::class, 'categories'])->name('ams.orders.categories');
+    // Route::get('/orders/categories/{category}', [OrderController::class, 'showCategory'])->name('ams.orders.category.show');
+    // Route::get('/orders/products', [OrderController::class, 'getProducts'])->name('ams.orders.products');
+    // Route::get('/orders/products/all', [OrderController::class, 'getAllProducts'])->name('ams.orders.all-products');
+    // Route::post('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('ams.orders.update-status');
+    // Route::get('/customers/{customer}/addresses', [OrderController::class, 'getCustomerAddresses'])->name('ams.customers.addresses');
+
+    // // Customer Address Routes
+    // Route::prefix('/customers/{customer}/addresses')->group(function () {
+    //     Route::post('/', [OrderController::class, 'storeAddress'])->name('ams.customers.addresses.store');
+    //     Route::put('/{address}', [OrderController::class, 'updateAddress'])->name('ams.customers.addresses.update');
+    //     Route::delete('/{address}', [OrderController::class, 'deleteAddress'])->name('ams.customers.addresses.delete');
+    // });
+
     // Debug route
     Route::get('/debug/products', function() {
         $products = \App\Models\Product::with(['details', 'familyCategory'])->get();
@@ -93,7 +93,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/debug/demodb', function() {
         // Get all tables in demodb
         $tables = DB::connection('academyfence')->select('SHOW TABLES');
-        
+
         // Get the structure of productsqry view if it exists
         $productsqryColumns = [];
         try {
@@ -102,7 +102,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         } catch (\Exception $e) {
             $productsqryColumns = ['error' => $e->getMessage()];
         }
-        
+
         // Get sample data from productsqry
         $sampleData = [];
         try {
@@ -111,7 +111,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         } catch (\Exception $e) {
             $sampleData = ['error' => $e->getMessage()];
         }
-        
+
         // Show all tables and views in the database
         $allViews = [];
         try {
@@ -120,7 +120,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
         } catch (\Exception $e) {
             $allViews = ['error' => $e->getMessage()];
         }
-        
+
         return response()->json([
             'tables' => $tables,
             'views' => $allViews,
@@ -312,7 +312,7 @@ Route::get('/categories/{category}/products', [CategoriesController::class, 'get
 
 
 
-//Shipping API's 
+//Shipping API's
 Route::get('/checkout', [CheckoutController::class, 'getCheckoutForm'])->name('checkout.index');
 // Route::post('/checkout/shipping-cost', [CheckoutController::class, 'calculateShippingCost'])->name('checkout.shipping-cost');
 

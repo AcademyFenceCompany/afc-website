@@ -1,9 +1,14 @@
-<div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h4 class="mb-0">Order Status</h4>
+<div class="card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="">
+            <i class="bi me-2 bi-truck"></i>
+            Order Status
+        </h5>
         <span class="text-muted"><strong>Created On:</strong> {{ date('Y-m-d') }}</span>
+
     </div>
-    <div class="card-body">
+    <hr class="my-3">
+    <div class="">
         <form>
             <div class="row">
                 <div class="col-md-3 mb-3">

@@ -1,7 +1,7 @@
-@props(['admin' => true])
+@props(['admin' => false, 'cardHeader' => 'Payment Method', 'cardname' => 'default'])
 @if(!$admin)
 <div class="card p-4 mb-4">
-    <h4 class="mb-3">Payment Method</h4>    
+    <h4 class="mb-3">Payment Method</h4>
     <div class="row gy-3">
         <div class="col-lg-6">
             <div class="col-md-12">
@@ -48,7 +48,12 @@
 </div>
 @else
 <div class="card p-4 mb-4">
-    <h4 class="mb-3">Payment Method</h4>    
+    <div class="mb-3 d-flex align-items-center justify-content-between">
+        <h5 class="mb-0">
+            <i class="bi bi-credit-card me-2"></i>
+            {{$cardHeader}}
+        </h5>
+    </div>
     <div class="row gy-3">
         <div class="col-lg-12">
             <div class="col-md-12 mb-3">
