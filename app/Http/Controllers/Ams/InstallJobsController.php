@@ -17,7 +17,7 @@ class InstallJobsController extends Controller
             ->get();
 
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();    
-        $cities = \DB::table('county')->get();
+        $cities = \DB::table('county')->orderBy('city', 'asc')->get();
         // List of install jobs
         $installGallery = \DB::table('install_gallery')->get();
 

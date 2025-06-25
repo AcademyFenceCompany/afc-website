@@ -44,7 +44,9 @@ class ProductReports extends Model
     // This function is used to get a list of products by category
     public function getProductsBySubCategory($id){
         $products = \DB::table('productsqry')
-            ->where('categories_id', $id)->limit(100)
+            ->where('categories_id', $id)
+            ->where('enabled', 1)
+            ->limit(200)
             ->get();
         $size = $this->filterColumn($id, 'size');
         $size2 = $this->filterColumn($id, 'size2');
@@ -59,16 +61,16 @@ class ProductReports extends Model
         return [
             'products' => $products,
             'filters' => [
-                'size' => ['size' => $size, 'selected' => '48in x 50ft'],
-                'size2' =>  ['size2' => $size2, 'selected' => '2in x 4in'],
-                'size3' => ['size3' => $size3, 'selected' => '14 Gauge'],
-                'color' => ['color' => $color, 'selected' => 'Black'],
+                'size' => ['size' => $size, 'selected' => ''],
+                'size2' =>  ['size2' => $size2, 'selected' => ''],
+                'size3' => ['size3' => $size3, 'selected' => ''],
+                'color' => ['color' => $color, 'selected' => ''],
                 'style' => ['style' => $style, 'selected' => ''],
                 'spacing' => ['spacing' => $spacing, 'selected' => ''],
                 'speciality' => ['speciality' => $speciality, 'selected' => ''],
-                'coating' => ['coating' => $coating, 'selected' => 'Vinyl'],
+                'coating' => ['coating' => $coating, 'selected' => ''],
                 'material' => ['material' => $material, 'selected' => ''],
-                'enabled' => ['enabled' => $enabled, 'selected' => ''],
+                'enabled' => ['enabled' => $enabled, 'selected' => '1'],
             ],
         ];
     }
@@ -89,6 +91,7 @@ class ProductReports extends Model
     public function filterColumn($id, $filter){
         $filteredValues = \DB::table('products')
             ->where('categories_id', $id)
+            ->where('enabled', 1)
             ->distinct()
             ->orderBy($filter, 'asc')
             ->pluck($filter)

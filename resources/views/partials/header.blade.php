@@ -96,7 +96,7 @@
                         
                     <a href="#" class="position-relative text-dark py-2 show" id="cartDropdown" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                         <i class="bi-cart fs-4"></i>
-                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill cart-count">
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill cart-count {{ (session('cart2') && session('cart2.quantity') > 0) ? 'show' : 'd-none' }}">
                             {{$cart['quantity']}}
                         </span>
                     </a>

@@ -103,24 +103,13 @@
                 </select>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="form-group mb-3">
                         <label for="county_id">City/Town</label>
                         <select name="county_id" id="county_id" class="form-control" required>
                             <option value="">-- Select City --</option>
                             @foreach ($cities as $city)
-                                <option value="{{$city->id}}">{{$city->city}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="county_id">County</label>
-                        <select name="county_id" id="county_id" class="form-control" required>
-                            <option value="">-- Select County --</option>
-                            @foreach ($counties as $county)
-                                <option value="{{$county->id}}">{{$county->county}}</option>
+                                <option value="{{$city->id}}">{{$city->city}} ({{$city->county}})</option>
                             @endforeach
                         </select>
                     </div>

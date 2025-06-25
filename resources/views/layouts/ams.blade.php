@@ -314,7 +314,7 @@
                 <a href="{{ route('ams.storefront')}}" class="btn btn-danger text-dark mx-2"><i class="bi bi-cart me-1"></i> Store</a>
                 <a href="{{ route('ams.create-order')}}" class="btn btn-success text-light position-relative">
                     <i class="bi bi-plus me-1"></i> Create Order
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notify cart-count {{ (session('cart2') && session('cart2.quantity') > 0) ? 'show' : '' }}">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger notify cart-count {{ (session('cart2') && session('cart2.quantity') > 0) ? 'show' : 'd-none' }}">
                         {{ session('cart2.quantity', 0) }}
                     </span>
                 </a>
@@ -415,7 +415,7 @@
     </script>
     <script>
         window.APP_URL = "{{ config('app.url') }}";
-        console.log("APP_URL: ", window.APP_URL);
+        console.log("APP_URL: ", APP_URL);
     </script>
     <script src="{{ asset('js/ams.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
