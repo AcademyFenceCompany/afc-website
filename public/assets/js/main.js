@@ -439,6 +439,48 @@ $(document).ready(function() {
             subcategorySelect.empty().append('<option>Select a category first</option>');
         }
     });
+    //Shipping Module API
+    // Add Package Group Row
+    $(document).on('click', '.addPackageGroupBtn', function(e) {
+        e.preventDefault();
+        var $row = $(this).closest('tr.package-group');
+        var $clone = $row.clone();
+
+        // Clear input values in the cloned row
+        $clone.find('input').val('');
+
+        // Change the button in the cloned row to "Remove"
+        $clone.find('.addPackageGroupBtn')
+            .removeClass('addPackageGroupBtn btn-outline-primary')
+            .addClass('removePackageGroupBtn btn-outline-danger')
+            .html('<i class="bi bi-dash-circle me-1"></i>');
+
+        // Append the cloned row to the table body
+        $('#packageGroupsTable tbody').append($clone);
+
+        // Update row indices
+        updatePackageIndices();
+    });
+
+    // Remove Package Group Row
+    $(document).on('click', '.removePackageGroupBtn', function(e) {
+        e.preventDefault();
+        $(this).closest('tr.package-group').remove();
+        updatePackageIndices();
+    });
+
+    // Update the index numbers in the first column
+    function updatePackageIndices() {
+        $('#packageGroupsTable tbody tr.package-group').each(function(index) {
+            $(this).find('.package-index').text(index + 1);
+        });
+    }
+
+    // Optionally handle form submission via AJAX
+    $('#shippingForm').on('submit', function(e) {
+        // e.preventDefault();
+        // Handle form data as needed
+    });
     // Print products report result table when the button is clicked
     $("#print-prod-report").on("click", function() {
         // Hide the form and other elements you don't want to print

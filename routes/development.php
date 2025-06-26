@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Ams\AmsStorefrontController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\AmsSettingsController;
 use Illuminate\Support\Facades\DB;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
@@ -25,14 +26,18 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::post('/products-report/filter', [ProductReportController::class, 'getProductByFilter'])->name('ams.product-report.filter');
     Route::post('/products-report/edit', [ProductReportController::class, 'update'])->name('ams.product-report.edit');
     Route::get('/log', [ActivityLogController::class, 'getAllLogs'])->name('ams.activity-log');
-    Route::get('/shippingrate', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
-    Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
+    Route::get('/shipping-module', [Shipping2Controller::class, 'testingshipping'])->name('ams.shipping-module');
+    Route::post('/shipping-module', [Shipping2Controller::class, 'testingshippingprocess'])->name('ams.shipping-module.process');
+    Route::post('/shippingrate', [Shipping2Controller::class, 'getShippingRates'])->name('ams.getshippingrate.post');
+    //Route::get('/', [Shipping2Controller::class, 'index'])->name('ams.getshippingrate');
     Route::get('/activity', [ActivityController::class, 'getorders'])->name('ams.orders');
     Route::get('/create-order', [OrderController::class, 'create2'])->name('ams.create-order');
     Route::get('/create-order/{id}', [OrderController::class, 'create2'])->name('ams.create-cus-order');
     Route::get('/ams-storefront', [AmsStorefrontController::class, 'index'])->name('ams.storefront');
     Route::get('/ams-storefront/{id}', [AmsStorefrontController::class, 'getProductsByCategoryId'])->name('ams.storefront.cat');
     Route::post('/ams-storefront', [AmsStorefrontController::class, 'getProductByFilter'])->name('ams.storefront.filter');
+    Route::get('/ams-settings', [AmsSettingsController::class, 'index'])->name('ams.settings');
+
 });
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');

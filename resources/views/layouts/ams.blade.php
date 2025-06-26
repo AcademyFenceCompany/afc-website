@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{{ asset('css/ams.css') }}">
     @yield('styles')
     <link rel="stylesheet" type="text/css" href="{{asset('/assets/css/style.css')}}" >
-    <!-- TinyMCE 
+    <!-- TinyMCE
     <script src="https://cdn.tiny.cloud/1/fqzaaogo06nq3byhp6e1ia5t3r29nvwitty5q04x54v9dgak/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <style>
@@ -189,13 +189,7 @@
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
                     <ul class="nav flex-column ms-4 submenu collapse" id="shippingMenu2">
-                        <li><a href="#" class="nav-link text-muted small">Add Shippers</a></li>
-                        <li><a href="#" class="nav-link text-muted small">Add Contacts to Shipper</a></li>
-                        <li><a href="#" class="nav-link text-muted small">View Shippers</a></li>
-                        <li><a href="#" class="nav-link text-muted small">Delivery Log</a></li>
-                        <li><a href="#" class="nav-link text-muted small">Freight Shipping Log</a></li>
-                        <li><a href="#" class="nav-link text-muted small">Small Package Log</a></li>
-                        <li><a href="{{ route('shipping-markup') }}" class="nav-link text-muted small">Shipping Markup</a></li>
+                        <li><a href="{{ route('ams.shipping-module') }}" class="nav-link text-muted small">Shipping Module</a></li>
                     </ul>
                 </li>
 
@@ -256,7 +250,7 @@
 
                 <!-- Shipping API -->
                 <li>
-                    <a href="{{ route('ams.getshippingrate') }}" class="nav-link text-dark"><i class="bi bi-cloud-arrow-up me-2"></i> Shipping API</a>
+                    <a href="" class="nav-link text-dark"><i class="bi bi-cloud-arrow-up me-2"></i> Shipping API</a>
                 </li>
 
                 <!-- Install Jobs -->
@@ -328,7 +322,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" aria-labelledby="userMenu">
                 <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                <li><a class="dropdown-item" href="{{ route('ams.settings') }}"><i class="fas fa-cog me-2"></i> Settings</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-list-ul me-2"></i> Activity Log</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
