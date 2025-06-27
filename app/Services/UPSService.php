@@ -137,19 +137,24 @@ class UPSService
             $useAlternativeShipper = isset($requestData['use_alternative_shipper']) && $requestData['use_alternative_shipper'] === true;
             
             // Get the appropriate shipper configuration
-            if ($useAlternativeShipper && config('alternative_shipper.category_82')) {
-                $shipperName = config('alternative_shipper.category_82.name');
-                $shipperAddress = config('alternative_shipper.category_82.address');
-                $shipperCity = config('alternative_shipper.category_82.city');
-                $shipperState = config('alternative_shipper.category_82.state');
-                $shipperZip = config('alternative_shipper.category_82.zip');
-            } else {
-                $shipperName = config('shipper.name');
-                $shipperAddress = config('shipper.address');
-                $shipperCity = config('shipper.city');
-                $shipperState = config('shipper.state');
-                $shipperZip = config('shipper.zip');
-            }
+            // if ($useAlternativeShipper && config('alternative_shipper.category_82')) {
+            //     $shipperName = config('alternative_shipper.category_82.name');
+            //     $shipperAddress = config('alternative_shipper.category_82.address');
+            //     $shipperCity = config('alternative_shipper.category_82.city');
+            //     $shipperState = config('alternative_shipper.category_82.state');
+            //     $shipperZip = config('alternative_shipper.category_82.zip');
+            // } else {
+            //     $shipperName = config('shipper.name');
+            //     $shipperAddress = config('shipper.address');
+            //     $shipperCity = config('shipper.city');
+            //     $shipperState = config('shipper.state');
+            //     $shipperZip = config('shipper.zip');
+            // }
+            $shipperName = config('shipper.name');
+            $shipperAddress = config('shipper.address');
+            $shipperCity = config('shipper.city');
+            $shipperState = config('shipper.state');
+            $shipperZip = config('shipper.zip');
 
             $payload = [
                 "RateRequest" => [
@@ -160,24 +165,24 @@ class UPSService
                     ],
                     "Shipment" => [
                         "Shipper" => [
-                            "Name" => $shipperName,
+                            "Name" => $requestData['sender_name'] ?? 'Academy Fence Company',
                             "ShipperNumber" => $this->shipperNumber,
                             "Address" => [
-                                "AddressLine" => $shipperAddress,
-                                "City" => $shipperCity,
-                                "StateProvinceCode" => $shipperState,
-                                "PostalCode" => $shipperZip,
-                                "CountryCode" => "US",
+                                "AddressLine" =>  $requestData['sender_address'] ?? '119 N Day Street',
+                                "City" => $requestData['sender_city'] ?? 'Orange',
+                                "StateProvinceCode" => $requestData['sender_state'] ?? 'NJ',
+                                "PostalCode" => $requestData['sender_postal'] ?? '07050',
+                                "CountryCode" => $requestData['sender_country'] ?? 'US',
                             ],
                         ],
                         "ShipTo" => [
                             "Name" => "Recipient Name",
                             "Address" => [
-                                "AddressLine" => [$requestData['recipient_address']],
+                                "AddressLine" => $requestData['recipient_address'],
                                 "City" => $requestData['recipient_city'],
                                 "StateProvinceCode" => $requestData['recipient_state'],
                                 "PostalCode" => $requestData['recipient_postal'],
-                                "CountryCode" => "US",
+                                "CountryCode" => $requestData['recipient_country'] ?? 'US',
                             ],
                         ],
                         "Package" => $packages, // Send multiple packages

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Ams;
-
+use App\Mail\WelcomeUser;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -60,8 +61,8 @@ class AmsStorefrontController extends Controller
         //     }
         //     $groupedProducts[$key][] = $product;
         // }
-        // List of install jobs
-        //$installGallery = \DB::table('product_report')->get();
+        $username = "AcademyFence Testing Email - " . date('Y-m-d H:i:s');
+        //Mail::to('colinsilver105@gmail.com')->send(new WelcomeUser($username));
         return view('ams.storefront', compact('categoryqry','majCategories', 'products', 'groupedProducts','subCategories', 'filters', 'columnHeaders', 'id'));
     }
     // This function is used to get a list of products by category id
@@ -119,7 +120,9 @@ class AmsStorefrontController extends Controller
             }
         }
 
-        $productsQuery = DB::table('products');
+        $productsQuery = DB::table('products')
+            ->where('categories_id', $id)
+            ->where('enabled', 1);
 
         foreach ($filters as $column => $values) {
             if (!empty($values)) {

@@ -1,27 +1,48 @@
 @extends('layouts.ams')
-
+@section('styles')
+<link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+<style>
+    .content {
+    padding:0rem;
+    background-color:rgb(255, 255, 255);
+    }
+    .card{
+        border: 2px dashed #9d9b9b;
+    }
+    .header{
+        border-radius:0;
+    }
+    .breadcrumb-item + .breadcrumb-item::before{
+        content: ">";
+    }
+</style>
+@endsection
 @section('content')
 <div class="container-fluid p-4 my-4">
-    <h4><i class="bi bi-shipping me-2 text-primary"></i>Shipping Module</h4>
-    <p>Use this module to simulate shipping rates, manage package details, and apply state-specific markups for AMS orders.</p>
-    <x-cart-shipping-insert-ams />
+    <div class="mb-4">
+        <h4><i class="bi bi-truck me-2 text-primary"></i>Shipping Module</h4>
+        <p>Use this module to simulate shipping rates, manage package details, and apply state-specific markups for AMS orders.</p>
+    </div>
+    <!-- <x-cart-shipping-insert-ams /> -->
     <form id="shippingForm" action="{{ route('ams.shipping-module.process') }}" method="POST">
         @csrf
         <div class="row">
             <!-- Ship From & Ship To -->
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">Ship From Address</div>
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-truck me-2"></i>Ship From Address
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">Address</label>
-                                    <input type="text" class="form-control" name="ship_from_address" required>
+                                    <input type="text" class="form-control" name="sender_address" value="119 N Day St" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Address 2</label>
-                                    <input type="text" class="form-control" name="ship_from_address2">
+                                    <input type="text" class="form-control" name="sender_address2" value="Suite 200">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -30,19 +51,19 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">City</label>
-                                            <input type="text" class="form-control" name="ship_from_city" required>
+                                            <input type="text" class="form-control" name="sender_city" value="Orange" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">State</label>
-                                            <input type="text" class="form-control" name="ship_from_state" required>
+                                            <input type="text" class="form-control" name="sender_state" value="NJ" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Zip</label>
-                                            <input type="text" class="form-control" name="ship_from_zip" required>
+                                            <input type="text" class="form-control" name="sender_postal" value="07050" required>
                                         </div>
                                     </div>
                                 </div>
@@ -53,13 +74,15 @@
             </div>
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-header bg-success text-white">Ship To Address</div>
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-geo-alt-fill me-2"></i>Ship To Address
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">Address</label>
-                                    <input type="text" class="form-control" name="ship_to_address" required>
+                                    <input type="text" class="form-control" name="recipient_address" value="68 Elmwood Ave" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Address 2</label>
@@ -72,19 +95,19 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">City</label>
-                                            <input type="text" class="form-control" name="ship_to_city" required>
+                                            <input type="text" class="form-control" name="recipient_city" value="East Orange" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">State</label>
-                                            <input type="text" class="form-control" name="ship_to_state" required>
+                                            <input type="text" class="form-control" name="recipient_state" value="NJ" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Zip</label>
-                                            <input type="text" class="form-control" name="ship_to_zip" required>
+                                            <input type="text" class="form-control" name="recipient_postal" value="07018" required>
                                         </div>
                                     </div>
                                 </div>
@@ -97,10 +120,12 @@
 
         <!-- Package Simulation -->
         <div class="card mb-4">
-            <div class="card-header text-dark">Simulate Packages</div>
+            <div class="card-header bg-info text-dark">
+                <i class="bi bi-box-seam me-2 text-primary"></i>Simulate Packages
+            </div>
             <div class="card-body">
                 <div >
-                    <table class="table table-striped" id="packageGroupsTable">
+                    <table class="table" id="packageGroupsTable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -142,7 +167,9 @@
 
         <!-- Package Table -->
         <div class="card mb-4">
-            <div class="card-header text-dark">Returned Rates</div>
+            <div class="card-header text-dark">
+                <i class="bi bi-currency-dollar me-2 text-primary"></i>Returned Rates
+            </div>
             <div class="card-body">
                 <table class="table" id="packagesTable">
                     <thead>
@@ -164,7 +191,9 @@
 
         <!-- Markup Section -->
         <div class="card mb-4">
-            <div class="card-header bg-warning text-dark">Markup by State</div>
+            <div class="card-header text-dark">
+                <i class="bi bi-percent me-2"></i>Markup by State
+            </div>
             <div class="card-body">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
@@ -203,10 +232,12 @@
 
         <!-- Calculate Shipping -->
         <div class="text-end">
-            <button class="btn btn-lg btn-success" id="calculateShippingBtn" type="submit">Calculate Shipping</button>
+            <button class="btn btn-lg btn-success" id="calculateShippingBtn">Calculate Shipping</button>
         </div>
     </form>
+    <div id="shipping-options" class="mt-4">
 
+    </div>
 
     <script>
     $(document).ready(function() {
@@ -216,6 +247,95 @@
     </script>
 
 </div>
+@endsection
+@section('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css">
+    <style>
+        .card {
+            /* border: 1px solid rgba(0, 0, 0, 0.125); */
+            margin-bottom: 0.5rem;
+        }
 
+        .card .card-body {
+            padding: 0.5rem;
+        }
 
+        .form-control,
+        .form-select {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .table> :not(caption)>*>* {
+            padding: 0.25rem;
+        }
+
+        .btn-group-vertical>.btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            text-align: left;
+        }
+
+        @media (max-width: 767px) {
+            .col-md-9, .col-md-3 {
+                width: 100%;
+            }
+
+            .col-md-3 {
+                margin-top: 1rem;
+            }
+        }
+
+        /* Shipping modal styling */
+        .shipping-table th, .shipping-table td {
+            font-size: 0.85rem;
+            padding: 0.25rem;
+        }
+
+        /* Order Status Styling */
+        .order-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .order-status-QUOTE {
+            background-color: #FFD8B1;
+            color: #000;
+        }
+
+        .order-status-PROCESSED {
+            background-color: #C0C0C0;
+            color: #000;
+        }
+
+        .order-status-DEPOSIT {
+            background-color: #B6D7B9;
+            color: #000;
+        }
+
+        .order-status-NEW {
+            background-color: #A9D4F6;
+            color: #000;
+        }
+
+        .order-status-PROCESSING {
+            background-color: #E8B4B4;
+            color: #000;
+        }
+
+        .order-status-MATERIAL {
+            background-color: #FF5252;
+            color: #fff;
+        }
+    </style>
 @endsection

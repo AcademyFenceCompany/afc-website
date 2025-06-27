@@ -46,10 +46,14 @@ class Shipping2Controller extends Controller
         // Create dummy data for testing
         // Prepare data in the format expected by UPS Shipping Rates API
         $formData = [
-            'recipient_address' => '78 Elmwood Ave',
-            'recipient_city' => 'East Orange',
-            'recipient_state' => 'NJ',
-            'recipient_postal' => $zip,
+            'recipient_address' => $request->post('recipient_address', '78 Elmwood Ave'),
+            'recipient_city' => $request->post('recipient_city', 'East Orange'),
+            'recipient_state' => $request->post('recipient_state', 'NJ'),
+            'recipient_postal' => $request->post('recipient_postal', '07018'),
+            'sender_address' => $request->post('sender_address', '119 N Day St'),
+            'sender_city' => $request->post('sender_city', 'Orange'),
+            'sender_state' => $request->post('sender_state', 'NJ'),
+            'sender_postal' => $request->post('sender_postal', '07050'),
             'packages' => [
                 [
                     'weight' => 105,
@@ -126,7 +130,7 @@ class Shipping2Controller extends Controller
                 $rates['rl_carriers'] = $rlCarriersRates;
             }
         }
-
+        @dump($rates);
         // This is where you return the lowest rate
         $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
         //@dd($upsrates, $tForceRates, $rlCarriersRates, $lowestUpsRate);
@@ -153,7 +157,7 @@ class Shipping2Controller extends Controller
         ]);
     }
     //This method will handle the shipping rates retrieval
-    public function testingshippingprocess()
+    public function testingshippingprocess(Request $request)
     {
 
                // Check if the user is AMS
@@ -179,11 +183,10 @@ class Shipping2Controller extends Controller
         //     'category_ids' => 'sometimes|array', // Add validation for category_ids
         // ]);
 
-        $request = request();
-        $lengths = $request->input('length', []);
-        $widths = $request->input('width', []);
-        $heights = $request->input('height', []);
-        $weights = $request->input('weight', []);
+        $lengths = $request->post('length', []);
+        $widths = $request->post('width', []);
+        $heights = $request->post('height', []);
+        $weights = $request->post('weight', []);
 
         $packages = [];
         $count = max(count($lengths), count($widths), count($heights), count($weights));
@@ -202,14 +205,18 @@ class Shipping2Controller extends Controller
                 ];
             }
         }
-        @dump($packages);
+        
         // Create dummy data for testing
         // Prepare data in the format expected by UPS Shipping Rates API
         $formData = [
-            'recipient_address' => '78 Elmwood Ave',
-            'recipient_city' => 'East Orange',
-            'recipient_state' => 'NJ',
-            'recipient_postal' => '07018',
+            'recipient_address' => $request->post('recipient_address', '78 Elmwood Ave'),
+            'recipient_city' => $request->post('recipient_city', 'East Orange'),
+            'recipient_state' => $request->post('recipient_state', 'NJ'),
+            'recipient_postal' => $request->post('recipient_postal', '07018'),
+            'sender_address' => $request->post('sender_address', '119 N Day St'),
+            'sender_city' => $request->post('sender_city', 'Orange'),
+            'sender_state' => $request->post('sender_state', 'NJ'),
+            'sender_postal' => $request->post('sender_postal', '07050'),
             'packages' => [
                 [
                     'weight' => 105,
@@ -231,7 +238,7 @@ class Shipping2Controller extends Controller
             // Add category_ids if needed
         ];
         //$formData['packages'] = $shippingMODEL->prepareShippingData($cartData['items']);
-        @dd($formData['packages']);
+       
         $rates = [];
         $upsrates = [];
         $tForceRates = [];
@@ -239,7 +246,13 @@ class Shipping2Controller extends Controller
 
         // Use UPS when weight is less than 150 lbs
         // Calculate total weight of all packages
-        $totalWeight = $cartData['weight'] ?? 0.0; // Initialize total weight from cart data
+        $totalWeight = 0.0;
+        if (!empty($packages)) {
+            foreach ($packages as $pkg) {
+                $totalWeight += isset($pkg['weight']) ? floatval($pkg['weight']) : 0.0;
+            }
+            $formData['packages'] = $packages;
+        }
 
         // If total weight is less than or equal to 150 lbs, use UPS
         if ($totalWeight < 150) {
@@ -286,7 +299,7 @@ class Shipping2Controller extends Controller
                 $rates['rl_carriers'] = $rlCarriersRates;
             }
         }
-
+        
         // This is where you return the lowest rate
         $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
         //@dd($upsrates, $tForceRates, $rlCarriersRates, $lowestUpsRate);

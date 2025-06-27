@@ -122,13 +122,10 @@ Route::get('/productdesc', function(){
 // Route for shopping cart
 Route::prefix('cart2')->group(function () {
     Route::get('/viewcart', [ShoppingCartController::class, 'precheckout'])->name('cart2.precheckout');
-    Route::get('/thankyou', function () {
-        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
-        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
-        return view('thankyou');
-    })->name('checkout2.success');
+    
     Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('cart2.checkout2');
     Route::get('/checkout', [ShoppingCartController::class, 'processCheckout'])->name('cart2.checkout2');
+    Route::get('/thankyou', [CheckoutController::class, 'processCheckout'])->name('cart2.thankyou');
     Route::get('/get-cart', [ShoppingCartController::class, 'getCart'])->name('cart2.getCart');
     Route::get('/add-to-cart/p/{id}', [ShoppingCartController::class, 'addItem'])->name('cart2.addToCart');
     Route::get('/update-qty/p/{id}/q/{qty}', [ShoppingCartController::class, 'updateItem'])->name('cart2.updateItem');

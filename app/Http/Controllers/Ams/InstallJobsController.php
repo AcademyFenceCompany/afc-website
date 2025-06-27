@@ -29,7 +29,7 @@ class InstallJobsController extends Controller
         // Validate the request data
         $validatedData = $request->validate([
             'header' => 'required|string|max:255',
-            'caption' => 'required|string',
+            'caption' => 'required|string|255',
             'filename' => 'required|file|mimes:jpeg,png,jpg,gif|max:10240',
             'majorcategories_id' => 'required|integer|exists:majorcategories,id', // Important: Added exists rule
             'county_id' => 'required|integer|exists:county,id',

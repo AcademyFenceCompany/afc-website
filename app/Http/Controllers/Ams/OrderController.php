@@ -25,7 +25,7 @@ class OrderController extends Controller
     }
 
     public function create2(){
-                // Get list of unique counties
+        // Get list of unique counties
         $counties = \DB::table('county')
             ->select('county', \DB::raw('MIN(id) as id'))
             ->groupBy('county')

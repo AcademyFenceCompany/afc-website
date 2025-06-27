@@ -5,42 +5,6 @@
 
 @section('content')
     <!-- Header Section -->
-<<<<<<< HEAD
-    <div class="rounded bg-brown">
-        <h1 class="page-title text-center py-2 mb-0">{{ $page->title }}</h1>
-    </div>
-    <div class="text-center py-2 mb-4 border-bottom">
-        <p class="mb-0">{!! $page->subtitle !!}</p>
-    </div>
-
-   <!-- Main Section (Styled Like Info Section) -->
-<div class="row g-4 mb-3">
-    <!-- Left Section - Superstore Info -->
-    <div class="col-md-6 wf-about">
-        <div class="d-flex">
-            @if ($page->img_large)
-                <img src="{{ Storage::url($page->img_large) }}"
-                    alt="{{ $page->title }} Image"
-                    class="me-4 rounded about-image"
-                    style="max-width: 200px; height: auto;">
-            @endif
-            <div>
-                <div class="small-font">
-                    {!! $page->product_text !!}
-                </div>
-                
-
-                <!-- Category Tidbits -->
-                <div class="small">
-                    @if ($page->category_tidbit_1)
-                        <div class="mb-2">{!! $page->category_tidbit_1 !!}</div>
-                    @endif
-                    @if ($page->category_tidbit_2)
-                        <div class="mb-2">{!! $page->category_tidbit_2 !!}</div>
-                    @endif
-                    @if ($page->category_tidbit_3)
-                        <div class="mb-2">{!! $page->category_tidbit_3 !!}</div>
-=======
     <div class="bg-black text-white text-center py-3 rounded">
         <h1 class="mb-0">{{ $page->title }}</h1>
     </div>
@@ -67,40 +31,10 @@
                     @endif
                     @if ($page->category_tidbit_3)
                         <div class="mb-3">{!! $page->category_tidbit_3 !!}</div>
->>>>>>> afc-webdev-c
                     @endif
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
-    </div>
-
-    <!-- Middle Section - Optional Buttons (Replace if needed) -->
-    <div class="col-md-2 text-center">
-        <h5 class="text-brown mb-2">Options</h5>
-        <div class="d-flex flex-column gap-2">
-            <button class="btn btn-light border w-100 text-center">Contact Us</button>
-            <button class="btn btn-light border w-100 text-center">More Info</button>
-            <button class="btn btn-brown w-100" style="background-color: #8B4513 !important; color: white !important;">
-                Get a Quote
-            </button>
-        </div>
-    </div>
-
-    <!-- Right Section - Product Text -->
-    <div class="col-md-4">
-        @if ($page->product_text)
-            <div class="p-3 rounded bg-light-yellow">
-            <h6 class="mb-2 fw-bold">The Original Online Fence Superstore</h6>
-                <p class="mb-2 fst-italic">Family owned & operated since 1968</p>
-                <div class="page-description mb-2">{!! $page->bulletin_board !!}</div>
-            </div>
-        @endif
-    </div>
-</div>
-
-
-=======
 
         <!-- Center Image -->
         <div class="col-md-4 text-center">
@@ -120,7 +54,6 @@
         </div>
     </div>
 
->>>>>>> afc-webdev-c
     <!-- Products Section -->
     @if (empty($groupedProducts['groups']) && empty($meshSize_products) && empty($mainTableProducts))
         <div class="alert alert-info mt-5">

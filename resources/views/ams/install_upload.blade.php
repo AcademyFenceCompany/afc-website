@@ -35,10 +35,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                <h1>Install Jobs Gallery Upload</h1>
+                <h4><i class="bi text-primary bi-images me-2"></i>Install Jobs Gallery Upload</h4>
                 <p>Upload new install jobs to the gallery.</p>
-                <button type="button" class="btn btn-primary mb-3" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Upload New Job Installation
+                <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-upload me-2"></i>Upload New Job Installation
                 </button>
 
             </div>
@@ -48,17 +48,17 @@
             @foreach($installGallery as $install)
             <div class="col-lg-3">
                 <div class="card mb-4 shadow-sm">
-                <img
-                    src="{{ asset('storage/install-jobs/thumbnail/' . $install->filename) }}"
-                    class="card-img-top" 
-                    alt="Waterfall"
-                />
-                <div class="card-body">
-                    <h5 class="card-title">{{ Str::limit($install->header, 30) }}</h5>
-                    <p class="card-text">{{$install->caption}}</p>
-                    </p>
-                    <a href="#!" data-mdb-ripple-init data-id="{{$install->id}}" class="btn btn-primary">Edit</a>
-                </div>
+                    <img
+                        src="{{ asset('storage/install-jobs/thumbnail/' . $install->filename) }}"
+                        class="card-img-top" 
+                        alt="Waterfall"
+                    />
+                    <div class="card-body">
+                        <h5 class="card-title">{{ Str::limit($install->header, 30) }}</h5>
+                        <p class="card-text">{{$install->caption}}</p>
+                        <p>{{ \Carbon\Carbon::parse($install->date_created)->toDateString() }}</p>
+                        <a href="#!" data-mdb-ripple-init data-id="{{$install->id}}" class="btn btn-primary d-none">Edit</a>
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -74,17 +74,17 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Add new install job</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="{{ url()->current() }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ url()->current() }}" method="POST" enctype="multipart/form-data" id="installJobForm" novalidate>
         @csrf
         <div class="modal-body">  
             <div class="mb-3">
                 <label for="header" class="form-label">Title</label>
-                <input type="text" name="header" id="header" class="form-control" placeholder="Enter header text" required>
+                <input type="text" name="header" id="header" class="form-control" placeholder="Enter header text" maxlength="160" required>
                 <div id="emailHelp" class="form-text">Title takes 160 characters.</div>
             </div>
             <div class="mb-3">
                 <label for="caption" class="form-label">Caption (Description)</label>
-                <textarea name="caption" id="caption" class="form-control" rows="3" placeholder="Enter caption" required></textarea>
+                <textarea name="caption" id="caption" class="form-control" rows="3" placeholder="Enter caption" maxlength="255" required></textarea>
                 <div id="emailHelp" class="form-text">Caption takes 255 characters.</div>
             </div>
             <div class="form-group mb-3">
