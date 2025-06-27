@@ -52,13 +52,13 @@
 {{-- Admin Shipping options list --}}
 {{-- @dump($upsallrates, $tForceRates, $rlCarriersRates) --}}
 <div class="card bg-light mb-3 border-0" style="border: 1px solid #cecece;">
-    <div class="card-header bg-primary text-dark py-2">
+    <div class="card-header bg-warning text-dark py-2">
         <h5 class="card-title">Shipping Options</h5>
         <p class="card-text">Select a shipping method for your order.</p>
     </div>
     <div class="px-3 py-3">
         <div class="d-flex justify-content-between align-items-center">
-            <p class="badge rounded-pill text-bg-success p-3"><i class="bi bi-truck me-3"></i><strong>Origin: </strong>NJ, 07102</p>
+            <p class="badge rounded-pill text-bg-success p-3"><i class="bi bi-truck me-3"></i><strong>Origin: </strong>{{$formData[]}}}}</p>
             <p class="badge rounded-pill text-bg-danger p-3"> <i class="bi bi-geo-alt-fill me-3"></i><strong>Destination: </strong>NJ, 07102</p>
         </div>
 

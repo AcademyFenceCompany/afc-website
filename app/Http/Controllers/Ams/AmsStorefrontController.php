@@ -61,8 +61,8 @@ class AmsStorefrontController extends Controller
         //     }
         //     $groupedProducts[$key][] = $product;
         // }
-        $username = "Colin";
-        Mail::to('colin@example.com')->send(new WelcomeUser($username));
+        $username = "AcademyFence Testing Email - " . date('Y-m-d H:i:s');
+        //Mail::to('colinsilver105@gmail.com')->send(new WelcomeUser($username));
         return view('ams.storefront', compact('categoryqry','majCategories', 'products', 'groupedProducts','subCategories', 'filters', 'columnHeaders', 'id'));
     }
     // This function is used to get a list of products by category id

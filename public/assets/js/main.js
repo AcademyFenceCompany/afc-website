@@ -264,7 +264,29 @@ $(document).ready(function() {
             }
         });
     });
-
+    // Submit shipping calculation form and return shipping options
+    $(document).on("click", "#calculateShippingBtn", function(e) {
+        e.preventDefault();
+        const form = $(this).closest("form");
+        const shippingOptions = $("#shipping-options");
+        // Show loading spinner
+        shippingOptions.html('<div class="d-flex justify-content-center"><div class="spinner-grow text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+        const formData = form.serialize();
+        $.ajax({
+            url: form.attr("action"),
+            type: "POST",
+            data: formData,
+            dataType: "html",
+            success: function(data) {
+                shippingOptions.html(data);
+            },
+            error: function(xhr, status, error) {
+                shippingOptions.html('<p class="text-danger">An error occurred. Please try again.</p>');
+                console.error("Error fetching shipping options:", error);
+            }
+        });
+    });
+    
     $(document).on("click", "input[name='shipmethod']", function() {
         const selectedValue = $(this).val();
         console.log("Selected shipping method:", selectedValue);

@@ -4,7 +4,7 @@
     <title>Welcome</title>
 </head>
 <body>
-    <h1>Hello, {{ $username }}!</h1>
-    <p>Thanks for joining our platform. We're excited to have you onboard!</p>
+    <h1>{{ $username }}!</h1>
+    <p>This is a test email. If you received this, your email configuration is working correctly.</p>
 </body>
 </html>

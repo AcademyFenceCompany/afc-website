@@ -55,9 +55,13 @@
             padding:0rem;
             background-color:rgb(255, 255, 255);
         }
+        .nav {
+            --bs-nav-link-padding-x: 1rem;
+            --bs-nav-link-padding-y: .6rem;
+        }
         .submenu {
-        transition: all 0.3s ease;
-        display: none;
+            transition: all 0.3s ease;
+            display: none;
         }
 
         .submenu.show {
@@ -148,7 +152,7 @@
                 <!-- Products Management -->
                 <li>
                     <a href="#productsMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="productsMenu2">
-                        <span><i class="bi bi-box-seam me-2"></i> Products Management</span>
+                        <span><i class="bi bi-box-seam me-2"></i> Products</span>
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
                     <ul class="nav flex-column ms-4 submenu collapse" id="productsMenu2">
@@ -160,7 +164,7 @@
                 <!-- Category Management -->
                 <li>
                     <a href="#categoriesMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="categoriesMenu2">
-                        <span><i class="bi bi-tags me-2"></i> Category Management</span>
+                        <span><i class="bi bi-tags me-2"></i> Categories</span>
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
                     <ul class="nav flex-column ms-4 submenu collapse" id="categoriesMenu2">
@@ -211,7 +215,7 @@
                 @if (auth()->user()->level === 'God')
                 <li>
                     <a href="{{ route('user.management') }}"  class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="cmsMenu2">
-                        <span><i class="bi bi-person-exclamation me-2"></i> User Management </span>
+                        <span><i class="bi bi-person-exclamation me-2"></i>Accounts</span>
                     </a>
                 </li>
                 @endif
