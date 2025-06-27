@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Mail\WelcomeUser;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -61,6 +62,9 @@ class CustomerController extends Controller
                 'error' => 'Error loading customers: ' . $e->getMessage()
             ]);
         }
+        $username = "Colin";
+        Mail::to('colin@example.com')->send(new WelcomeUser($username));
+
     }
 
     public function search(Request $request)

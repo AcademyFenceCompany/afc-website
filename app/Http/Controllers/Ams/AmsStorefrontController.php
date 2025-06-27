@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Ams;
-
+use App\Mail\WelcomeUser;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -60,8 +61,8 @@ class AmsStorefrontController extends Controller
         //     }
         //     $groupedProducts[$key][] = $product;
         // }
-        // List of install jobs
-        //$installGallery = \DB::table('product_report')->get();
+        $username = "Colin";
+        Mail::to('colin@example.com')->send(new WelcomeUser($username));
         return view('ams.storefront', compact('categoryqry','majCategories', 'products', 'groupedProducts','subCategories', 'filters', 'columnHeaders', 'id'));
     }
     // This function is used to get a list of products by category id
