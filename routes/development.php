@@ -37,6 +37,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/ams-storefront/{id}', [AmsStorefrontController::class, 'getProductsByCategoryId'])->name('ams.storefront.cat');
     Route::post('/ams-storefront', [AmsStorefrontController::class, 'getProductByFilter'])->name('ams.storefront.filter');
     Route::get('/ams-settings', [AmsSettingsController::class, 'index'])->name('ams.settings');
+    Route::get('/customer/{id}', [CustomerController::class, 'getCustomerById'])->name('ams.get-customer');
 
 });
 // Development route for testing: Colin

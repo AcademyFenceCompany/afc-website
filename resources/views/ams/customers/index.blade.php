@@ -75,7 +75,7 @@
                             {{ $customer->email ?? 'N/A' }}
                             </td>
                             <td class="">
-                            <a href="{{ route('ams.create-cus-order', ['id' => $customer->id]) }}" class="btn btn-sm btn-success me-1" title="Create Order">
+                            <a href="{{ route('ams.get-customer', ['id' => $customer->id]) }}" class="btn btn-sm btn-success me-1" title="Create Order">
                             <i class="bi bi-plus"></i>
                             </a>
                             <a href=""

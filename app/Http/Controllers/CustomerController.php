@@ -333,4 +333,22 @@ class CustomerController extends Controller
                 ->with('error', 'Error updating customer: ' . $e->getMessage());
         }
     }
+    public function getCustomerById($id = 56)
+    {
+        // Get customer by ID with direct DB query using academyfence connection
+        $customer = DB::connection('academyfence')->table('customers')
+            ->where('id', $id)->get();
+        if (!$customer) {
+           return response()->json(['error' => 'Customer not found'], 404);
+        }
+
+        // Get addresses for the customer
+        $addresses = DB::connection('academyfence')->table('cust_addresses')
+            ->where('customers_id', $id)
+            ->get();
+
+        // Add addresses to customer object
+        //$customer->addresses = $addresses;
+        return view('ams.customers.account', compact('customer'));
+    }
 }
