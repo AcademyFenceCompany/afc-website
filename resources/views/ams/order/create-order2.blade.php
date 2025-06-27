@@ -159,6 +159,7 @@
                 </div>
                 <x-cart-payment :cardHeader="'Payment Method'" :cardname="'payment'" :admin="true"/>
                 <x-cart-summary :cardHeader="'Order Summary'" :cardname="'summary'" :cart="$cart" />
+                <x-cart-correspondence :cardHeader="'Order Correspondence'" :cardname="'correspondence'" />
             </div>
         </div>
     </div>

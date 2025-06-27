@@ -119,7 +119,9 @@ class AmsStorefrontController extends Controller
             }
         }
 
-        $productsQuery = DB::table('products');
+        $productsQuery = DB::table('products')
+            ->where('categories_id', $id)
+            ->where('enabled', 1);
 
         foreach ($filters as $column => $values) {
             if (!empty($values)) {

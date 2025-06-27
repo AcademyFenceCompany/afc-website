@@ -1,17 +1,38 @@
 @extends('layouts.ams')
-
+@section('styles')
+<link rel="stylesheet" type="text/css" href="{{asset('/assets/css/style.css')}}" >
+<style>
+    .content {
+    padding:0rem;
+    background-color:rgb(255, 255, 255);
+    }
+    .card{
+        border: 2px dashed #9d9b9b;
+    }
+    .header{
+        border-radius:0;
+    }
+    .breadcrumb-item + .breadcrumb-item::before{
+        content: ">";
+    }
+</style>
+@endsection
 @section('content')
 <div class="container-fluid p-4 my-4">
-    <h4><i class="bi bi-shipping me-2 text-primary"></i>Shipping Module</h4>
-    <p>Use this module to simulate shipping rates, manage package details, and apply state-specific markups for AMS orders.</p>
-    <x-cart-shipping-insert-ams />
+    <div class="mb-4">
+        <h4><i class="bi bi-truck me-2 text-primary"></i>Shipping Module</h4>
+        <p>Use this module to simulate shipping rates, manage package details, and apply state-specific markups for AMS orders.</p>
+    </div>
+    <!-- <x-cart-shipping-insert-ams /> -->
     <form id="shippingForm" action="{{ route('ams.shipping-module.process') }}" method="POST">
         @csrf
         <div class="row">
             <!-- Ship From & Ship To -->
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-header bg-primary text-white">Ship From Address</div>
+                    <div class="card-header bg-primary text-white">
+                        <i class="bi bi-truck me-2"></i>Ship From Address
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -53,13 +74,15 @@
             </div>
             <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-header bg-success text-white">Ship To Address</div>
+                    <div class="card-header bg-success text-white">
+                        <i class="bi bi-geo-alt-fill me-2"></i>Ship To Address
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label class="form-label">Address</label>
-                                    <input type="text" class="form-control" name="ship_to_address" required>
+                                    <input type="text" class="form-control" name="recipient_address" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Address 2</label>
@@ -72,19 +95,19 @@
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">City</label>
-                                            <input type="text" class="form-control" name="ship_to_city" required>
+                                            <input type="text" class="form-control" name="recipient_city" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">State</label>
-                                            <input type="text" class="form-control" name="ship_to_state" required>
+                                            <input type="text" class="form-control" name="recipient_state" required>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="mb-3">
                                             <label class="form-label">Zip</label>
-                                            <input type="text" class="form-control" name="ship_to_zip" required>
+                                            <input type="text" class="form-control" name="recipient_postal" required>
                                         </div>
                                     </div>
                                 </div>
@@ -97,10 +120,12 @@
 
         <!-- Package Simulation -->
         <div class="card mb-4">
-            <div class="card-header text-dark">Simulate Packages</div>
+            <div class="card-header text-dark">
+                <i class="bi bi-box-seam me-2 text-primary"></i>Simulate Packages
+            </div>
             <div class="card-body">
                 <div >
-                    <table class="table table-striped" id="packageGroupsTable">
+                    <table class="table" id="packageGroupsTable">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -142,7 +167,9 @@
 
         <!-- Package Table -->
         <div class="card mb-4">
-            <div class="card-header text-dark">Returned Rates</div>
+            <div class="card-header text-dark">
+                <i class="bi bi-currency-dollar me-2 text-primary"></i>Returned Rates
+            </div>
             <div class="card-body">
                 <table class="table" id="packagesTable">
                     <thead>
@@ -164,7 +191,9 @@
 
         <!-- Markup Section -->
         <div class="card mb-4">
-            <div class="card-header bg-warning text-dark">Markup by State</div>
+            <div class="card-header bg-warning text-dark">
+                <i class="bi bi-percent me-2"></i>Markup by State
+            </div>
             <div class="card-body">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
@@ -216,6 +245,4 @@
     </script>
 
 </div>
-
-
 @endsection

@@ -46,10 +46,10 @@ class Shipping2Controller extends Controller
         // Create dummy data for testing
         // Prepare data in the format expected by UPS Shipping Rates API
         $formData = [
-            'recipient_address' => '78 Elmwood Ave',
-            'recipient_city' => 'East Orange',
-            'recipient_state' => 'NJ',
-            'recipient_postal' => $zip,
+            'recipient_address' => $request->post('recipient_address', '78 Elmwood Ave'),
+            'recipient_city' => $request->post('recipient_city', 'East Orange'),
+            'recipient_state' => $request->post('recipient_state', 'NJ'),
+            'recipient_postal' => $request->post('recipient_postal', '07018'),
             'packages' => [
                 [
                     'weight' => 105,
@@ -153,7 +153,7 @@ class Shipping2Controller extends Controller
         ]);
     }
     //This method will handle the shipping rates retrieval
-    public function testingshippingprocess()
+    public function testingshippingprocess(Request $request)
     {
 
                // Check if the user is AMS
@@ -179,11 +179,10 @@ class Shipping2Controller extends Controller
         //     'category_ids' => 'sometimes|array', // Add validation for category_ids
         // ]);
 
-        $request = request();
-        $lengths = $request->input('length', []);
-        $widths = $request->input('width', []);
-        $heights = $request->input('height', []);
-        $weights = $request->input('weight', []);
+        $lengths = $request->post('length', []);
+        $widths = $request->post('width', []);
+        $heights = $request->post('height', []);
+        $weights = $request->post('weight', []);
 
         $packages = [];
         $count = max(count($lengths), count($widths), count($heights), count($weights));
@@ -206,10 +205,10 @@ class Shipping2Controller extends Controller
         // Create dummy data for testing
         // Prepare data in the format expected by UPS Shipping Rates API
         $formData = [
-            'recipient_address' => '78 Elmwood Ave',
-            'recipient_city' => 'East Orange',
-            'recipient_state' => 'NJ',
-            'recipient_postal' => '07018',
+            'recipient_address' => $request->post('recipient_address', '78 Elmwood Ave'),
+            'recipient_city' => $request->post('recipient_city', 'East Orange'),
+            'recipient_state' => $request->post('recipient_state', 'NJ'),
+            'recipient_postal' => $request->post('recipient_postal', '07018'),
             'packages' => [
                 [
                     'weight' => 105,
