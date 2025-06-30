@@ -18,18 +18,18 @@ class WelcomeUser extends Mailable
      *
      * @return void
      */
-    public $username;
+    public $emailtype;
 
-    public function __construct($username)
+    public function __construct($type)
     {
-        $this->username = $username;
+        $this->emailtype = $type;
     }
 
     public function build()
     {
-        return $this->view('emails.welcome')
+        return $this->view('emails.order-confirmation')
                     ->subject('Welcome to the Platform!')
-                    ->with(['username' => $this->username]);
+                    ->with(['emailtype' => $this->emailtype]);
     }
 
 
@@ -54,8 +54,8 @@ class WelcomeUser extends Mailable
     public function content()
     {
         return new Content(
-            view: 'emails.welcome',
-            with: ['username' => $this->username],
+            view: 'emails.order-confirmation',
+            with: ['emailtype' => $this->emailtype, 'url' => 'https://example.com/dashboard'],
         );
     }
 

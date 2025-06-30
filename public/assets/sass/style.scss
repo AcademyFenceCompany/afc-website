@@ -2,6 +2,7 @@ $primary-color:  #882905;
 $primary-2-color:#ca9237;
 $secondary-color: #f5b149;
 $border-color: #CEC5C5;
+$ams-link-selected: rgb(211, 176, 176);
 $bs-body-color: #5e5e5e;
 $topbar-base-height: 3.5rem;
 $gray-200: #e9ecef;
@@ -48,6 +49,9 @@ body{
 }
 .notify .cart-count{
     visibility: hidden;
+}
+.link-selected{
+    background-color: $ams-link-selected !important;
 }
 header{
     .nav-link{

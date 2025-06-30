@@ -30,13 +30,13 @@ class Shipping2{
 
         // Pass the category information to the UPS service
         $validated['use_alternative_shipper'] = $hasCategory82;
-        
+
         $rates = $this->upsService->getShippingRates($validated);
-    
+
         if (isset($rates['error'])) {
             return ['error' => $rates['error']];
         }
-        
+
         // Add shipper information to the response
         // Use alternative shipper info if category 82 is present
         if ($hasCategory82 && config('alternative_shipper.category_82')) {
@@ -58,7 +58,7 @@ class Shipping2{
                 'email' => config('shipper.email'),
             ];
         }
-        
+
         // Merge the shipper info with the rates response
         $response = array_merge(['shipper' => $shipperInfo], $rates);
         return $response;
@@ -92,9 +92,9 @@ class Shipping2{
     {
         // Transform the data to match service expectations
         $serviceData = [
-            'origin_city' => 'Orange',
-            'origin_state' => 'NJ',
-            'origin_zip' => '07050',
+            'origin_city' => $validated['sender_city'],
+            'origin_state' => $validated['sender_state'],
+            'origin_zip' => $validated['sender_postal'],
             'destination_city' => $validated['recipient_city'],
             'destination_state' => $validated['recipient_state'],
             'destination_zip' => $validated['recipient_postal'],

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ShoppingCart; // Assuming you have a ShoppingCart model
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeUser;
+
 
 class AcademyTestController extends Controller
 {
@@ -22,9 +25,9 @@ class AcademyTestController extends Controller
     }
     public function index()
     {
-        
-        $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
-        $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
+
+        $majCategories = DB::table('majorcategories')->where('enabled', 1)->get();
+        $subCategories = DB::table('categories')->where('majorcategories_id', 1)->get();
         $fenceCategories = [
             ['id' => 1, 'name' => 'Wooden Fences', 'description' => 'Durable and classic wooden fences.'],
             ['id' => 2, 'name' => 'Vinyl Fences', 'description' => 'Low-maintenance and long-lasting vinyl fences.'],
@@ -43,6 +46,9 @@ class AcademyTestController extends Controller
         //session()->forget('cart2');
         //session()->flush();
         //@dd($cart);
+        //Mail::to('silverspark132@hotmal.com')->send(new WelcomeUser('emails.order-confirmation'));
+
+
         return view('academy', compact('majCategories', 'subCategories', 'fenceCategories', 'cart'));
     }
     public function height($h)
@@ -54,7 +60,7 @@ class AcademyTestController extends Controller
     }
     public function category()
     {
-        
+
         $majCategories = \DB::table('majorcategories')->where('enabled', 1)->get();
         $subCategories = \DB::table('categories')->where('majorcategories_id', 1)->get();
         $fenceCategories = [

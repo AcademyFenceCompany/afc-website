@@ -1,8 +1,9 @@
 @extends('layouts.ams')
-
+@section('selected', 'Customers')
 @section('title', 'Customers List')
 
 @section('content')
+
     <div class="container-fluid p-4">
         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
             <div class="d-flex align-items-center mb-2 mb-md-0">
@@ -75,11 +76,11 @@
                             {{ $customer->email ?? 'N/A' }}
                             </td>
                             <td class="">
-                            <a href="{{ route('ams.get-customer', ['id' => $customer->id]) }}" class="btn btn-sm btn-success me-1" title="Create Order">
-                            <i class="bi bi-plus"></i>
+                            <a href="{{ route('ams.create-cus-order', ['id' => $customer->id]) }}" class="btn btn-sm btn-success text-light me-1" title="Create Order">
+                            <i class="bi bi-cart-plus"></i>
                             </a>
-                            <a href=""
-                            class="btn btn-sm btn-info me-1" title="View Details">
+                            <a href="{{ route('ams.get-customer', ['id' => $customer->id]) }}"
+                            class="btn btn-sm btn-info text-light me-1" title="View Details">
                             <i class="bi bi-eye"></i>
                             </a>
                             </td>

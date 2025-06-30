@@ -60,7 +60,7 @@
             <div class="border-top py-3">
                 <strong>Total (USD)</strong>
                 <strong class="cart-total fs-5 text-success" data-mi-total="{{$cart['total']}}">${{$cart['total']}}</strong>
-                <input type="number" class="form-control" name="cart_total" value="{{$cart['total']}}">
+                <input type="number" class="form-control cart-total" name="cart_total" value="{{$cart['total']}}" max="{{$cart['total']}}" min="0" step="0.01" >
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg w-100 mt-3" id="place-order">

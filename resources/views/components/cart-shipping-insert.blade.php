@@ -1,9 +1,9 @@
 {{-- Frontend Shipping options list --}}
-@props(['admin' => false, 'cart' => $cart ?? [], 'upsrates' => 0, 'tForceRates' => 0, 'rlCarriersRates' => 0])
+@props(['admin' => false, 'cart' => $cart ?? [], 'upsrates' => 0, 'tForceRates' => 0, 'rlCarriersRates' => 0, 'rlCarriersRatesAll' => []])
 
 {{-- Check if the user is an admin --}}
 @if(!$admin)
-<div class="card bg-light mb-3">  
+<div class="card bg-light mb-3">
     <ul class="list-group list-group-flush ">
 
         <li class="list-group-item d-flex bg-primary justify-content-between align-items-start ship-module">
@@ -22,8 +22,8 @@
                     Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
                 </div>
                 <span class="badge text-bg-primary text-dark rounded-pill">${{$upsrates}}</span>
-                
-            </li>   
+
+            </li>
         @endif
         @if(isset($tForceRates) && $tForceRates != 0)
             <li class="list-group-item d-flex bg-transparent justify-content-between align-items-start ship-module" data-shipping-cost="tforce">
@@ -32,7 +32,7 @@
                     <div class="fw-bold">TForce Freight (Standard LTL) </div>
                     Estimated delivery by <span class="text-muted">{{ \Carbon\Carbon::now()->addDays(5)->format('l, M d') }}</span>
                 </div>
-                
+
                 <span class="badge text-bg-primary text-dark rounded-pill">${{ $tForceRates }}</span>
             </li>
         @endif
@@ -50,7 +50,6 @@
 </div>
 @else
 {{-- Admin Shipping options list --}}
-{{-- @dump($upsallrates, $tForceRates, $rlCarriersRates) --}}
 <div class="card bg-light mb-3 border-0" style="border: 1px solid #cecece;">
     <div class="card-header bg-warning text-dark py-2">
         <h5 class="card-title">Shipping Options</h5>
@@ -58,8 +57,8 @@
     </div>
     <div class="px-3 py-3">
         <div class="d-flex justify-content-between align-items-center">
-            <p class="badge rounded-pill text-bg-success p-3"><i class="bi bi-truck me-3"></i><strong>Origin: </strong>{{$formData[]}}}}</p>
-            <p class="badge rounded-pill text-bg-danger p-3"> <i class="bi bi-geo-alt-fill me-3"></i><strong>Destination: </strong>NJ, 07102</p>
+            <p class="badge rounded-pill text-bg-success p-3"><i class="bi bi-truck me-3"></i><strong>Origin: </strong>{{ $formData['sender_state'] }}, {{$formData['sender_postal']}}</p>
+            <p class="badge rounded-pill text-bg-danger p-3"> <i class="bi bi-geo-alt-fill me-3"></i><strong>Destination: </strong>{{ $formData['recipient_state'] }}, {{ $formData['recipient_postal'] }}</p>
         </div>
 
         <figure class="text-center">
@@ -131,7 +130,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <div class="w-100 mb-3">
             <ul class="list-group">
                 @foreach($upsallrates as $upsrate)
@@ -163,7 +162,7 @@
                 @endforeach
             </ul>
         </div>
-                
+
 
     </div>
     <ul class="list-group" style="border: 2px solid #4d4d4d; background-color: #FFF;">
@@ -220,7 +219,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>    
+            </div>
         </li>
     </ul>
 </div>

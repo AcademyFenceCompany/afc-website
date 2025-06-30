@@ -1,5 +1,5 @@
 @extends('layouts.ams')
-
+@section('selected', 'Customers')
 @section('content')
 <div class="container-fluid p-4 h-100" style="background-color: #eee;">
     <div class="">
@@ -12,13 +12,21 @@
         <div class="col-md-4 mb-4">
             <div class="card mb-4 py-3">
                 <div class="card-body text-center">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                    class="rounded-circle img-fluid" style="width: 150px;">
-                    <h5 class="my-3">John Smith</h5>
-                    <p class="text-muted mb-1">Somereally Companry LLC.</p>
-                    <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                    <img src="{{asset('assets/images/user-avatar.png')}}" alt="avatar"
+                    class="rounded-circle img-fluid py-4" style="width: 150px;">
+                    <h5 class="my-3">{{$customer->name}}</h5>
+                    @if(!empty($customer->company))
+                        <p class="text-muted mb-1">{{ $customer->company }}</p>
+                    @endif
+                    @if(!empty($customer->address) && !empty($customer->city) && !empty($customer->state))
+                        <p class="text-muted mb-4">{{ $customer->address }}, {{ $customer->city }}, {{ $customer->state }}</p>
+                    @endif
+                    <p class="text-muted mb-4">
+                        <i class="bi bi-envelope-fill"></i> {{ $customer->email ?? 'N/A' }}<br>
+                        <i class="bi bi-telephone-fill"></i> {{ $customer->phone ?? 'N/A' }}
+                    </p>
                     <div class="d-flex justify-content-center mb-2">
-                        <a href="#" data-mdb-button-init data-mdb-ripple-init class="btn btn-success text-light">Create Order</a>
+                        <a href="{{ route('ams.create-cus-order', ['id' => $customer->id]) }}" data-mdb-button-init data-mdb-ripple-init class="btn btn-success text-light">Create Order</a>
                         <a  href="#" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-2">Edit</a>
                     </div>
                     <hr>
@@ -72,8 +80,10 @@
                                 <tr>
                                     <td>1</td>
                                     <td>Jan 01, 2024</td>
-                                    <td><span class="badge bg-info">Quote</span></td>
-                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td><span class="badge bg-warning text-dark">Quote</span></td>
+                                    <td>
+                                        <span class="badge bg-outline-success border border-success text-success">Completed</span>
+                                    </td>
                                     <td>$100.00</td>
                                     <td>
                                         <a href="#" class="btn btn-sm btn-primary">
@@ -84,8 +94,8 @@
                                 <tr>
                                     <td>2</td>
                                     <td>Feb 15, 2024</td>
-                                    <td><span class="badge bg-primary">Sale</span></td>
-                                    <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                    <td><span class="badge bg-success">Sale</span></td>
+                                    <td><span class="badge bg-outline-warning border border-warning text-warning">Pending</span></td>
                                     <td>$250.00</td>
                                     <td>
                                         <a href="#" class="btn btn-sm btn-primary">
@@ -96,7 +106,7 @@
                                 <tr>
                                     <td>3</td>
                                     <td>Mar 10, 2024</td>
-                                    <td><span class="badge bg-info">Quote</span></td>
+                                    <td><span class="badge bg-warning text-dark">Quote</span></td>
                                     <td><span class="badge bg-danger">Cancelled</span></td>
                                     <td>$0.00</td>
                                     <td>
@@ -108,7 +118,7 @@
                                 <tr>
                                     <td>4</td>
                                     <td>Apr 05, 2024</td>
-                                    <td><span class="badge bg-primary">Sale</span></td>
+                                    <td><span class="badge bg-success">Sale</span></td>
                                     <td><span class="badge bg-secondary">Processing</span></td>
                                     <td>$320.00</td>
                                     <td>

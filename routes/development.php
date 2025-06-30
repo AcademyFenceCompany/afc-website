@@ -14,6 +14,7 @@ use App\Http\Controllers\Ams\AmsStorefrontController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\AmsSettingsController;
+use App\Http\Controllers\StandardPagesController;
 use Illuminate\Support\Facades\DB;
 //==================== Development Routes (Colin) ====================//
 // AMS Routes
@@ -40,6 +41,7 @@ Route::prefix('ams')->middleware('auth')->group(function () {
     Route::get('/customer/{id}', [CustomerController::class, 'getCustomerById'])->name('ams.get-customer');
 
 });
+Route::get('/woodfence', [StandardPagesController::class, 'woodfence'])->name('ams.woodfence');
 // Development route for testing: Colin
 Route::get('/subcatlist/{id}', [ProductReportController::class, 'getCategoryById'])->name('ams.subcat-list');
 Route::get('/products-report/cat/{id}', [ProductReportController::class, 'getProductsByCategoryId'])->name('ams.getAllByCatId');
@@ -122,7 +124,7 @@ Route::get('/productdesc', function(){
 // Route for shopping cart
 Route::prefix('cart2')->group(function () {
     Route::get('/viewcart', [ShoppingCartController::class, 'precheckout'])->name('cart2.precheckout');
-    
+
     Route::post('/checkout', [CheckoutController::class, 'processCheckout'])->name('cart2.checkout2');
     Route::get('/checkout', [ShoppingCartController::class, 'processCheckout'])->name('cart2.checkout2');
     Route::get('/thankyou', [CheckoutController::class, 'processCheckout'])->name('cart2.thankyou');

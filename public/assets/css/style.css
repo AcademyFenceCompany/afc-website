@@ -41,6 +41,10 @@ body {
   visibility: hidden;
 }
 
+.link-selected {
+  background-color: rgb(211, 176, 176) !important;
+}
+
 header .nav-link {
   background-color: #f5b149;
   border-radius: 0.4rem;
@@ -580,4 +584,4 @@ section {
 
 #global-search {
   box-shadow: 0 5px 16px rgba(96, 96, 96, 0.15);
-}/*# sourceMappingURL=style.css.map */
+}

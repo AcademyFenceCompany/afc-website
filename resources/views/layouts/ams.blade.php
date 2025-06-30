@@ -133,7 +133,7 @@
                     $newOrdersCount = session('new_orders_count', 1); // Or fetch from DB
                 @endphp
                 <li>
-                    <a href="#ordersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="ordersMenu2">
+                    <a href="#ordersMenu2" class="nav-link {{ $__env->yieldContent('selected') == 'Orders' ? 'link-selected' : '' }} text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="ordersMenu2">
                         <span>
                             <i class="bi bi-bag me-2"></i> Orders
                             @if($newOrdersCount > 0)
@@ -176,7 +176,7 @@
 
                 <!-- Customers -->
                 <li>
-                    <a href="#customersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="customersMenu2">
+                    <a href="#customersMenu2" class="nav-link text-dark {{ $__env->yieldContent('selected') == 'Customers' ? 'link-selected' : '' }} d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="customersMenu2">
                         <span><i class="bi bi-people me-2"></i> Customers</span>
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
@@ -188,7 +188,7 @@
 
                 <!-- Shipping -->
                 <li>
-                    <a href="#shippingMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="shippingMenu2">
+                    <a href="#shippingMenu2" class="nav-link text-dark {{ $__env->yieldContent('selected') == 'Shipping' ? 'link-selected' : '' }} d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="shippingMenu2">
                         <span><i class="bi bi-truck me-2"></i> Shipping</span>
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
@@ -199,7 +199,7 @@
 
                 <!-- Suppliers -->
                 <li>
-                    <a href="#suppliersMenu2" class="nav-link text-dark d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="suppliersMenu2">
+                    <a href="#suppliersMenu2" class="nav-link {{ $__env->yieldContent('selected') == 'Suppliers' ? 'link-selected' : '' }} text-dark  d-flex justify-content-between align-items-center submenu-toggle" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="suppliersMenu2">
                         <span><i class="bi bi-building me-2"></i> Suppliers</span>
                         <i class="bi bi-chevron-down small rotate-icon"></i>
                     </a>
@@ -325,11 +325,12 @@
                 <strong class="mx-2">{{auth()->user()->firstname}} {{auth()->user()->lastname}}</strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-sm mt-2" aria-labelledby="userMenu">
-                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="{{ route('ams.settings') }}"><i class="fas fa-cog me-2"></i> Settings</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-list-ul me-2"></i> Activity Log</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profile</a></li>
+                    <li><a class="dropdown-item" href="{{ route('ams.settings') }}"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-list-ul me-2"></i> Activity Log</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-primary" href="/"><i class="bi bi-house me-2"></i> Frontend</a></li>
+                    <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
                 </ul>
             </div>
         </nav>

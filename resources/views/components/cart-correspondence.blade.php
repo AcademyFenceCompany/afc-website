@@ -69,10 +69,10 @@
                         </ul>
                     </div>
                     <button class="btn btn-secondary" type="button">
-                        <i class="bi bi-printer"></i> Print
+                        <i class="bi bi-printer"></i> <span class="d-none d-sm-inline">Print</span>
                     </button>
                     <button class="btn btn-secondary" type="button">
-                        <i class="bi bi-envelope"></i> Email
+                        <i class="bi bi-envelope"></i> <span class="d-none d-sm-inline">Email</span>
                     </button>
                 </div>
             </div>

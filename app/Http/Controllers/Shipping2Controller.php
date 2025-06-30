@@ -46,14 +46,14 @@ class Shipping2Controller extends Controller
         // Create dummy data for testing
         // Prepare data in the format expected by UPS Shipping Rates API
         $formData = [
-            'recipient_address' => $request->post('recipient_address', '78 Elmwood Ave'),
-            'recipient_city' => $request->post('recipient_city', 'East Orange'),
-            'recipient_state' => $request->post('recipient_state', 'NJ'),
-            'recipient_postal' => $request->post('recipient_postal', '07018'),
-            'sender_address' => $request->post('sender_address', '119 N Day St'),
-            'sender_city' => $request->post('sender_city', 'Orange'),
-            'sender_state' => $request->post('sender_state', 'NJ'),
-            'sender_postal' => $request->post('sender_postal', '07050'),
+            'recipient_address' => '78 Elmwood Ave',
+            'recipient_city' => 'East Orange',
+            'recipient_state' => 'NJ',
+            'recipient_postal' => $zip,
+            'sender_address' => '119 N Day St',
+            'sender_city' => 'Orange',
+            'sender_state' => 'NJ',
+            'sender_postal' => '07050',
             'packages' => [
                 [
                     'weight' => 105,
@@ -130,12 +130,9 @@ class Shipping2Controller extends Controller
                 $rates['rl_carriers'] = $rlCarriersRates;
             }
         }
-        @dump($rates);
         // This is where you return the lowest rate
         $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
-        //@dd($upsrates, $tForceRates, $rlCarriersRates, $lowestUpsRate);
 
-        //@dd($lowestUpsRate, $upsrates, $tForceRates, $rlCarriersRates);
         $shippingmethod = [
             'ups' => $lowestUpsRate ?? [],
             'tforce' => $tForceRates,
@@ -205,7 +202,7 @@ class Shipping2Controller extends Controller
                 ];
             }
         }
-        
+
         // Create dummy data for testing
         // Prepare data in the format expected by UPS Shipping Rates API
         $formData = [
@@ -238,7 +235,7 @@ class Shipping2Controller extends Controller
             // Add category_ids if needed
         ];
         //$formData['packages'] = $shippingMODEL->prepareShippingData($cartData['items']);
-       
+
         $rates = [];
         $upsrates = [];
         $tForceRates = [];
@@ -299,7 +296,7 @@ class Shipping2Controller extends Controller
                 $rates['rl_carriers'] = $rlCarriersRates;
             }
         }
-        
+
         // This is where you return the lowest rate
         $lowestUpsRate = $this->getLowestUPSRate($rates['ups'] ?? []); //Get the lowest UPS rate
         //@dd($upsrates, $tForceRates, $rlCarriersRates, $lowestUpsRate);
@@ -318,6 +315,7 @@ class Shipping2Controller extends Controller
             'upsallrates' => $rates['ups'] ?? [],
             'tForceRates' => $shipping['tforce'] ?? [],
             'rlCarriersRates' => $shipping['rl_carriers'] ?? [],
+            'rlCarriersRatesAll' => $rates['rl_carriers'] ?? [],
             'packages' => $formData['packages'],
             'cart' => $cartData,
             'shippingmethod' => $shippingmethod,

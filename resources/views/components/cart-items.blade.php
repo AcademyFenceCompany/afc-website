@@ -5,7 +5,7 @@
             background-color: #fff1eb;
         }
     </style>
-    
+
     <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="">Order Detail Items </span>
           <span class="badge bg-primary rounded-pill cart-count">{{$cart['quantity']}}</span>
@@ -49,8 +49,8 @@
         @endforeach
 
     </div>
-    <div class="">  
-        
+    <div class="">
+
         <div class="table-responsive">
             <div class="d-none d-md-block">
                 <table class="table align-middle mb-0">
@@ -70,9 +70,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($cart['items'] as $index => $item)
+                        {{$i = 1}}
+                        @foreach($cart['items'] as $item)
+
                         <tr class="cart-item">
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $i++ }}</td>
                             <td>
                                 <input type="number" class="form-control form-control-sm ams-cart-item incre-qty" name="quantity[]" min="1"  data-product-id="{{$item['id']}}" value="{{ $item['quantity'] }}">
                             </td>
@@ -80,9 +82,9 @@
                                 <input type="text" class="form-control form-control-sm ams-cart-item" name="item_no[]" value="{{ $item['item_no'] }}">
                             </td>
                             <td>
-                                <input type="text" class="form-control form-control-sm ams-cart-item" name="name[]" value="{{ $item['name'] }}" 
+                                <input type="text" class="form-control form-control-sm ams-cart-item" name="name[]" value="{{ $item['name'] }}"
                                 id="qtyInput" data-bs-toggle="tooltip" data-bs-placement="top" title="2343">
-                                
+
                             </td>
                             <td>
                                 <input type="text" class="form-control form-control-sm ams-cart-item" name="color[]" value="Black">
@@ -222,7 +224,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>  
+        </div>
     </div>
     <div class="card-footer bg-light border-0 d-flex justify-content-between align-items-center">
         <div class="d-flex flex-wrap w-100 justify-content-between">

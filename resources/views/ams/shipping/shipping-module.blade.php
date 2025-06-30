@@ -1,4 +1,6 @@
 @extends('layouts.ams')
+@section('selected', 'Shipping')
+
 @section('styles')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
 <style>

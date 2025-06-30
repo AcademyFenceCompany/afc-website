@@ -4,6 +4,10 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Support\Facades\DB;
+// use App\YourShoppingCartNamespace\ShoppingCart;
+use App\Models\ShoppingCart; // Update this to the correct namespace of your ShoppingCart class
 
 class Handler extends ExceptionHandler
 {
@@ -47,4 +51,23 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    public function render($request, Throwable $exception){
+
+        if ($exception instanceof HttpException && $exception->getStatusCode() === 400) {
+            $majCategories = DB::table('majorcategories')->where('enabled', 1)->get();
+            $subCategories = DB::table('categories')->where('majorcategories_id', 1)->get();
+            $shoppingCart = new ShoppingCart();
+            $cart = $shoppingCart->getCart();
+            return response()->view('errors.400', [
+                'message' => 'Oops! Bad input. Check your request and try again.',
+                'referenceId' => uniqid('ERR400_'),
+                'majCategories' => $majCategories,
+                'subCategories' => $subCategories,
+                'cart' => $cart,
+            ], 400);
+        }
+
+        return parent::render($request, $exception);
+    }
+
 }

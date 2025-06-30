@@ -341,11 +341,10 @@ class CustomerController extends Controller
     {
         // Get customer by ID with direct DB query using academyfence connection
         $customer = DB::connection('academyfence')->table('customers')
-            ->where('id', $id)->get();
+            ->where('id', $id)->first();
         if (!$customer) {
            return response()->json(['error' => 'Customer not found'], 404);
         }
-
         // Get addresses for the customer
         $addresses = DB::connection('academyfence')->table('cust_addresses')
             ->where('customers_id', $id)

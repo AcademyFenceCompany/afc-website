@@ -96,7 +96,7 @@ class RLCarriersService
             $xml = simplexml_load_string($response->getBody());
             $xml->registerXPathNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
             $xml->registerXPathNamespace('rlc', 'http://www.rlcarriers.com/');
-            
+
             $result = $xml->xpath('//rlc:GetRateQuoteResult');
             $responseData = json_decode(json_encode($result[0]), true);
 
@@ -106,7 +106,7 @@ class RLCarriersService
             if ($responseData['WasSuccess'] === 'true' && isset($responseData['Result'])) {
                 $result = $responseData['Result'];
                 $charges = [];
-                
+
                 // Extract all charges from the response
                 if (isset($result['Charges']['Charge'])) {
                     foreach ($result['Charges']['Charge'] as $charge) {
@@ -133,14 +133,14 @@ class RLCarriersService
                 if ($standardService) {
                     // Get base freight charge (discounted)
                     $baseCharge = floatval(str_replace(['$', ','], '', $charges['DISCNF']['Amount'] ?? '0'));
-                    
+
                     // Get fuel surcharge
                     $fuelSurcharge = floatval(str_replace(['$', ','], '', $charges['FUEL']['Amount'] ?? '0'));
-                    
+
                     // Add residential and lift gate fees
                     $residentialFee = 118.00;
                     $liftGateFee = 33.00;
-                    
+
                     // Calculate total
                     $totalCharge = $baseCharge + $fuelSurcharge + $residentialFee + $liftGateFee;
 
@@ -153,7 +153,7 @@ class RLCarriersService
                         'totalCharge' => $totalCharge,
                         'allCharges' => $charges
                     ]);
-
+                    @dump($standardService);
                     return [
                         'd' => [
                             'Result' => [
@@ -193,7 +193,7 @@ class RLCarriersService
 
     /**
      * Calculate freight class based on weight and density
-     * 
+     *
      * @param float $weight Total weight in pounds
      * @param float $length Length in inches
      * @param float $width Width in inches
@@ -202,12 +202,21 @@ class RLCarriersService
      */
     private function calculateFreightClass($weight, $length, $width, $height)
     {
-        // Calculate density (pounds per cubic foot)
-        $cubicInches = $length * $width * $height;
-        $cubicFeet = $cubicInches / 1728; // Convert cubic inches to cubic feet
-        $density = $weight / $cubicFeet;
+        // R&L Carriers density calculation:
+        // Density = weight (lbs) / (length * width * height / 1728)
+        // All dimensions must be in inches.
+        // If any dimension is zero or negative, return "500.0" (lowest class).
+        if ($weight <= 0 || $length <= 0 || $width <= 0 || $height <= 0) {
+            return "500.0";
+        }
 
-        // Determine freight class based on density
+        $cubicFeet = ($length * $width * $height) / 1728;
+        if ($cubicFeet <= 0) {
+            return "500.0";
+        }
+        $density = $weight / $cubicFeet;
+        //@dump($density); // Debugging line
+        // R&L Carriers official freight class table (as of 2024):
         if ($density >= 50) return "50.0";
         if ($density >= 35) return "55.0";
         if ($density >= 30) return "60.0";
@@ -225,7 +234,7 @@ class RLCarriersService
         if ($density >= 3) return "250.0";
         if ($density >= 2) return "300.0";
         if ($density >= 1) return "400.0";
-        
+
         return "500.0"; // Default for very low density items
     }
 }

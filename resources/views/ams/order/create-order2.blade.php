@@ -1,5 +1,5 @@
 @extends('layouts.ams')
-
+@section('selected', 'Orders')
 @section('title', 'Create New Order')
 @section('styles')
 <link rel="stylesheet" type="text/css" href="{{asset('assets/css/main.css')}}">

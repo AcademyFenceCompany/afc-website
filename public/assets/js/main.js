@@ -169,7 +169,7 @@ $(document).ready(function() {
     $("#ams-store-form-filter").on("change", "input, select, textarea", function(event) {
         $("#ams-store-form-filter").submit();
     });
-
+    // This method is used to submit the filter form, send an AJAX request, and update the product report table
     $("#ams-store-form-filter").on("submit", function(event) {
         event.preventDefault(); // Prevent the default form submission
         const result = $("#product-report-table");
@@ -212,6 +212,7 @@ $(document).ready(function() {
             $(".select-text").html(' Select');
         }
     });
+    // Toggle billing address form visibility based on checkbox
     $("#same-as-ship").on("change", function() {
         if ($(this).is(":checked")) {
             $(".card-billing").fadeOut();
@@ -232,6 +233,7 @@ $(document).ready(function() {
     var total = $('input[name="options[]"]:checked').length;
     $(".dropdown-text").html('(' + total + ') Selected');
     });
+    // Toggle shipping options based on user type selection
     $("#zip").on("keyup", function() {
         const zipValue = $(this).val();
         const uType = $(this).data("type");
@@ -286,7 +288,7 @@ $(document).ready(function() {
             }
         });
     });
-    
+    // Handle shipping method selection
     $(document).on("click", "input[name='shipmethod']", function() {
         const selectedValue = $(this).val();
         console.log("Selected shipping method:", selectedValue);
@@ -300,7 +302,10 @@ $(document).ready(function() {
                 const cartHtml = App.renderCartListGroup(response.cart2);
                 $('#mini-shopping-cart').html(cartHtml); // Make sure you have a <div id="cart-container"></div> in your HTML
                 $('.cart-count').text(response.cartCount); // Update cart count
-                $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('.cart-total, ').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('input.cart-total')
+                    .val(parseFloat(response.cart2.total).toFixed(2)) // Set value attribute of input
+                    .attr('max', parseFloat(response.cart2.total).toFixed(2)); // Update max attribute as well
                 $('.shipping-cost').text(`$${parseFloat(response.cart2.shipping_cost).toFixed(2)}`); // Update total price
                 $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
@@ -322,7 +327,7 @@ $(document).ready(function() {
         appName: "MyApp",
         url: App.url,
     }
-        // Function to update the quantity of a product in the cart
+    // Function to update the quantity of a product in the cart
     $(document).on("click", ".incre-qty", function() {
 
         const productId = $(this).data("product-id");
@@ -351,6 +356,9 @@ $(document).ready(function() {
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
                 $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
                 $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('input.cart-total')
+                    .val(parseFloat(response.cart2.total).toFixed(2)) // Set value attribute of input
+                    .attr('max', parseFloat(response.cart2.total).toFixed(2)); // Update max attribute as well
                 $('.cart-weight').text(`${parseFloat(response.cart2.weight).toFixed(2)} lbs`); // Update total weight
                 console.log("Quantity updated successfully:", response);
 
@@ -417,6 +425,9 @@ $(document).ready(function() {
                 $('.mini-cart-subtotal').text(`$${parseFloat(response.cart2.subtotal).toFixed(2)}`); // Update total price
                 $('.cart-tax').text(`$${parseFloat(response.cart2.tax).toFixed(2)}`); // Update tax
                 $('.cart-total').text(`$${parseFloat(response.cart2.total).toFixed(2)}`); // Update total price
+                $('input.cart-total')
+                    .val(parseFloat(response.cart2.total).toFixed(2)) // Set value attribute of input
+                    .attr('max', parseFloat(response.cart2.total).toFixed(2)); // Update max attribute as well
                 $('.cart-weight').text(`${parseFloat(response.cart2.weight).toFixed(2)} lbs`); // Update total weight
                 //$("#alert-container").html('<div class="alert alert-success" role="alert">Product removed!</div>').fadeIn().delay(1000).fadeOut();
             },

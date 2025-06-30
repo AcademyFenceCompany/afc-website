@@ -1,8 +1,9 @@
-@extends('layouts.main')
+@extends('layouts.main2')
 
 @section('title', '404 Not Found')
 
 @section('content')
+
 <div class="container my-5 text-center">
     <div class="error-code" style="font-size: 8rem; font-weight: bold;">404</div>
     <div class="error-message" style="font-size: 1.5rem; margin-bottom: 1rem;">
